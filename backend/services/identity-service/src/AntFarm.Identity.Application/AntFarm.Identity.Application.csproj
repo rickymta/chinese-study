@@ -2,8 +2,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <!-- FromSqlInterpolated (SELECT ... FOR UPDATE trong luồng xoay refresh token, R-A5/R-A6) sống ở đây, không phải gói EF Core gốc. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <!-- ISigningKeyStore trả về SecurityKey/SigningCredentials/JsonWebKey — gói thuần, không kéo theo ASP.NET Core. -->
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
   </ItemGroup>
 
   <ItemGroup>

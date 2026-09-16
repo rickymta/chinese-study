@@ -48,6 +48,14 @@
 
 Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 
+> **F2 — phần tương đương đã kiểm ở dev local (không Docker, không HTTPS), 17/09/2026 MacBook:**
+> qua gateway `:5280` — `/identity/.well-known/jwks.json` = 200; preflight `OPTIONS` với
+> `Origin: http://localhost:3280` có `Access-Control-Allow-Origin` đúng origin + `Allow-Credentials: true`;
+> `Origin` lạ ⇒ không header CORS, `POST` ⇒ 403 `ORIGIN_NOT_ALLOWED`; cookie `af_rt` HttpOnly,
+> `SameSite=Strict`, `Path=/identity/api/auth`, không `Domain`; restart identity-service ⇒ refresh vẫn 200
+> (khoá `.secrets/identity/keys` giữ nguyên `kid`). Các mục (từ F2) ở mục 2 vẫn **CHƯA VERIFY** vì cần
+> Docker + tên miền thật (`Domain=.antfarms.xyz; Secure`, CORS cross-subdomain, volume `/keys`).
+
 ## 3. Frontend `chinese-frontend` (từ F1) — CHƯA VERIFY
 
 - [ ] `docker compose build chinese-frontend` thành công; bước `yarn install --frozen-lockfile` không báo thiếu module (peer dependency đủ).

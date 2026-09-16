@@ -107,6 +107,33 @@ http://localhost:5282/scalar/v1                  → tài liệu API chinese-bac
 http://localhost:5281/health/ready               → 200 khi PostgreSQL kết nối được
 ```
 
+## 5b. Xác thực (F2 — identity-service)
+
+Chạy `identity-service` (mục 4) rồi thử nhanh bằng `curl`:
+
+```bash
+curl -i -X POST http://localhost:5281/api/auth/register \
+  -H "Content-Type: application/json" -H "Origin: http://localhost:3280" \
+  -d '{"email":"ban@vidu.com","password":"mat-khau-du-dai","displayName":"Bạn","timeZone":"Asia/Ho_Chi_Minh"}'
+```
+
+- Trả `201` + `Set-Cookie: af_rt=...; path=/identity/api/auth; httponly; samesite=strict` (dev
+  không có `domain=`, không có `secure` — đúng bảng §5.6.2 của hợp đồng) + JSON có `accessToken`.
+- `POST /api/auth/login`, `POST /api/auth/refresh` (đọc cookie `af_rt`), `POST /api/auth/logout`,
+  **`POST /api/auth/password`** (đổi mật khẩu — **không phải** `/api/account/password`: cookie
+  `af_rt` chỉ có `Path=/api/auth` nên route đổi mật khẩu phải nằm trong nhánh này để giữ được
+  phiên đăng nhập hiện tại khi thu hồi các phiên khác, quyết định D21 ngày 17/09/2026).
+- `GET/PUT /api/account` cần header `Authorization: Bearer <accessToken>`.
+- `GET http://localhost:5281/.well-known/jwks.json` — khoá ký công khai (RS256), dùng bởi
+  `chinese-backend` từ F3 để kiểm token.
+- Thiếu `Origin` hợp lệ ở mọi `POST /api/auth/*` ⇒ `403 ORIGIN_NOT_ALLOWED` (R-A7b, chống CSRF
+  qua cookie liên-subdomain).
+
+⚠️ **Khoá ký RSA** (`Jwt:KeysPath`, mặc định `.secrets/identity/keys/` ở gốc repo, đã gitignore):
+Development tự sinh khi thư mục trống; **mất thư mục này ⇒ mọi access token cũ hết hiệu lực**
+(phải đăng nhập lại — refresh token trong DB không mất nên chỉ cần làm mới phiên, không mất dữ
+liệu học).
+
 ## 6. Test tích hợp DB
 
 ```bash
@@ -138,3 +165,8 @@ Xem `deploy/` — `docker-compose.yml`, nginx biên + HTTPS Let's Encrypt, check
   đã crash — xem log cửa sổ terminal tương ứng.
 - **`AddInfrastructure` ném lỗi lúc khởi động**: thiếu `appsettings.Development.json` (chưa
   copy từ `.example`) — thông điệp lỗi tiếng Việt đã ghi rõ đường sửa.
+- **`identity-service` ném "Không tìm thấy khoá ký RS256..." lúc khởi động**: chỉ tự sinh khoá ở
+  môi trường `Development` (biến `ASPNETCORE_ENVIRONMENT`) — môi trường khác thiếu file `.pem`
+  trong `Jwt:KeysPath` là dừng hẳn theo chủ đích (R-A13), không fallback.
+- **Đăng ký/đăng nhập trả `403 ORIGIN_NOT_ALLOWED`**: header `Origin` (hoặc `Referer`) của
+  request không nằm trong `Auth:AllowedOrigins` — dev mặc định `http://localhost:3280`/`:3281`.

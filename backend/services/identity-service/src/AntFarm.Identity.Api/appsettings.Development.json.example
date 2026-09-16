@@ -6,5 +6,15 @@
   "ConnectionStrings": {
     "Default": "Host=localhost;Port=5432;Database=af_identity;Username=af_identity;Password=af_identity_dev"
   },
-  "Serilog": { "MinimumLevel": { "Default": "Debug" } }
+  "Serilog": { "MinimumLevel": { "Default": "Debug" } },
+  "Jwt": {
+    "Issuer": "http://localhost:5280/identity",
+    "KeysPath": "../../../../../.secrets/identity/keys"
+  },
+  "Auth": {
+    "RefreshCookieDomain": "",
+    "RefreshCookiePath": "/identity/api/auth",
+    "RefreshCookieSecure": false,
+    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281"]
+  }
 }

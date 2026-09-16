@@ -60,10 +60,14 @@ public static class ExceptionHandlingExtensions
         {
             options.InvalidModelStateResponseFactory = context =>
             {
+                // ModelState/FluentValidation đặt key theo tên property C# (PascalCase, vd "Email")
+                // — đổi sang camelCase để khớp quy ước JSON toàn hệ thống (§5.0.3, §6.0 ví dụ
+                // { "email": [...] }); chỉ đổi PHẦN ĐẦU (trước dấu chấm đầu tiên) để không phá vỡ
+                // key lồng kiểu "Address.City" (hiếm gặp, F2 chưa có DTO lồng nhau).
                 var details = context.ModelState
                     .Where(kv => kv.Value?.Errors.Count > 0)
                     .ToDictionary(
-                        kv => kv.Key,
+                        kv => ToCamelCaseKey(kv.Key),
                         kv => kv.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
 
                 var body = new ErrorResponseMapper.ErrorBody("Dữ liệu gửi lên không hợp lệ.", "VALIDATION", details);
@@ -75,5 +79,13 @@ public static class ExceptionHandlingExtensions
         });
 
         return services;
+    }
+
+    private static string ToCamelCaseKey(string key)
+    {
+        var dotIndex = key.IndexOf('.');
+        var head = dotIndex < 0 ? key : key[..dotIndex];
+        var tail = dotIndex < 0 ? string.Empty : key[dotIndex..];
+        return JsonNamingPolicy.CamelCase.ConvertName(head) + tail;
     }
 }

@@ -12,6 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="xunit" />
+    <!-- TestTokenFactory ký JWT RS256 bằng khoá tạm — cho phép test API của service ngôn ngữ
+         chấp nhận token mà KHÔNG cần identity-service chạy thật (§5.2.2, §9.2). Chỉ 2 gói
+         IdentityModel thuần (không FrameworkReference AspNetCore.App) — việc nối vào
+         JwtBearerOptions (PostConfigure) do CHÍNH ApiFactory của từng service tự làm, vì
+         AntFarm.Testing không phụ thuộc ASP.NET Core. -->
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
   </ItemGroup>
 
 </Project>

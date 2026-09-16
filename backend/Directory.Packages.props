@@ -7,6 +7,7 @@
   </ItemGroup>
   <ItemGroup Label="EF Core">
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.7" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="EFCore.NamingConventions" Version="10.0.0" />
@@ -14,6 +15,13 @@
   </ItemGroup>
   <ItemGroup Label="Auth (dùng từ F2)">
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
+    <!-- Version khớp CHÍNH XÁC những gì Microsoft.AspNetCore.Authentication.JwtBearer 10.0.7 kéo theo
+         (kiểm bằng project.assets.json thật) — CPM không tự đồng bộ version transitive nên khai lệch
+         là có hai bản ObjectResult/OpenIdConnectConfiguration khác nhau nạp cùng lúc, lỗi khó hiểu. -->
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup Label="Logging">
     <!-- Kéo theo Serilog.Sinks.Console + Serilog.Settings.Configuration -->

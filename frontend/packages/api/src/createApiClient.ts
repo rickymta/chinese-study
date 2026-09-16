@@ -1,4 +1,4 @@
-import axios, { type AxiosError, type AxiosInstance } from 'axios'
+import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios'
 
 /**
  * Mở rộng config axios: mỗi request có thể tắt điều hướng tự động khi lỗi (xem `maybeRedirectToErrorPage`).
@@ -7,11 +7,16 @@ import axios, { type AxiosError, type AxiosInstance } from 'axios'
 declare module 'axios' {
   interface AxiosRequestConfig {
     /**
-     * `true` ⇒ TẮT điều hướng tự động tới `/403`/`/404` (F2 thêm `/401`) khi request GET này nhận lỗi tương ứng
+     * `true` ⇒ TẮT điều hướng tự động tới `/403`/`/404` khi request GET này nhận lỗi tương ứng
      * (quy tắc CLAUDE.md "Trang lỗi 4xx thống nhất"). Dùng cho lời gọi nền không muốn làm mất trang hiện tại
      * (kiểm tra trạng thái service, polling, kiểm tra tồn tại...).
      */
     skipErrorRedirect?: boolean
+    /**
+     * `true` ⇒ KHÔNG làm mới token rồi gửi lại khi nhận 401 (F2). Tự động bật cho lần gửi lại và cho
+     * `/auth/login|register|refresh|logout` (401 ở đó là câu trả lời thật, không phải token hết hạn).
+     */
+    skipAuthRefresh?: boolean
   }
 }
 
@@ -51,7 +56,15 @@ export interface ApiClientOptions {
   withCredentials?: boolean
   /** Thời gian chờ mỗi request (ms). Mặc định 15 giây. */
   timeout?: number
-  // F2 bổ sung: getAccessToken, refresh (single-flight), onAuthLost — xem hợp đồng §5.3.1.
+  /** Access token hiện có trong bộ nhớ (F2, `@af/auth`). Có ⇒ gắn `Authorization: Bearer` cho mọi request. */
+  getAccessToken?: () => string | null
+  /**
+   * Làm mới phiên khi nhận 401: trả access token MỚI; ném lỗi nếu mất phiên. `@af/auth` cung cấp hàm này
+   * (single-flight + Web Locks giữa các tab). Client gọi lại request đúng MỘT lần với token mới.
+   */
+  refresh?: () => Promise<string>
+  /** Gọi khi làm mới thất bại (hoặc gửi lại vẫn 401) — `@af/auth` chuyển sang ẩn danh ⇒ `RequireAuth` đưa về `/dang-nhap?returnTo=...&reason=expired`. */
+  onAuthLost?: () => void
 }
 
 /**
@@ -81,6 +94,7 @@ function toApiError(err: AxiosError): ApiError {
   else if (err.code === 'ECONNABORTED' || err.code === 'ETIMEDOUT') message = 'Máy chủ phản hồi quá lâu, vui lòng thử lại.'
   else if (!err.response) message = 'Không kết nối được máy chủ. Kiểm tra mạng hoặc dịch vụ chưa chạy.'
   else if (status === 502 || status === 503 || status === 504) message = 'Dịch vụ chưa sẵn sàng (gateway không tới được service).'
+  else if (status === 429) message = 'Bạn thao tác quá nhanh, vui lòng thử lại sau ít phút.'
   else if (status === 404) message = 'Không tìm thấy tài nguyên.'
   else if (status === 403) message = 'Bạn không có quyền thực hiện thao tác này.'
   else if (status === 401) message = 'Cần đăng nhập để tiếp tục.'
@@ -95,10 +109,29 @@ function toApiError(err: AxiosError): ApiError {
 }
 
 /**
- * Tạo Axios instance dùng chung (F1): baseURL, JSON, chuẩn hoá lỗi thành `ApiError`, điều hướng GET 403/404
- * tới trang lỗi dùng chung (trừ `skipErrorRedirect`). F2 thêm Bearer token + refresh single-flight + 401.
+ * Bốn endpoint phiên của identity — 401 ở đây là câu trả lời thật (sai mật khẩu, cookie hỏng), không kéo theo làm mới.
+ * Các endpoint khác dưới `/auth/*` (vd `/auth/password` cần Bearer) vẫn được làm mới + gửi lại như bình thường.
  */
-export function createApiClient({ baseURL, withCredentials = false, timeout = 15_000 }: ApiClientOptions): AxiosInstance {
+function isAuthUrl(url: string | undefined): boolean {
+  return !!url && /(^|\/)auth\/(login|register|refresh|logout)(\?|$)/.test(url)
+}
+
+/**
+ * Tạo Axios instance dùng chung: baseURL, JSON, Bearer token, làm mới phiên khi 401 (single-flight, gửi lại một
+ * lần), chuẩn hoá lỗi thành `ApiError`, điều hướng GET 403/404 tới trang lỗi dùng chung (trừ `skipErrorRedirect`).
+ *
+ * THỨ TỰ interceptor response quan trọng (bài học review F1): axios chạy `onRejected` theo thứ tự đăng ký, nên
+ * interceptor làm mới token phải đăng ký TRƯỚC interceptor chuyển `AxiosError` → `ApiError` — sau bước chuyển
+ * đổi không còn `err.config` để gửi lại request.
+ */
+export function createApiClient({
+  baseURL,
+  withCredentials = false,
+  timeout = 15_000,
+  getAccessToken,
+  refresh,
+  onAuthLost,
+}: ApiClientOptions): AxiosInstance {
   const client = axios.create({
     baseURL,
     withCredentials,
@@ -113,12 +146,60 @@ export function createApiClient({ baseURL, withCredentials = false, timeout = 15
     if (!isFormData && config.data !== undefined && !config.headers.has('Content-Type')) {
       config.headers.set('Content-Type', 'application/json')
     }
+    // Gắn Bearer nếu có token trong bộ nhớ và request chưa tự đặt Authorization.
+    const token = getAccessToken?.()
+    if (token && !config.headers.has('Authorization')) {
+      config.headers.set('Authorization', `Bearer ${token}`)
+    }
     return config
   })
 
+  // Single-flight trong phạm vi client: nhiều request cùng dính 401 ⇒ chỉ một lần gọi `refresh()`.
+  let refreshing: Promise<string> | null = null
+  const refreshOnce = (): Promise<string> => {
+    if (!refreshing) {
+      refreshing = refresh!().finally(() => {
+        refreshing = null
+      })
+    }
+    return refreshing
+  }
+
+  // (1) Interceptor làm mới token — nhận AxiosError THÔ (còn `config` để gửi lại).
   client.interceptors.response.use(
     (res) => res,
-    (err: AxiosError) => {
+    async (err: AxiosError) => {
+      const config = err.config as InternalAxiosRequestConfig | undefined
+      if (!refresh || err.response?.status !== 401 || !config) return Promise.reject(err)
+      if (config.skipAuthRefresh || isAuthUrl(config.url)) return Promise.reject(err)
+
+      let token: string
+      try {
+        token = await refreshOnce()
+      } catch (refreshErr) {
+        // Chỉ coi là MẤT PHIÊN khi identity từ chối refresh (401 REFRESH_INVALID / 403 ACCOUNT_DISABLED).
+        // Lỗi mạng/5xx lúc refresh: không đá người dùng ra — token cũ có thể vẫn còn hạn, lần 401 sau sẽ thử lại.
+        if (isApiError(refreshErr) && (refreshErr.status === 401 || refreshErr.status === 403)) onAuthLost?.()
+        return Promise.reject(err) // trả lỗi 401 gốc của request ban đầu, không phải lỗi của refresh
+      }
+
+      // Gửi lại ĐÚNG MỘT lần với token mới; lần này vẫn 401 ⇒ coi như mất phiên.
+      config.skipAuthRefresh = true
+      config.headers.set('Authorization', `Bearer ${token}`)
+      try {
+        return await client.request(config)
+      } catch (retryErr) {
+        if (isApiError(retryErr) && retryErr.status === 401) onAuthLost?.()
+        throw retryErr
+      }
+    },
+  )
+
+  // (2) Interceptor chuẩn hoá lỗi + điều hướng trang lỗi. Lỗi từ lần gửi lại đã là ApiError ⇒ cho qua nguyên vẹn.
+  client.interceptors.response.use(
+    (res) => res,
+    (err: AxiosError | ApiError) => {
+      if (isApiError(err)) return Promise.reject(err)
       const status = err.response?.status
       if (status === 403) maybeRedirectToErrorPage(err.config, '/403')
       if (status === 404) maybeRedirectToErrorPage(err.config, '/404')

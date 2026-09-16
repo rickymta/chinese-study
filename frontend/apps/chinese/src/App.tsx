@@ -1,6 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router-dom'
+import { AuthProvider } from '@af/auth'
 import { ThemeProvider } from '@af/ui'
+import { authSession, identity } from './api/clients'
+import { loadMe } from './features/auth/loadMe'
 import { router } from './router'
 
 /** Màu nhấn riêng của app tiếng Trung: đỏ son (§5.3.0.5). Màu nền tảng (xanh lục) nằm trong `buildTheme`. */
@@ -16,13 +19,15 @@ const queryClient = new QueryClient({
   },
 })
 
-// Thứ tự provider theo hợp đồng §5.3.0.1: ThemeProvider → QueryClientProvider → RouterProvider.
-// F2 chèn AuthProvider (của @af/auth) giữa QueryClientProvider và RouterProvider.
+// Thứ tự provider theo hợp đồng §5.3.0.1/§5.3.1: ThemeProvider → QueryClientProvider → AuthProvider → RouterProvider.
+// AuthProvider đứng NGOÀI router nên không điều hướng; RequireAuth (trong router) lo chuyển về /dang-nhap.
 export function App() {
   return (
     <ThemeProvider accent={CHINESE_ACCENT}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthProvider session={authSession} identity={identity} loadMe={loadMe}>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
   )

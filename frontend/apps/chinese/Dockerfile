@@ -11,7 +11,8 @@ COPY package.json yarn.lock turbo.json ./
 COPY packages/tsconfig/package.json ./packages/tsconfig/
 COPY packages/ui/package.json       ./packages/ui/
 COPY packages/api/package.json      ./packages/api/
-# F2 thêm: packages/auth, packages/utils
+COPY packages/utils/package.json    ./packages/utils/
+COPY packages/auth/package.json     ./packages/auth/
 COPY apps/chinese/package.json      ./apps/chinese/
 RUN yarn install --frozen-lockfile --network-timeout 300000
 

@@ -6,6 +6,7 @@ using Xunit;
 
 namespace AntFarm.Identity.ApiTests.System;
 
+[Collection(IdentityApiCollection.Name)]
 public class HealthAndInfoTests(IdentityApiFactory factory) : IClassFixture<IdentityApiFactory>
 {
     [Fact]

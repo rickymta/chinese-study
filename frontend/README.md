@@ -13,8 +13,9 @@ frontend/
   packages/
     tsconfig/                           # @af/tsconfig — base.json, react-app.json, node.json
     ui/                                 # @af/ui — buildTheme, ThemeProvider, AppLayout, PageContainer, ErrorPage, NotFoundPage, LangText
-    api/                                # @af/api — createApiClient (axios), ApiError
-    (F2 thêm auth/, utils/)
+    api/                                # @af/api — createApiClient (axios): Bearer, làm mới 401 single-flight, ApiError
+    utils/                              # @af/utils — parseApiError, schema zod (emailSchema, passwordSchema, displayNameSchema, timeZoneSchema)
+    auth/                               # @af/auth — createAuthSession, AuthProvider/useAuth, RequireAuth, RequirePermission, LoginPage/RegisterPage
   apps/
     chinese/                            # @af/chinese — app tiếng Trung, cổng dev 3280
 ```
@@ -47,6 +48,20 @@ tương ứng chưa lên (gateway trả 502).
 Gốc API identity là biến build `VITE_IDENTITY_API_URL` (`apps/chinese/.env.example`; Dockerfile mặc định
 `https://id.antfarms.xyz/api`). **Nướng vào bundle lúc build** — sai giá trị thì ảnh vẫn chạy, chỉ hỏng khi bấm đăng nhập.
 Route SPA **không** được bắt đầu bằng `/identity` hoặc `/chinese` (bị proxy nuốt) — dùng slug tiếng Việt không dấu.
+
+## Xác thực (F2 — `@af/auth`)
+
+- **Access token chỉ trong bộ nhớ** (`createAuthSession`), không localStorage; refresh token là cookie HttpOnly `af_rt` do
+  identity-service đặt (dev `Path=/identity/api/auth`, prod `Domain=.antfarms.xyz; Path=/api/auth`).
+- Khi mở app: `POST /auth/refresh` (bọc `navigator.locks.request('af-auth-refresh')` để hai tab F5 cùng lúc xoay tuần tự)
+  ⇒ dựng `account` từ claim JWT ⇒ `loadMe()` do app truyền (quyền lấy từ service ngôn ngữ, không suy từ JWT).
+  Làm mới chủ động 60 giây trước hạn; `BroadcastChannel('af-auth')` đồng bộ đăng nhập/đăng xuất giữa tab.
+- `createApiClient({ getAccessToken, refresh, onAuthLost })`: gắn Bearer; 401 (trừ `/auth/*`) ⇒ refresh single-flight rồi
+  gửi lại **một** lần; hỏng ⇒ `onAuthLost` ⇒ `RequireAuth` đưa về `/dang-nhap?returnTo=...&reason=expired`.
+  Interceptor này đăng ký TRƯỚC bước chuyển `AxiosError → ApiError` (cần `err.config` để gửi lại).
+- App: `App.tsx` bọc `AuthProvider({ session, identity, loadMe })` giữa QueryClientProvider và RouterProvider; route `/`
+  nằm dưới `RequireAuth`; `/dang-nhap`, `/dang-ky` dùng trang chung; `/401`, `/403`, `/404`.
+- `apps/chinese/src/features/auth/loadMe.ts` là **stub F2** (`permissions: ['study.use']`) — F3 thay bằng `GET /chinese/api/me`.
 
 ## Quy ước bắt buộc (chi tiết ở `CLAUDE.md` gốc)
 

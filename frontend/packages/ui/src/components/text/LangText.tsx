@@ -22,7 +22,8 @@ export function LangText({ lang, children, component = 'span', sx, ...props }: L
     <Box
       component={component}
       lang={lang}
-      sx={{ ...(isCjk ? { fontFamily: 'var(--af-font-cjk)' } : {}), ...sx }}
+      // Gộp `sx` dạng MẢNG (khuyến nghị MUI) — spread object sẽ hỏng khi bên gọi truyền `sx` là mảng hoặc hàm.
+      sx={[isCjk ? { fontFamily: 'var(--af-font-cjk)' } : {}, ...(Array.isArray(sx) ? sx : [sx])]}
       {...props}
     >
       {children}

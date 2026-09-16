@@ -1,16 +1,24 @@
+using System.Reflection;
 using AntFarm.Identity.Application.Common.Abstractions;
+using AntFarm.Identity.Domain.Accounts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AntFarm.Identity.Infrastructure.Persistence;
 
-/// <summary>
-/// F0: DbContext RỖNG — chưa có DbSet nào (schema `identity` do F2 tạo qua migration
-/// F2_Accounts). Khối AutoMigrate ở Program.cs chỉ gọi MigrateAsync() khi
-/// GetMigrations().Any() nên DbContext rỗng không làm khởi động vỡ.
-/// </summary>
+/// <summary>Schema `identity` (F2_Accounts, §5.1.1) — accounts + refresh_tokens.</summary>
 public sealed class IdentityDbContext(DbContextOptions<IdentityDbContext> options)
     : DbContext(options), IIdentityDbContext
 {
-    // F2 bổ sung: public DbSet<Account> Accounts => Set<Account>();
-    //             public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("identity");
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+        => await Database.BeginTransactionAsync(cancellationToken);
 }

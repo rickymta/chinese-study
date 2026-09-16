@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\shared\AntFarm.Core\AntFarm.Core.csproj" />
     <ProjectReference Include="..\..\shared\AntFarm.Security\AntFarm.Security.csproj" />
+    <ProjectReference Include="..\..\shared\AntFarm.Auth\AntFarm.Auth.csproj" />
   </ItemGroup>
 
 </Project>

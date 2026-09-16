@@ -4,6 +4,7 @@
     <Project Path="shared/AntFarm.Logging/AntFarm.Logging.csproj" />
     <Project Path="shared/AntFarm.Security/AntFarm.Security.csproj" />
     <Project Path="shared/AntFarm.HealthChecks/AntFarm.HealthChecks.csproj" />
+    <Project Path="shared/AntFarm.Auth/AntFarm.Auth.csproj" />
     <Project Path="shared/AntFarm.Testing/AntFarm.Testing.csproj" />
     <Project Path="tests/AntFarm.Shared.UnitTests/AntFarm.Shared.UnitTests.csproj" />
   </Folder>

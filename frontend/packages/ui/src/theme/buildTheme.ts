@@ -52,7 +52,7 @@ export function buildTheme({ mode, accent = '#C62828', accentDark, extra }: Buil
     typography: {
       fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
       fontSize: 14,
-      ...(extra?.typography ?? {}),
+      // Không spread `extra.typography` ở đây — `createTheme(base, extra)` bên dưới đã deep-merge (gợi ý review F1).
     },
     shape: { borderRadius: 10 },
     components: {

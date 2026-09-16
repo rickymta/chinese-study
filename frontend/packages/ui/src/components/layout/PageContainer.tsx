@@ -13,7 +13,8 @@ export interface PageContainerProps extends Omit<BoxProps, 'title'> {
 /** Khung nội dung trang: giới hạn bề rộng + tiêu đề tuỳ chọn. Padding do AppLayout lo. */
 export function PageContainer({ children, title, actions, maxWidth = 1100, sx, ...props }: PageContainerProps) {
   return (
-    <Box sx={{ width: '100%', maxWidth, mx: 'auto', ...sx }} {...props}>
+    // Gộp `sx` dạng MẢNG (khuyến nghị MUI) — spread object sẽ hỏng khi bên gọi truyền `sx` là mảng hoặc hàm.
+    <Box sx={[{ width: '100%', maxWidth, mx: 'auto' }, ...(Array.isArray(sx) ? sx : [sx])]} {...props}>
       {(title || actions) && (
         <Box
           sx={{
