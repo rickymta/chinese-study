@@ -30,7 +30,9 @@ services:
       AF_IDENTITY_DB_PASSWORD: ${AF_IDENTITY_DB_PASSWORD:-af_identity_dev}
       AF_CHINESE_DB_PASSWORD: ${AF_CHINESE_DB_PASSWORD:-af_chinese_dev}
     volumes:
-      - antfarm-dev-pgdata:/var/lib/postgresql/data
+      # PG 18+: mount tại /var/lib/postgresql (PGDATA = /var/lib/postgresql/18/docker).
+      # Mount vào .../data như PG ≤ 17 ⇒ container thoát ngay khi khởi động.
+      - antfarm-dev-pgdata:/var/lib/postgresql
       - ../postgres/init:/docker-entrypoint-initdb.d:ro
     ports:
       - "127.0.0.1:5432:5432"

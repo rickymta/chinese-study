@@ -4,18 +4,22 @@
 > Docker Engine ≥ 23 (Compose v2) — dự kiến là MacBook người dùng chuyển sang. Đánh dấu
 > `[x]` khi đã verify thật, ghi ngày + máy đã chạy.
 
-## 0. Docker Compose dev (`deploy/dev/docker-compose.dev.yml`) — CHƯA VERIFY
+## 0. Docker Compose dev (`deploy/dev/docker-compose.dev.yml`) — ĐÃ VERIFY 17/09/2026 (MacBook, Docker 29.7.2)
 
 > Bổ sung cùng đợt F0 (16/09/2026) để phát triển trên máy có Docker (MacBook) thay vì cài
-> PostgreSQL/MinIO trực tiếp lên máy. Chưa verify vì máy viết code không có Docker.
+> PostgreSQL/MinIO trực tiếp lên máy. Verify lần đầu lộ lỗi mount volume của PG 18 (phải mount
+> `/var/lib/postgresql`, không phải `.../data`) — đã sửa.
+>
+> Lưu ý MacBook: nếu `docker pull`/`compose up` treo im lặng ở bước tải image, nguyên nhân thường là
+> credential helper `desktop` của Docker Desktop — thử `DOCKER_CONFIG=<thư mục có config.json không có "credsStore">`.
 
-1. [ ] `docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env config` không lỗi (sau khi `cp deploy/dev/.env.example deploy/dev/.env`).
-2. [ ] `docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d` ⇒ `postgres`, `minio`, `minio-init` lên; `minio-init` chạy xong rồi tự thoát (exit 0), không phải "unhealthy".
-3. [ ] `docker compose -f deploy/dev/docker-compose.dev.yml ps` ⇒ `postgres` và `minio` đều `healthy`.
-4. [ ] `psql -h localhost -p 5432 -U postgres -l` (mật khẩu trong `deploy/dev/.env`) liệt kê đủ `af_identity`, `af_chinese`.
-5. [ ] Mở `http://localhost:9001` (MinIO Console), đăng nhập bằng `MINIO_ROOT_USER`/`MINIO_ROOT_PASSWORD` trong `.env` ⇒ thấy bucket `af-chinese` đã được tạo sẵn.
-6. [ ] Copy `appsettings.Development.json.example` → `appsettings.Development.json` cho cả hai service backend, điền đúng mật khẩu trong `deploy/dev/.env` ⇒ `dotnet run` cả ba service (§ README) ⇒ `/health/ready` = 200 cho cả identity-service và chinese-backend.
-7. [ ] `docker compose -f deploy/dev/docker-compose.dev.yml down` rồi `up -d` lại ⇒ dữ liệu Postgres/MinIO còn nguyên (volume đặt tên).
+1. [x] `docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env config` không lỗi (sau khi `cp deploy/dev/.env.example deploy/dev/.env`).
+2. [x] `docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d` ⇒ `postgres`, `minio`, `minio-init` lên; `minio-init` chạy xong rồi tự thoát (exit 0), không phải "unhealthy".
+3. [x] `docker compose -f deploy/dev/docker-compose.dev.yml ps` ⇒ `postgres` và `minio` đều `healthy`.
+4. [x] `psql -h localhost -p 5432 -U postgres -l` (mật khẩu trong `deploy/dev/.env`) liệt kê đủ `af_identity`, `af_chinese`.
+5. [x] (kiểm bằng log `minio-init` — `mc ls` thấy `af-chinese/`; chưa mở Console bằng trình duyệt) Mở `http://localhost:9001` (MinIO Console), đăng nhập bằng `MINIO_ROOT_USER`/`MINIO_ROOT_PASSWORD` trong `.env` ⇒ thấy bucket `af-chinese` đã được tạo sẵn.
+6. [x] Copy `appsettings.Development.json.example` → `appsettings.Development.json` cho cả hai service backend, điền đúng mật khẩu trong `deploy/dev/.env` ⇒ `dotnet run` cả ba service (§ README) ⇒ `/health/ready` = 200 cho cả identity-service và chinese-backend.
+7. [x] `docker compose -f deploy/dev/docker-compose.dev.yml down` rồi `up -d` lại ⇒ dữ liệu Postgres/MinIO còn nguyên (volume đặt tên).
 
 ## 1. Bundle production (`deploy/docker-compose.yml`)
 

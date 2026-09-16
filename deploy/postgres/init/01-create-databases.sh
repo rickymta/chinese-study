@@ -20,10 +20,13 @@ set -euo pipefail
 : "${AF_IDENTITY_DB_PASSWORD:?Thiếu biến môi trường AF_IDENTITY_DB_PASSWORD}"
 : "${AF_CHINESE_DB_PASSWORD:?Thiếu biến môi trường AF_CHINESE_DB_PASSWORD}"
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-    CREATE ROLE af_identity LOGIN PASSWORD '$AF_IDENTITY_DB_PASSWORD';
+# Mật khẩu truyền qua biến psql (:'pw') để psql tự thoát dấu nháy — nội suy thẳng
+# '$VAR' vào SQL sẽ hỏng (hoặc bị chèn lệnh) khi mật khẩu chứa dấu '.
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" \
+     -v id_pw="$AF_IDENTITY_DB_PASSWORD" -v zh_pw="$AF_CHINESE_DB_PASSWORD" <<-'EOSQL'
+    CREATE ROLE af_identity LOGIN PASSWORD :'id_pw';
     CREATE DATABASE af_identity OWNER af_identity ENCODING 'UTF8' TEMPLATE template0;
 
-    CREATE ROLE af_chinese LOGIN PASSWORD '$AF_CHINESE_DB_PASSWORD';
+    CREATE ROLE af_chinese LOGIN PASSWORD :'zh_pw';
     CREATE DATABASE af_chinese OWNER af_chinese ENCODING 'UTF8' TEMPLATE template0;
 EOSQL

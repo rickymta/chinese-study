@@ -754,13 +754,12 @@ identity-service: `Database=af_identity`. Các khối thêm ở feature sau (ghi
 var builder = WebApplication.CreateBuilder(args);
 builder.AddAfSerilog("gateway");
 builder.Services.AddAfHealthChecks();
-builder.Services.AddAfCors(builder.Configuration);
+// KHÔNG AddAfCors/UseAfCors: middleware CORS tự trả lời preflight OPTIONS ⇒ identity-service không nhận được (R-A7b). Sửa 17/09/2026 theo review F0.
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
 app.UseAfCorrelationId();
 app.UseAfSecurityHeaders();
-app.UseAfCors();
 app.MapAfHealthChecks();
 app.MapReverseProxy();
 app.Run();
@@ -772,7 +771,6 @@ app.Run();
 {
   "Serilog": { "MinimumLevel": { "Default": "Information", "Override": { "Microsoft": "Warning", "Yarp": "Warning" } } },
   "AllowedHosts": "*",
-  "Cors": { "AllowedOrigins": [] },
   "ReverseProxy": {
     "Routes": {
       "identity": {
