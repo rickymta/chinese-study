@@ -35,6 +35,12 @@ export interface NavItem {
   requiredPermission?: string
   /** `true` ⇒ chỉ active khi khớp đúng path (mặc định cho `/`). */
   end?: boolean
+  /**
+   * `true` ⇒ KHÔNG hiện ở bottom nav điện thoại (vẫn hiện ở Drawer md+). Dùng cho trang con của một mục đã có
+   * (vd "Người dùng" dưới "Quản trị" — F4): tránh hai mục quản trị chiếm chỗ trên thanh 5 ô; ở điện thoại vào
+   * trang con qua mục cha. Mục cha khớp `matchPath` không `end` nên vẫn sáng khi đang ở trang con.
+   */
+  hideOnMobile?: boolean
 }
 
 export interface AppLayoutProps {
@@ -79,8 +85,16 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
     [navItems, hasPermission],
   )
 
-  const isActive = (item: NavItem) =>
+  const matches = (item: NavItem) =>
     !!matchPath({ path: item.to, end: item.end ?? item.to === '/' }, location.pathname)
+
+  // Mục active = mục khớp có `to` DÀI NHẤT trong danh sách đang xét: ở `/quan-tri/nguoi-dung` Drawer md+ chỉ sáng
+  // "Người dùng" (không sáng cả "Quản trị"), còn bottom nav (mục con `hideOnMobile`) sáng mục cha "Quản trị".
+  const activeIn = (items: NavItem[]): NavItem | undefined => {
+    let best: NavItem | undefined
+    for (const it of items) if (matches(it) && (!best || it.to.length > best.to.length)) best = it
+    return best
+  }
 
   const themeToggle = (
     <Tooltip title={mode === 'dark' ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'}>
@@ -91,12 +105,18 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
   )
 
   // ── Bottom nav (mobile): mục hiển thị + phần dồn vào "Thêm" ──
-  const overflow = visibleItems.length > BOTTOM_NAV_MAX
-  const bottomItems = overflow ? visibleItems.slice(0, BOTTOM_NAV_MAX - 1) : visibleItems
-  const moreItems = overflow ? visibleItems.slice(BOTTOM_NAV_MAX - 1) : []
+  const mobileItems = useMemo(() => visibleItems.filter((it) => !it.hideOnMobile), [visibleItems])
+  const overflow = mobileItems.length > BOTTOM_NAV_MAX
+  const bottomItems = overflow ? mobileItems.slice(0, BOTTOM_NAV_MAX - 1) : mobileItems
+  const moreItems = overflow ? mobileItems.slice(BOTTOM_NAV_MAX - 1) : []
   const [moreAnchor, setMoreAnchor] = useState<HTMLElement | null>(null)
-  const activeBottomValue =
-    bottomItems.find(isActive)?.to ?? (moreItems.some(isActive) ? '__more__' : false)
+  const activeDesktop = activeIn(visibleItems)
+  const activeMobile = activeIn(mobileItems)
+  const activeBottomValue = activeMobile
+    ? bottomItems.includes(activeMobile)
+      ? activeMobile.to
+      : '__more__'
+    : false
 
   const openMore = (e: MouseEvent<HTMLElement>) => setMoreAnchor(e.currentTarget)
   const closeMore = () => setMoreAnchor(null)
@@ -124,7 +144,7 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
                 key={item.to}
                 component={RouterLink}
                 to={item.to}
-                selected={isActive(item)}
+                selected={item === activeDesktop}
                 sx={{ borderRadius: 2, mb: 0.5 }}
               >
                 <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
@@ -138,7 +158,8 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
             {userMenu}
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flex: 1, minWidth: 0, p: 3 }}>
+        {/* `--af-bottom-nav-offset`: md+ không có bottom nav ⇒ 0 (StickyActionBar dính sát đáy viewport). */}
+        <Box component="main" sx={{ flex: 1, minWidth: 0, p: 3, '--af-bottom-nav-offset': '0px' }}>
           <Outlet />
         </Box>
       </Box>
@@ -165,12 +186,15 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
           p: 2,
           // Chừa chỗ cho bottom nav + vùng an toàn của iPhone.
           pb: `calc(${MOBILE_BAR_HEIGHT}px + 16px + env(safe-area-inset-bottom))`,
+          // Biến CSS cho `StickyActionBar` (@af/ui) — thanh hành động dính đáy phải nằm TRÊN bottom nav.
+          '--af-bottom-nav-offset':
+            mobileItems.length > 0 ? `calc(${MOBILE_BAR_HEIGHT}px + env(safe-area-inset-bottom))` : '0px',
         }}
       >
         <Outlet />
       </Box>
 
-      {visibleItems.length > 0 && (
+      {mobileItems.length > 0 && (
         <Paper
           elevation={3}
           square
@@ -209,7 +233,7 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
             {moreItems.map((item) => (
               <MenuItem
                 key={item.to}
-                selected={isActive(item)}
+                selected={item === activeMobile}
                 onClick={() => {
                   closeMore()
                   navigate(item.to)

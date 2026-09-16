@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router-dom'
 import { AuthProvider } from '@af/auth'
-import { ThemeProvider } from '@af/ui'
+import { ConfirmProvider, ThemeProvider, ToastProvider } from '@af/ui'
 import { authSession, identity } from './api/clients'
 import { loadMe } from './features/auth/loadMe'
 import { router } from './router'
@@ -21,14 +21,19 @@ const queryClient = new QueryClient({
 
 // Thứ tự provider theo hợp đồng §5.3.0.1/§5.3.1: ThemeProvider → QueryClientProvider → AuthProvider → RouterProvider.
 // AuthProvider đứng NGOÀI router nên không điều hướng; RequireAuth (trong router) lo chuyển về /dang-nhap.
+// F4: ConfirmProvider + ToastProvider (hộp xác nhận, thông báo nhanh) nằm trong ThemeProvider, ngoài RouterProvider.
 export function App() {
   return (
     <ThemeProvider accent={CHINESE_ACCENT}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider session={authSession} identity={identity} loadMe={loadMe}>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </QueryClientProvider>
+      <ToastProvider>
+        <ConfirmProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider session={authSession} identity={identity} loadMe={loadMe}>
+              <RouterProvider router={router} />
+            </AuthProvider>
+          </QueryClientProvider>
+        </ConfirmProvider>
+      </ToastProvider>
     </ThemeProvider>
   )
 }

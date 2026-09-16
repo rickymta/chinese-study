@@ -63,6 +63,18 @@
 - [x] Log khởi động có dòng "Nạp học liệu pinyin thành công" (Serilog Information) — không có "Nạp học liệu pinyin ... thất bại" (Error).
 - [ ] Xoá tạm `content/chinese/data/pinyin/guide.json`, build lại ⇒ log Error rõ ràng lúc khởi động, `/health/live` vẫn 200, `GET /chinese/api/pinyin/chart` = 503 `CONTENT_UNAVAILABLE` JSON; hoàn tác.
 
+## 5. Múi giờ (`tzdata`) trong ảnh identity-service/chinese-backend — RK36
+
+> RK36 cảnh báo ảnh `mcr.microsoft.com/dotnet/aspnet` có thể THIẾU `tzdata`, khiến
+> `TimeZoneInfo.TryFindSystemTimeZoneById`/`TryConvertIanaIdToWindowsId` từ chối MỌI múi giờ IANA
+> (kể cả `Asia/Ho_Chi_Minh`) khi chạy trong container — người dùng không đổi được múi giờ ở `/ho-so`,
+> `UserLocalDate`/`TimeZoneCatalog` phải fallback mặc định. Kiểm bằng ảnh có sẵn (không cần build lại):
+
+- [x] (17/09/2026, MacBook, Docker Desktop 4.86.0 — `DOCKER_CONFIG` trỏ scratchpad, ảnh `af-identity:verify`) `docker run --rm --entrypoint ls af-identity:verify /usr/share/zoneinfo/Asia/Ho_Chi_Minh` ⇒ in ra đường dẫn (exit 0) — **CÓ `tzdata`**, không cần sửa Dockerfile identity-service.
+- [x] (17/09/2026, MacBook — ảnh `antfarm/chinese-backend:latest`) `docker run --rm --entrypoint ls antfarm/chinese-backend:latest /usr/share/zoneinfo/Asia/Ho_Chi_Minh` ⇒ in ra đường dẫn (exit 0) — **CÓ `tzdata`**, không cần sửa Dockerfile chinese-backend.
+- Kết luận: `mcr.microsoft.com/dotnet/aspnet:10.0` (base image runtime hiện dùng) đã kèm sẵn `tzdata` — KHÔNG cần thêm `apt-get install tzdata` vào Dockerfile của hai service. Nếu sau này đổi base image (vd `-alpine`, hay hạ xuống .NET 8 runtime `-noble-chiseled`...) phải chạy lại đúng 2 lệnh trên trước khi tin múi giờ hoạt động — ảnh chiselled/distroless thường CẮT `tzdata` để giảm kích thước.
+- [ ] Kiểm thêm bằng ứng dụng THẬT (chưa làm — cần chạy container với DB thật): đăng nhập, đổi múi giờ ở `/ho-so` sang một múi giờ không phải `Asia/Ho_Chi_Minh` (vd `Europe/Berlin`) ⇒ `PUT /identity/api/account` trả 200 (không 422 `INVALID_TIME_ZONE`) khi chạy TỪ CONTAINER (không phải `dotnet run` trên máy host).
+
 Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 
 > **F2 — phần tương đương đã kiểm ở dev local (không Docker, không HTTPS), 17/09/2026 MacBook:**

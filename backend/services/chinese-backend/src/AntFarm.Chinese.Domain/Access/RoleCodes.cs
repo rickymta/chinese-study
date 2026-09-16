@@ -9,4 +9,16 @@ public static class RoleCodes
     public const string Learner = "learner";
 
     public static readonly IReadOnlyList<string> All = [Admin, Learner];
+
+    /// <summary>
+    /// Mô tả tiếng Việt cho <c>GET /api/admin/roles</c> (D39, §6.3) — F3 chưa thêm cột
+    /// <c>description</c> vào <c>access.roles</c> nên F4 lấy từ hằng số ở đây thay vì migration
+    /// mới (§5.1.2: "F4 không đổi schema").
+    /// </summary>
+    public static string Describe(string code) => code switch
+    {
+        Admin => "Toàn quyền: học, soạn nội dung, quản lý người dùng",
+        Learner => "Dùng các chức năng học",
+        _ => string.Empty
+    };
 }

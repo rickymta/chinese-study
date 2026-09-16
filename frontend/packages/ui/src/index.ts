@@ -12,6 +12,20 @@ export { AppLayout } from './components/layout/AppLayout'
 export type { AppLayoutProps, NavItem } from './components/layout/AppLayout'
 export { PageContainer } from './components/layout/PageContainer'
 export type { PageContainerProps } from './components/layout/PageContainer'
+export { StickyActionBar } from './components/layout/StickyActionBar'
+export type { StickyActionBarProps } from './components/layout/StickyActionBar'
+
+// ─── Phản hồi nhanh (F4 — thay window.confirm/alert) ───
+export { ConfirmProvider, useConfirm } from './feedback/ConfirmProvider'
+export type { ConfirmOptions } from './feedback/ConfirmProvider'
+export { ToastProvider, useToast } from './feedback/ToastProvider'
+export type { ToastApi } from './feedback/ToastProvider'
+
+// ─── Ô nhập (F4) — AppAutocomplete là mẫu chuẩn cho mọi Autocomplete (trải params.slotProps trước) ───
+export { AppAutocomplete } from './inputs/AppAutocomplete'
+export type { AppAutocompleteProps } from './inputs/AppAutocomplete'
+export { TimeZoneAutocomplete } from './inputs/TimeZoneAutocomplete'
+export type { TimeZoneAutocompleteProps } from './inputs/TimeZoneAutocomplete'
 
 // ─── Trang lỗi ───
 export { ErrorPage } from './components/errors/ErrorPage'

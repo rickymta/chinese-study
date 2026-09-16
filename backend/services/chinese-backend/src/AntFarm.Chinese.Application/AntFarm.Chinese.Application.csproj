@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <!-- FromSqlInterpolated (SELECT ... FOR UPDATE khoá dòng access.roles, R4-8) sống ở đây, không phải gói EF Core gốc — cùng lý do AntFarm.Identity.Application. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>

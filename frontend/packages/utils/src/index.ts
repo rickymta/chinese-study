@@ -4,3 +4,16 @@
 export { parseApiError } from './parseApiError'
 export type { ParsedApiError } from './parseApiError'
 export { emailSchema, passwordSchema, displayNameSchema, timeZoneSchema } from './schemas'
+
+// F4 — múi giờ (danh sách chọn, quy bí danh, so khớp) + thời gian tương đối tiếng Việt.
+export {
+  normalizeTimeZone,
+  detectBrowserTimeZone,
+  listTimeZoneOptions,
+  matchesTimeZoneQuery,
+  getUtcOffsetMinutes,
+  formatUtcOffset,
+  FALLBACK_TIME_ZONES,
+} from './timeZones'
+export type { TimeZoneOption } from './timeZones'
+export { formatRelativeTime } from './relativeTime'

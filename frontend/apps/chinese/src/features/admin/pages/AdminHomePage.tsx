@@ -1,6 +1,9 @@
-import { Alert, AlertTitle, Box, Button, Card, CardContent, Chip, CircularProgress, Stack, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardContent, Chip, CircularProgress, Stack, Typography } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { useAuth } from '@af/auth'
 import { PageContainer } from '@af/ui'
 import { parseApiError } from '@af/utils'
@@ -19,6 +22,24 @@ export function AdminHomePage() {
   return (
     <PageContainer title="Quản trị">
       <Stack spacing={2}>
+        {/* F4: lối vào "Người dùng" — ở điện thoại mục này KHÔNG có trên bottom nav (tránh 2 ô quản trị), vào từ đây. */}
+        <Card>
+          <CardActionArea component={RouterLink} to="/quan-tri/nguoi-dung">
+            <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <ManageAccountsOutlinedIcon color="primary" sx={{ fontSize: 32 }} />
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  Người dùng &amp; vai trò
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Tìm người đã vào dịch vụ tiếng Trung, gán hoặc gỡ vai trò (admin, learner).
+                </Typography>
+              </Box>
+              <ChevronRightIcon color="action" />
+            </CardContent>
+          </CardActionArea>
+        </Card>
+
         <Card>
           <CardContent>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
@@ -56,7 +77,7 @@ export function AdminHomePage() {
 
         <Alert severity="info" variant="outlined">
           <AlertTitle>Sắp có</AlertTitle>
-          Quản lý người dùng &amp; gán vai trò (F4) · Soạn bài học, duyệt nghĩa từ vựng (F10).
+          Soạn bài học, duyệt nghĩa từ vựng (F10).
         </Alert>
       </Stack>
     </PageContainer>

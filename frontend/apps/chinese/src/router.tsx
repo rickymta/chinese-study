@@ -7,7 +7,9 @@ import { LoginPage } from './features/auth/pages/LoginPage'
 import { RegisterPage } from './features/auth/pages/RegisterPage'
 import { PERMISSIONS } from './features/auth/permissions'
 import { AdminHomePage } from './features/admin/pages/AdminHomePage'
+import { AdminUsersPage } from './features/admin-users/pages/AdminUsersPage'
 import { PinyinPage } from './features/pinyin/pages/PinyinPage'
+import { ProfilePage } from './features/profile/pages/ProfilePage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
 
@@ -32,6 +34,12 @@ export const router = createBrowserRouter([
             ),
           },
           {
+            // F4: hồ sơ (`?tab=thong-tin|mat-khau`; F7 thêm `hoc-tap`) — chỉ cần đăng nhập, không cần quyền riêng
+            // (người 0 quyền đã bị `RequireAuth` đưa tới /403 trước khi tới đây).
+            path: 'ho-so',
+            element: <ProfilePage />,
+          },
+          {
             // Vùng quản trị (F3): mỗi trang con tự khai quyền — F4 thêm `nguoi-dung` (users.manage),
             // F10 thêm `bai-hoc`, `tu-vung` (content.manage). Vào thẳng URL mà thiếu quyền ⇒ /403.
             path: 'quan-tri',
@@ -41,6 +49,14 @@ export const router = createBrowserRouter([
                 element: (
                   <RequirePermission permission={PERMISSIONS.USERS_MANAGE}>
                     <AdminHomePage />
+                  </RequirePermission>
+                ),
+              },
+              {
+                path: 'nguoi-dung',
+                element: (
+                  <RequirePermission permission={PERMISSIONS.USERS_MANAGE}>
+                    <AdminUsersPage />
                   </RequirePermission>
                 ),
               },

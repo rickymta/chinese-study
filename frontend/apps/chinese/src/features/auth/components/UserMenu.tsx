@@ -1,6 +1,8 @@
 import { useState, type MouseEvent } from 'react'
 import { Avatar, Box, ButtonBase, Divider, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
+import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@af/auth'
 
@@ -11,12 +13,13 @@ function initialOf(name: string, email: string): string {
 }
 
 /**
- * Menu người dùng (hợp đồng §5.3.1): avatar + tên hiển thị, bấm mở menu có email và "Đăng xuất".
+ * Menu người dùng (hợp đồng §5.3.1): avatar + tên hiển thị, bấm mở menu có email, "Hồ sơ" (F4) và "Đăng xuất".
  * Đặt vào `userMenu` của `AppLayout`: cuối Drawer (md+) hoặc góc phải AppBar (xs–sm, chỉ hiện avatar cho gọn 375px).
  */
 export function UserMenu() {
   const { account, logout } = useAuth()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -72,6 +75,17 @@ export function UserMenu() {
           </Typography>
         </Box>
         <Divider />
+        <MenuItem
+          onClick={() => {
+            close()
+            navigate('/ho-so')
+          }}
+        >
+          <ListItemIcon>
+            <PersonOutlineOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Hồ sơ" />
+        </MenuItem>
         <MenuItem onClick={() => void handleLogout()} disabled={busy}>
           <ListItemIcon>
             <LogoutOutlinedIcon fontSize="small" />

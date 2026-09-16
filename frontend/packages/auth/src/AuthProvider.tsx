@@ -37,6 +37,12 @@ export interface AuthContextValue {
   reloadMe: () => Promise<void>
   /** Lấy lại `account` đầy đủ từ `GET /api/account` (F4: sau khi sửa hồ sơ). */
   reloadAccount: () => Promise<void>
+  /**
+   * F4 (R4-4): làm mới phiên NGAY — xoay refresh token ⇒ access token mới mang `name`/`zoneinfo` vừa sửa ⇒
+   * `GET /api/account` cập nhật `account` ⇒ `loadMe()` (service ngôn ngữ thấy claim khác bản ghi thì đồng bộ
+   * `access.users` trong chính request đó, không chờ cache 5 phút). Gọi sau khi `PUT /api/account` thành công.
+   */
+  refreshSession: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -168,6 +174,18 @@ export function AuthProvider({ session, identity, loadMe, children }: AuthProvid
     setAccount(await identity.getAccount())
   }, [identity])
 
+  const refreshSession = useCallback(async () => {
+    // `session.refresh()` 401/403 ⇒ đã phát `lost` ⇒ subscribe ở trên chuyển sang ẩn danh; ném lỗi để bên gọi biết.
+    const token = await session.refresh()
+    try {
+      setAccount(await identity.getAccount())
+    } catch {
+      // Không lấy được hồ sơ đầy đủ (mạng) ⇒ vẫn có claim mới trong token để hiển thị tên/múi giờ mới.
+      setAccount(accountFromToken(token))
+    }
+    await runLoadMe()
+  }, [session, identity, runLoadMe])
+
   const permissions = useMemo(() => new Set(me?.permissions ?? []), [me])
   const hasPermission = useCallback((p: string) => permissions.has(p), [permissions])
 
@@ -187,8 +205,9 @@ export function AuthProvider({ session, identity, loadMe, children }: AuthProvid
       logout,
       reloadMe: runLoadMe,
       reloadAccount,
+      refreshSession,
     }),
-    [status, account, me, meLoading, meError, permissions, hasPermission, lostReason, login, register, logout, runLoadMe, reloadAccount],
+    [status, account, me, meLoading, meError, permissions, hasPermission, lostReason, login, register, logout, runLoadMe, reloadAccount, refreshSession],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

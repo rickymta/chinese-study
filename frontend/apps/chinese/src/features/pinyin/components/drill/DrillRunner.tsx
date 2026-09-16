@@ -8,7 +8,7 @@ import { Hanzi } from '@/components/Hanzi'
 import { Pinyin } from '@/components/Pinyin'
 import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
 import { SpeakButton } from '@/components/speech/SpeakButton'
-import { LangText } from '@af/ui'
+import { LangText, StickyActionBar } from '@af/ui'
 import type { DrillTone, PinyinChart, ToneKey } from '../../types'
 import { computeResponseMs, type AnsweredItem, type DrillSession } from '../../drill/drillTypes'
 import { ToneButtons } from './ToneButtons'
@@ -258,15 +258,20 @@ export function DrillRunner({ session, chart, onFinish, paused }: DrillRunnerPro
       )}
 
       {phase === 'feedback' && (
-        <Button
-          variant={lastAnswer?.correct ? 'outlined' : 'contained'}
-          size="large"
-          endIcon={<ArrowForwardIcon />}
-          onClick={() => goNext(true)}
-          sx={{ minHeight: 52 }}
-        >
-          {index + 1 >= items.length ? 'Xem kết quả' : lastAnswer?.correct ? 'Tiếp (tự chuyển)' : 'Tiếp'}
-        </Button>
+        // Dính đáy (trên bottom nav + safe-area): ở 375×812 câu sai có phần giải thích dài đẩy nút "Tiếp" xuống
+        // dưới bottom nav — phát hiện khi tích hợp F5.
+        <StickyActionBar>
+          <Button
+            variant={lastAnswer?.correct ? 'outlined' : 'contained'}
+            size="large"
+            endIcon={<ArrowForwardIcon />}
+            onClick={() => goNext(true)}
+            sx={{ minHeight: 52 }}
+            fullWidth
+          >
+            {index + 1 >= items.length ? 'Xem kết quả' : lastAnswer?.correct ? 'Tiếp (tự chuyển)' : 'Tiếp'}
+          </Button>
+        </StickyActionBar>
       )}
     </Stack>
   )

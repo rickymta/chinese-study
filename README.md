@@ -145,6 +145,12 @@ lười + tự thử lại nên chạy sai thứ tự không crash, chỉ 401 t�
 được gán vai trò `admin` ngay lần đăng nhập đầu tiên (R-P6) — không điền thì tài khoản mới chỉ
 nhận `learner` (`ChineseAccess:DefaultRoles`).
 
+> **RK40 (F4):** `ChineseAdmin:BootstrapEmails` là **nguồn sự thật** — mỗi lần chinese-backend
+> khởi động, `AccessSeeder` gán LẠI vai trò `admin` cho mọi user đang thiếu mà email nằm trong
+> danh sách này (idempotent, R-P6/R4-10). Vì vậy **gỡ `admin` qua `PUT /api/admin/users/{id}/roles`
+> chỉ có hiệu lực tới lần khởi động kế tiếp** nếu email đó vẫn còn trong cấu hình — muốn gỡ
+> **vĩnh viễn**, phải **xoá email khỏi `ChineseAdmin:BootstrapEmails`** rồi khởi động lại service.
+
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:5281/api/auth/login \
   -H "Content-Type: application/json" -H "Origin: http://localhost:3280" \
@@ -165,8 +171,9 @@ curl -i http://localhost:5282/api/admin/ping -H "Authorization: Bearer $TOKEN"
 - Gỡ hết vai trò một người dùng trong DB (`access.user_roles`) ⇒ `/api/me` của người đó trả
   `roles: [], permissions: []` ngay lập tức (MeService đọc thẳng DB, không qua cache 60 giây của
   `PermissionResolver` — R-P8).
-- **Danh mục vai trò/quyền đầy đủ** (`GET /api/admin/roles`, `GET /api/admin/users`,
-  `PUT /api/admin/users/{id}/roles`) là **F4**, chưa có ở F3 — xem mục bàn giao.
+- **Quản trị người dùng/vai trò** (F4, quyền `users.manage`): `GET /api/admin/users?q=&page=&pageSize=`,
+  `GET /api/admin/users/{id}`, `PUT /api/admin/users/{id}/roles` (`{"roles":[...]}`, mảng rỗng hợp
+  lệ, gỡ vai trò `admin` cuối cùng ⇒ `422 LAST_ADMIN`), `GET /api/admin/roles`.
 
 ## 5d. Học liệu (F5 — `content/`)
 

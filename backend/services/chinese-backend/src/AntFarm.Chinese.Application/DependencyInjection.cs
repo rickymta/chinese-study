@@ -13,13 +13,18 @@ public static class DependencyInjection
     /// <summary>Đăng ký các dịch vụ tầng Application (use case, validator...). F3: provisioning
     /// (R-P4/R-P5/R-P6), PermissionResolver — hiện thực cổng <see cref="IPermissionResolver"/> của
     /// AntFarm.Auth trên DB access.* của chính service (R-P1), MeService (§6.3). F5: sổ hoạt động
-    /// học dùng chung (<see cref="IStudyActivityRecorder"/>) + bài luyện thanh (§5.2.1).</summary>
+    /// học dùng chung (<see cref="IStudyActivityRecorder"/>) + bài luyện thanh (§5.2.1). F4:
+    /// UserAdminService (§5.2.3) — quản trị người dùng/vai trò cục bộ.</summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<UserProvisioningService>();
         services.AddScoped<MeService>();
-        services.AddScoped<IPermissionResolver, PermissionResolver>();
+        // Đăng ký CỤ THỂ (không chỉ qua interface) — UserAdminService cần gọi PermissionResolver.Invalidate
+        // (R4-9), phương thức KHÔNG có trong IPermissionResolver của AntFarm.Auth (chỉ có GetPermissionsAsync).
+        services.AddScoped<PermissionResolver>();
+        services.AddScoped<IPermissionResolver>(sp => sp.GetRequiredService<PermissionResolver>());
+        services.AddScoped<UserAdminService>();
 
         services.AddScoped<IStudyActivityRecorder, StudyActivityRecorder>();
         services.AddScoped<ToneDrillService>();

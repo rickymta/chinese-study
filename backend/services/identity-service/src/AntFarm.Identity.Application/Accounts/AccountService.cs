@@ -60,9 +60,21 @@ public sealed class AccountService(IIdentityDbContext db, IPasswordHasherService
         return new ChangePasswordResult(revokedFamilyCount, CurrentSessionKept: currentFamilyId is not null);
     }
 
+    /// <summary>
+    /// F4/§6.2: cả GET/PUT /api/account VÀ POST /api/auth/password đều đi qua đây — tài khoản bị
+    /// khoá (<c>is_active=false</c>) không được xem/sửa hồ sơ hay đổi mật khẩu của chính mình,
+    /// đồng nhất với hành vi ACCOUNT_DISABLED của luồng đăng nhập/refresh (AuthService).
+    /// </summary>
     private async Task<Account> GetEntityAsync(Guid accountId, CancellationToken ct)
-        => await db.Accounts.FirstOrDefaultAsync(a => a.Id == accountId, ct)
+    {
+        var account = await db.Accounts.FirstOrDefaultAsync(a => a.Id == accountId, ct)
             ?? throw new NotFoundException("Không tìm thấy tài khoản.");
+
+        if (!account.IsActive)
+            throw new ForbiddenException("Tài khoản đã bị khoá.", "ACCOUNT_DISABLED");
+
+        return account;
+    }
 
     private static void ValidateTimeZoneOrThrow(string timeZone)
     {

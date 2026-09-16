@@ -32,14 +32,22 @@ export interface LoginPageProps {
 
 /**
  * Trang đăng nhập DÙNG CHUNG mọi app ngôn ngữ (hợp đồng §5.3.1): MUI + react-hook-form + zod; lỗi 401/423/403/429
- * hiện `Alert` tại chỗ; `?returnTo=` (chỉ đường dẫn nội bộ) và `?reason=expired` (thông báo phiên hết hạn).
+ * hiện `Alert` tại chỗ; `?returnTo=` (chỉ đường dẫn nội bộ), `?reason=expired` (phiên hết hạn) và
+ * `?reason=password-changed` (F4: đổi mật khẩu xong phải đăng nhập lại).
  */
 export function LoginPage({ brand, afterLogin = '/', registerPath = '/dang-ky', logo }: LoginPageProps) {
   const { status, login } = useAuth()
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const returnTo = sanitizeReturnTo(searchParams.get('returnTo')) ?? afterLogin
-  const expired = searchParams.get('reason') === 'expired'
+  const reason = searchParams.get('reason')
+  // `expired`: mất phiên (RequireAuth); `password-changed` (F4): đổi mật khẩu mà không giữ được phiên hiện tại.
+  const reasonMessage =
+    reason === 'expired'
+      ? 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục.'
+      : reason === 'password-changed'
+        ? 'Bạn vừa đổi mật khẩu. Vui lòng đăng nhập lại bằng mật khẩu mới.'
+        : null
   const [formError, setFormError] = useState<string | null>(null)
 
   const {
@@ -70,9 +78,7 @@ export function LoginPage({ brand, afterLogin = '/', registerPath = '/dang-ky', 
     <AuthShell brand={brand} title="Đăng nhập" logo={logo}>
       <Box component="form" onSubmit={onSubmit} noValidate>
         <Stack spacing={2}>
-          {expired && !formError && (
-            <Alert severity="info">Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại để tiếp tục.</Alert>
-          )}
+          {reasonMessage && !formError && <Alert severity="info">{reasonMessage}</Alert>}
           {formError && <Alert severity="error">{formError}</Alert>}
 
           <TextField
