@@ -1,0 +1,20 @@
+// Giá trị mặc định khớp deploy/dev/.env.example (Docker dev: postgres + minio) — copy là
+// chạy được ngay sau: docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d
+// Nếu dùng PostgreSQL cài thẳng trên máy (không Docker, vd Windows) thì đổi thành
+// Username=postgres;Password=<mật khẩu superuser của bạn> — xem README mục "Chạy không Docker".
+{
+  "ConnectionStrings": {
+    "Default": "Host=localhost;Port=5432;Database=af_chinese;Username=af_chinese;Password=af_chinese_dev"
+  },
+  "Serilog": { "MinimumLevel": { "Default": "Debug" } },
+
+  // Mẫu cấu hình MinIO — CHƯA có package/code nào đọc khối này ở F0 (bucket "af-chinese"
+  // đã được deploy/dev/docker-compose.dev.yml tạo sẵn qua service minio-init để dành cho
+  // feature sau, vd F8 luyện viết chữ Hán, F10 quản trị nội dung upload ảnh/audio).
+  "Storage": {
+    "Endpoint": "http://localhost:9000",
+    "AccessKey": "minioadmin",
+    "SecretKey": "minioadmin",
+    "Bucket": "af-chinese"
+  }
+}

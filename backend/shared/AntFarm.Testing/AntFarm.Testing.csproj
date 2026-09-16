@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Tham chiếu gói xunit (cho FactAttribute) khiến SDK tự suy đây là TEST PROJECT và
+         `dotnet test` cố chạy nó bằng VSTest — nhưng đây là THƯ VIỆN tiện ích test dùng
+         chung (không có Microsoft.NET.Test.Sdk/adapter) nên sẽ abort với lỗi thiếu
+         xunit.abstractions. Khai rõ IsTestProject=false để `dotnet test backend.slnx`
+         bỏ qua project này. -->
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" />
+  </ItemGroup>
+
+</Project>

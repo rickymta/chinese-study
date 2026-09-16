@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Yarp.ReverseProxy" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\shared\AntFarm.Logging\AntFarm.Logging.csproj" />
+    <ProjectReference Include="..\..\shared\AntFarm.Security\AntFarm.Security.csproj" />
+    <ProjectReference Include="..\..\shared\AntFarm.HealthChecks\AntFarm.HealthChecks.csproj" />
+  </ItemGroup>
+
+</Project>
