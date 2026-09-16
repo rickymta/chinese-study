@@ -2,7 +2,7 @@
 # AntFarm — bundle triển khai production (một server, mạng nội bộ af-net)
 #
 # F0: postgres, identity-service, chinese-backend, gateway, nginx, certbot.
-# F1 thêm chinese-frontend (khối đã có sẵn bên dưới, để COMMENT tới lúc đó).
+# chinese-frontend thêm ở F1.
 #
 # ⚠️ CHƯA VERIFY BẰNG DOCKER (máy dev không có Docker) — xem deploy/VERIFY-DOCKER.md.
 #
@@ -123,7 +123,7 @@ services:
       - ./certs/acme:/var/www/certbot # webroot HTTP-01
     depends_on:
       - gateway
-      # - chinese-frontend   # bỏ comment ở F1
+      - chinese-frontend
     networks: [af-net]
 
   certbot: # chỉ GIA HẠN; cấp lần đầu bằng scripts/get-cert.sh
