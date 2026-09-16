@@ -1,4 +1,4 @@
-# Quy trình giao tiếp đa Agent — Chinese Study
+# Quy trình giao tiếp đa Agent — AntFarm (repo chinese-study)
 
 > Định nghĩa cách một yêu cầu từ người dùng được xử lý qua chuỗi agent chuyên trách.
 > Các agent khai báo dưới dạng **Claude Code subagent** tại `.claude/agents/*.md`.
@@ -24,7 +24,7 @@ BUSINESS ANALYSIS (Opus) ── docs/agent-workflow/YYYY-MM-DD-<slug>-hop-dong-t
    ▼
 ╔══════════ VÒNG LẶP: LẦN LƯỢT TỪNG FEATURE ═════════════════╗
 ║  ┌──────── thực thi song song (phạm vi RIÊNG feature) ────┐ ║
-║  │ BACKEND  FRONTEND  DATABASE  CONTENT (Sonnet)          │ ║
+║  │ BACKEND  DATABASE  CONTENT (Sonnet) · FRONTEND (Fable) │ ║
 ║  │ build+test  tsc -b   migration   học liệu kiểm schema  │ ║
 ║  └────────────────────────────────────────────────────────┘ ║
 ║     ▼                                                       ║
@@ -45,7 +45,7 @@ BUSINESS ANALYSIS (Opus) ── docs/agent-workflow/YYYY-MM-DD-<slug>-hop-dong-t
 | Investigation | `.claude/agents/investigation.md` | Haiku | Khảo sát read-only, hỏi sớm |
 | Business Analysis | `.claude/agents/business-analysis.md` | Opus | Hợp đồng thực thi + phân rã feature (cả nghiệp vụ sư phạm) |
 | Backend Implement | `.claude/agents/backend-implement.md` | Sonnet | .NET 10 DDD 4 lớp + build/test sạch |
-| Frontend Implement | `.claude/agents/frontend-implement.md` | Sonnet | React 19 + MUI v9 + `tsc -b` sạch |
+| Frontend Implement | `.claude/agents/frontend-implement.md` | **Fable** | React 19 + MUI v9 + `tsc -b` sạch — gọi qua `Agent` luôn truyền `model: "fable"` |
 | Database Implement | `.claude/agents/database-implement.md` | Sonnet | Schema/migration/seed PostgreSQL |
 | **Content Implement** | `.claude/agents/content-implement.md` | Sonnet | **Mở rộng**: học liệu HSK/pinyin/bài học, giấy phép nguồn |
 | Review | `.claude/agents/review.md` | Opus | Review BE/FE/DB/học liệu vs hợp đồng + convention |

@@ -1,7 +1,7 @@
-# CLAUDE.md — Chinese Study
+# CLAUDE.md — AntFarm (repo `chinese-study`)
 
-> Ứng dụng học tiếng Trung trực tuyến cho người Việt. Chủ dự án vừa phát triển vừa là học viên đầu tiên (bắt đầu từ số 0).
-> File này giữ **quy tắc bắt buộc** + **tổng quan ngắn** + **mục lục**. Kiến trúc và pattern bê từ dự án MedDental (`mdt-re-construct`), bản rút gọn.
+> **AntFarm**: nền tảng học ngoại ngữ trực tuyến cho người Việt, kiến trúc monorepo đa service giống MedDental (`mdt-re-construct`). **Mỗi ngôn ngữ là một service + một app riêng**; tiếng Trung là ngôn ngữ đầu tiên. Chủ dự án vừa phát triển vừa là học viên đầu tiên (bắt đầu từ số 0).
+> File này giữ **quy tắc bắt buộc** + **tổng quan ngắn** + **mục lục**.
 
 ## Mục lục
 
@@ -18,9 +18,11 @@
 Người dùng → ORCHESTRATOR (phiên chính, Opus): phân loại
   • Câu hỏi → tự trả lời
   • Nâng cấp / Tạo mới → INVESTIGATION (Haiku) → BUSINESS ANALYSIS (Opus, hợp đồng + phân rã feature)
-      → VÒNG LẶP từng feature: BACKEND ‖ FRONTEND ‖ DATABASE ‖ CONTENT (Sonnet)
+      → VÒNG LẶP từng feature: BACKEND ‖ DATABASE ‖ CONTENT (Sonnet) ‖ FRONTEND (Fable)
         → REVIEW (Opus) → INTEGRATION (Opus, commit local riêng) → DỪNG chờ người dùng OK
 ```
+
+**Agent frontend chạy model Fable:** khi gọi `frontend-implement` qua công cụ `Agent`, **luôn truyền `model: "fable"`**.
 
 **Feature-by-feature:** mỗi feature là đơn vị commit & test độc lập. Xong → kiểm tra → commit local → dừng cho người dùng review → mới sang feature kế. Không gộp nhiều feature vào một commit.
 
@@ -32,11 +34,11 @@ Người dùng → ORCHESTRATOR (phiên chính, Opus): phân loại
 
 **Kiểm tra build sau khi sửa code** (chưa sạch thì chưa được báo hoàn thành):
 - Backend: `dotnet build backend/backend.slnx -v q` — 0 error; `dotnet test backend/backend.slnx` — xanh.
-- Frontend: `yarn workspace @cs/<app> tsc -b` (**bắt buộc `-b`** — root tsconfig có `files: []` nên `--noEmit` không kiểm gì). Đụng dependency → thêm `yarn workspace @cs/<app> build`.
+- Frontend: `yarn workspace @af/<app> tsc -b` (**bắt buộc `-b`** — root tsconfig có `files: []` nên `--noEmit` không kiểm gì). Đụng dependency → thêm `yarn workspace @af/<app> build`.
 
 **Commit local sau mỗi feature. Tuyệt đối không push.** Branch phát triển: `develop`; branch chính: `master`.
 
-**Không commit secrets:** `appsettings.Development.json`, `appsettings.Production.json`, `.env`, `.env.local`, `*.pfx`, `*.pem` bị gitignore. Chỉ commit `appsettings.json` (mặc định không nhạy cảm) và `.env.example`.
+**Không commit secrets:** `appsettings.Development.json`, `appsettings.Production.json`, `.env`, `.env.local`, `*.pfx`, `*.pem`, `.secrets/` (khoá ký JWT của identity-service) bị gitignore. Chỉ commit `appsettings.json` (mặc định không nhạy cảm) và `.env.example`.
 
 **Package manager frontend: yarn** (Classic 1.22) — không dùng npm/pnpm.
 
@@ -59,11 +61,11 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 
 **tsconfig.app.json:** không dùng `baseUrl` (deprecated TS 6); dùng `"paths": { "@/*": ["./src/*"] }`.
 
-**Peer dependency của package dùng chung:** `@cs/ui`, `@cs/api`, `@cs/auth`, `@cs/utils` khai thư viện ở `peerDependencies` ⇒ app tiêu thụ **phải** khai trong `dependencies`. Máy dev không báo lỗi (hoisted), chỉ Docker/CI lộ. Trước khi gỡ dependency khỏi app: `grep -l "<thu-vien>" frontend/packages/*/package.json`.
+**Peer dependency của package dùng chung:** `@af/ui`, `@af/api`, `@af/auth`, `@af/utils` khai thư viện ở `peerDependencies` ⇒ app tiêu thụ **phải** khai trong `dependencies`. Máy dev không báo lỗi (hoisted), chỉ Docker/CI lộ. Trước khi gỡ dependency khỏi app: `grep -l "<thu-vien>" frontend/packages/*/package.json`.
 
-**Dialog/Drawer dùng `AppDialog`/`AppDrawer` của `@cs/ui`** — chặn đóng ngoài ý muốn khi bấm ra ngoài/ESC. Hộp thoại chỉ đọc cần đóng nhanh thì khai `closeOnBackdrop` tường minh kèm bình luận lý do.
+**Dialog/Drawer dùng `AppDialog`/`AppDrawer` của `@af/ui`** — chặn đóng ngoài ý muốn khi bấm ra ngoài/ESC. Hộp thoại chỉ đọc cần đóng nhanh thì khai `closeOnBackdrop` tường minh kèm bình luận lý do.
 
-**Tab cấp trang dùng `useTabParam` của `@cs/ui`** (tab lên URL, `replace` chứ không `push`).
+**Tab cấp trang dùng `useTabParam` của `@af/ui`** (tab lên URL, `replace` chứ không `push`).
 
 **Npgsql + `timestamptz` — CHỈ nhận `DateTime` `Kind = Utc`** (nổ lúc runtime, build vẫn sạch):
 
@@ -75,25 +77,44 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 | **Tham số `DateTime` bind từ query string** (`?from=2026-09-01`) | `SpecifyKind(q.From.Value.Date, Utc)`; cận trên nửa hở `< to.Date.AddDays(1)` |
 | `default(DateTime)` chưa gán | gán tường minh trước `SaveChanges` |
 
-**Ngày học theo múi giờ người dùng:** "hôm nay" (thẻ đến hạn, chuỗi ngày học liên tiếp, mục tiêu ngày) tính theo `users.time_zone` (mặc định `Asia/Ho_Chi_Minh`); mốc thời gian lưu UTC. Dùng UTC để cắt ngày sẽ làm chuỗi ngày học đứt oan lúc 0h–7h sáng.
+**Ngày học theo múi giờ người dùng:** "hôm nay" (thẻ đến hạn, chuỗi ngày học liên tiếp, mục tiêu ngày) tính theo `users.time_zone` của service ngôn ngữ (chép từ claim `zoneinfo` của identity, mặc định `Asia/Ho_Chi_Minh`); mốc thời gian lưu UTC. Dùng UTC để cắt ngày sẽ làm chuỗi ngày học đứt oan lúc 0h–7h sáng.
 
 **Dapper + `DateOnly`/`TimeOnly`** (nếu dùng Dapper): bắt buộc đăng ký TypeHandler lúc khởi động; đọc cột `date` phải khai `DateOnly?` chứ không `DateTime?`.
 
-**PHÂN QUYỀN CỤC BỘ:** quyền hiệu lực chỉ từ bảng `users → user_roles → role_permissions → permissions` trong DB. JWT chỉ để nhận diện (`sub`, `email`, `name`) — **không** suy quyền từ claim `role`. Frontend đọc quyền từ `GET /api/me`, không tự derive. Seed MỘT tài khoản quản trị theo cấu hình `Bootstrap:AdminEmails`; tài khoản mới đăng ký nhận vai trò `learner`.
+**XÁC THỰC TẬP TRUNG, PHÂN QUYỀN CỤC BỘ:** `identity-service` **chỉ xác thực** (tài khoản, mật khẩu, refresh token, ký JWT RS256, công bố JWKS) — không chứa vai trò/quyền của ngôn ngữ nào. **Mỗi service ngôn ngữ** kiểm JWT qua `AntFarm.Auth` (JWKS + issuer + audience riêng `af-<ngôn-ngữ>`) và tự phân quyền trên DB riêng: `users → user_roles → role_permissions → permissions`. JWT chỉ để nhận diện (`sub`, `email`, `name`, `zoneinfo`) — **không** có/không suy quyền từ claim `role`. Người dùng được provision danh tính lần đầu gọi service; vai trò mặc định theo `<Service>Access:DefaultRoles` (tiếng Trung: `learner`); admin bootstrap theo `<Service>Admin:BootstrapEmails` (vd `ChineseAdmin:BootstrapEmails`). Frontend đọc quyền từ `GET /<ngôn-ngữ>/api/me` của chính service đó, không tự derive.
+
+**MỖI SERVICE MỘT DATABASE** (`af_identity`, `af_chinese`, ...) — không đọc/ghi chéo DB service khác; cần dữ liệu thì qua token hoặc HTTP API.
 
 **`RequirePermissionAttribute` gán `Policy` của lớp cơ sở trong constructor**, KHÔNG khai `public new string Policy` — `new` chỉ che thuộc tính kiểu tĩnh, ASP.NET Core đọc `.Policy` qua `IAuthorizeData` nên nhận `null` ⇒ mọi `[RequirePermission]` thoái hoá thành `[Authorize]` trơn, không log, không lỗi. Mẫu đúng: `public RequirePermissionAttribute(string p) => Policy = $"Permission:{p}";`.
 
 **Nút ẩn theo quyền phải kèm lời giải thích** (dải `Alert` chế độ chỉ xem) — không thì người dùng tưởng hệ thống hỏng.
 
-**Trang lỗi 4xx thống nhất:** `ErrorPage` của `@cs/ui`; route `/401`, `/403`, `/404`, `*` → `/404`; lời gọi GET trả 401/403/404 qua `createApiClient` tự điều hướng, lời gọi ghi giữ lỗi để báo tại chỗ.
+**Trang lỗi 4xx thống nhất:** `ErrorPage` của `@af/ui`; route `/401`, `/403`, `/404`, `*` → `/404`; lời gọi GET trả 401/403/404 qua `createApiClient` tự điều hướng, lời gọi ghi giữ lỗi để báo tại chỗ.
 
-**Seed:** idempotent, không được ném lỗi (seed hỏng ⇒ tiến trình thoát ⇒ service chết). Danh mục người dùng tự thêm/xoá → chỉ gieo khi bảng TRỐNG. Học liệu nạp từ `content/` theo khoá tự nhiên, chạy lại không nhân đôi.
+**MỌI TRUY CẬP ĐI QUA REVERSE PROXY — service KHÔNG public cổng:** production: **nginx biên** (TLS + phân theo host) → **gateway YARP** → service; trong `deploy/docker-compose.yml` **chỉ `nginx` có `ports:`**, bind qua `${PUBLIC_BIND:-127.0.0.1}` (Postgres không mở ra ngoài). Dev local: trình duyệt → Vite proxy → gateway `:5280` → service — không gọi thẳng cổng service từ trình duyệt kể cả ở dev. API ngôn ngữ luôn gọi **cùng origin** (`/<ngôn-ngữ>/api/...`, dev và production giống hệt). API identity: production gọi thẳng `https://id.antfarms.xyz/api/...` (CORS có credentials, danh sách origin `Auth:AllowedOrigins`, **CORS chỉ đặt ở identity-service** — nginx/gateway không thêm `Access-Control-*`); dev đi `/identity/api/...` qua Vite. URL identity là biến build `VITE_IDENTITY_API_URL` (nướng vào bundle — sai là chỉ hỏng khi bấm đăng nhập). nginx biên **ghi đè** `X-Forwarded-For $remote_addr` (không `$proxy_add_x_forwarded_for`), gateway `X-Forwarded: Append`; `proxy_pass` qua biến + `resolver 127.0.0.11`.
+
+**Domain** (chốt 16/09/2026):
+
+| Host | Đích |
+|---|---|
+| `id.antfarms.xyz` | identity-service (mọi đường dẫn → gateway `/identity/*`): đăng nhập/refresh/tài khoản, JWKS `https://id.antfarms.xyz/.well-known/jwks.json`, là `iss` của token |
+| `chinese.antfarms.xyz` | app tiếng Trung + `/chinese/*` → gateway → chinese-backend |
+| `antfarms.xyz` | portal / trang chọn ngôn ngữ — **feature sau (F13), ngoài MVP**; chưa có server block thật |
+| `english.` · `japanese.` · `vietnamese.antfarms.xyz` | dành sẵn, cùng mẫu `chinese.` |
+
+**Cookie refresh đa subdomain:** `af_rt`, HttpOnly, `SameSite=Strict`; production `Domain=.antfarms.xyz` + `Secure` + `Path=/api/auth`; dev **không** đặt `Domain` (localhost từ chối) + `Secure=false` + `Path=/identity/api/auth`. Mọi POST xác thực kiểm `Origin` thuộc `Auth:AllowedOrigins` — thêm subdomain mới mà quên khai là CORS chặn / đăng nhập trả 403.
+
+**HTTPS Let's Encrypt cho mọi tên miền — bám ĐÚNG khuôn MedDental `mdt-re-construct/deploy/app-core`:** một máy = **một chứng chỉ SAN**, nginx mọi khối đọc cố định `certs/live/fullchain.pem` + `privkey.pem`; cấp bằng `deploy/scripts/get-cert.sh <email> <domain...>` (HTTP-01 webroot, **`--key-type rsa`** — ECDSA bị tường lửa SSL-inspection doanh nghiệp chặn) và **luôn truyền ĐỦ tên miền cũ + mới** (thiếu là đè mất chứng chỉ tên cũ); lần đầu dùng `self-signed.sh` để nginx lên được; gia hạn = container `certbot renew` 12 giờ **+ cron `renew-cert.sh`** chép sang `certs/live` + `nginx -t` + reload (thiếu cron là hết hạn im lặng). Cổng 80 chỉ ACME + `301 https`; TLS 1.2/1.3; HSTS `max-age` **không** `includeSubDomains`/`preload` cho tới khi mọi subdomain có HTTPS. `conf/nginx.conf.example` commit, `conf/nginx.conf` gitignore. nginx: `resolver 127.0.0.11 valid=10s ipv6=off` + `set $upstream` + `proxy_pass http://$upstream$request_uri`. **DNS ở Cloudflare:** bật proxy (đám mây cam) thì SSL mode **Full (strict)** (Flexible ⇒ vòng lặp chuyển hướng); proxied thì bật `set_real_ip_from` dải Cloudflare + `real_ip_header CF-Connecting-IP` (không thì IP thật = IP Cloudflare); HTTP-01 lỗi thì tạm để DNS-only lúc cấp. Service .NET sau proxy: `UseForwardedHeaders` với `KnownNetworks` = loopback + dải `af-net`, `ForwardLimit=2` (thiếu ⇒ IP = gateway; quá rộng ⇒ giả IP được). Dev local vẫn HTTP `localhost`, không chứng chỉ.
+
+**Mọi service là Docker container:** Dockerfile multi-stage, cache-friendly (tách layer restore — copy props + `shared/` + riêng `.csproj` rồi `dotnet restore` trước khi copy source; `RUN --mount=type=cache,target=/root/.nuget/packages`; publish `--no-restore /m:2`), **KHÔNG khai `# syntax=docker/dockerfile:1`** (bắt BuildKit gọi Docker Hub trước mỗi lần build), nghe **8080** trong container, `HEALTHCHECK` bằng **`wget`** (ảnh aspnet không có curl). Frontend: node build → `nginx:1.27-alpine`, có khối `location ~* \.mjs$ { default_type application/javascript; }` (không dùng `types {}` ở server level). Giai đoạn đầu **chạy local không Docker** — file Docker vẫn phải cập nhật cùng feature và **ghi rõ "chưa verify"**; checklist verify ở `deploy/VERIFY-DOCKER.md`. Triển khai: `docker compose pull <svc> && docker compose up -d <svc>`; build trên server từng service một.
+
+**Seed:** idempotent, không được ném lỗi (seed hỏng ⇒ tiến trình thoát ⇒ service chết). Danh mục người dùng tự thêm/xoá → chỉ gieo khi bảng TRỐNG. Học liệu nạp từ `content/<ngôn-ngữ>/` theo khoá tự nhiên, chạy lại không nhân đôi.
 
 **Migration tự chạy lúc backend khởi động** theo cờ `AutoMigrate` — không dùng `dotnet ef database update` thủ công ngoài DB dev.
 
-**Học liệu — bản quyền trước tiên:** chỉ dùng nguồn có giấy phép cho phép tái sử dụng; ghi nguồn + giấy phép + phần đã dùng vào `content/SOURCES.md`. Không rõ giấy phép ⇒ không dùng. Nghĩa tiếng Việt dịch máy phải đánh dấu `machine` cho tới khi được duyệt.
+**Học liệu — bản quyền trước tiên:** chỉ dùng nguồn có giấy phép cho phép tái sử dụng; ghi nguồn + giấy phép + phần đã dùng vào `content/<ngôn-ngữ>/SOURCES.md`. Không rõ giấy phép ⇒ không dùng. Nghĩa tiếng Việt dịch máy phải đánh dấu `machine` cho tới khi được duyệt.
 
-**Quy ước ngôn ngữ:** giản thể là mặc định; pinyin **lưu dạng số thanh** (`ni3 hao3`, thanh nhẹ `5`) làm nguồn sự thật, **hiển thị dạng dấu** (`nǐ hǎo`) qua tiện ích `@cs/utils`. Phần tử chứa chữ Hán đặt `lang="zh-CN"` + phông fallback CJK.
+**Quy ước tiếng Trung:** giản thể là mặc định; pinyin **lưu dạng số thanh** (`ni3 hao3`, thanh nhẹ `5`, `ü` = `v`) làm nguồn sự thật, **hiển thị dạng dấu** (`nǐ hǎo`) qua tiện ích trong `apps/chinese`. Phần tử chứa chữ Hán đặt `lang="zh-CN"` + phông fallback CJK. Chuẩn từ vựng **HSK 3.0**; SRS **FSRS-6** (chốt 16/09/2026).
 
 **Mobile-first:** mọi màn học phải dùng tốt ở ~375px — người học ôn thẻ trên điện thoại là chính.
 
@@ -101,37 +122,76 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 
 ## Tổng quan kiến trúc
 
-Bản rút gọn của MedDental: **một** backend service + **một** frontend app, nhưng giữ nguyên khung monorepo để tách service/app về sau không phải đập đi làm lại.
+Monorepo đa service theo mẫu MedDental: **một gateway + một identity-service dùng chung + mỗi ngôn ngữ một backend service + một app frontend**. Tiếng Trung là ngôn ngữ đầu tiên.
+
+```
+Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
+             ─► gateway YARP ─┬─► identity-service ─► af_identity
+                              └─► chinese-backend  ─► af_chinese   (JWKS nội bộ từ identity-service)
+```
 
 ### Backend — `backend/` (.NET 10, `backend.slnx`, Central Package Management)
 
-- `Directory.Build.props` (net10.0, nullable, implicit usings) · `Directory.Packages.props` (version tập trung) · `global.json`.
-- `shared/ChineseStudy.*` — thư viện dùng chung (Core, Logging, Security, HealthChecks, Auth).
-- `services/learning-backend/` — DDD 4 lớp: `Domain → Application → Infrastructure → Api` + `tests/`.
-- PostgreSQL (`chinese_study_dev` ở local), EF Core + Npgsql + snake_case, schema theo module.
-- Xác thực: JWT tự phát (access 15 phút + refresh token xoay vòng) — **chưa** có auth-service OIDC/gateway; tách ra khi có app thứ hai.
+- `global.json` · `Directory.Build.props` · `Directory.Packages.props` · `.dockerignore`.
+- `shared/AntFarm.{Core,Logging,Security,HealthChecks,Auth,Testing}` — extension tiền tố `AddAf*`/`UseAf*`/`MapAf*`. `AntFarm.Testing` là thư viện tiện ích test (`[DbFact]`, `TestTokenFactory`). `tests/AntFarm.Shared.UnitTests` test cho shared.
+- `services/gateway/` — `AntFarm.Gateway` (YARP): `/identity/**` → identity-service, `/chinese/**` → chinese-backend.
+- `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker).
+- `services/chinese-backend/` — `AntFarm.Chinese.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Chinese.{UnitTests,ApiTests}`. Schema DB: `access` (người dùng/quyền cục bộ), `content`, `learning`.
+- PostgreSQL 18 local, mỗi service một DB (`af_identity`, `af_chinese`); test tích hợp dùng `af_<service>_test` qua biến `AF_TEST_PG` (chuỗi kết nối không có `Database=`) — thiếu biến thì `[DbFact]` tự skip. snake_case; một migration mỗi feature mỗi service, tên `F<n>_<Ten>`.
+- Cấu hình dev: copy `appsettings.Development.json.example` → `appsettings.Development.json` (gitignore) cho từng service.
+
+| Thành phần | Dev local | Docker |
+|---|---|---|
+| gateway | http://localhost:5280 | `gateway:8080` |
+| identity-service | http://localhost:5281 | `identity-service:8080` |
+| chinese-backend | http://localhost:5282 (Scalar `/scalar/v1`) | `chinese-backend:8080` |
+| apps/chinese | http://localhost:3280 (Vite proxy `/identity`, `/chinese` → 5280) | `chinese-frontend:80` |
+| apps/portal (F13 — feature sau) | http://localhost:3281 (dành sẵn) | `portal-frontend:80` |
+| Ngôn ngữ kế tiếp | backend 5283, app 3282, ... | `<ngon-ngu>-backend:8080` |
 
 ### Frontend — `frontend/` (Turborepo + Yarn Classic Workspaces + React 19 + MUI v9 + TypeScript + Vite)
 
-- `packages/@cs/tsconfig`, `@cs/ui` (theme, AppLayout, AppDialog, ErrorPage, useTabParam...), `@cs/api` (`createApiClient`), `@cs/auth` (AuthProvider, RequireAuth, RequirePermission), `@cs/utils` (pinyin, format, zod). Import thẳng TS source — không build/dist.
-- `apps/web` — ứng dụng học viên + màn quản trị nội dung (ẩn theo quyền).
+- `packages/tsconfig|ui|api|auth|utils` (tên `@af/*`): `@af/ui` (theme, AppLayout, AppDialog, ErrorPage, useTabParam, LangText, TTS `speech`...), `@af/api` (`createApiClient`), `@af/auth` (AuthProvider, RequireAuth, RequirePermission, LoginPage/RegisterPage dùng chung — gọi identity-service), `@af/utils` (parseApiError, zod). Import thẳng TS source — không build/dist. Package chỉ được tạo ở feature đầu tiên cần nó; tiện ích đặc thù một ngôn ngữ (vd pinyin) đặt trong app của ngôn ngữ đó.
+- `apps/chinese` (`@af/chinese`) — học viên + quản trị nội dung tiếng Trung (ẩn theo quyền). `src/features/<module>/`; route slug tiếng Việt không dấu. Mỗi app có `Dockerfile` + `nginx.conf` (chỉ phục vụ tĩnh).
+- `scripts/check-ui-conventions.mjs` (`yarn lint:ui`): FAIL `raw-dialog`, `uuid-import`, `autocomplete-slotprops-override`; WARN `tabs-no-url`.
 
 ### Học liệu — `content/`
 
-Dữ liệu JSON có schema (`content/schemas/`), script kiểm tra (`content/scripts/`), nguồn + giấy phép (`content/SOURCES.md`).
+`content/package.json` (dự án yarn riêng, công cụ kiểm tra chung) + mỗi ngôn ngữ một thư mục `content/<ngôn-ngữ>/` gồm `schemas/`, `data/`, `scripts/validate.mjs`, `SOURCES.md`, `LICENSES/`. Backend của ngôn ngữ nạp lúc khởi động — frontend không import thẳng JSON.
+
+### Triển khai — `deploy/`
+
+`docker-compose.yml` (postgres, identity-service, chinese-backend, gateway, chinese-frontend, nginx, certbot — chỉ nginx publish cổng), `.env.example`, `conf/nginx.conf.example` (khối 80 ACME + server `id.`/`chinese.` + mẫu ngôn ngữ/portal để comment), `conf/cloudflare-realip.conf.example`, `scripts/{self-signed,get-cert,renew-cert}.sh`, `certs/` (gitignore), `postgres/init/`, `VERIFY-DOCKER.md` (checklist verify Docker + HTTPS khi có server).
+
+### Thêm một ngôn ngữ mới (tóm tắt — checklist đầy đủ ở hợp đồng §5.5)
+
+Hợp đồng riêng → service `backend/services/<ngon-ngu>-backend` + DB `af_<ngon-ngu>` + phân quyền cục bộ + audience `af-<ngon-ngu>` trong identity → route gateway → app `frontend/apps/<ngon-ngu>` → học liệu `content/<ngon-ngu>/` → bản ghi DNS Cloudflare + chạy lại `get-cert.sh` với ĐỦ tên miền cũ + mới + khối server nginx + `Auth:AllowedOrigins` → Dockerfile + mục compose + init DB → cập nhật bảng domain/cổng trong file này. **Dùng lại, không làm mới:** gateway, identity-service, `AntFarm.*`, `@af/*`, lint UI, công cụ học liệu.
 
 ### Lệnh thường dùng
 
 ```bash
-# Backend
+# Backend (từ gốc repo)
+dotnet tool restore                                   # dotnet-ef cục bộ
 dotnet build backend/backend.slnx -v q
-dotnet test backend/backend.slnx
-dotnet run --project backend/services/learning-backend/src/ChineseStudy.Learning.Api
+dotnet test backend/backend.slnx                      # đặt AF_TEST_PG để chạy cả test tích hợp DB
+dotnet run --project backend/services/identity-service/src/AntFarm.Identity.Api --launch-profile http
+dotnet run --project backend/services/chinese-backend/src/AntFarm.Chinese.Api --launch-profile http
+dotnet run --project backend/services/gateway --launch-profile http
+dotnet ef migrations add F<n>_<Ten> --project backend/services/<svc>/src/AntFarm.<Svc>.Infrastructure --startup-project backend/services/<svc>/src/AntFarm.<Svc>.Api --output-dir Persistence/Migrations
 
 # Frontend (chạy trong frontend/)
 yarn install
-yarn workspace @cs/web dev
-yarn workspace @cs/web tsc -b
+yarn workspace @af/chinese dev
+yarn workspace @af/chinese tsc -b
+yarn workspace @af/chinese build
+yarn lint:ui
+
+# Học liệu
+yarn --cwd content validate:chinese
+
+# Docker (máy có Docker — xem deploy/VERIFY-DOCKER.md)
+docker compose -f deploy/docker-compose.yml build <service>
+docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f deploy/docker-compose.yml up -d <service>
 ```
 
-> Chi tiết cổng, cấu trúc thư mục, lệnh chạy chính xác được cập nhật bởi hợp đồng F0 trong `docs/agent-workflow/`.
+> Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.

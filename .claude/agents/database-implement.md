@@ -30,7 +30,7 @@ Bạn triển khai phần **database** theo hợp đồng trong `docs/agent-work
 1. Migration nằm trong `dotnet build` sạch.
 2. Rà: FK/index hợp lý, seed idempotent, không phá dữ liệu cũ, `Down()` hợp lệ.
 3. SQL tiện ích đặt trong `docs/database/sql/`.
-4. Được phép áp migration lên **DB dev local** (`chinese_study_dev`); KHÔNG đụng DB khác nếu chưa được cho phép rõ ràng.
+4. Được phép áp migration lên **DB dev local** của service đang làm (`af_identity`, `af_chinese`, ... — mỗi service một database); KHÔNG đụng DB khác nếu chưa được cho phép rõ ràng.
 
 ## Bàn giao cho review
 

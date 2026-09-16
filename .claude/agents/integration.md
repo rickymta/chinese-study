@@ -18,7 +18,7 @@ Ráp các mảng **của MỘT feature** thành luồng chạy được end-to-e
 ## Quy trình
 
 1. **Đối chiếu hợp đồng tích hợp:** route API, proxy Vite `/api` → backend, tên field request/response, mã quyền BE↔FE, kiểu cột DB↔DTO. Sửa lệch nhỏ về đấu nối. Lệch lớn về nghiệp vụ → trả lại agent phụ trách.
-2. **Build + test sạch:** `dotnet build backend/backend.slnx -v q` + `dotnet test backend/backend.slnx` + `yarn workspace @cs/<app> tsc -b`. Migration áp được lên DB dev local.
+2. **Build + test sạch:** `dotnet build backend/backend.slnx -v q` + `dotnet test backend/backend.slnx` + `yarn workspace @af/<app> tsc -b`. Migration áp được lên DB dev local.
 3. **Chạy luồng thật khi có thể:** PostgreSQL local đang chạy → khởi động backend + frontend dev, gọi API / mở trang kiểm luồng chính. Không chạy được → ghi rõ "CHƯA verify trực quan" + **bước verify thủ công cụ thể**.
 4. **Đối chiếu acceptance** từng tiêu chí. Thiếu/sai → trả lại agent phụ trách, lặp tới khi đạt.
 5. **Commit local RIÊNG cho feature:** chỉ khi đạt acceptance + build/test sạch → gom đúng file của feature, message nêu mã feature (vd `feat(srs): F4 — ...`). **TUYỆT ĐỐI KHÔNG push.** Không commit secrets.

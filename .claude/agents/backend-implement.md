@@ -15,7 +15,7 @@ Bạn triển khai phần **backend** theo hợp đồng trong `docs/agent-workf
 2. **Bám convention** trong `CLAUDE.md` gốc + `CLAUDE.md` của service. Chưa có quy ước → chuẩn chung (clean code, SOLID, REST).
 3. **Đọc code lân cận** để khớp style. Kiến trúc **DDD 4 lớp**: `Domain` (entity, enum, không phụ thuộc gì) → `Application` (use case, DTO, validator, `I<Service>DbContext`) → `Infrastructure` (EF Core, `IEntityTypeConfiguration<T>` từng file, migration) → `Api` (controller mỏng, `Program.cs`, DI).
 4. **Package version khai ở `backend/Directory.Packages.props`** — `.csproj` chỉ `<PackageReference Include="..." />` không có `Version`.
-5. Tận dụng `backend/shared/ChineseStudy.*` (Core, Logging, Security, HealthChecks, Auth) — không viết lại.
+5. Tận dụng `backend/shared/AntFarm.*` (Core, Logging, Security, HealthChecks, Auth, Testing) — không viết lại.
 
 ## Bẫy thường gặp (PHẢI tránh)
 
