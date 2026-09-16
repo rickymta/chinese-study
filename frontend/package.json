@@ -1,0 +1,21 @@
+{
+  "name": "antfarm-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "lint:ui": "node scripts/check-ui-conventions.mjs"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=22.12",
+    "yarn": ">=1.22"
+  }
+}

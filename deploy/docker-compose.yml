@@ -100,15 +100,15 @@ services:
       ReverseProxy__Clusters__chinese__Destinations__primary__Address: http://chinese-backend:8080
     networks: [af-net]
 
-  # ── F1 thêm — bỏ comment khi frontend/apps/chinese/Dockerfile đã tồn tại ────
-  # chinese-frontend:
-  #   image: ${REGISTRY:-antfarm}/chinese-frontend:${CHINESE_FRONTEND_TAG:-latest}
-  #   build:
-  #     context: ../frontend
-  #     dockerfile: apps/chinese/Dockerfile
-  #     args: { VITE_IDENTITY_API_URL: "https://id.${APP_DOMAIN}/api" }
-  #   restart: unless-stopped
-  #   networks: [af-net]
+  # ── chinese-frontend (F1) — ảnh nginx tĩnh, KHÔNG publish cổng, nginx biên proxy tới ──
+  chinese-frontend:
+    image: ${REGISTRY:-antfarm}/chinese-frontend:${CHINESE_FRONTEND_TAG:-latest}
+    build:
+      context: ../frontend
+      dockerfile: apps/chinese/Dockerfile
+      args: { VITE_IDENTITY_API_URL: "https://id.${APP_DOMAIN}/api" }
+    restart: unless-stopped
+    networks: [af-net]
 
   nginx: # nginx biên — container DUY NHẤT publish cổng
     image: nginx:1.27-alpine

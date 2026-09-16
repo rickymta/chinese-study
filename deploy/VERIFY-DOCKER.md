@@ -43,3 +43,11 @@
 17. [ ] Nếu bật proxy Cloudflare: SSL/TLS mode = Full (strict); truy cập không lặp chuyển hướng; log identity ghi IP thật của máy gọi (không phải IP Cloudflare).
 
 Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
+
+## 3. Frontend `chinese-frontend` (từ F1) — CHƯA VERIFY
+
+- [ ] `docker compose build chinese-frontend` thành công; bước `yarn install --frozen-lockfile` không báo thiếu module (peer dependency đủ).
+- [ ] `https://chinese.antfarms.xyz/` trả `index.html` (có `<div id="root">`); `curl -I .../assets/<file>.js` ⇒ `application/javascript`.
+- [ ] Tạo thử `x.mjs` trong `/usr/share/nginx/html` rồi `curl -I` ⇒ `Content-Type: application/javascript` (khối `.mjs`).
+- [ ] `https://chinese.antfarms.xyz/abc` ⇒ 200 `index.html` (SPA fallback), trình duyệt hiện trang 404 có "Về trang chủ".
+- [ ] `docker run --rm --entrypoint sh <ảnh chinese-frontend> -c 'grep -rl "id.antfarms.xyz" /usr/share/nginx/html | head -1'` có kết quả (biến `VITE_IDENTITY_API_URL` nướng đúng lúc build).

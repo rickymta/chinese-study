@@ -1,0 +1,11 @@
+# Build context của ảnh frontend là thư mục frontend/ — không gửi rác của máy dev vào.
+# Thiếu file này: node_modules/.bin (shim theo hệ điều hành máy dev) bị COPY đè lên bản yarn vừa cài trong container.
+**/node_modules
+**/dist
+**/.turbo
+**/.vite
+**/.tmp
+**/*.tsbuildinfo
+**/.env
+**/.env.local
+**/.env.*.local
