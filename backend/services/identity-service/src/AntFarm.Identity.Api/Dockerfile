@@ -24,10 +24,11 @@ RUN --mount=type=cache,target=/root/.nuget/packages \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 # aspnet image không có wget/curl — cài wget cho HEALTHCHECK. Không cài curl.
+# Ảnh .NET 8+ ĐÃ CÓ sẵn user/group `app` (UID 1654, biến $APP_UID) — KHÔNG groupadd/useradd lại
+# (groupadd báo "group 'app' already exists", exit 9 ⇒ build hỏng; phát hiện khi verify Docker ở F5).
 RUN apt-get update -qq \
  && apt-get install -y --no-install-recommends wget \
  && rm -rf /var/lib/apt/lists/* \
- && groupadd --gid 1001 app && useradd --uid 1001 --gid app --shell /bin/false --no-create-home app \
  && mkdir -p /keys && chown app:app /keys
 COPY --from=build --chown=app:app /app/publish .
 USER app

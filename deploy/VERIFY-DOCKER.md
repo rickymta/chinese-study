@@ -24,15 +24,15 @@
 ## 1. Bundle production (`deploy/docker-compose.yml`)
 
 1. [ ] `docker compose -f deploy/docker-compose.yml config` không lỗi.
-2. [ ] `docker compose build identity-service` / `chinese-backend` / `gateway` / `chinese-frontend` **từng cái một**; build lần 2 không đổi `.csproj` ⇒ bước restore dùng cache.
-3. [ ] `docker run --rm --entrypoint sh <ảnh> -c 'ls /app | grep -i appsettings.Development'` rỗng.
+2. [~] (17/09/2026 MacBook: `docker build` tay từng ảnh identity-service, gateway, chinese-frontend OK sau khi bỏ `groupadd`; chinese-backend OK qua compose ở F5 — chưa kiểm cache lần 2) `docker compose build identity-service` / `chinese-backend` / `gateway` / `chinese-frontend` **từng cái một**; build lần 2 không đổi `.csproj` ⇒ bước restore dùng cache.
+3. [x] (17/09/2026: identity-service, gateway, chinese-backend — rỗng; chạy bằng user `app`) `docker run --rm --entrypoint sh <ảnh> -c 'ls /app | grep -i appsettings.Development'` rỗng.
 4. [ ] `docker compose up -d` ⇒ mọi container `healthy` (`docker compose ps`).
 5. [ ] `docker compose ps` chỉ `nginx` có cột PORTS ra host.
 6. [ ] Trên máy verify, thêm vào file hosts `127.0.0.1 chinese.antfarms.xyz id.antfarms.xyz`, dùng chứng chỉ tự ký (`deploy/certs/`, gitignore) ⇒ `https://chinese.antfarms.xyz/chinese/api/system/info` = 200; `https://id.antfarms.xyz/.well-known/jwks.json` = 200 (từ F2); `https://chinese.antfarms.xyz/` trả trang app (từ F1); một file `.mjs` trả `Content-Type: application/javascript`.
 7. [ ] `curl -H "X-Forwarded-For: 1.2.3.4" ...` ⇒ log identity ghi IP thật của máy gọi, không phải `1.2.3.4` (từ F2).
 8. [ ] Đăng nhập ở `chinese.antfarms.xyz` (bundle build với `VITE_IDENTITY_API_URL=https://id.antfarms.xyz/api`) ⇒ request tới `id.antfarms.xyz` qua CORS thành công; cookie `af_rt` có `Domain=.antfarms.xyz; Secure; HttpOnly; SameSite=Strict; Path=/api/auth`; F5 vẫn đăng nhập (từ F2).
 8b. [ ] `curl -i -X OPTIONS https://id.antfarms.xyz/api/auth/refresh -H 'Origin: https://chinese.antfarms.xyz' -H 'Access-Control-Request-Method: POST'` ⇒ `Access-Control-Allow-Origin: https://chinese.antfarms.xyz` (không `*`), `Access-Control-Allow-Credentials: true`; đổi `Origin` thành `https://evil.example` ⇒ không có header CORS, POST trả 403 (từ F2).
-8c. [ ] `grep -r "id.antfarms.xyz" ` trong `/usr/share/nginx/html` của ảnh `chinese-frontend` có kết quả (biến build đã nướng đúng) (từ F2).
+8c. [x] (17/09/2026: build tay với `--build-arg VITE_IDENTITY_API_URL=https://id.antfarms.xyz/api` ⇒ có trong `assets/index-*.js`; `nginx -t` OK) `grep -r "id.antfarms.xyz" ` trong `/usr/share/nginx/html` của ảnh `chinese-frontend` có kết quả (biến build đã nướng đúng) (từ F2).
 9. [ ] Khởi động lại `identity-service` ⇒ phiên cũ vẫn làm mới được (khoá ký trên volume) (từ F2).
 10. [ ] `docker compose down && docker compose up -d` ⇒ dữ liệu còn (volume `pg-data`).
 
