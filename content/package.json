@@ -1,0 +1,16 @@
+{
+  "name": "antfarm-content",
+  "private": true,
+  "type": "module",
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "validate:chinese": "node chinese/scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

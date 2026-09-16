@@ -1,0 +1,4508 @@
+{
+  "dataset": "pinyin-syllables",
+  "version": "2026-09-17",
+  "items": [
+    {
+      "syllable": "a",
+      "initial": "",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "ai",
+      "initial": "",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "爱",
+          "meaningVi": "yêu, tình yêu"
+        }
+      }
+    },
+    {
+      "syllable": "an",
+      "initial": "",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "安",
+          "meaningVi": "an, yên"
+        },
+        "4": {
+          "hanzi": "案",
+          "meaningVi": "vụ án, cái bàn"
+        }
+      }
+    },
+    {
+      "syllable": "ang",
+      "initial": "",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "ao",
+      "initial": "",
+      "final": "ao",
+      "tones": {
+        "4": {
+          "hanzi": "奥",
+          "meaningVi": "sâu xa; nước Áo"
+        }
+      }
+    },
+    {
+      "syllable": "ba",
+      "initial": "b",
+      "final": "a",
+      "tones": {
+        "1": {
+          "hanzi": "巴",
+          "meaningVi": "mong mỏi, bám vào"
+        },
+        "4": {
+          "hanzi": "爸",
+          "meaningVi": "bố, cha"
+        }
+      }
+    },
+    {
+      "syllable": "bai",
+      "initial": "b",
+      "final": "ai",
+      "tones": {
+        "2": {
+          "hanzi": "白",
+          "meaningVi": "trắng"
+        },
+        "3": {
+          "hanzi": "百",
+          "meaningVi": "trăm"
+        },
+        "4": {
+          "hanzi": "败",
+          "meaningVi": "thua, thất bại"
+        }
+      }
+    },
+    {
+      "syllable": "ban",
+      "initial": "b",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "斑",
+          "meaningVi": "đốm, vệt"
+        },
+        "4": {
+          "hanzi": "半",
+          "meaningVi": "nửa"
+        }
+      }
+    },
+    {
+      "syllable": "bang",
+      "initial": "b",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "bao",
+      "initial": "b",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "包",
+          "meaningVi": "gói, bọc, túi"
+        },
+        "3": {
+          "hanzi": "保",
+          "meaningVi": "bảo vệ, đảm bảo"
+        },
+        "4": {
+          "hanzi": "报",
+          "meaningVi": "báo, báo cáo"
+        }
+      }
+    },
+    {
+      "syllable": "bei",
+      "initial": "b",
+      "final": "ei",
+      "tones": {
+        "3": {
+          "hanzi": "北",
+          "meaningVi": "bắc"
+        },
+        "4": {
+          "hanzi": "贝",
+          "meaningVi": "vỏ sò"
+        }
+      }
+    },
+    {
+      "syllable": "ben",
+      "initial": "b",
+      "final": "en",
+      "tones": {
+        "3": {
+          "hanzi": "本",
+          "meaningVi": "gốc, vốn, quyển"
+        }
+      }
+    },
+    {
+      "syllable": "beng",
+      "initial": "b",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "bi",
+      "initial": "b",
+      "final": "i",
+      "tones": {
+        "2": {
+          "hanzi": "鼻",
+          "meaningVi": "mũi"
+        },
+        "3": {
+          "hanzi": "笔",
+          "meaningVi": "bút"
+        }
+      }
+    },
+    {
+      "syllable": "bian",
+      "initial": "b",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "编",
+          "meaningVi": "biên soạn, đan"
+        },
+        "4": {
+          "hanzi": "变",
+          "meaningVi": "biến đổi, thay đổi"
+        }
+      }
+    },
+    {
+      "syllable": "biao",
+      "initial": "b",
+      "final": "iao",
+      "tones": {
+        "1": {
+          "hanzi": "标",
+          "meaningVi": "dấu, mốc"
+        },
+        "3": {
+          "hanzi": "表",
+          "meaningVi": "bảng, biểu; đồng hồ đeo tay"
+        }
+      }
+    },
+    {
+      "syllable": "bie",
+      "initial": "b",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "bin",
+      "initial": "b",
+      "final": "in",
+      "tones": {}
+    },
+    {
+      "syllable": "bing",
+      "initial": "b",
+      "final": "ing",
+      "tones": {
+        "1": {
+          "hanzi": "兵",
+          "meaningVi": "lính, binh"
+        },
+        "4": {
+          "hanzi": "病",
+          "meaningVi": "bệnh"
+        }
+      }
+    },
+    {
+      "syllable": "bo",
+      "initial": "b",
+      "final": "o",
+      "tones": {
+        "1": {
+          "hanzi": "波",
+          "meaningVi": "sóng"
+        },
+        "2": {
+          "hanzi": "博",
+          "meaningVi": "rộng, uyên bác"
+        }
+      }
+    },
+    {
+      "syllable": "bu",
+      "initial": "b",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "补",
+          "meaningVi": "vá, bù"
+        },
+        "4": {
+          "hanzi": "布",
+          "meaningVi": "vải"
+        }
+      }
+    },
+    {
+      "syllable": "ca",
+      "initial": "c",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "cai",
+      "initial": "c",
+      "final": "ai",
+      "tones": {
+        "2": {
+          "hanzi": "财",
+          "meaningVi": "tiền của, tài sản"
+        },
+        "3": {
+          "hanzi": "彩",
+          "meaningVi": "màu sắc, rực rỡ"
+        },
+        "4": {
+          "hanzi": "菜",
+          "meaningVi": "rau, món ăn"
+        }
+      }
+    },
+    {
+      "syllable": "can",
+      "initial": "c",
+      "final": "an",
+      "tones": {}
+    },
+    {
+      "syllable": "cang",
+      "initial": "c",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "cao",
+      "initial": "c",
+      "final": "ao",
+      "tones": {}
+    },
+    {
+      "syllable": "ce",
+      "initial": "c",
+      "final": "e",
+      "tones": {
+        "4": {
+          "hanzi": "测",
+          "meaningVi": "đo, khảo sát"
+        }
+      }
+    },
+    {
+      "syllable": "cen",
+      "initial": "c",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "ceng",
+      "initial": "c",
+      "final": "eng",
+      "tones": {
+        "2": {
+          "hanzi": "层",
+          "meaningVi": "tầng, lớp"
+        }
+      }
+    },
+    {
+      "syllable": "cha",
+      "initial": "ch",
+      "final": "a",
+      "tones": {
+        "2": {
+          "hanzi": "茶",
+          "meaningVi": "trà"
+        }
+      }
+    },
+    {
+      "syllable": "chai",
+      "initial": "ch",
+      "final": "ai",
+      "tones": {}
+    },
+    {
+      "syllable": "chan",
+      "initial": "ch",
+      "final": "an",
+      "tones": {
+        "3": {
+          "hanzi": "产",
+          "meaningVi": "sản xuất, sinh đẻ"
+        }
+      }
+    },
+    {
+      "syllable": "chang",
+      "initial": "ch",
+      "final": "ang",
+      "tones": {
+        "1": {
+          "hanzi": "昌",
+          "meaningVi": "thịnh vượng"
+        },
+        "2": {
+          "hanzi": "常",
+          "meaningVi": "thường, luôn"
+        }
+      }
+    },
+    {
+      "syllable": "chao",
+      "initial": "ch",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "超",
+          "meaningVi": "vượt, siêu"
+        }
+      }
+    },
+    {
+      "syllable": "che",
+      "initial": "ch",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "chen",
+      "initial": "ch",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "cheng",
+      "initial": "ch",
+      "final": "eng",
+      "tones": {
+        "2": {
+          "hanzi": "城",
+          "meaningVi": "thành, thành phố"
+        }
+      }
+    },
+    {
+      "syllable": "chi",
+      "initial": "ch",
+      "final": "-i",
+      "tones": {
+        "1": {
+          "hanzi": "吃",
+          "meaningVi": "ăn"
+        },
+        "3": {
+          "hanzi": "齿",
+          "meaningVi": "răng"
+        },
+        "4": {
+          "hanzi": "翅",
+          "meaningVi": "cánh (chim, côn trùng)"
+        }
+      }
+    },
+    {
+      "syllable": "chong",
+      "initial": "ch",
+      "final": "ong",
+      "tones": {
+        "2": {
+          "hanzi": "虫",
+          "meaningVi": "sâu, côn trùng"
+        }
+      }
+    },
+    {
+      "syllable": "chou",
+      "initial": "ch",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "chu",
+      "initial": "ch",
+      "final": "u",
+      "tones": {
+        "1": {
+          "hanzi": "出",
+          "meaningVi": "ra, xuất"
+        },
+        "2": {
+          "hanzi": "除",
+          "meaningVi": "trừ, bỏ đi"
+        }
+      }
+    },
+    {
+      "syllable": "chuai",
+      "initial": "ch",
+      "final": "uai",
+      "tones": {}
+    },
+    {
+      "syllable": "chuan",
+      "initial": "ch",
+      "final": "uan",
+      "tones": {
+        "1": {
+          "hanzi": "川",
+          "meaningVi": "sông, đồng bằng"
+        },
+        "2": {
+          "hanzi": "船",
+          "meaningVi": "thuyền"
+        }
+      }
+    },
+    {
+      "syllable": "chuang",
+      "initial": "ch",
+      "final": "uang",
+      "tones": {}
+    },
+    {
+      "syllable": "chui",
+      "initial": "ch",
+      "final": "ui",
+      "tones": {}
+    },
+    {
+      "syllable": "chun",
+      "initial": "ch",
+      "final": "un",
+      "tones": {
+        "1": {
+          "hanzi": "春",
+          "meaningVi": "mùa xuân"
+        }
+      }
+    },
+    {
+      "syllable": "chuo",
+      "initial": "ch",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "ci",
+      "initial": "c",
+      "final": "-i",
+      "tones": {
+        "2": {
+          "hanzi": "词",
+          "meaningVi": "từ, chữ"
+        },
+        "4": {
+          "hanzi": "次",
+          "meaningVi": "lần, thứ tự"
+        }
+      }
+    },
+    {
+      "syllable": "cong",
+      "initial": "c",
+      "final": "ong",
+      "tones": {
+        "2": {
+          "hanzi": "从",
+          "meaningVi": "từ, theo"
+        }
+      }
+    },
+    {
+      "syllable": "cou",
+      "initial": "c",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "cu",
+      "initial": "c",
+      "final": "u",
+      "tones": {}
+    },
+    {
+      "syllable": "cuan",
+      "initial": "c",
+      "final": "uan",
+      "tones": {}
+    },
+    {
+      "syllable": "cui",
+      "initial": "c",
+      "final": "ui",
+      "tones": {}
+    },
+    {
+      "syllable": "cun",
+      "initial": "c",
+      "final": "un",
+      "tones": {
+        "2": {
+          "hanzi": "存",
+          "meaningVi": "tồn tại, lưu giữ"
+        }
+      }
+    },
+    {
+      "syllable": "cuo",
+      "initial": "c",
+      "final": "uo",
+      "tones": {
+        "4": {
+          "hanzi": "错",
+          "meaningVi": "sai, lỗi"
+        }
+      }
+    },
+    {
+      "syllable": "da",
+      "initial": "d",
+      "final": "a",
+      "tones": {
+        "2": {
+          "hanzi": "达",
+          "meaningVi": "đạt tới"
+        }
+      }
+    },
+    {
+      "syllable": "dai",
+      "initial": "d",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "代",
+          "meaningVi": "thay thế, đời (thế hệ)"
+        }
+      }
+    },
+    {
+      "syllable": "dan",
+      "initial": "d",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "丹",
+          "meaningVi": "đỏ, thuốc viên"
+        },
+        "4": {
+          "hanzi": "蛋",
+          "meaningVi": "trứng"
+        }
+      }
+    },
+    {
+      "syllable": "dang",
+      "initial": "d",
+      "final": "ang",
+      "tones": {
+        "3": {
+          "hanzi": "党",
+          "meaningVi": "đảng"
+        }
+      }
+    },
+    {
+      "syllable": "dao",
+      "initial": "d",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "刀",
+          "meaningVi": "dao"
+        },
+        "3": {
+          "hanzi": "岛",
+          "meaningVi": "đảo"
+        },
+        "4": {
+          "hanzi": "道",
+          "meaningVi": "đường, đạo lý"
+        }
+      }
+    },
+    {
+      "syllable": "de",
+      "initial": "d",
+      "final": "e",
+      "tones": {
+        "2": {
+          "hanzi": "德",
+          "meaningVi": "đức; nước Đức"
+        }
+      }
+    },
+    {
+      "syllable": "dei",
+      "initial": "d",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "den",
+      "initial": "d",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "deng",
+      "initial": "d",
+      "final": "eng",
+      "tones": {
+        "1": {
+          "hanzi": "灯",
+          "meaningVi": "đèn"
+        },
+        "3": {
+          "hanzi": "等",
+          "meaningVi": "chờ đợi; bậc"
+        }
+      }
+    },
+    {
+      "syllable": "di",
+      "initial": "d",
+      "final": "i",
+      "tones": {
+        "1": {
+          "hanzi": "低",
+          "meaningVi": "thấp"
+        },
+        "2": {
+          "hanzi": "迪",
+          "meaningVi": "dẫn dắt, khai sáng"
+        },
+        "4": {
+          "hanzi": "第",
+          "meaningVi": "thứ (số thứ tự)"
+        }
+      }
+    },
+    {
+      "syllable": "dia",
+      "initial": "d",
+      "final": "ia",
+      "tones": {}
+    },
+    {
+      "syllable": "dian",
+      "initial": "d",
+      "final": "ian",
+      "tones": {
+        "3": {
+          "hanzi": "点",
+          "meaningVi": "điểm, chấm"
+        },
+        "4": {
+          "hanzi": "电",
+          "meaningVi": "điện"
+        }
+      }
+    },
+    {
+      "syllable": "diao",
+      "initial": "d",
+      "final": "iao",
+      "tones": {}
+    },
+    {
+      "syllable": "die",
+      "initial": "d",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "ding",
+      "initial": "d",
+      "final": "ing",
+      "tones": {
+        "3": {
+          "hanzi": "顶",
+          "meaningVi": "đỉnh"
+        },
+        "4": {
+          "hanzi": "定",
+          "meaningVi": "định, quyết định"
+        }
+      }
+    },
+    {
+      "syllable": "diu",
+      "initial": "d",
+      "final": "iu",
+      "tones": {}
+    },
+    {
+      "syllable": "dong",
+      "initial": "d",
+      "final": "ong",
+      "tones": {
+        "1": {
+          "hanzi": "东",
+          "meaningVi": "đông (hướng)"
+        },
+        "4": {
+          "hanzi": "动",
+          "meaningVi": "động, cử động"
+        }
+      }
+    },
+    {
+      "syllable": "dou",
+      "initial": "d",
+      "final": "ou",
+      "tones": {
+        "4": {
+          "hanzi": "豆",
+          "meaningVi": "đậu"
+        }
+      }
+    },
+    {
+      "syllable": "du",
+      "initial": "d",
+      "final": "u",
+      "tones": {
+        "2": {
+          "hanzi": "毒",
+          "meaningVi": "độc, chất độc"
+        }
+      }
+    },
+    {
+      "syllable": "duan",
+      "initial": "d",
+      "final": "uan",
+      "tones": {
+        "1": {
+          "hanzi": "端",
+          "meaningVi": "đầu mút, đoan chính"
+        },
+        "3": {
+          "hanzi": "短",
+          "meaningVi": "ngắn"
+        },
+        "4": {
+          "hanzi": "断",
+          "meaningVi": "gãy, đứt"
+        }
+      }
+    },
+    {
+      "syllable": "dui",
+      "initial": "d",
+      "final": "ui",
+      "tones": {
+        "4": {
+          "hanzi": "对",
+          "meaningVi": "đúng, đối"
+        }
+      }
+    },
+    {
+      "syllable": "dun",
+      "initial": "d",
+      "final": "un",
+      "tones": {
+        "4": {
+          "hanzi": "顿",
+          "meaningVi": "dừng lại; bữa (cơm)"
+        }
+      }
+    },
+    {
+      "syllable": "duo",
+      "initial": "d",
+      "final": "uo",
+      "tones": {
+        "1": {
+          "hanzi": "多",
+          "meaningVi": "nhiều"
+        }
+      }
+    },
+    {
+      "syllable": "e",
+      "initial": "",
+      "final": "e",
+      "tones": {
+        "2": {
+          "hanzi": "额",
+          "meaningVi": "trán"
+        }
+      }
+    },
+    {
+      "syllable": "ei",
+      "initial": "",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "en",
+      "initial": "",
+      "final": "en",
+      "tones": {
+        "1": {
+          "hanzi": "恩",
+          "meaningVi": "ơn, ân huệ"
+        }
+      }
+    },
+    {
+      "syllable": "er",
+      "initial": "",
+      "final": "er",
+      "tones": {
+        "2": {
+          "hanzi": "而",
+          "meaningVi": "và, mà"
+        },
+        "3": {
+          "hanzi": "尔",
+          "meaningVi": "như thế, vậy"
+        },
+        "4": {
+          "hanzi": "二",
+          "meaningVi": "hai"
+        }
+      }
+    },
+    {
+      "syllable": "fa",
+      "initial": "f",
+      "final": "a",
+      "tones": {
+        "3": {
+          "hanzi": "法",
+          "meaningVi": "pháp luật; nước Pháp"
+        }
+      }
+    },
+    {
+      "syllable": "fan",
+      "initial": "f",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "翻",
+          "meaningVi": "lật, dịch (ngôn ngữ)"
+        },
+        "3": {
+          "hanzi": "反",
+          "meaningVi": "trái, phản"
+        },
+        "4": {
+          "hanzi": "饭",
+          "meaningVi": "cơm"
+        }
+      }
+    },
+    {
+      "syllable": "fang",
+      "initial": "f",
+      "final": "ang",
+      "tones": {
+        "1": {
+          "hanzi": "方",
+          "meaningVi": "vuông, phương hướng"
+        },
+        "2": {
+          "hanzi": "房",
+          "meaningVi": "nhà, phòng"
+        },
+        "4": {
+          "hanzi": "放",
+          "meaningVi": "thả, đặt"
+        }
+      }
+    },
+    {
+      "syllable": "fei",
+      "initial": "f",
+      "final": "ei",
+      "tones": {
+        "1": {
+          "hanzi": "非",
+          "meaningVi": "không, sai; châu Phi"
+        },
+        "4": {
+          "hanzi": "费",
+          "meaningVi": "phí, tốn"
+        }
+      }
+    },
+    {
+      "syllable": "fen",
+      "initial": "f",
+      "final": "en",
+      "tones": {
+        "3": {
+          "hanzi": "粉",
+          "meaningVi": "bột, phấn"
+        }
+      }
+    },
+    {
+      "syllable": "feng",
+      "initial": "f",
+      "final": "eng",
+      "tones": {
+        "1": {
+          "hanzi": "风",
+          "meaningVi": "gió"
+        },
+        "4": {
+          "hanzi": "凤",
+          "meaningVi": "phượng hoàng"
+        }
+      }
+    },
+    {
+      "syllable": "fo",
+      "initial": "f",
+      "final": "o",
+      "tones": {}
+    },
+    {
+      "syllable": "fou",
+      "initial": "f",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "fu",
+      "initial": "f",
+      "final": "u",
+      "tones": {
+        "2": {
+          "hanzi": "福",
+          "meaningVi": "phúc, may mắn"
+        },
+        "4": {
+          "hanzi": "复",
+          "meaningVi": "lặp lại, phục hồi"
+        }
+      }
+    },
+    {
+      "syllable": "ga",
+      "initial": "g",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "gai",
+      "initial": "g",
+      "final": "ai",
+      "tones": {
+        "3": {
+          "hanzi": "改",
+          "meaningVi": "sửa, đổi"
+        }
+      }
+    },
+    {
+      "syllable": "gan",
+      "initial": "g",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "甘",
+          "meaningVi": "ngọt"
+        },
+        "3": {
+          "hanzi": "感",
+          "meaningVi": "cảm nhận"
+        }
+      }
+    },
+    {
+      "syllable": "gang",
+      "initial": "g",
+      "final": "ang",
+      "tones": {
+        "3": {
+          "hanzi": "港",
+          "meaningVi": "cảng; Hồng Kông"
+        }
+      }
+    },
+    {
+      "syllable": "gao",
+      "initial": "g",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "高",
+          "meaningVi": "cao"
+        },
+        "4": {
+          "hanzi": "告",
+          "meaningVi": "báo, nói"
+        }
+      }
+    },
+    {
+      "syllable": "ge",
+      "initial": "g",
+      "final": "e",
+      "tones": {
+        "1": {
+          "hanzi": "哥",
+          "meaningVi": "anh trai"
+        }
+      }
+    },
+    {
+      "syllable": "gei",
+      "initial": "g",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "gen",
+      "initial": "g",
+      "final": "en",
+      "tones": {
+        "1": {
+          "hanzi": "根",
+          "meaningVi": "rễ, gốc"
+        }
+      }
+    },
+    {
+      "syllable": "geng",
+      "initial": "g",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "gong",
+      "initial": "g",
+      "final": "ong",
+      "tones": {
+        "1": {
+          "hanzi": "公",
+          "meaningVi": "công, chung"
+        },
+        "4": {
+          "hanzi": "共",
+          "meaningVi": "chung, cùng"
+        }
+      }
+    },
+    {
+      "syllable": "gou",
+      "initial": "g",
+      "final": "ou",
+      "tones": {
+        "3": {
+          "hanzi": "狗",
+          "meaningVi": "chó"
+        }
+      }
+    },
+    {
+      "syllable": "gu",
+      "initial": "g",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "古",
+          "meaningVi": "cổ, xưa"
+        },
+        "4": {
+          "hanzi": "故",
+          "meaningVi": "cớ, chuyện; cũ"
+        }
+      }
+    },
+    {
+      "syllable": "gua",
+      "initial": "g",
+      "final": "ua",
+      "tones": {
+        "1": {
+          "hanzi": "瓜",
+          "meaningVi": "dưa"
+        }
+      }
+    },
+    {
+      "syllable": "guai",
+      "initial": "g",
+      "final": "uai",
+      "tones": {
+        "4": {
+          "hanzi": "怪",
+          "meaningVi": "lạ, kỳ quái"
+        }
+      }
+    },
+    {
+      "syllable": "guan",
+      "initial": "g",
+      "final": "uan",
+      "tones": {
+        "1": {
+          "hanzi": "关",
+          "meaningVi": "đóng, cửa ải; liên quan"
+        },
+        "3": {
+          "hanzi": "管",
+          "meaningVi": "ống; quản lý"
+        }
+      }
+    },
+    {
+      "syllable": "guang",
+      "initial": "g",
+      "final": "uang",
+      "tones": {
+        "1": {
+          "hanzi": "光",
+          "meaningVi": "ánh sáng"
+        }
+      }
+    },
+    {
+      "syllable": "gui",
+      "initial": "g",
+      "final": "ui",
+      "tones": {
+        "1": {
+          "hanzi": "归",
+          "meaningVi": "trở về"
+        },
+        "3": {
+          "hanzi": "鬼",
+          "meaningVi": "ma, quỷ"
+        },
+        "4": {
+          "hanzi": "贵",
+          "meaningVi": "quý, đắt"
+        }
+      }
+    },
+    {
+      "syllable": "gun",
+      "initial": "g",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "guo",
+      "initial": "g",
+      "final": "uo",
+      "tones": {
+        "2": {
+          "hanzi": "国",
+          "meaningVi": "nước, quốc gia"
+        },
+        "3": {
+          "hanzi": "果",
+          "meaningVi": "quả, trái cây"
+        }
+      }
+    },
+    {
+      "syllable": "ha",
+      "initial": "h",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "hai",
+      "initial": "h",
+      "final": "ai",
+      "tones": {
+        "3": {
+          "hanzi": "海",
+          "meaningVi": "biển"
+        },
+        "4": {
+          "hanzi": "害",
+          "meaningVi": "hại, gây hại"
+        }
+      }
+    },
+    {
+      "syllable": "han",
+      "initial": "h",
+      "final": "an",
+      "tones": {
+        "4": {
+          "hanzi": "汉",
+          "meaningVi": "người Hán"
+        }
+      }
+    },
+    {
+      "syllable": "hang",
+      "initial": "h",
+      "final": "ang",
+      "tones": {
+        "2": {
+          "hanzi": "航",
+          "meaningVi": "thuyền, hàng (không, hải)"
+        }
+      }
+    },
+    {
+      "syllable": "hao",
+      "initial": "h",
+      "final": "ao",
+      "tones": {}
+    },
+    {
+      "syllable": "he",
+      "initial": "h",
+      "final": "e",
+      "tones": {
+        "2": {
+          "hanzi": "河",
+          "meaningVi": "sông"
+        }
+      }
+    },
+    {
+      "syllable": "hei",
+      "initial": "h",
+      "final": "ei",
+      "tones": {
+        "1": {
+          "hanzi": "黑",
+          "meaningVi": "đen"
+        }
+      }
+    },
+    {
+      "syllable": "hen",
+      "initial": "h",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "heng",
+      "initial": "h",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "hong",
+      "initial": "h",
+      "final": "ong",
+      "tones": {}
+    },
+    {
+      "syllable": "hou",
+      "initial": "h",
+      "final": "ou",
+      "tones": {
+        "2": {
+          "hanzi": "喉",
+          "meaningVi": "họng"
+        },
+        "4": {
+          "hanzi": "后",
+          "meaningVi": "sau, hoàng hậu"
+        }
+      }
+    },
+    {
+      "syllable": "hu",
+      "initial": "h",
+      "final": "u",
+      "tones": {
+        "1": {
+          "hanzi": "呼",
+          "meaningVi": "gọi, thở ra"
+        },
+        "2": {
+          "hanzi": "湖",
+          "meaningVi": "hồ"
+        },
+        "3": {
+          "hanzi": "虎",
+          "meaningVi": "hổ"
+        },
+        "4": {
+          "hanzi": "护",
+          "meaningVi": "bảo vệ, hộ"
+        }
+      }
+    },
+    {
+      "syllable": "hua",
+      "initial": "h",
+      "final": "ua",
+      "tones": {
+        "1": {
+          "hanzi": "花",
+          "meaningVi": "hoa"
+        },
+        "2": {
+          "hanzi": "滑",
+          "meaningVi": "trơn, trượt"
+        },
+        "4": {
+          "hanzi": "话",
+          "meaningVi": "lời nói"
+        }
+      }
+    },
+    {
+      "syllable": "huai",
+      "initial": "h",
+      "final": "uai",
+      "tones": {}
+    },
+    {
+      "syllable": "huan",
+      "initial": "h",
+      "final": "uan",
+      "tones": {
+        "2": {
+          "hanzi": "环",
+          "meaningVi": "vòng, khoen"
+        },
+        "4": {
+          "hanzi": "换",
+          "meaningVi": "đổi, thay"
+        }
+      }
+    },
+    {
+      "syllable": "huang",
+      "initial": "h",
+      "final": "uang",
+      "tones": {
+        "2": {
+          "hanzi": "黄",
+          "meaningVi": "vàng (màu)"
+        }
+      }
+    },
+    {
+      "syllable": "hui",
+      "initial": "h",
+      "final": "ui",
+      "tones": {
+        "1": {
+          "hanzi": "灰",
+          "meaningVi": "tro, xám"
+        },
+        "2": {
+          "hanzi": "回",
+          "meaningVi": "quay về, trả lời"
+        }
+      }
+    },
+    {
+      "syllable": "hun",
+      "initial": "h",
+      "final": "un",
+      "tones": {
+        "1": {
+          "hanzi": "婚",
+          "meaningVi": "hôn nhân, cưới"
+        }
+      }
+    },
+    {
+      "syllable": "huo",
+      "initial": "h",
+      "final": "uo",
+      "tones": {
+        "2": {
+          "hanzi": "活",
+          "meaningVi": "sống"
+        },
+        "3": {
+          "hanzi": "火",
+          "meaningVi": "lửa"
+        },
+        "4": {
+          "hanzi": "货",
+          "meaningVi": "hàng hóa"
+        }
+      }
+    },
+    {
+      "syllable": "ji",
+      "initial": "j",
+      "final": "i",
+      "tones": {
+        "1": {
+          "hanzi": "机",
+          "meaningVi": "máy, cơ"
+        },
+        "2": {
+          "hanzi": "集",
+          "meaningVi": "tụ tập; tập (sách)"
+        },
+        "4": {
+          "hanzi": "计",
+          "meaningVi": "tính toán, kế hoạch"
+        }
+      }
+    },
+    {
+      "syllable": "jia",
+      "initial": "j",
+      "final": "ia",
+      "tones": {
+        "1": {
+          "hanzi": "家",
+          "meaningVi": "nhà"
+        },
+        "3": {
+          "hanzi": "甲",
+          "meaningVi": "giáp (thứ nhất); mai (rùa)"
+        },
+        "4": {
+          "hanzi": "架",
+          "meaningVi": "giá đỡ, khung"
+        }
+      }
+    },
+    {
+      "syllable": "jian",
+      "initial": "j",
+      "final": "ian",
+      "tones": {
+        "3": {
+          "hanzi": "检",
+          "meaningVi": "kiểm tra"
+        },
+        "4": {
+          "hanzi": "件",
+          "meaningVi": "việc, cái (lượng từ)"
+        }
+      }
+    },
+    {
+      "syllable": "jiang",
+      "initial": "j",
+      "final": "iang",
+      "tones": {
+        "1": {
+          "hanzi": "江",
+          "meaningVi": "sông"
+        }
+      }
+    },
+    {
+      "syllable": "jiao",
+      "initial": "j",
+      "final": "iao",
+      "tones": {
+        "1": {
+          "hanzi": "交",
+          "meaningVi": "giao, nộp"
+        }
+      }
+    },
+    {
+      "syllable": "jie",
+      "initial": "j",
+      "final": "ie",
+      "tones": {
+        "1": {
+          "hanzi": "接",
+          "meaningVi": "đón, nhận, tiếp"
+        },
+        "4": {
+          "hanzi": "界",
+          "meaningVi": "giới, ranh giới"
+        }
+      }
+    },
+    {
+      "syllable": "jin",
+      "initial": "j",
+      "final": "in",
+      "tones": {
+        "1": {
+          "hanzi": "金",
+          "meaningVi": "vàng, kim loại"
+        },
+        "4": {
+          "hanzi": "进",
+          "meaningVi": "tiến vào"
+        }
+      }
+    },
+    {
+      "syllable": "jing",
+      "initial": "j",
+      "final": "ing",
+      "tones": {
+        "1": {
+          "hanzi": "经",
+          "meaningVi": "kinh qua, kinh sách"
+        },
+        "3": {
+          "hanzi": "警",
+          "meaningVi": "cảnh sát, cảnh giác"
+        },
+        "4": {
+          "hanzi": "镜",
+          "meaningVi": "gương, kính"
+        }
+      }
+    },
+    {
+      "syllable": "jiong",
+      "initial": "j",
+      "final": "iong",
+      "tones": {}
+    },
+    {
+      "syllable": "jiu",
+      "initial": "j",
+      "final": "iu",
+      "tones": {
+        "3": {
+          "hanzi": "酒",
+          "meaningVi": "rượu"
+        },
+        "4": {
+          "hanzi": "旧",
+          "meaningVi": "cũ"
+        }
+      }
+    },
+    {
+      "syllable": "ju",
+      "initial": "j",
+      "final": "v",
+      "tones": {
+        "2": {
+          "hanzi": "局",
+          "meaningVi": "cục, cuộc (cờ)"
+        },
+        "3": {
+          "hanzi": "举",
+          "meaningVi": "nâng lên, cử chỉ"
+        },
+        "4": {
+          "hanzi": "剧",
+          "meaningVi": "kịch"
+        }
+      }
+    },
+    {
+      "syllable": "juan",
+      "initial": "j",
+      "final": "van",
+      "tones": {}
+    },
+    {
+      "syllable": "jue",
+      "initial": "j",
+      "final": "ve",
+      "tones": {
+        "2": {
+          "hanzi": "绝",
+          "meaningVi": "tuyệt, dứt"
+        }
+      }
+    },
+    {
+      "syllable": "jun",
+      "initial": "j",
+      "final": "vn",
+      "tones": {
+        "1": {
+          "hanzi": "军",
+          "meaningVi": "quân đội"
+        }
+      }
+    },
+    {
+      "syllable": "ka",
+      "initial": "k",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "kai",
+      "initial": "k",
+      "final": "ai",
+      "tones": {
+        "1": {
+          "hanzi": "开",
+          "meaningVi": "mở"
+        }
+      }
+    },
+    {
+      "syllable": "kan",
+      "initial": "k",
+      "final": "an",
+      "tones": {}
+    },
+    {
+      "syllable": "kang",
+      "initial": "k",
+      "final": "ang",
+      "tones": {
+        "1": {
+          "hanzi": "康",
+          "meaningVi": "khỏe mạnh"
+        }
+      }
+    },
+    {
+      "syllable": "kao",
+      "initial": "k",
+      "final": "ao",
+      "tones": {
+        "3": {
+          "hanzi": "考",
+          "meaningVi": "thi, khảo"
+        }
+      }
+    },
+    {
+      "syllable": "ke",
+      "initial": "k",
+      "final": "e",
+      "tones": {
+        "1": {
+          "hanzi": "科",
+          "meaningVi": "khoa, môn học"
+        },
+        "4": {
+          "hanzi": "克",
+          "meaningVi": "gam (đơn vị); khắc phục"
+        }
+      }
+    },
+    {
+      "syllable": "kei",
+      "initial": "k",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "ken",
+      "initial": "k",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "keng",
+      "initial": "k",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "kong",
+      "initial": "k",
+      "final": "ong",
+      "tones": {
+        "3": {
+          "hanzi": "孔",
+          "meaningVi": "lỗ, lỗ hổng"
+        }
+      }
+    },
+    {
+      "syllable": "kou",
+      "initial": "k",
+      "final": "ou",
+      "tones": {
+        "3": {
+          "hanzi": "口",
+          "meaningVi": "miệng"
+        }
+      }
+    },
+    {
+      "syllable": "ku",
+      "initial": "k",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "苦",
+          "meaningVi": "đắng, khổ"
+        },
+        "4": {
+          "hanzi": "库",
+          "meaningVi": "kho"
+        }
+      }
+    },
+    {
+      "syllable": "kua",
+      "initial": "k",
+      "final": "ua",
+      "tones": {}
+    },
+    {
+      "syllable": "kuai",
+      "initial": "k",
+      "final": "uai",
+      "tones": {
+        "4": {
+          "hanzi": "快",
+          "meaningVi": "nhanh"
+        }
+      }
+    },
+    {
+      "syllable": "kuan",
+      "initial": "k",
+      "final": "uan",
+      "tones": {
+        "3": {
+          "hanzi": "款",
+          "meaningVi": "khoản (tiền), kiểu"
+        }
+      }
+    },
+    {
+      "syllable": "kuang",
+      "initial": "k",
+      "final": "uang",
+      "tones": {}
+    },
+    {
+      "syllable": "kui",
+      "initial": "k",
+      "final": "ui",
+      "tones": {}
+    },
+    {
+      "syllable": "kun",
+      "initial": "k",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "kuo",
+      "initial": "k",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "la",
+      "initial": "l",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "lai",
+      "initial": "l",
+      "final": "ai",
+      "tones": {
+        "2": {
+          "hanzi": "来",
+          "meaningVi": "đến"
+        }
+      }
+    },
+    {
+      "syllable": "lan",
+      "initial": "l",
+      "final": "an",
+      "tones": {
+        "2": {
+          "hanzi": "兰",
+          "meaningVi": "hoa lan"
+        }
+      }
+    },
+    {
+      "syllable": "lang",
+      "initial": "l",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "lao",
+      "initial": "l",
+      "final": "ao",
+      "tones": {
+        "2": {
+          "hanzi": "劳",
+          "meaningVi": "lao động, vất vả"
+        },
+        "3": {
+          "hanzi": "老",
+          "meaningVi": "già, cũ"
+        }
+      }
+    },
+    {
+      "syllable": "le",
+      "initial": "l",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "lei",
+      "initial": "l",
+      "final": "ei",
+      "tones": {
+        "2": {
+          "hanzi": "雷",
+          "meaningVi": "sấm sét"
+        },
+        "4": {
+          "hanzi": "类",
+          "meaningVi": "loại, hạng"
+        }
+      }
+    },
+    {
+      "syllable": "leng",
+      "initial": "l",
+      "final": "eng",
+      "tones": {
+        "3": {
+          "hanzi": "冷",
+          "meaningVi": "lạnh"
+        }
+      }
+    },
+    {
+      "syllable": "li",
+      "initial": "l",
+      "final": "i",
+      "tones": {
+        "3": {
+          "hanzi": "里",
+          "meaningVi": "bên trong; dặm"
+        },
+        "4": {
+          "hanzi": "力",
+          "meaningVi": "sức, lực"
+        }
+      }
+    },
+    {
+      "syllable": "lia",
+      "initial": "l",
+      "final": "ia",
+      "tones": {}
+    },
+    {
+      "syllable": "lian",
+      "initial": "l",
+      "final": "ian",
+      "tones": {
+        "2": {
+          "hanzi": "连",
+          "meaningVi": "liên tiếp, nối liền"
+        },
+        "3": {
+          "hanzi": "脸",
+          "meaningVi": "mặt"
+        }
+      }
+    },
+    {
+      "syllable": "liang",
+      "initial": "l",
+      "final": "iang",
+      "tones": {
+        "2": {
+          "hanzi": "良",
+          "meaningVi": "tốt, lương thiện"
+        },
+        "3": {
+          "hanzi": "两",
+          "meaningVi": "hai, đôi"
+        }
+      }
+    },
+    {
+      "syllable": "liao",
+      "initial": "l",
+      "final": "iao",
+      "tones": {
+        "4": {
+          "hanzi": "料",
+          "meaningVi": "vật liệu, nguyên liệu"
+        }
+      }
+    },
+    {
+      "syllable": "lie",
+      "initial": "l",
+      "final": "ie",
+      "tones": {
+        "4": {
+          "hanzi": "列",
+          "meaningVi": "xếp hàng, dãy"
+        }
+      }
+    },
+    {
+      "syllable": "lin",
+      "initial": "l",
+      "final": "in",
+      "tones": {
+        "2": {
+          "hanzi": "林",
+          "meaningVi": "rừng"
+        }
+      }
+    },
+    {
+      "syllable": "ling",
+      "initial": "l",
+      "final": "ing",
+      "tones": {
+        "2": {
+          "hanzi": "灵",
+          "meaningVi": "linh hoạt, linh thiêng"
+        },
+        "3": {
+          "hanzi": "领",
+          "meaningVi": "cổ áo; dẫn dắt"
+        }
+      }
+    },
+    {
+      "syllable": "liu",
+      "initial": "l",
+      "final": "iu",
+      "tones": {
+        "2": {
+          "hanzi": "流",
+          "meaningVi": "chảy, dòng"
+        },
+        "3": {
+          "hanzi": "柳",
+          "meaningVi": "liễu"
+        }
+      }
+    },
+    {
+      "syllable": "lo",
+      "initial": "l",
+      "final": "o",
+      "tones": {}
+    },
+    {
+      "syllable": "long",
+      "initial": "l",
+      "final": "ong",
+      "tones": {
+        "2": {
+          "hanzi": "龙",
+          "meaningVi": "rồng"
+        }
+      }
+    },
+    {
+      "syllable": "lou",
+      "initial": "l",
+      "final": "ou",
+      "tones": {
+        "2": {
+          "hanzi": "楼",
+          "meaningVi": "lầu, tòa nhà"
+        }
+      }
+    },
+    {
+      "syllable": "lu",
+      "initial": "l",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "鲁",
+          "meaningVi": "thô lỗ, ngu dốt"
+        },
+        "4": {
+          "hanzi": "路",
+          "meaningVi": "đường"
+        }
+      }
+    },
+    {
+      "syllable": "luan",
+      "initial": "l",
+      "final": "uan",
+      "tones": {
+        "4": {
+          "hanzi": "乱",
+          "meaningVi": "loạn, lộn xộn"
+        }
+      }
+    },
+    {
+      "syllable": "lun",
+      "initial": "l",
+      "final": "un",
+      "tones": {
+        "2": {
+          "hanzi": "轮",
+          "meaningVi": "bánh xe, vòng"
+        }
+      }
+    },
+    {
+      "syllable": "luo",
+      "initial": "l",
+      "final": "uo",
+      "tones": {
+        "2": {
+          "hanzi": "罗",
+          "meaningVi": "bủa vây, sắp xếp; họ La"
+        },
+        "4": {
+          "hanzi": "洛",
+          "meaningVi": "phiên âm địa danh (sông Lạc)"
+        }
+      }
+    },
+    {
+      "syllable": "lv",
+      "initial": "l",
+      "final": "v",
+      "tones": {}
+    },
+    {
+      "syllable": "lve",
+      "initial": "l",
+      "final": "ve",
+      "tones": {}
+    },
+    {
+      "syllable": "ma",
+      "initial": "m",
+      "final": "a",
+      "tones": {
+        "1": {
+          "hanzi": "妈",
+          "meaningVi": "mẹ"
+        },
+        "2": {
+          "hanzi": "麻",
+          "meaningVi": "cây gai, tê"
+        },
+        "3": {
+          "hanzi": "马",
+          "meaningVi": "ngựa"
+        },
+        "4": {
+          "hanzi": "骂",
+          "meaningVi": "mắng, chửi"
+        }
+      }
+    },
+    {
+      "syllable": "mai",
+      "initial": "m",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "卖",
+          "meaningVi": "bán"
+        }
+      }
+    },
+    {
+      "syllable": "man",
+      "initial": "m",
+      "final": "an",
+      "tones": {
+        "3": {
+          "hanzi": "满",
+          "meaningVi": "đầy, người Mãn"
+        },
+        "4": {
+          "hanzi": "曼",
+          "meaningVi": "đẹp, mềm mại"
+        }
+      }
+    },
+    {
+      "syllable": "mang",
+      "initial": "m",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "mao",
+      "initial": "m",
+      "final": "ao",
+      "tones": {
+        "2": {
+          "hanzi": "毛",
+          "meaningVi": "lông, hào (tiền)"
+        }
+      }
+    },
+    {
+      "syllable": "me",
+      "initial": "m",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "mei",
+      "initial": "m",
+      "final": "ei",
+      "tones": {
+        "2": {
+          "hanzi": "眉",
+          "meaningVi": "lông mày"
+        },
+        "3": {
+          "hanzi": "美",
+          "meaningVi": "đẹp; châu Mỹ"
+        }
+      }
+    },
+    {
+      "syllable": "men",
+      "initial": "m",
+      "final": "en",
+      "tones": {
+        "2": {
+          "hanzi": "门",
+          "meaningVi": "cửa"
+        }
+      }
+    },
+    {
+      "syllable": "meng",
+      "initial": "m",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "mi",
+      "initial": "m",
+      "final": "i",
+      "tones": {
+        "2": {
+          "hanzi": "迷",
+          "meaningVi": "mê, say mê"
+        },
+        "3": {
+          "hanzi": "米",
+          "meaningVi": "gạo, mét"
+        },
+        "4": {
+          "hanzi": "密",
+          "meaningVi": "dày đặc, bí mật"
+        }
+      }
+    },
+    {
+      "syllable": "mian",
+      "initial": "m",
+      "final": "ian",
+      "tones": {
+        "4": {
+          "hanzi": "面",
+          "meaningVi": "mặt, mì"
+        }
+      }
+    },
+    {
+      "syllable": "miao",
+      "initial": "m",
+      "final": "iao",
+      "tones": {}
+    },
+    {
+      "syllable": "mie",
+      "initial": "m",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "min",
+      "initial": "m",
+      "final": "in",
+      "tones": {
+        "2": {
+          "hanzi": "民",
+          "meaningVi": "dân, nhân dân"
+        }
+      }
+    },
+    {
+      "syllable": "ming",
+      "initial": "m",
+      "final": "ing",
+      "tones": {
+        "2": {
+          "hanzi": "明",
+          "meaningVi": "sáng, rõ ràng"
+        },
+        "4": {
+          "hanzi": "命",
+          "meaningVi": "mệnh, sinh mạng"
+        }
+      }
+    },
+    {
+      "syllable": "miu",
+      "initial": "m",
+      "final": "iu",
+      "tones": {}
+    },
+    {
+      "syllable": "mo",
+      "initial": "m",
+      "final": "o",
+      "tones": {
+        "4": {
+          "hanzi": "莫",
+          "meaningVi": "đừng, chớ"
+        }
+      }
+    },
+    {
+      "syllable": "mou",
+      "initial": "m",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "mu",
+      "initial": "m",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "母",
+          "meaningVi": "mẹ"
+        },
+        "4": {
+          "hanzi": "木",
+          "meaningVi": "gỗ, cây"
+        }
+      }
+    },
+    {
+      "syllable": "na",
+      "initial": "n",
+      "final": "a",
+      "tones": {
+        "4": {
+          "hanzi": "纳",
+          "meaningVi": "nhận, thu vào"
+        }
+      }
+    },
+    {
+      "syllable": "nai",
+      "initial": "n",
+      "final": "ai",
+      "tones": {
+        "3": {
+          "hanzi": "奶",
+          "meaningVi": "sữa"
+        }
+      }
+    },
+    {
+      "syllable": "nan",
+      "initial": "n",
+      "final": "an",
+      "tones": {
+        "2": {
+          "hanzi": "男",
+          "meaningVi": "nam, con trai"
+        }
+      }
+    },
+    {
+      "syllable": "nang",
+      "initial": "n",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "nao",
+      "initial": "n",
+      "final": "ao",
+      "tones": {
+        "3": {
+          "hanzi": "脑",
+          "meaningVi": "não"
+        }
+      }
+    },
+    {
+      "syllable": "ne",
+      "initial": "n",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "nei",
+      "initial": "n",
+      "final": "ei",
+      "tones": {
+        "4": {
+          "hanzi": "内",
+          "meaningVi": "bên trong"
+        }
+      }
+    },
+    {
+      "syllable": "nen",
+      "initial": "n",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "neng",
+      "initial": "n",
+      "final": "eng",
+      "tones": {
+        "2": {
+          "hanzi": "能",
+          "meaningVi": "có thể, năng lực"
+        }
+      }
+    },
+    {
+      "syllable": "ni",
+      "initial": "n",
+      "final": "i",
+      "tones": {
+        "2": {
+          "hanzi": "尼",
+          "meaningVi": "ni cô"
+        },
+        "3": {
+          "hanzi": "你",
+          "meaningVi": "bạn, anh/chị (thân mật)"
+        }
+      }
+    },
+    {
+      "syllable": "nian",
+      "initial": "n",
+      "final": "ian",
+      "tones": {
+        "2": {
+          "hanzi": "年",
+          "meaningVi": "năm"
+        },
+        "4": {
+          "hanzi": "念",
+          "meaningVi": "đọc, nhớ nghĩ"
+        }
+      }
+    },
+    {
+      "syllable": "niang",
+      "initial": "n",
+      "final": "iang",
+      "tones": {}
+    },
+    {
+      "syllable": "niao",
+      "initial": "n",
+      "final": "iao",
+      "tones": {}
+    },
+    {
+      "syllable": "nie",
+      "initial": "n",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "nin",
+      "initial": "n",
+      "final": "in",
+      "tones": {}
+    },
+    {
+      "syllable": "ning",
+      "initial": "n",
+      "final": "ing",
+      "tones": {}
+    },
+    {
+      "syllable": "niu",
+      "initial": "n",
+      "final": "iu",
+      "tones": {
+        "2": {
+          "hanzi": "牛",
+          "meaningVi": "trâu, bò"
+        }
+      }
+    },
+    {
+      "syllable": "nong",
+      "initial": "n",
+      "final": "ong",
+      "tones": {
+        "2": {
+          "hanzi": "农",
+          "meaningVi": "nông nghiệp"
+        }
+      }
+    },
+    {
+      "syllable": "nou",
+      "initial": "n",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "nu",
+      "initial": "n",
+      "final": "u",
+      "tones": {}
+    },
+    {
+      "syllable": "nuan",
+      "initial": "n",
+      "final": "uan",
+      "tones": {}
+    },
+    {
+      "syllable": "nuo",
+      "initial": "n",
+      "final": "uo",
+      "tones": {
+        "4": {
+          "hanzi": "诺",
+          "meaningVi": "hứa, vâng"
+        }
+      }
+    },
+    {
+      "syllable": "nv",
+      "initial": "n",
+      "final": "v",
+      "tones": {}
+    },
+    {
+      "syllable": "nve",
+      "initial": "n",
+      "final": "ve",
+      "tones": {}
+    },
+    {
+      "syllable": "o",
+      "initial": "",
+      "final": "o",
+      "tones": {}
+    },
+    {
+      "syllable": "ou",
+      "initial": "",
+      "final": "ou",
+      "tones": {
+        "1": {
+          "hanzi": "欧",
+          "meaningVi": "châu Âu"
+        }
+      }
+    },
+    {
+      "syllable": "pa",
+      "initial": "p",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "pai",
+      "initial": "p",
+      "final": "ai",
+      "tones": {
+        "2": {
+          "hanzi": "排",
+          "meaningVi": "xếp hàng, dãy"
+        }
+      }
+    },
+    {
+      "syllable": "pan",
+      "initial": "p",
+      "final": "an",
+      "tones": {
+        "2": {
+          "hanzi": "盘",
+          "meaningVi": "mâm, đĩa"
+        }
+      }
+    },
+    {
+      "syllable": "pang",
+      "initial": "p",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "pao",
+      "initial": "p",
+      "final": "ao",
+      "tones": {}
+    },
+    {
+      "syllable": "pei",
+      "initial": "p",
+      "final": "ei",
+      "tones": {
+        "4": {
+          "hanzi": "配",
+          "meaningVi": "phối hợp, ghép đôi"
+        }
+      }
+    },
+    {
+      "syllable": "pen",
+      "initial": "p",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "peng",
+      "initial": "p",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "pi",
+      "initial": "p",
+      "final": "i",
+      "tones": {
+        "2": {
+          "hanzi": "皮",
+          "meaningVi": "da, vỏ"
+        }
+      }
+    },
+    {
+      "syllable": "pian",
+      "initial": "p",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "偏",
+          "meaningVi": "lệch, nghiêng"
+        }
+      }
+    },
+    {
+      "syllable": "piao",
+      "initial": "p",
+      "final": "iao",
+      "tones": {
+        "4": {
+          "hanzi": "票",
+          "meaningVi": "vé, phiếu"
+        }
+      }
+    },
+    {
+      "syllable": "pie",
+      "initial": "p",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "pin",
+      "initial": "p",
+      "final": "in",
+      "tones": {
+        "3": {
+          "hanzi": "品",
+          "meaningVi": "phẩm, sản phẩm"
+        }
+      }
+    },
+    {
+      "syllable": "ping",
+      "initial": "p",
+      "final": "ing",
+      "tones": {
+        "2": {
+          "hanzi": "平",
+          "meaningVi": "bằng phẳng, hòa bình"
+        }
+      }
+    },
+    {
+      "syllable": "po",
+      "initial": "p",
+      "final": "o",
+      "tones": {
+        "4": {
+          "hanzi": "破",
+          "meaningVi": "vỡ, rách"
+        }
+      }
+    },
+    {
+      "syllable": "pou",
+      "initial": "p",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "pu",
+      "initial": "p",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "普",
+          "meaningVi": "phổ biến, chung"
+        }
+      }
+    },
+    {
+      "syllable": "qi",
+      "initial": "q",
+      "final": "i",
+      "tones": {
+        "1": {
+          "hanzi": "期",
+          "meaningVi": "kỳ, thời kỳ"
+        },
+        "2": {
+          "hanzi": "其",
+          "meaningVi": "của nó, cái đó"
+        },
+        "3": {
+          "hanzi": "起",
+          "meaningVi": "dậy, bắt đầu"
+        },
+        "4": {
+          "hanzi": "气",
+          "meaningVi": "khí, hơi"
+        }
+      }
+    },
+    {
+      "syllable": "qia",
+      "initial": "q",
+      "final": "ia",
+      "tones": {}
+    },
+    {
+      "syllable": "qian",
+      "initial": "q",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "千",
+          "meaningVi": "nghìn"
+        },
+        "2": {
+          "hanzi": "前",
+          "meaningVi": "trước, phía trước"
+        }
+      }
+    },
+    {
+      "syllable": "qiang",
+      "initial": "q",
+      "final": "iang",
+      "tones": {
+        "1": {
+          "hanzi": "枪",
+          "meaningVi": "súng"
+        }
+      }
+    },
+    {
+      "syllable": "qiao",
+      "initial": "q",
+      "final": "iao",
+      "tones": {
+        "2": {
+          "hanzi": "桥",
+          "meaningVi": "cầu"
+        }
+      }
+    },
+    {
+      "syllable": "qie",
+      "initial": "q",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "qin",
+      "initial": "q",
+      "final": "in",
+      "tones": {}
+    },
+    {
+      "syllable": "qing",
+      "initial": "q",
+      "final": "ing",
+      "tones": {
+        "1": {
+          "hanzi": "清",
+          "meaningVi": "trong, sạch"
+        },
+        "2": {
+          "hanzi": "情",
+          "meaningVi": "tình cảm"
+        }
+      }
+    },
+    {
+      "syllable": "qiong",
+      "initial": "q",
+      "final": "iong",
+      "tones": {}
+    },
+    {
+      "syllable": "qiu",
+      "initial": "q",
+      "final": "iu",
+      "tones": {
+        "1": {
+          "hanzi": "秋",
+          "meaningVi": "mùa thu"
+        },
+        "2": {
+          "hanzi": "球",
+          "meaningVi": "quả bóng"
+        }
+      }
+    },
+    {
+      "syllable": "qu",
+      "initial": "q",
+      "final": "v",
+      "tones": {
+        "3": {
+          "hanzi": "取",
+          "meaningVi": "lấy"
+        },
+        "4": {
+          "hanzi": "去",
+          "meaningVi": "đi"
+        }
+      }
+    },
+    {
+      "syllable": "quan",
+      "initial": "q",
+      "final": "van",
+      "tones": {
+        "2": {
+          "hanzi": "全",
+          "meaningVi": "toàn bộ"
+        }
+      }
+    },
+    {
+      "syllable": "que",
+      "initial": "q",
+      "final": "ve",
+      "tones": {}
+    },
+    {
+      "syllable": "qun",
+      "initial": "q",
+      "final": "vn",
+      "tones": {
+        "2": {
+          "hanzi": "群",
+          "meaningVi": "đàn, nhóm"
+        }
+      }
+    },
+    {
+      "syllable": "ran",
+      "initial": "r",
+      "final": "an",
+      "tones": {
+        "2": {
+          "hanzi": "然",
+          "meaningVi": "đúng vậy, tự nhiên"
+        }
+      }
+    },
+    {
+      "syllable": "rang",
+      "initial": "r",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "rao",
+      "initial": "r",
+      "final": "ao",
+      "tones": {}
+    },
+    {
+      "syllable": "re",
+      "initial": "r",
+      "final": "e",
+      "tones": {
+        "4": {
+          "hanzi": "热",
+          "meaningVi": "nóng"
+        }
+      }
+    },
+    {
+      "syllable": "ren",
+      "initial": "r",
+      "final": "en",
+      "tones": {
+        "2": {
+          "hanzi": "人",
+          "meaningVi": "người"
+        }
+      }
+    },
+    {
+      "syllable": "reng",
+      "initial": "r",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "ri",
+      "initial": "r",
+      "final": "-i",
+      "tones": {
+        "4": {
+          "hanzi": "日",
+          "meaningVi": "mặt trời, ngày"
+        }
+      }
+    },
+    {
+      "syllable": "rong",
+      "initial": "r",
+      "final": "ong",
+      "tones": {
+        "2": {
+          "hanzi": "容",
+          "meaningVi": "dung chứa, dung nhan"
+        }
+      }
+    },
+    {
+      "syllable": "rou",
+      "initial": "r",
+      "final": "ou",
+      "tones": {
+        "4": {
+          "hanzi": "肉",
+          "meaningVi": "thịt"
+        }
+      }
+    },
+    {
+      "syllable": "ru",
+      "initial": "r",
+      "final": "u",
+      "tones": {
+        "2": {
+          "hanzi": "如",
+          "meaningVi": "như, giống như"
+        },
+        "3": {
+          "hanzi": "乳",
+          "meaningVi": "sữa (vú)"
+        },
+        "4": {
+          "hanzi": "入",
+          "meaningVi": "vào"
+        }
+      }
+    },
+    {
+      "syllable": "ruan",
+      "initial": "r",
+      "final": "uan",
+      "tones": {
+        "3": {
+          "hanzi": "软",
+          "meaningVi": "mềm"
+        }
+      }
+    },
+    {
+      "syllable": "rui",
+      "initial": "r",
+      "final": "ui",
+      "tones": {}
+    },
+    {
+      "syllable": "run",
+      "initial": "r",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "ruo",
+      "initial": "r",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "sa",
+      "initial": "s",
+      "final": "a",
+      "tones": {
+        "4": {
+          "hanzi": "萨",
+          "meaningVi": "phiên âm (vd Bồ Tát)"
+        }
+      }
+    },
+    {
+      "syllable": "sai",
+      "initial": "s",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "赛",
+          "meaningVi": "thi đấu"
+        }
+      }
+    },
+    {
+      "syllable": "san",
+      "initial": "s",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "三",
+          "meaningVi": "ba"
+        }
+      }
+    },
+    {
+      "syllable": "sang",
+      "initial": "s",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "sao",
+      "initial": "s",
+      "final": "ao",
+      "tones": {}
+    },
+    {
+      "syllable": "se",
+      "initial": "s",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "sen",
+      "initial": "s",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "seng",
+      "initial": "s",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "sha",
+      "initial": "sh",
+      "final": "a",
+      "tones": {
+        "1": {
+          "hanzi": "杀",
+          "meaningVi": "giết"
+        }
+      }
+    },
+    {
+      "syllable": "shai",
+      "initial": "sh",
+      "final": "ai",
+      "tones": {}
+    },
+    {
+      "syllable": "shan",
+      "initial": "sh",
+      "final": "an",
+      "tones": {
+        "1": {
+          "hanzi": "山",
+          "meaningVi": "núi"
+        },
+        "4": {
+          "hanzi": "善",
+          "meaningVi": "thiện, tốt"
+        }
+      }
+    },
+    {
+      "syllable": "shang",
+      "initial": "sh",
+      "final": "ang",
+      "tones": {
+        "1": {
+          "hanzi": "商",
+          "meaningVi": "buôn bán, thương mại"
+        }
+      }
+    },
+    {
+      "syllable": "shao",
+      "initial": "sh",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "烧",
+          "meaningVi": "đốt, nấu"
+        }
+      }
+    },
+    {
+      "syllable": "she",
+      "initial": "sh",
+      "final": "e",
+      "tones": {
+        "4": {
+          "hanzi": "射",
+          "meaningVi": "bắn"
+        }
+      }
+    },
+    {
+      "syllable": "shei",
+      "initial": "sh",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "shen",
+      "initial": "sh",
+      "final": "en",
+      "tones": {
+        "1": {
+          "hanzi": "身",
+          "meaningVi": "thân, cơ thể"
+        },
+        "2": {
+          "hanzi": "神",
+          "meaningVi": "thần"
+        }
+      }
+    },
+    {
+      "syllable": "sheng",
+      "initial": "sh",
+      "final": "eng",
+      "tones": {
+        "1": {
+          "hanzi": "生",
+          "meaningVi": "sinh ra, sống"
+        },
+        "4": {
+          "hanzi": "胜",
+          "meaningVi": "thắng"
+        }
+      }
+    },
+    {
+      "syllable": "shi",
+      "initial": "sh",
+      "final": "-i",
+      "tones": {
+        "1": {
+          "hanzi": "失",
+          "meaningVi": "mất"
+        },
+        "2": {
+          "hanzi": "时",
+          "meaningVi": "thời gian, giờ"
+        },
+        "3": {
+          "hanzi": "史",
+          "meaningVi": "lịch sử"
+        },
+        "4": {
+          "hanzi": "市",
+          "meaningVi": "chợ, thành phố"
+        }
+      }
+    },
+    {
+      "syllable": "shou",
+      "initial": "sh",
+      "final": "ou",
+      "tones": {
+        "1": {
+          "hanzi": "收",
+          "meaningVi": "thu, nhận"
+        },
+        "3": {
+          "hanzi": "手",
+          "meaningVi": "tay"
+        },
+        "4": {
+          "hanzi": "受",
+          "meaningVi": "chịu, nhận"
+        }
+      }
+    },
+    {
+      "syllable": "shu",
+      "initial": "sh",
+      "final": "u",
+      "tones": {
+        "1": {
+          "hanzi": "书",
+          "meaningVi": "sách"
+        },
+        "2": {
+          "hanzi": "熟",
+          "meaningVi": "chín, thành thạo"
+        },
+        "4": {
+          "hanzi": "树",
+          "meaningVi": "cây"
+        }
+      }
+    },
+    {
+      "syllable": "shua",
+      "initial": "sh",
+      "final": "ua",
+      "tones": {}
+    },
+    {
+      "syllable": "shuai",
+      "initial": "sh",
+      "final": "uai",
+      "tones": {}
+    },
+    {
+      "syllable": "shuan",
+      "initial": "sh",
+      "final": "uan",
+      "tones": {}
+    },
+    {
+      "syllable": "shuang",
+      "initial": "sh",
+      "final": "uang",
+      "tones": {
+        "1": {
+          "hanzi": "双",
+          "meaningVi": "đôi, cặp"
+        }
+      }
+    },
+    {
+      "syllable": "shui",
+      "initial": "sh",
+      "final": "ui",
+      "tones": {
+        "3": {
+          "hanzi": "水",
+          "meaningVi": "nước"
+        }
+      }
+    },
+    {
+      "syllable": "shun",
+      "initial": "sh",
+      "final": "un",
+      "tones": {
+        "4": {
+          "hanzi": "顺",
+          "meaningVi": "thuận, theo"
+        }
+      }
+    },
+    {
+      "syllable": "shuo",
+      "initial": "sh",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "si",
+      "initial": "s",
+      "final": "-i",
+      "tones": {
+        "1": {
+          "hanzi": "斯",
+          "meaningVi": "phiên âm (vd俄罗斯)"
+        },
+        "3": {
+          "hanzi": "死",
+          "meaningVi": "chết"
+        },
+        "4": {
+          "hanzi": "四",
+          "meaningVi": "bốn"
+        }
+      }
+    },
+    {
+      "syllable": "song",
+      "initial": "s",
+      "final": "ong",
+      "tones": {
+        "1": {
+          "hanzi": "松",
+          "meaningVi": "cây thông; lỏng"
+        },
+        "4": {
+          "hanzi": "送",
+          "meaningVi": "tặng, đưa"
+        }
+      }
+    },
+    {
+      "syllable": "sou",
+      "initial": "s",
+      "final": "ou",
+      "tones": {}
+    },
+    {
+      "syllable": "su",
+      "initial": "s",
+      "final": "u",
+      "tones": {
+        "1": {
+          "hanzi": "苏",
+          "meaningVi": "hồi tỉnh; họ Tô"
+        },
+        "4": {
+          "hanzi": "素",
+          "meaningVi": "chất; vốn có; ăn chay"
+        }
+      }
+    },
+    {
+      "syllable": "suan",
+      "initial": "s",
+      "final": "uan",
+      "tones": {
+        "1": {
+          "hanzi": "酸",
+          "meaningVi": "chua"
+        },
+        "4": {
+          "hanzi": "算",
+          "meaningVi": "tính toán"
+        }
+      }
+    },
+    {
+      "syllable": "sui",
+      "initial": "s",
+      "final": "ui",
+      "tones": {
+        "2": {
+          "hanzi": "随",
+          "meaningVi": "theo, tùy"
+        }
+      }
+    },
+    {
+      "syllable": "sun",
+      "initial": "s",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "suo",
+      "initial": "s",
+      "final": "uo",
+      "tones": {
+        "3": {
+          "hanzi": "所",
+          "meaningVi": "nơi, chỗ"
+        }
+      }
+    },
+    {
+      "syllable": "ta",
+      "initial": "t",
+      "final": "a",
+      "tones": {
+        "1": {
+          "hanzi": "他",
+          "meaningVi": "anh ấy, anh ta"
+        },
+        "3": {
+          "hanzi": "塔",
+          "meaningVi": "tháp"
+        }
+      }
+    },
+    {
+      "syllable": "tai",
+      "initial": "t",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "太",
+          "meaningVi": "quá, thái (rất)"
+        }
+      }
+    },
+    {
+      "syllable": "tan",
+      "initial": "t",
+      "final": "an",
+      "tones": {
+        "2": {
+          "hanzi": "谈",
+          "meaningVi": "nói chuyện, bàn luận"
+        }
+      }
+    },
+    {
+      "syllable": "tang",
+      "initial": "t",
+      "final": "ang",
+      "tones": {
+        "2": {
+          "hanzi": "糖",
+          "meaningVi": "đường, kẹo"
+        }
+      }
+    },
+    {
+      "syllable": "tao",
+      "initial": "t",
+      "final": "ao",
+      "tones": {
+        "4": {
+          "hanzi": "套",
+          "meaningVi": "bộ (lượng từ); trùm"
+        }
+      }
+    },
+    {
+      "syllable": "te",
+      "initial": "t",
+      "final": "e",
+      "tones": {
+        "4": {
+          "hanzi": "特",
+          "meaningVi": "đặc biệt"
+        }
+      }
+    },
+    {
+      "syllable": "teng",
+      "initial": "t",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "ti",
+      "initial": "t",
+      "final": "i",
+      "tones": {
+        "2": {
+          "hanzi": "题",
+          "meaningVi": "đề bài, chủ đề"
+        }
+      }
+    },
+    {
+      "syllable": "tian",
+      "initial": "t",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "天",
+          "meaningVi": "trời, ngày"
+        },
+        "2": {
+          "hanzi": "田",
+          "meaningVi": "ruộng"
+        }
+      }
+    },
+    {
+      "syllable": "tiao",
+      "initial": "t",
+      "final": "iao",
+      "tones": {
+        "2": {
+          "hanzi": "条",
+          "meaningVi": "dải, que (lượng từ)"
+        }
+      }
+    },
+    {
+      "syllable": "tie",
+      "initial": "t",
+      "final": "ie",
+      "tones": {
+        "3": {
+          "hanzi": "铁",
+          "meaningVi": "sắt"
+        }
+      }
+    },
+    {
+      "syllable": "ting",
+      "initial": "t",
+      "final": "ing",
+      "tones": {}
+    },
+    {
+      "syllable": "tong",
+      "initial": "t",
+      "final": "ong",
+      "tones": {
+        "3": {
+          "hanzi": "统",
+          "meaningVi": "thống nhất"
+        },
+        "4": {
+          "hanzi": "痛",
+          "meaningVi": "đau"
+        }
+      }
+    },
+    {
+      "syllable": "tou",
+      "initial": "t",
+      "final": "ou",
+      "tones": {
+        "2": {
+          "hanzi": "投",
+          "meaningVi": "ném, đầu tư"
+        }
+      }
+    },
+    {
+      "syllable": "tu",
+      "initial": "t",
+      "final": "u",
+      "tones": {
+        "2": {
+          "hanzi": "图",
+          "meaningVi": "hình, bản đồ"
+        },
+        "3": {
+          "hanzi": "土",
+          "meaningVi": "đất"
+        }
+      }
+    },
+    {
+      "syllable": "tuan",
+      "initial": "t",
+      "final": "uan",
+      "tones": {
+        "2": {
+          "hanzi": "团",
+          "meaningVi": "đoàn, tròn"
+        }
+      }
+    },
+    {
+      "syllable": "tui",
+      "initial": "t",
+      "final": "ui",
+      "tones": {
+        "1": {
+          "hanzi": "推",
+          "meaningVi": "đẩy"
+        },
+        "4": {
+          "hanzi": "退",
+          "meaningVi": "lùi, rút lui"
+        }
+      }
+    },
+    {
+      "syllable": "tun",
+      "initial": "t",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "tuo",
+      "initial": "t",
+      "final": "uo",
+      "tones": {
+        "1": {
+          "hanzi": "托",
+          "meaningVi": "đỡ, nâng; gửi gắm"
+        }
+      }
+    },
+    {
+      "syllable": "wa",
+      "initial": "",
+      "final": "ua",
+      "tones": {
+        "3": {
+          "hanzi": "瓦",
+          "meaningVi": "ngói"
+        }
+      }
+    },
+    {
+      "syllable": "wai",
+      "initial": "",
+      "final": "uai",
+      "tones": {
+        "4": {
+          "hanzi": "外",
+          "meaningVi": "ngoài"
+        }
+      }
+    },
+    {
+      "syllable": "wan",
+      "initial": "",
+      "final": "uan",
+      "tones": {}
+    },
+    {
+      "syllable": "wang",
+      "initial": "",
+      "final": "uang",
+      "tones": {
+        "3": {
+          "hanzi": "网",
+          "meaningVi": "lưới, mạng"
+        },
+        "4": {
+          "hanzi": "望",
+          "meaningVi": "nhìn, mong"
+        }
+      }
+    },
+    {
+      "syllable": "wei",
+      "initial": "",
+      "final": "ui",
+      "tones": {
+        "1": {
+          "hanzi": "微",
+          "meaningVi": "nhỏ bé, vi"
+        },
+        "2": {
+          "hanzi": "维",
+          "meaningVi": "duy trì, giữ"
+        },
+        "4": {
+          "hanzi": "位",
+          "meaningVi": "vị trí, ngôi"
+        }
+      }
+    },
+    {
+      "syllable": "wen",
+      "initial": "",
+      "final": "un",
+      "tones": {
+        "1": {
+          "hanzi": "温",
+          "meaningVi": "ấm"
+        },
+        "2": {
+          "hanzi": "文",
+          "meaningVi": "văn, chữ"
+        },
+        "4": {
+          "hanzi": "问",
+          "meaningVi": "hỏi"
+        }
+      }
+    },
+    {
+      "syllable": "weng",
+      "initial": "",
+      "final": "ueng",
+      "tones": {}
+    },
+    {
+      "syllable": "wo",
+      "initial": "",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "wu",
+      "initial": "",
+      "final": "u",
+      "tones": {
+        "3": {
+          "hanzi": "五",
+          "meaningVi": "năm (số 5)"
+        },
+        "4": {
+          "hanzi": "物",
+          "meaningVi": "vật, đồ vật"
+        }
+      }
+    },
+    {
+      "syllable": "xi",
+      "initial": "x",
+      "final": "i",
+      "tones": {
+        "1": {
+          "hanzi": "西",
+          "meaningVi": "tây"
+        },
+        "3": {
+          "hanzi": "喜",
+          "meaningVi": "vui, thích"
+        },
+        "4": {
+          "hanzi": "细",
+          "meaningVi": "nhỏ, mảnh"
+        }
+      }
+    },
+    {
+      "syllable": "xia",
+      "initial": "x",
+      "final": "ia",
+      "tones": {
+        "4": {
+          "hanzi": "下",
+          "meaningVi": "dưới, xuống"
+        }
+      }
+    },
+    {
+      "syllable": "xian",
+      "initial": "x",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "先",
+          "meaningVi": "trước"
+        },
+        "3": {
+          "hanzi": "险",
+          "meaningVi": "hiểm, nguy hiểm"
+        },
+        "4": {
+          "hanzi": "县",
+          "meaningVi": "huyện"
+        }
+      }
+    },
+    {
+      "syllable": "xiang",
+      "initial": "x",
+      "final": "iang",
+      "tones": {
+        "1": {
+          "hanzi": "香",
+          "meaningVi": "thơm"
+        },
+        "3": {
+          "hanzi": "想",
+          "meaningVi": "nghĩ, muốn"
+        },
+        "4": {
+          "hanzi": "向",
+          "meaningVi": "hướng về phía"
+        }
+      }
+    },
+    {
+      "syllable": "xiao",
+      "initial": "x",
+      "final": "iao",
+      "tones": {
+        "1": {
+          "hanzi": "消",
+          "meaningVi": "tiêu tan, tiêu hao"
+        },
+        "3": {
+          "hanzi": "小",
+          "meaningVi": "nhỏ"
+        },
+        "4": {
+          "hanzi": "笑",
+          "meaningVi": "cười"
+        }
+      }
+    },
+    {
+      "syllable": "xie",
+      "initial": "x",
+      "final": "ie",
+      "tones": {}
+    },
+    {
+      "syllable": "xin",
+      "initial": "x",
+      "final": "in",
+      "tones": {
+        "1": {
+          "hanzi": "心",
+          "meaningVi": "tim, lòng"
+        },
+        "4": {
+          "hanzi": "信",
+          "meaningVi": "thư, tin tưởng"
+        }
+      }
+    },
+    {
+      "syllable": "xing",
+      "initial": "x",
+      "final": "ing",
+      "tones": {
+        "1": {
+          "hanzi": "星",
+          "meaningVi": "sao"
+        },
+        "2": {
+          "hanzi": "形",
+          "meaningVi": "hình dạng"
+        },
+        "4": {
+          "hanzi": "性",
+          "meaningVi": "tính chất, giới tính"
+        }
+      }
+    },
+    {
+      "syllable": "xiong",
+      "initial": "x",
+      "final": "iong",
+      "tones": {
+        "1": {
+          "hanzi": "胸",
+          "meaningVi": "ngực"
+        }
+      }
+    },
+    {
+      "syllable": "xiu",
+      "initial": "x",
+      "final": "iu",
+      "tones": {
+        "1": {
+          "hanzi": "修",
+          "meaningVi": "sửa chữa, tu sửa"
+        }
+      }
+    },
+    {
+      "syllable": "xu",
+      "initial": "x",
+      "final": "v",
+      "tones": {
+        "1": {
+          "hanzi": "虚",
+          "meaningVi": "trống rỗng, hư"
+        }
+      }
+    },
+    {
+      "syllable": "xuan",
+      "initial": "x",
+      "final": "van",
+      "tones": {
+        "3": {
+          "hanzi": "选",
+          "meaningVi": "chọn, bầu"
+        }
+      }
+    },
+    {
+      "syllable": "xue",
+      "initial": "x",
+      "final": "ve",
+      "tones": {
+        "2": {
+          "hanzi": "学",
+          "meaningVi": "học"
+        },
+        "3": {
+          "hanzi": "雪",
+          "meaningVi": "tuyết"
+        }
+      }
+    },
+    {
+      "syllable": "xun",
+      "initial": "x",
+      "final": "vn",
+      "tones": {}
+    },
+    {
+      "syllable": "ya",
+      "initial": "",
+      "final": "ia",
+      "tones": {
+        "2": {
+          "hanzi": "牙",
+          "meaningVi": "răng"
+        },
+        "3": {
+          "hanzi": "雅",
+          "meaningVi": "nhã, tao nhã"
+        },
+        "4": {
+          "hanzi": "亚",
+          "meaningVi": "châu Á"
+        }
+      }
+    },
+    {
+      "syllable": "yan",
+      "initial": "",
+      "final": "ian",
+      "tones": {
+        "1": {
+          "hanzi": "烟",
+          "meaningVi": "khói, thuốc lá"
+        },
+        "2": {
+          "hanzi": "言",
+          "meaningVi": "lời nói"
+        },
+        "3": {
+          "hanzi": "眼",
+          "meaningVi": "mắt"
+        },
+        "4": {
+          "hanzi": "验",
+          "meaningVi": "kiểm tra, thí nghiệm"
+        }
+      }
+    },
+    {
+      "syllable": "yang",
+      "initial": "",
+      "final": "iang",
+      "tones": {
+        "2": {
+          "hanzi": "阳",
+          "meaningVi": "dương (mặt trời)"
+        },
+        "3": {
+          "hanzi": "养",
+          "meaningVi": "nuôi"
+        },
+        "4": {
+          "hanzi": "样",
+          "meaningVi": "kiểu, dáng"
+        }
+      }
+    },
+    {
+      "syllable": "yao",
+      "initial": "",
+      "final": "iao",
+      "tones": {
+        "4": {
+          "hanzi": "药",
+          "meaningVi": "thuốc"
+        }
+      }
+    },
+    {
+      "syllable": "ye",
+      "initial": "",
+      "final": "ie",
+      "tones": {
+        "3": {
+          "hanzi": "野",
+          "meaningVi": "đồng, hoang dã"
+        },
+        "4": {
+          "hanzi": "业",
+          "meaningVi": "nghề nghiệp"
+        }
+      }
+    },
+    {
+      "syllable": "yi",
+      "initial": "",
+      "final": "i",
+      "tones": {
+        "1": {
+          "hanzi": "伊",
+          "meaningVi": "nàng ấy (cổ); phiên âm"
+        },
+        "2": {
+          "hanzi": "遗",
+          "meaningVi": "để lại, di"
+        },
+        "3": {
+          "hanzi": "以",
+          "meaningVi": "lấy, dùng để"
+        },
+        "4": {
+          "hanzi": "义",
+          "meaningVi": "nghĩa, chính nghĩa"
+        }
+      }
+    },
+    {
+      "syllable": "yin",
+      "initial": "",
+      "final": "in",
+      "tones": {
+        "1": {
+          "hanzi": "音",
+          "meaningVi": "âm thanh"
+        },
+        "2": {
+          "hanzi": "银",
+          "meaningVi": "bạc"
+        },
+        "3": {
+          "hanzi": "引",
+          "meaningVi": "kéo, dẫn dắt"
+        },
+        "4": {
+          "hanzi": "印",
+          "meaningVi": "in, dấu ấn"
+        }
+      }
+    },
+    {
+      "syllable": "ying",
+      "initial": "",
+      "final": "ing",
+      "tones": {
+        "1": {
+          "hanzi": "英",
+          "meaningVi": "nước Anh; anh hùng"
+        },
+        "2": {
+          "hanzi": "营",
+          "meaningVi": "doanh trại, kinh doanh"
+        },
+        "3": {
+          "hanzi": "影",
+          "meaningVi": "bóng, hình ảnh"
+        },
+        "4": {
+          "hanzi": "硬",
+          "meaningVi": "cứng"
+        }
+      }
+    },
+    {
+      "syllable": "yong",
+      "initial": "",
+      "final": "iong",
+      "tones": {
+        "3": {
+          "hanzi": "永",
+          "meaningVi": "mãi mãi"
+        },
+        "4": {
+          "hanzi": "用",
+          "meaningVi": "dùng"
+        }
+      }
+    },
+    {
+      "syllable": "you",
+      "initial": "",
+      "final": "iu",
+      "tones": {
+        "2": {
+          "hanzi": "油",
+          "meaningVi": "dầu"
+        },
+        "3": {
+          "hanzi": "有",
+          "meaningVi": "có"
+        }
+      }
+    },
+    {
+      "syllable": "yu",
+      "initial": "",
+      "final": "v",
+      "tones": {
+        "2": {
+          "hanzi": "鱼",
+          "meaningVi": "cá"
+        },
+        "4": {
+          "hanzi": "玉",
+          "meaningVi": "ngọc"
+        }
+      }
+    },
+    {
+      "syllable": "yuan",
+      "initial": "",
+      "final": "van",
+      "tones": {
+        "2": {
+          "hanzi": "员",
+          "meaningVi": "người (làm trong 1 lĩnh vực)"
+        },
+        "4": {
+          "hanzi": "院",
+          "meaningVi": "viện, sân"
+        }
+      }
+    },
+    {
+      "syllable": "yue",
+      "initial": "",
+      "final": "ve",
+      "tones": {
+        "4": {
+          "hanzi": "月",
+          "meaningVi": "trăng, tháng"
+        }
+      }
+    },
+    {
+      "syllable": "yun",
+      "initial": "",
+      "final": "vn",
+      "tones": {
+        "2": {
+          "hanzi": "云",
+          "meaningVi": "mây"
+        },
+        "4": {
+          "hanzi": "运",
+          "meaningVi": "vận chuyển, vận may"
+        }
+      }
+    },
+    {
+      "syllable": "za",
+      "initial": "z",
+      "final": "a",
+      "tones": {
+        "2": {
+          "hanzi": "杂",
+          "meaningVi": "tạp, lẫn lộn"
+        }
+      }
+    },
+    {
+      "syllable": "zai",
+      "initial": "z",
+      "final": "ai",
+      "tones": {
+        "4": {
+          "hanzi": "在",
+          "meaningVi": "ở, tại"
+        }
+      }
+    },
+    {
+      "syllable": "zan",
+      "initial": "z",
+      "final": "an",
+      "tones": {}
+    },
+    {
+      "syllable": "zang",
+      "initial": "z",
+      "final": "ang",
+      "tones": {}
+    },
+    {
+      "syllable": "zao",
+      "initial": "z",
+      "final": "ao",
+      "tones": {
+        "3": {
+          "hanzi": "早",
+          "meaningVi": "sớm"
+        },
+        "4": {
+          "hanzi": "造",
+          "meaningVi": "làm, chế tạo"
+        }
+      }
+    },
+    {
+      "syllable": "ze",
+      "initial": "z",
+      "final": "e",
+      "tones": {}
+    },
+    {
+      "syllable": "zei",
+      "initial": "z",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "zen",
+      "initial": "z",
+      "final": "en",
+      "tones": {}
+    },
+    {
+      "syllable": "zeng",
+      "initial": "z",
+      "final": "eng",
+      "tones": {}
+    },
+    {
+      "syllable": "zha",
+      "initial": "zh",
+      "final": "a",
+      "tones": {}
+    },
+    {
+      "syllable": "zhai",
+      "initial": "zh",
+      "final": "ai",
+      "tones": {}
+    },
+    {
+      "syllable": "zhan",
+      "initial": "zh",
+      "final": "an",
+      "tones": {
+        "3": {
+          "hanzi": "展",
+          "meaningVi": "triển lãm, mở rộng"
+        },
+        "4": {
+          "hanzi": "战",
+          "meaningVi": "chiến đấu"
+        }
+      }
+    },
+    {
+      "syllable": "zhang",
+      "initial": "zh",
+      "final": "ang",
+      "tones": {
+        "1": {
+          "hanzi": "张",
+          "meaningVi": "tờ; mở ra"
+        }
+      }
+    },
+    {
+      "syllable": "zhao",
+      "initial": "zh",
+      "final": "ao",
+      "tones": {
+        "1": {
+          "hanzi": "招",
+          "meaningVi": "vẫy, tuyển"
+        },
+        "4": {
+          "hanzi": "照",
+          "meaningVi": "chiếu, theo"
+        }
+      }
+    },
+    {
+      "syllable": "zhe",
+      "initial": "zh",
+      "final": "e",
+      "tones": {
+        "3": {
+          "hanzi": "者",
+          "meaningVi": "người (hậu tố chỉ người)"
+        }
+      }
+    },
+    {
+      "syllable": "zhei",
+      "initial": "zh",
+      "final": "ei",
+      "tones": {}
+    },
+    {
+      "syllable": "zhen",
+      "initial": "zh",
+      "final": "en",
+      "tones": {
+        "1": {
+          "hanzi": "真",
+          "meaningVi": "thật, thực"
+        }
+      }
+    },
+    {
+      "syllable": "zheng",
+      "initial": "zh",
+      "final": "eng",
+      "tones": {
+        "1": {
+          "hanzi": "争",
+          "meaningVi": "tranh giành"
+        },
+        "4": {
+          "hanzi": "政",
+          "meaningVi": "chính trị"
+        }
+      }
+    },
+    {
+      "syllable": "zhi",
+      "initial": "zh",
+      "final": "-i",
+      "tones": {
+        "1": {
+          "hanzi": "之",
+          "meaningVi": "của (trợ từ cổ)"
+        },
+        "2": {
+          "hanzi": "直",
+          "meaningVi": "thẳng"
+        },
+        "3": {
+          "hanzi": "指",
+          "meaningVi": "ngón tay, chỉ"
+        },
+        "4": {
+          "hanzi": "治",
+          "meaningVi": "cai trị, chữa bệnh"
+        }
+      }
+    },
+    {
+      "syllable": "zhong",
+      "initial": "zh",
+      "final": "ong",
+      "tones": {
+        "4": {
+          "hanzi": "众",
+          "meaningVi": "đông người, quần chúng"
+        }
+      }
+    },
+    {
+      "syllable": "zhou",
+      "initial": "zh",
+      "final": "ou",
+      "tones": {
+        "1": {
+          "hanzi": "州",
+          "meaningVi": "châu (đơn vị hành chính)"
+        }
+      }
+    },
+    {
+      "syllable": "zhu",
+      "initial": "zh",
+      "final": "u",
+      "tones": {
+        "1": {
+          "hanzi": "珠",
+          "meaningVi": "hạt trai, ngọc"
+        },
+        "2": {
+          "hanzi": "竹",
+          "meaningVi": "tre, trúc"
+        },
+        "3": {
+          "hanzi": "主",
+          "meaningVi": "chủ"
+        },
+        "4": {
+          "hanzi": "住",
+          "meaningVi": "ở, sống tại"
+        }
+      }
+    },
+    {
+      "syllable": "zhua",
+      "initial": "zh",
+      "final": "ua",
+      "tones": {}
+    },
+    {
+      "syllable": "zhuai",
+      "initial": "zh",
+      "final": "uai",
+      "tones": {}
+    },
+    {
+      "syllable": "zhuan",
+      "initial": "zh",
+      "final": "uan",
+      "tones": {
+        "1": {
+          "hanzi": "专",
+          "meaningVi": "chuyên, riêng"
+        }
+      }
+    },
+    {
+      "syllable": "zhuang",
+      "initial": "zh",
+      "final": "uang",
+      "tones": {
+        "1": {
+          "hanzi": "装",
+          "meaningVi": "trang phục, lắp ráp"
+        },
+        "4": {
+          "hanzi": "状",
+          "meaningVi": "hình dạng, trạng thái"
+        }
+      }
+    },
+    {
+      "syllable": "zhui",
+      "initial": "zh",
+      "final": "ui",
+      "tones": {}
+    },
+    {
+      "syllable": "zhun",
+      "initial": "zh",
+      "final": "un",
+      "tones": {
+        "3": {
+          "hanzi": "准",
+          "meaningVi": "cho phép, chuẩn"
+        }
+      }
+    },
+    {
+      "syllable": "zhuo",
+      "initial": "zh",
+      "final": "uo",
+      "tones": {}
+    },
+    {
+      "syllable": "zi",
+      "initial": "z",
+      "final": "-i",
+      "tones": {
+        "1": {
+          "hanzi": "资",
+          "meaningVi": "vốn, tài nguyên"
+        },
+        "4": {
+          "hanzi": "自",
+          "meaningVi": "tự, chính mình"
+        }
+      }
+    },
+    {
+      "syllable": "zong",
+      "initial": "z",
+      "final": "ong",
+      "tones": {
+        "1": {
+          "hanzi": "宗",
+          "meaningVi": "tông phái, tổ tông"
+        },
+        "3": {
+          "hanzi": "总",
+          "meaningVi": "tổng, chung"
+        }
+      }
+    },
+    {
+      "syllable": "zou",
+      "initial": "z",
+      "final": "ou",
+      "tones": {
+        "3": {
+          "hanzi": "走",
+          "meaningVi": "đi bộ"
+        }
+      }
+    },
+    {
+      "syllable": "zu",
+      "initial": "z",
+      "final": "u",
+      "tones": {
+        "2": {
+          "hanzi": "族",
+          "meaningVi": "dân tộc, họ"
+        },
+        "3": {
+          "hanzi": "组",
+          "meaningVi": "tổ, nhóm"
+        }
+      }
+    },
+    {
+      "syllable": "zuan",
+      "initial": "z",
+      "final": "uan",
+      "tones": {}
+    },
+    {
+      "syllable": "zui",
+      "initial": "z",
+      "final": "ui",
+      "tones": {
+        "3": {
+          "hanzi": "嘴",
+          "meaningVi": "miệng, mỏ"
+        },
+        "4": {
+          "hanzi": "罪",
+          "meaningVi": "tội"
+        }
+      }
+    },
+    {
+      "syllable": "zun",
+      "initial": "z",
+      "final": "un",
+      "tones": {}
+    },
+    {
+      "syllable": "zuo",
+      "initial": "z",
+      "final": "uo",
+      "tones": {
+        "4": {
+          "hanzi": "座",
+          "meaningVi": "tòa, chỗ ngồi (lượng từ)"
+        }
+      }
+    }
+  ]
+}
