@@ -46,6 +46,23 @@
 16. [ ] `docker compose exec certbot certbot renew --dry-run` thành công; cron `renew-cert.sh` đã cài (`crontab -l`); chạy tay `./scripts/renew-cert.sh id.antfarms.xyz` ⇒ "không đổi".
 17. [ ] Nếu bật proxy Cloudflare: SSL/TLS mode = Full (strict); truy cập không lặp chuyển hướng; log identity ghi IP thật của máy gọi (không phải IP Cloudflare).
 
+## 4. Học liệu pinyin trong ảnh `chinese-backend` (F5, RK24/RK38) — VERIFY MỘT PHẦN (17/09/2026, MacBook, Docker Desktop)
+
+> Đã kiểm (đánh `[x]`): build qua compose (`additional_contexts`), 4 file trong `/content/chinese/data/pinyin`, `/app` không có
+> học liệu, chạy `docker run` (DB dev qua `host.docker.internal`, `Content__RootPath=/content/chinese`) ⇒ `/health/live` 200 +
+> log "Nạp học liệu pinyin thành công", user chạy là `app` (UID 1654). Lần build đầu **hỏng** vì `groupadd app` trùng user có
+> sẵn của ảnh .NET 8+ ⇒ đã bỏ `groupadd/useradd` trong Dockerfile chinese-backend. **Dockerfile identity-service và gateway còn
+> cùng lỗi** (chưa sửa — ngoài phạm vi F5). Các mục `[ ]` còn lại chưa chạy.
+
+- [x] `docker compose -f deploy/docker-compose.yml config` không lỗi với `additional_contexts` (cần Docker Compose ≥ 2.17 — RK38; `docker compose version` kiểm trước).
+- [ ] Build tay (không qua compose): từ `backend/`, `docker build -f services/chinese-backend/src/AntFarm.Chinese.Api/Dockerfile --build-context content=../content .` thành công.
+- [x] `docker compose build chinese-backend` thành công (Compose 5.3.1 trên máy dev). [ ] `docker compose up -d chinese-backend` (mới thử bằng `docker run`).
+- [x] (kiểm bằng `docker run --entrypoint sh`) `docker compose exec chinese-backend ls /content/chinese/data/pinyin` ⇒ đủ 4 file (`initials.json`, `finals.json`, `syllables.json`, `guide.json`).
+- [x] (kiểm bằng `docker run --entrypoint sh`) `docker compose exec chinese-backend ls /app | grep -i content` ⇒ RỖNG (đường dẫn học liệu Docker là `/content/chinese`, KHÔNG copy vào `/app` như dev local — tránh nhầm `Content:RootPath` mặc định của `appsettings.json`).
+- [ ] `curl http://localhost:<port hoặc qua gateway>/chinese/api/pinyin/chart` (đăng nhập trước) ⇒ 200, KHÔNG 503 `CONTENT_UNAVAILABLE`.
+- [x] Log khởi động có dòng "Nạp học liệu pinyin thành công" (Serilog Information) — không có "Nạp học liệu pinyin ... thất bại" (Error).
+- [ ] Xoá tạm `content/chinese/data/pinyin/guide.json`, build lại ⇒ log Error rõ ràng lúc khởi động, `/health/live` vẫn 200, `GET /chinese/api/pinyin/chart` = 503 `CONTENT_UNAVAILABLE` JSON; hoàn tác.
+
 Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 
 > **F2 — phần tương đương đã kiểm ở dev local (không Docker, không HTTPS), 17/09/2026 MacBook:**

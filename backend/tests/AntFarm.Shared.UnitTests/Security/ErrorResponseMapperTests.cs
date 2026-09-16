@@ -28,6 +28,16 @@ public class ErrorResponseMapperTests
     }
 
     [Fact]
+    public void Map_ServiceUnavailableException_TraVe503VaMaContentUnavailable()
+    {
+        var (statusCode, body) = ErrorResponseMapper.Map(
+            new ServiceUnavailableException("CONTENT_UNAVAILABLE", "Học liệu pinyin chưa sẵn sàng — báo quản trị viên."));
+
+        statusCode.Should().Be(503);
+        body.Code.Should().Be("CONTENT_UNAVAILABLE");
+    }
+
+    [Fact]
     public void Map_ExceptionLa_TraVe500VaKhongLoMessageGoc()
     {
         var (statusCode, body) = ErrorResponseMapper.Map(

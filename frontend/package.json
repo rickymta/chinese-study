@@ -7,7 +7,8 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "typecheck": "turbo typecheck",
-    "lint:ui": "node scripts/check-ui-conventions.mjs"
+    "lint:ui": "node scripts/check-ui-conventions.mjs",
+    "test": "turbo test"
   },
   "devDependencies": {
     "prettier": "^3.8.3",

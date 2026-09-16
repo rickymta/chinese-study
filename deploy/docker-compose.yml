@@ -79,6 +79,8 @@ services:
     build:
       context: ../backend
       dockerfile: services/chinese-backend/src/AntFarm.Chinese.Api/Dockerfile
+      additional_contexts:
+        content: ../content # F5 (RK24, D32): học liệu content/chinese/data — cần Docker Compose ≥ 2.17
     restart: unless-stopped
     environment:
       <<: *dotnet-env
@@ -91,6 +93,10 @@ services:
       # thực được BẤT KỲ token nào (401 toàn bộ). true chỉ đúng khi JwksUrl chính nó là https.
       Auth__RequireHttpsMetadata: "false"
       ChineseAdmin__BootstrapEmails__0: ${CHINESE_ADMIN_EMAIL}
+      # F5: khớp đường dẫn COPY --from=content trong Dockerfile (stage runtime) — TUYỆT ĐỐI,
+      # không dùng đường dẫn tương đối "content/chinese" (mặc định appsettings.json, chỉ đúng
+      # trong bin/publish lúc dev local chạy trực tiếp dotnet run, không đúng trong ảnh Docker).
+      Content__RootPath: /content/chinese
     depends_on:
       postgres: { condition: service_healthy }
     networks: [af-net]

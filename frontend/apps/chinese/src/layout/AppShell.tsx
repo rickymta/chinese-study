@@ -2,6 +2,7 @@ import { AppLayout, type NavItem } from '@af/ui'
 import { useAuth } from '@af/auth'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
+import RecordVoiceOverOutlinedIcon from '@mui/icons-material/RecordVoiceOverOutlined'
 import { APP_BRAND } from '@/constants'
 import { UserMenu } from '@/features/auth/components/UserMenu'
 import { PERMISSIONS } from '@/features/auth/permissions'
@@ -11,6 +12,7 @@ import { PERMISSIONS } from '@/features/auth/permissions'
 // F10 thêm /quan-tri/bai-hoc, /quan-tri/tu-vung (requiredPermission: 'content.manage').
 const NAV_ITEMS: NavItem[] = [
   { label: 'Trang chủ', to: '/', icon: <HomeOutlinedIcon />, end: true },
+  { label: 'Pinyin', to: '/pinyin', icon: <RecordVoiceOverOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
   // Ẩn với người không có `users.manage` — `AppLayout` lọc theo `hasPermission` (quyền từ GET /chinese/api/me).
   { label: 'Quản trị', to: '/quan-tri', icon: <AdminPanelSettingsOutlinedIcon />, requiredPermission: PERMISSIONS.USERS_MANAGE },
 ]

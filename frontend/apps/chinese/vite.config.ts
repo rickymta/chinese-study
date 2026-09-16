@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
@@ -21,5 +22,10 @@ export default defineConfig({
       '/identity': { target: GATEWAY, changeOrigin: false },
       '/chinese': { target: GATEWAY, changeOrigin: false },
     },
+  },
+  // vitest (F5): chỉ test hàm thuần (pinyin, sinh bài luyện) — môi trường node, không jsdom/testing-library.
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.ts'],
   },
 })

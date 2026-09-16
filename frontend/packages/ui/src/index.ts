@@ -21,3 +21,18 @@ export { NotFoundPage } from './components/errors/NotFoundPage'
 // ─── Văn bản theo ngôn ngữ ───
 export { LangText } from './components/text/LangText'
 export type { LangTextProps } from './components/text/LangText'
+
+// ─── Hộp thoại / ngăn kéo (F5 — chặn đóng ngoài ý muốn; lint `raw-dialog` bắt buộc dùng thay Dialog/Drawer trần) ───
+export { AppDialog } from './components/dialog/AppDialog'
+export type { AppDialogProps } from './components/dialog/AppDialog'
+export { AppDrawer } from './components/dialog/AppDrawer'
+export type { AppDrawerProps } from './components/dialog/AppDrawer'
+
+// ─── Hook ───
+export { useTabParam } from './hooks/useTabParam'
+
+// ─── Đọc văn bản (Web Speech API) — dùng chung mọi ngôn ngữ ───
+export { isSpeechSupported, listVoices, pickVoice, speak, cancelSpeech } from './speech/speech'
+export type { SpeakOptions } from './speech/speech'
+export { useSpeech } from './speech/useSpeech'
+export type { SpeechStatus, UseSpeechOptions, UseSpeechResult } from './speech/useSpeech'

@@ -5,6 +5,7 @@ using AntFarm.Auth.Authorization;
 using AntFarm.Chinese.Api.Middleware;
 using AntFarm.Chinese.Application;
 using AntFarm.Chinese.Application.Common.Options;
+using AntFarm.Chinese.Application.Pinyin;
 using AntFarm.Chinese.Infrastructure;
 using AntFarm.Chinese.Infrastructure.Persistence;
 using AntFarm.Chinese.Infrastructure.Seeding;
@@ -116,6 +117,11 @@ if (app.Configuration.GetValue<bool>("AutoMigrate"))
     var seedLogger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("AccessSeeder");
     await AccessSeeder.SeedAsync(db, seedAdminOptions, seedTimeProvider, seedLogger, CancellationToken.None);
 }
+
+// F5: IPinyinCatalog đăng ký Singleton "nạp lười" (tạo lúc RESOLVE ĐẦU TIÊN) — resolve tường minh
+// ở đây để học liệu hỏng lộ ra NGAY lúc khởi động (log Error, xem PinyinCatalogLoader), không phải
+// lúc request /api/pinyin/* đầu tiên tới. Không ném dù học liệu thiếu/hỏng (catalog.IsAvailable=false).
+app.Services.GetRequiredService<IPinyinCatalog>();
 
 Log.Information("Khởi động chinese-backend ({Env})", app.Environment.EnvironmentName);
 try

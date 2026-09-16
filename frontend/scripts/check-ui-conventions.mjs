@@ -9,7 +9,7 @@
 //   FAIL (exit 1):
 //     raw-dialog                     — import `Dialog`/`Drawer`/`SwipeableDrawer` từ '@mui/material' (kể cả
 //                                      đường dẫn con '@mui/material/Dialog') trong `apps/`. Phải dùng
-//                                      `AppDialog`/`AppDrawer` của '@af/ui' (thêm ở F4). `packages/ui` được miễn
+//                                      `AppDialog`/`AppDrawer` của '@af/ui' (có từ F5). `packages/ui` được miễn
 //                                      vì chính nó là nơi bọc thẻ MUI.
 //     uuid-import                    — `from 'uuid'` — dùng `crypto.randomUUID()`.
 //     autocomplete-slotprops-override — trong `renderInput` có `{...params}` rồi `slotProps={{` mà khối không mở

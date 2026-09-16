@@ -160,6 +160,217 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                     b.ToTable("user_roles", "access");
                 });
 
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.StudyEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int?>("Correct")
+                        .HasColumnType("integer")
+                        .HasColumnName("correct");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("kind");
+
+                    b.Property<DateOnly>("LocalDate")
+                        .HasColumnType("date")
+                        .HasColumnName("local_date");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_at");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<Guid?>("RefId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ref_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_study_events");
+
+                    b.HasIndex("UserId", "LocalDate")
+                        .HasDatabaseName("ix_study_events_user_id_local_date");
+
+                    b.HasIndex("UserId", "Kind", "OccurredAt")
+                        .IsDescending(false, false, true)
+                        .HasDatabaseName("ix_study_events_user_id_kind_occurred_at");
+
+                    b.ToTable("study_events", "learning", t =>
+                        {
+                            t.HasCheckConstraint("ck_study_events_correct", "correct IS NULL OR (correct >= 0 AND correct <= quantity)");
+
+                            t.HasCheckConstraint("ck_study_events_quantity", "quantity >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("AnsweredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("answered_at");
+
+                    b.Property<short>("AnsweredTone")
+                        .HasColumnType("smallint")
+                        .HasColumnName("answered_tone");
+
+                    b.Property<short>("ExpectedTone")
+                        .HasColumnType("smallint")
+                        .HasColumnName("expected_tone");
+
+                    b.Property<string>("Hanzi")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("character varying(4)")
+                        .HasColumnName("hanzi");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_correct");
+
+                    b.Property<short>("ItemIndex")
+                        .HasColumnType("smallint")
+                        .HasColumnName("item_index");
+
+                    b.Property<short>("PartIndex")
+                        .HasColumnType("smallint")
+                        .HasColumnName("part_index");
+
+                    b.Property<short>("ReplayCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
+                        .HasColumnName("replay_count");
+
+                    b.Property<int?>("ResponseMs")
+                        .HasColumnType("integer")
+                        .HasColumnName("response_ms");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("session_id");
+
+                    b.Property<string>("Syllable")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("syllable");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_tone_drill_answers");
+
+                    b.HasIndex("SessionId", "ItemIndex", "PartIndex")
+                        .IsUnique()
+                        .HasDatabaseName("ix_tone_drill_answers_session_id_item_index_part_index");
+
+                    b.HasIndex("UserId", "ExpectedTone", "AnsweredAt", "PartIndex")
+                        .IsDescending(false, false, true, true)
+                        .HasDatabaseName("ix_tone_drill_answers_user_id_expected_tone_answered_at_part_i");
+
+                    b.ToTable("tone_drill_answers", "learning", t =>
+                        {
+                            t.HasCheckConstraint("ck_tone_drill_answers_answered_tone", "answered_tone BETWEEN 1 AND 4");
+
+                            t.HasCheckConstraint("ck_tone_drill_answers_expected_tone", "expected_tone BETWEEN 1 AND 4");
+
+                            t.HasCheckConstraint("ck_tone_drill_answers_item_index", "item_index >= 0");
+
+                            t.HasCheckConstraint("ck_tone_drill_answers_part_index", "part_index IN (0,1)");
+
+                            t.HasCheckConstraint("ck_tone_drill_answers_replay_count", "replay_count BETWEEN 0 AND 100");
+
+                            t.HasCheckConstraint("ck_tone_drill_answers_response_ms", "response_ms IS NULL OR response_ms BETWEEN 0 AND 600000");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ClientSessionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("client_session_id");
+
+                    b.Property<short>("Correct")
+                        .HasColumnType("smallint")
+                        .HasColumnName("correct");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("FinishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finished_at");
+
+                    b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("mode");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<short>("Total")
+                        .HasColumnType("smallint")
+                        .HasColumnName("total");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_tone_drill_sessions");
+
+                    b.HasIndex("UserId", "ClientSessionId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_tone_drill_sessions_user_id_client_session_id");
+
+                    b.HasIndex("UserId", "FinishedAt")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_tone_drill_sessions_user_id_finished_at");
+
+                    b.ToTable("tone_drill_sessions", "learning", t =>
+                        {
+                            t.HasCheckConstraint("ck_tone_drill_sessions_correct", "correct BETWEEN 0 AND total");
+
+                            t.HasCheckConstraint("ck_tone_drill_sessions_finished_after_started", "finished_at >= started_at");
+
+                            t.HasCheckConstraint("ck_tone_drill_sessions_mode", "mode IN ('listen_tone','tone_pair')");
+
+                            t.HasCheckConstraint("ck_tone_drill_sessions_total", "total BETWEEN 1 AND 100");
+                        });
+                });
+
             modelBuilder.Entity("AntFarm.Chinese.Domain.Access.RolePermission", b =>
                 {
                     b.HasOne("AntFarm.Chinese.Domain.Access.Permission", null)
@@ -192,6 +403,41 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_roles_users_user_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.StudyEvent", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_study_events_users_user_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillAnswer", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Pinyin.ToneDrillSession", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_tone_drill_answers_tone_drill_sessions_session_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillSession", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_tone_drill_sessions_users_user_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillSession", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

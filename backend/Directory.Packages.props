@@ -47,5 +47,8 @@
     <PackageVersion Include="FluentAssertions" Version="7.2.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.7" />
+    <!-- F5: FakeTimeProvider cho test cần điều khiển "bây giờ" (R5-11 kiểm giờ phiên luyện thanh,
+         local_date theo múi giờ người dùng lúc 06:30 sáng VN) — version 10.x mới nhất trên nuget.org 17/09/2026. -->
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.0.0" />
   </ItemGroup>
 </Project>

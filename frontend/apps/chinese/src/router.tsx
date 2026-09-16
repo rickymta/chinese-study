@@ -7,6 +7,7 @@ import { LoginPage } from './features/auth/pages/LoginPage'
 import { RegisterPage } from './features/auth/pages/RegisterPage'
 import { PERMISSIONS } from './features/auth/permissions'
 import { AdminHomePage } from './features/admin/pages/AdminHomePage'
+import { PinyinPage } from './features/pinyin/pages/PinyinPage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
 
@@ -21,6 +22,15 @@ export const router = createBrowserRouter([
         element: <AppShell />,
         children: [
           { index: true, element: <HomePage /> },
+          {
+            // F5: pinyin & thanh điệu (`?tab=huong-dan|bang|luyen`) — cần `study.use` như mọi route học.
+            path: 'pinyin',
+            element: (
+              <RequirePermission permission={PERMISSIONS.STUDY_USE}>
+                <PinyinPage />
+              </RequirePermission>
+            ),
+          },
           {
             // Vùng quản trị (F3): mỗi trang con tự khai quyền — F4 thêm `nguoi-dung` (users.manage),
             // F10 thêm `bai-hoc`, `tu-vung` (content.manage). Vào thẳng URL mà thiếu quyền ⇒ /403.

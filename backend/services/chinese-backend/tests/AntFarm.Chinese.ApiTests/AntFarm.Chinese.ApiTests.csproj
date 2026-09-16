@@ -19,6 +19,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+    <!-- F5: FakeTimeProvider thay TimeProvider.System trong DI để test điều khiển "bây giờ"
+         (R5-11 kiểm giờ phiên luyện thanh, local_date lúc 06:30 sáng giờ VN). -->
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
   </ItemGroup>
 
   <ItemGroup>

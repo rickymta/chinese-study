@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Time.Testing;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
@@ -36,6 +38,14 @@ public sealed class ChineseDbApiFactory : WebApplicationFactory<Program>
 
     public TestTokenFactory TokenFactory { get; } = new(Issuer);
 
+    /// <summary>
+    /// F5: thay <c>TimeProvider.System</c> (Program.cs) bằng đồng hồ giả điều khiển được — cần cho
+    /// R5-11 (kiểm giờ phiên luyện thanh so với "bây giờ") và local_date lúc 06:30 sáng giờ VN
+    /// (§7 tiêu chí F5). Bắt đầu ở "bây giờ" thật để các test KHÔNG liên quan tới thời gian (vd
+    /// MeTests, AdminPingTests) không bị ảnh hưởng.
+    /// </summary>
+    public FakeTimeProvider TimeProvider { get; } = new(DateTimeOffset.UtcNow);
+
     public ChineseDbApiFactory()
     {
         Environment.SetEnvironmentVariable("ConnectionStrings__Default", TestDatabase.BuildConnectionString("af_chinese_test"));
@@ -64,6 +74,12 @@ public sealed class ChineseDbApiFactory : WebApplicationFactory<Program>
                 o.Configuration = configuration;
                 o.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(configuration);
             });
+
+            // F5: gỡ TimeProvider.System (Program.cs AddSingleton) — nạp SAU AddInfrastructure/
+            // AddApplication trong pipeline gốc nên phải Remove rồi Add lại (không PostConfigure
+            // được vì TimeProvider không phải Options).
+            services.RemoveAll<TimeProvider>();
+            services.AddSingleton<TimeProvider>(TimeProvider);
         });
     }
 }

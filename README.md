@@ -168,6 +168,36 @@ curl -i http://localhost:5282/api/admin/ping -H "Authorization: Bearer $TOKEN"
 - **Danh mục vai trò/quyền đầy đủ** (`GET /api/admin/roles`, `GET /api/admin/users`,
   `PUT /api/admin/users/{id}/roles`) là **F4**, chưa có ở F3 — xem mục bàn giao.
 
+## 5d. Học liệu (F5 — `content/`)
+
+`content/` là một dự án yarn **riêng**, không thuộc workspace `frontend/` — mỗi ngôn ngữ một thư
+mục con (`content/chinese/`), gồm `schemas/` (JSON Schema kiểm khung), `data/` (học liệu thật),
+`scripts/validate.mjs` (cổng kiểm tra), `SOURCES.md`/`LICENSES/` (bản quyền — CLAUDE.md mục "Học
+liệu — bản quyền trước tiên").
+
+```bash
+yarn --cwd content install
+yarn --cwd content validate:chinese   # 0 lỗi trước khi commit học liệu
+```
+
+`chinese-backend` nạp `content/chinese/data/pinyin/{initials,finals,syllables,guide}.json` lúc
+khởi động (`PinyinCatalogLoader`, singleton nạp lười — resolve tường minh ngay sau `Build()` để
+log lỗi sớm) qua cấu hình `Content:RootPath`:
+
+- **Dev local**: mặc định `"content/chinese"` (tương đối, ghép `AppContext.BaseDirectory`) —
+  `AntFarm.Chinese.Api.csproj` tự copy `content/chinese/data/**/*.json` vào `bin`/`publish` lúc
+  build (`None Include`, xem ghi chú trong `.csproj`), không cần cấu hình gì thêm.
+- **Docker**: biến môi trường `Content__RootPath=/content/chinese` (tuyệt đối) — `Dockerfile` COPY
+  học liệu từ build context phụ `content` (Docker Compose `additional_contexts`, xem
+  `deploy/docker-compose.yml` khối `chinese-backend.build` + `deploy/VERIFY-DOCKER.md` mục 4,
+  **CHƯA VERIFY**).
+
+Học liệu hỏng/thiếu (xoá nhầm file, JSON sai) **không làm service sập** — `PinyinCatalogLoader` log
+`Error` và endpoint `GET/POST /api/pinyin/*` trả `503 { "code": "CONTENT_UNAVAILABLE" }`,
+`/health/live` vẫn `200`. Endpoint pinyin (`api/pinyin/{chart,guide,tone-drills,tone-stats}`, quyền
+`study.use`) — xem hợp đồng
+`docs/agent-workflow/2026-09-17-antfarm-f4-f5-chi-tiet.md` §6.1.
+
 ## 6. Test tích hợp DB
 
 ```bash
