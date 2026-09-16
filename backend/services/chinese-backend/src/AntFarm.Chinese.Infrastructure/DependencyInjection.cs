@@ -38,6 +38,9 @@ public static class DependencyInjection
             return PinyinCatalogLoader.Load(options.ResolveRootPath(), logger);
         });
 
+        // F6: nạp từ vựng/chữ Hán — Scoped vì dùng ChineseDbContext (ContentImportRunner tự tạo scope riêng ở Program.cs).
+        services.AddScoped<ContentImporter>();
+
         return services;
     }
 }

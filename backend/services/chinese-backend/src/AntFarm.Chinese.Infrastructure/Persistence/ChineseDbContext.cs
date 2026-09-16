@@ -1,6 +1,7 @@
 using System.Reflection;
 using AntFarm.Chinese.Application.Common.Abstractions;
 using AntFarm.Chinese.Domain.Access;
+using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
 using AntFarm.Chinese.Domain.Pinyin;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,10 @@ namespace AntFarm.Chinese.Infrastructure.Persistence;
 /// <summary>
 /// F3: schema `access` (migration F3_Access, §5.1.2) — users, roles, permissions, user_roles,
 /// role_permissions. F5: schema `learning` (migration F5_ToneDrill, §5.1.1) — study_events,
-/// tone_drill_sessions, tone_drill_answers. KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự
-/// khai schema riêng vì service sẽ có thêm `content` ở các feature sau, mặc định ngầm dễ gây nhầm.
+/// tone_drill_sessions, tone_drill_answers. F6: schema `content` (migration F6_Vocabulary, §5.1.1)
+/// — words, characters, word_characters, import_runs; bật extension <c>pg_trgm</c> (RK39: role
+/// af_chinese là OWNER của DB af_chinese, extension trusted nên tự CREATE EXTENSION được, không
+/// cần superuser). KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự khai schema riêng.
 /// </summary>
 public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     : DbContext(options), IChineseDbContext
@@ -27,8 +30,14 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     public DbSet<ToneDrillSession> ToneDrillSessions => Set<ToneDrillSession>();
     public DbSet<ToneDrillAnswer> ToneDrillAnswers => Set<ToneDrillAnswer>();
 
+    public DbSet<Word> Words => Set<Word>();
+    public DbSet<Character> Characters => Set<Character>();
+    public DbSet<WordCharacter> WordCharacters => Set<WordCharacter>();
+    public DbSet<ImportRun> ImportRuns => Set<ImportRun>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("pg_trgm");
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 

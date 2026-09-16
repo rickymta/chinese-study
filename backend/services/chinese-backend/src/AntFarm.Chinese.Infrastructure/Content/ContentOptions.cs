@@ -13,6 +13,9 @@ public sealed class ContentOptions
 
     public string RootPath { get; set; } = "content/chinese";
 
+    /// <summary>F6: nạp từ vựng/chữ Hán lúc khởi động (§5.2.1) — mặc định <c>true</c>; tắt ở factory test không cần DB thật (<c>ChineseApiFactory</c>).</summary>
+    public bool ImportOnStartup { get; set; } = true;
+
     /// <summary>Quy đường dẫn tương đối về tuyệt đối dựa trên thư mục chạy ứng dụng; đường dẫn tuyệt đối giữ nguyên.</summary>
     public string ResolveRootPath() =>
         Path.IsPathRooted(RootPath) ? RootPath : Path.Combine(AppContext.BaseDirectory, RootPath);

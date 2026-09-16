@@ -7,6 +7,7 @@ using AntFarm.Chinese.Application;
 using AntFarm.Chinese.Application.Common.Options;
 using AntFarm.Chinese.Application.Pinyin;
 using AntFarm.Chinese.Infrastructure;
+using AntFarm.Chinese.Infrastructure.Content;
 using AntFarm.Chinese.Infrastructure.Persistence;
 using AntFarm.Chinese.Infrastructure.Seeding;
 using AntFarm.HealthChecks;
@@ -118,6 +119,18 @@ if (app.Configuration.GetValue<bool>("AutoMigrate"))
     var seedTimeProvider = scope.ServiceProvider.GetRequiredService<TimeProvider>();
     var seedLogger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("AccessSeeder");
     await AccessSeeder.SeedAsync(db, seedAdminOptions, seedTimeProvider, seedLogger, CancellationToken.None);
+}
+
+// F6 (§5.2.4): nạp từ vựng/chữ Hán — CỐ Ý ĐỂ NGOÀI khối `if (AutoMigrate)` ở trên (ĐIỂM LỆCH so
+// với §5.2.1 "trong khối AutoMigrate, sau seeder F3" — đã báo lại ở bàn giao F6.2): ChineseDbApiFactory
+// (ApiTests) tắt AutoMigrate vì ChineseDbFixture tự migrate + seed MỘT LẦN cho cả collection, nhưng
+// RealContentTests cần ContentImporter chạy LẠI ở MỖI LẦN factory khởi động để kiểm "khởi động 2
+// lần không nhân đôi" (idempotent theo hash tệp) — nếu đặt trong khối AutoMigrate thì importer sẽ
+// KHÔNG BAO GIỜ chạy trong ApiTests. Tự đứng độc lập, gate bằng Content:ImportOnStartup (mặc định
+// true; ChineseApiFactory — test không cần DB/học liệu — tắt cờ này để không cố kết nối DB "unused").
+await using (var contentScope = app.Services.CreateAsyncScope())
+{
+    await ContentImportRunner.RunAsync(contentScope.ServiceProvider, CancellationToken.None);
 }
 
 // F5: IPinyinCatalog đăng ký Singleton "nạp lười" (tạo lúc RESOLVE ĐẦU TIÊN) — resolve tường minh

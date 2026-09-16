@@ -12,6 +12,9 @@
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="EFCore.NamingConventions" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.7" />
+    <!-- F6.2: cache trong tiến trình danh sách 500 từ HSK1 (DictionaryService) — khoá theo id lượt
+         nạp gần nhất, tự vô hiệu khi content.words đổi (không cần thời hạn hết hạn thủ công). -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.7" />
   </ItemGroup>
   <ItemGroup Label="Auth (dùng từ F2)">
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />

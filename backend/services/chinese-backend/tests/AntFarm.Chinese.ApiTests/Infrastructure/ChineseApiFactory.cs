@@ -25,6 +25,9 @@ public sealed class ChineseApiFactory : WebApplicationFactory<Program>
     {
         Environment.SetEnvironmentVariable("ConnectionStrings__Default", "Host=localhost;Database=unused");
         Environment.SetEnvironmentVariable("AutoMigrate", "false");
+        // F6: ContentImportRunner chạy ĐỘC LẬP với AutoMigrate (xem ghi chú Program.cs) — factory
+        // này không có DB thật ("unused"), tắt hẳn để tránh mọi lượt kết nối DB không cần thiết.
+        Environment.SetEnvironmentVariable("Content__ImportOnStartup", "false");
         Environment.SetEnvironmentVariable("Auth__Issuer", "https://id.antfarms.xyz.test");
         Environment.SetEnvironmentVariable("Auth__Audience", "af-chinese");
         Environment.SetEnvironmentVariable("Auth__JwksUrl", "http://localhost:65535/.well-known/jwks.json");

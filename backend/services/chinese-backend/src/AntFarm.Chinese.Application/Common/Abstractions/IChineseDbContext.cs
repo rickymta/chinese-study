@@ -1,4 +1,5 @@
 using AntFarm.Chinese.Domain.Access;
+using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
 using AntFarm.Chinese.Domain.Pinyin;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,8 @@ namespace AntFarm.Chinese.Application.Common.Abstractions;
 /// Application chỉ phụ thuộc interface này, không phụ thuộc thẳng EF Core DbContext của
 /// Infrastructure (DDD 4 lớp). F3 bổ sung DbSet của schema `access` (§5.1.2); F5 bổ sung schema
 /// `learning` (§5.1.1) + <see cref="BeginTransactionAsync"/> (nộp bài luyện thanh ghi
-/// session + answers + study_event trong CÙNG một transaction, R5-12).
+/// session + answers + study_event trong CÙNG một transaction, R5-12). F6 bổ sung schema `content`
+/// (§5.1.1) — từ vựng, chữ Hán, nhật ký nạp học liệu.
 /// </summary>
 public interface IChineseDbContext
 {
@@ -23,6 +25,11 @@ public interface IChineseDbContext
     DbSet<StudyEvent> StudyEvents { get; }
     DbSet<ToneDrillSession> ToneDrillSessions { get; }
     DbSet<ToneDrillAnswer> ToneDrillAnswers { get; }
+
+    DbSet<Word> Words { get; }
+    DbSet<Character> Characters { get; }
+    DbSet<WordCharacter> WordCharacters { get; }
+    DbSet<ImportRun> ImportRuns { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

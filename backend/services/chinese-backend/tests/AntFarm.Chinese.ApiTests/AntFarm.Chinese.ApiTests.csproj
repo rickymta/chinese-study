@@ -29,4 +29,9 @@
     <ProjectReference Include="..\..\..\..\shared\AntFarm.Testing\AntFarm.Testing.csproj" />
   </ItemGroup>
 
+  <!-- F6 (§5.2.5): tệp học liệu giả cho ContentImporterTests — sao chép ra thư mục output để đọc bằng đường dẫn tuyệt đối lúc test chạy. -->
+  <ItemGroup>
+    <None Include="TestData\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

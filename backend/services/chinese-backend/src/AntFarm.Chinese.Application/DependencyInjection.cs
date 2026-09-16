@@ -1,6 +1,7 @@
 using System.Reflection;
 using AntFarm.Auth.Authorization;
 using AntFarm.Chinese.Application.Access;
+using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Application.Learning;
 using AntFarm.Chinese.Application.Pinyin;
 using FluentValidation;
@@ -29,6 +30,14 @@ public static class DependencyInjection
         services.AddScoped<IStudyActivityRecorder, StudyActivityRecorder>();
         services.AddScoped<ToneDrillService>();
         services.AddScoped<ToneStatsService>();
+
+        // F6: tra từ (§5.2.3) — DictionaryQueryParser dùng IPinyinCatalog (đăng ký Singleton ở
+        // Infrastructure). AddMemoryCache: DictionaryService cache danh sách 500 từ HSK1 trong
+        // tiến trình, khoá theo id lượt nạp gần nhất (review F6.2) — an toàn gọi nhiều lần
+        // (idempotent, chỉ đăng ký nếu chưa có IMemoryCache nào khác).
+        services.AddMemoryCache();
+        services.AddScoped<DictionaryQueryParser>();
+        services.AddScoped<DictionaryService>();
 
         return services;
     }
