@@ -44,3 +44,50 @@ export function normalizeCedictToken(token) {
   if (!m) return null;
   return `${m[1]}${m[2]}`;
 }
+
+// ---------------------------------------------------------------------------
+// MỞ RỘNG F6.1: đọc TOÀN BỘ mục (đa âm tiết) của một file định dạng CEDICT (CC-CEDICT hoặc CVDICT)
+// để build-hsk.mjs tra nghĩa tiếng Việt (CVDICT) theo (giản thể, pinyin). Không đổi hành vi của
+// loadCedictSingleCharReadings (F5) ở trên — hàm dưới đây là bổ sung, dùng LINE_RE chung.
+// ---------------------------------------------------------------------------
+
+/**
+ * @typedef {Object} CedictEntry
+ * @property {string} traditional
+ * @property {string} simplified
+ * @property {string} pinyinRaw   chuỗi pinyin gốc trong dấu ngoặc vuông, vd 'Bei3 jing1', 'nu:3'
+ * @property {string} pinyinKey   pinyinRaw đã chuẩn hoá 'u:'/'ü' → 'v', GIỮ NGUYÊN hoa/thường, cách nhau 1 dấu cách
+ * @property {string[]} definitions  tách theo '/', đã trim, bỏ phần tử rỗng
+ */
+
+/**
+ * Đọc toàn bộ entry của một file CEDICT/CVDICT, nhóm theo `simplified`.
+ * @param {string} rawPath
+ * @returns {Map<string, CedictEntry[]> | null} null nếu không tìm thấy file
+ */
+export function loadCedictEntries(rawPath) {
+  if (!fs.existsSync(rawPath)) return null;
+  const content = fs.readFileSync(rawPath, 'utf8');
+  const bySimplified = new Map();
+  for (const line of content.split('\n')) {
+    if (!line || line.startsWith('#') || line.startsWith('%')) continue;
+    const m = line.match(LINE_RE);
+    if (!m) continue;
+    const traditional = m[1];
+    const simplified = m[2];
+    const pinyinRaw = m[3];
+    const defsRaw = m[4];
+    const pinyinKey = pinyinRaw
+      .split(/\s+/)
+      .map((tok) => tok.replace(/u:/g, 'v').replace(/ü/g, 'v'))
+      .join(' ');
+    const definitions = defsRaw
+      .split('/')
+      .map((d) => d.trim())
+      .filter((d) => d.length > 0);
+    const entry = { traditional, simplified, pinyinRaw, pinyinKey, definitions };
+    if (!bySimplified.has(simplified)) bySimplified.set(simplified, []);
+    bySimplified.get(simplified).push(entry);
+  }
+  return bySimplified;
+}

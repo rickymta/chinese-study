@@ -1,0 +1,6131 @@
+{
+  "dataset": "characters",
+  "version": "2026-09-17",
+  "license": "CC-BY-SA-4.0 (Hán Việt); Unicode-3.0 (Unihan)",
+  "characters": [
+    {
+      "hanzi": "一",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yi1"
+      ],
+      "hanViet": [
+        "nhất"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 1,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "七",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qi1"
+      ],
+      "hanViet": [
+        "thất"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "三",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "san1"
+      ],
+      "hanViet": [
+        "tam"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "上",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shang4",
+        "shang5"
+      ],
+      "hanViet": [
+        "thượng"
+      ],
+      "hanVietByPinyin": {
+        "shang4": "thượng",
+        "shang5": "thượng"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "下",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xia4",
+        "xia5"
+      ],
+      "hanViet": [
+        "hạ"
+      ],
+      "hanVietByPinyin": {
+        "xia4": "hạ",
+        "xia5": "hạ"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "不",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bu4",
+        "bu5"
+      ],
+      "hanViet": [
+        "bất"
+      ],
+      "hanVietByPinyin": {
+        "bu4": "bất",
+        "bu5": "bất"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "东",
+      "traditionalVariants": [
+        "東"
+      ],
+      "pinyinReadings": [
+        "dong1"
+      ],
+      "hanViet": [
+        "đông"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "两",
+      "traditionalVariants": [
+        "兩"
+      ],
+      "pinyinReadings": [
+        "liang3"
+      ],
+      "hanViet": [
+        "lưỡng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "一",
+      "radicalNumber": 1,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "个",
+      "traditionalVariants": [
+        "個"
+      ],
+      "pinyinReadings": [
+        "ge4"
+      ],
+      "hanViet": [
+        "cá"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "丨",
+      "radicalNumber": 2,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "中",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhong1"
+      ],
+      "hanViet": [
+        "trung"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "丨",
+      "radicalNumber": 2,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "么",
+      "traditionalVariants": [
+        "幺",
+        "麼",
+        "麽"
+      ],
+      "pinyinReadings": [
+        "me5",
+        "yao1"
+      ],
+      "hanViet": [
+        "yêu"
+      ],
+      "hanVietByPinyin": {
+        "yao1": "yêu",
+        "me5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "丿",
+      "radicalNumber": 4,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "九",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jiu3"
+      ],
+      "hanViet": [
+        "cửu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "乙",
+      "radicalNumber": 5,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "也",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ye3"
+      ],
+      "hanViet": [
+        "dã"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "乙",
+      "radicalNumber": 5,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "习",
+      "traditionalVariants": [
+        "習"
+      ],
+      "pinyinReadings": [
+        "xi2"
+      ],
+      "hanViet": [
+        "tập"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "乙",
+      "radicalNumber": 5,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "书",
+      "traditionalVariants": [
+        "書"
+      ],
+      "pinyinReadings": [
+        "shu1"
+      ],
+      "hanViet": [
+        "thư"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "乙",
+      "radicalNumber": 5,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "买",
+      "traditionalVariants": [
+        "買"
+      ],
+      "pinyinReadings": [
+        "mai3"
+      ],
+      "hanViet": [
+        "mãi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "乙",
+      "radicalNumber": 5,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "了",
+      "traditionalVariants": [
+        "瞭"
+      ],
+      "pinyinReadings": [
+        "le5"
+      ],
+      "hanViet": [
+        "liễu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "亅",
+      "radicalNumber": 6,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "事",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shi4"
+      ],
+      "hanViet": [
+        "sự"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "亅",
+      "radicalNumber": 6,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "二",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "er4"
+      ],
+      "hanViet": [
+        "nhị"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "二",
+      "radicalNumber": 7,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "五",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wu3"
+      ],
+      "hanViet": [
+        "ngũ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "二",
+      "radicalNumber": 7,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "些",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xie1"
+      ],
+      "hanViet": [
+        "ta"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "二",
+      "radicalNumber": 7,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "京",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jing1"
+      ],
+      "hanViet": [
+        "kinh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "亠",
+      "radicalNumber": 8,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "人",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ren2",
+        "ren5"
+      ],
+      "hanViet": [
+        "nhân"
+      ],
+      "hanVietByPinyin": {
+        "ren2": "nhân",
+        "ren5": "nhân"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "什",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shen2"
+      ],
+      "hanViet": [
+        "thập"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "今",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jin1"
+      ],
+      "hanViet": [
+        "kim"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "介",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jie4"
+      ],
+      "hanViet": [
+        "giới"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "从",
+      "traditionalVariants": [
+        "從"
+      ],
+      "pinyinReadings": [
+        "cong2"
+      ],
+      "hanViet": [
+        "tòng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "他",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ta1"
+      ],
+      "hanViet": [
+        "tha"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "们",
+      "traditionalVariants": [
+        "們"
+      ],
+      "pinyinReadings": [
+        "men5"
+      ],
+      "hanViet": [
+        "môn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "休",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xiu1"
+      ],
+      "hanViet": [
+        "hưu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "会",
+      "traditionalVariants": [
+        "會"
+      ],
+      "pinyinReadings": [
+        "hui4"
+      ],
+      "hanViet": [
+        "hội"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "住",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhu4",
+        "zhu5"
+      ],
+      "hanViet": [
+        "trú"
+      ],
+      "hanVietByPinyin": {
+        "zhu4": "trú",
+        "zhu5": "trú"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "体",
+      "traditionalVariants": [
+        "體"
+      ],
+      "pinyinReadings": [
+        "ti3"
+      ],
+      "hanViet": [
+        "thể"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "作",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zuo4"
+      ],
+      "hanViet": [
+        "tác"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "你",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ni3"
+      ],
+      "hanViet": [
+        "nễ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "候",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "hou4",
+        "hou5"
+      ],
+      "hanViet": [
+        "hầu"
+      ],
+      "hanVietByPinyin": {
+        "hou4": "hầu",
+        "hou5": "hầu"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "假",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jia3",
+        "jia4"
+      ],
+      "hanViet": [
+        "giả",
+        "giá"
+      ],
+      "hanVietByPinyin": {
+        "jia3": "giả",
+        "jia4": "giá"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "做",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zuo4"
+      ],
+      "hanViet": [
+        "tố"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "人",
+      "radicalNumber": 9,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "儿",
+      "traditionalVariants": [
+        "兒"
+      ],
+      "pinyinReadings": [
+        "er2",
+        "r5"
+      ],
+      "hanViet": [
+        "nhi"
+      ],
+      "hanVietByPinyin": {
+        "er2": "nhi",
+        "r5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "儿",
+      "radicalNumber": 10,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "元",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yuan2"
+      ],
+      "hanViet": [
+        "nguyên"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "儿",
+      "radicalNumber": 10,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "先",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xian1"
+      ],
+      "hanViet": [
+        "tiên"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "儿",
+      "radicalNumber": 10,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "八",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ba1"
+      ],
+      "hanViet": [
+        "bát"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "八",
+      "radicalNumber": 12,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "六",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "liu4"
+      ],
+      "hanViet": [
+        "lục"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "八",
+      "radicalNumber": 12,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "关",
+      "traditionalVariants": [
+        "關"
+      ],
+      "pinyinReadings": [
+        "guan1"
+      ],
+      "hanViet": [
+        "quan"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "八",
+      "radicalNumber": 12,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "兴",
+      "traditionalVariants": [
+        "興"
+      ],
+      "pinyinReadings": [
+        "xing4"
+      ],
+      "hanViet": [
+        "hứng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "八",
+      "radicalNumber": 12,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "再",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zai4"
+      ],
+      "hanViet": [
+        "tái"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "冂",
+      "radicalNumber": 13,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "写",
+      "traditionalVariants": [
+        "寫"
+      ],
+      "pinyinReadings": [
+        "xie3"
+      ],
+      "hanViet": [
+        "tả"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "冖",
+      "radicalNumber": 14,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "冷",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "leng3"
+      ],
+      "hanViet": [
+        "lãnh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "冫",
+      "radicalNumber": 15,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "净",
+      "traditionalVariants": [
+        "凈"
+      ],
+      "pinyinReadings": [
+        "jing4"
+      ],
+      "hanViet": [
+        "tịnh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "冫",
+      "radicalNumber": 15,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "准",
+      "traditionalVariants": [
+        "準"
+      ],
+      "pinyinReadings": [
+        "zhun3"
+      ],
+      "hanViet": [
+        "chuẩn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "冫",
+      "radicalNumber": 15,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "几",
+      "traditionalVariants": [
+        "幾"
+      ],
+      "pinyinReadings": [
+        "ji3"
+      ],
+      "hanViet": [
+        "kỉ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "几",
+      "radicalNumber": 16,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "出",
+      "traditionalVariants": [
+        "齣"
+      ],
+      "pinyinReadings": [
+        "chu1"
+      ],
+      "hanViet": [
+        "xuất"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "凵",
+      "radicalNumber": 17,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "分",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fen1"
+      ],
+      "hanViet": [
+        "phân"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "刀",
+      "radicalNumber": 18,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "别",
+      "traditionalVariants": [
+        "別",
+        "彆"
+      ],
+      "pinyinReadings": [
+        "bie2"
+      ],
+      "hanViet": [
+        "biệt"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "刀",
+      "radicalNumber": 18,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "到",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "dao4"
+      ],
+      "hanViet": [
+        "đáo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "刀",
+      "radicalNumber": 18,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "前",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qian2"
+      ],
+      "hanViet": [
+        "tiền"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "刀",
+      "radicalNumber": 18,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "动",
+      "traditionalVariants": [
+        "動"
+      ],
+      "pinyinReadings": [
+        "dong4"
+      ],
+      "hanViet": [
+        "động"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "力",
+      "radicalNumber": 19,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "包",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bao1"
+      ],
+      "hanViet": [
+        "bao"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "勹",
+      "radicalNumber": 20,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "北",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bei3"
+      ],
+      "hanViet": [
+        "bắc"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "匕",
+      "radicalNumber": 21,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "医",
+      "traditionalVariants": [
+        "醫"
+      ],
+      "pinyinReadings": [
+        "yi1"
+      ],
+      "hanViet": [
+        "y"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "匸",
+      "radicalNumber": 23,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "十",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shi2"
+      ],
+      "hanViet": [
+        "thập"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 2,
+      "radical": "十",
+      "radicalNumber": 24,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "午",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wu3"
+      ],
+      "hanViet": [
+        "ngọ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "十",
+      "radicalNumber": 24,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "半",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ban4"
+      ],
+      "hanViet": [
+        "bán"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "十",
+      "radicalNumber": 24,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "南",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nan2"
+      ],
+      "hanViet": [
+        "nam"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "十",
+      "radicalNumber": 24,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "去",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qu4",
+        "qu5"
+      ],
+      "hanViet": [
+        "khứ"
+      ],
+      "hanVietByPinyin": {
+        "qu4": "khứ",
+        "qu5": "khứ"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "厶",
+      "radicalNumber": 28,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "友",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "you3",
+        "you5"
+      ],
+      "hanViet": [
+        "hữu"
+      ],
+      "hanVietByPinyin": {
+        "you3": "hữu",
+        "you5": "hữu"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "又",
+      "radicalNumber": 29,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "口",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "kou3"
+      ],
+      "hanViet": [
+        "khẩu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "叫",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jiao4"
+      ],
+      "hanViet": [
+        "khiếu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "右",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "you4"
+      ],
+      "hanViet": [
+        "hữu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "号",
+      "traditionalVariants": [
+        "號"
+      ],
+      "pinyinReadings": [
+        "hao4"
+      ],
+      "hanViet": [
+        "hiệu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "吃",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "chi1"
+      ],
+      "hanViet": [
+        "ngật"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "同",
+      "traditionalVariants": [
+        "衕"
+      ],
+      "pinyinReadings": [
+        "tong2"
+      ],
+      "hanViet": [
+        "đồng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "名",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ming2"
+      ],
+      "hanViet": [
+        "danh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "后",
+      "traditionalVariants": [
+        "後"
+      ],
+      "pinyinReadings": [
+        "hou4"
+      ],
+      "hanViet": [
+        "hậu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "吗",
+      "traditionalVariants": [
+        "嗎"
+      ],
+      "pinyinReadings": [
+        "ma5"
+      ],
+      "hanViet": [],
+      "hanVietByPinyin": {
+        "ma5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "吧",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ba5"
+      ],
+      "hanViet": [
+        "ba"
+      ],
+      "hanVietByPinyin": {
+        "ba5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "听",
+      "traditionalVariants": [
+        "聽"
+      ],
+      "pinyinReadings": [
+        "ting1"
+      ],
+      "hanViet": [
+        "thính"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "告",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "gao4"
+      ],
+      "hanViet": [
+        "cáo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "呢",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ne5"
+      ],
+      "hanViet": [
+        "ni",
+        "nỉ"
+      ],
+      "hanVietByPinyin": {
+        "ne5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "和",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "he2"
+      ],
+      "hanViet": [
+        "hoà"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "哥",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ge1",
+        "ge5"
+      ],
+      "hanViet": [
+        "ca"
+      ],
+      "hanVietByPinyin": {
+        "ge1": "ca",
+        "ge5": "ca"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "哪",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "na3"
+      ],
+      "hanViet": [
+        "na"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "唱",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "chang4"
+      ],
+      "hanViet": [
+        "xướng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "商",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shang1"
+      ],
+      "hanViet": [
+        "thương"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "喜",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xi3"
+      ],
+      "hanViet": [
+        "hỉ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "喝",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "he1"
+      ],
+      "hanViet": [
+        "hát"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "口",
+      "radicalNumber": 30,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "四",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "si4"
+      ],
+      "hanViet": [
+        "tứ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "囗",
+      "radicalNumber": 31,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "回",
+      "traditionalVariants": [
+        "迴"
+      ],
+      "pinyinReadings": [
+        "hui2"
+      ],
+      "hanViet": [
+        "hồi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "囗",
+      "radicalNumber": 31,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "国",
+      "traditionalVariants": [
+        "國"
+      ],
+      "pinyinReadings": [
+        "guo2"
+      ],
+      "hanViet": [
+        "quốc"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "囗",
+      "radicalNumber": 31,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "图",
+      "traditionalVariants": [
+        "圖"
+      ],
+      "pinyinReadings": [
+        "tu2"
+      ],
+      "hanViet": [
+        "đồ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "囗",
+      "radicalNumber": 31,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "在",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zai4"
+      ],
+      "hanViet": [
+        "tại"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "地",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "de5",
+        "di4"
+      ],
+      "hanViet": [
+        "địa"
+      ],
+      "hanVietByPinyin": {
+        "di4": "địa",
+        "de5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "场",
+      "traditionalVariants": [
+        "場"
+      ],
+      "pinyinReadings": [
+        "chang3"
+      ],
+      "hanViet": [
+        "trường"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "坏",
+      "traditionalVariants": [
+        "壞"
+      ],
+      "pinyinReadings": [
+        "huai4"
+      ],
+      "hanViet": [
+        "hoại"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "坐",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zuo4"
+      ],
+      "hanViet": [
+        "toạ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "块",
+      "traditionalVariants": [
+        "塊"
+      ],
+      "pinyinReadings": [
+        "kuai4"
+      ],
+      "hanViet": [
+        "khối"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "土",
+      "radicalNumber": 32,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "备",
+      "traditionalVariants": [
+        "備"
+      ],
+      "pinyinReadings": [
+        "bei4"
+      ],
+      "hanViet": [
+        "bị"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "夂",
+      "radicalNumber": 34,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "外",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wai4"
+      ],
+      "hanViet": [
+        "ngoại"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "夕",
+      "radicalNumber": 36,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "多",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "duo1"
+      ],
+      "hanViet": [
+        "đa"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "夕",
+      "radicalNumber": 36,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "大",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "da4"
+      ],
+      "hanViet": [
+        "đại"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "大",
+      "radicalNumber": 37,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "天",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "tian1"
+      ],
+      "hanViet": [
+        "thiên"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "大",
+      "radicalNumber": 37,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "太",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "tai4"
+      ],
+      "hanViet": [
+        "thái"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "大",
+      "radicalNumber": 37,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "女",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nv3"
+      ],
+      "hanViet": [
+        "nữ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "奶",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nai3",
+        "nai5"
+      ],
+      "hanViet": [
+        "nãi"
+      ],
+      "hanVietByPinyin": {
+        "nai3": "nãi",
+        "nai5": "nãi"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "她",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ta1"
+      ],
+      "hanViet": [
+        "tha"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "好",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "hao3",
+        "hao4"
+      ],
+      "hanViet": [
+        "hảo",
+        "hiếu"
+      ],
+      "hanVietByPinyin": {
+        "hao3": "hảo",
+        "hao4": "hiếu"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "妈",
+      "traditionalVariants": [
+        "媽"
+      ],
+      "pinyinReadings": [
+        "ma1",
+        "ma5"
+      ],
+      "hanViet": [
+        "ma"
+      ],
+      "hanVietByPinyin": {
+        "ma1": "ma",
+        "ma5": "ma"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "妹",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "mei4",
+        "mei5"
+      ],
+      "hanViet": [
+        "muội"
+      ],
+      "hanVietByPinyin": {
+        "mei4": "muội",
+        "mei5": "muội"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "姐",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jie3",
+        "jie5"
+      ],
+      "hanViet": [
+        "thư"
+      ],
+      "hanVietByPinyin": {
+        "jie3": "thư",
+        "jie5": "thư"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "女",
+      "radicalNumber": 38,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "子",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zi3",
+        "zi5"
+      ],
+      "hanViet": [
+        "tử"
+      ],
+      "hanVietByPinyin": {
+        "zi3": "tử",
+        "zi5": "tử"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "子",
+      "radicalNumber": 39,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "字",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zi4",
+        "zi5"
+      ],
+      "hanViet": [
+        "tự"
+      ],
+      "hanVietByPinyin": {
+        "zi4": "tự",
+        "zi5": "tự"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "子",
+      "radicalNumber": 39,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "学",
+      "traditionalVariants": [
+        "學"
+      ],
+      "pinyinReadings": [
+        "xue2"
+      ],
+      "hanViet": [
+        "học"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "子",
+      "radicalNumber": 39,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "孩",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "hai2"
+      ],
+      "hanViet": [
+        "hài"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "子",
+      "radicalNumber": 39,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "客",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ke4"
+      ],
+      "hanViet": [
+        "khách"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "宀",
+      "radicalNumber": 40,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "家",
+      "traditionalVariants": [
+        "傢"
+      ],
+      "pinyinReadings": [
+        "jia1"
+      ],
+      "hanViet": [
+        "gia"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "宀",
+      "radicalNumber": 40,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "对",
+      "traditionalVariants": [
+        "對"
+      ],
+      "pinyinReadings": [
+        "dui4"
+      ],
+      "hanViet": [
+        "đối"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "寸",
+      "radicalNumber": 41,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "小",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xiao3"
+      ],
+      "hanViet": [
+        "tiểu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "小",
+      "radicalNumber": 42,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "少",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shao3",
+        "shao5"
+      ],
+      "hanViet": [
+        "thiểu"
+      ],
+      "hanVietByPinyin": {
+        "shao3": "thiểu",
+        "shao5": "thiểu"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "小",
+      "radicalNumber": 42,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "就",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jiu4"
+      ],
+      "hanViet": [
+        "tựu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "尢",
+      "radicalNumber": 43,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "山",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shan1"
+      ],
+      "hanViet": [
+        "sơn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "山",
+      "radicalNumber": 46,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "岁",
+      "traditionalVariants": [
+        "歲"
+      ],
+      "pinyinReadings": [
+        "sui4"
+      ],
+      "hanViet": [
+        "tuế"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "山",
+      "radicalNumber": 46,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "工",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "gong1"
+      ],
+      "hanViet": [
+        "công"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "工",
+      "radicalNumber": 48,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "左",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zuo3"
+      ],
+      "hanViet": [
+        "tả"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "工",
+      "radicalNumber": 48,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "差",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "cha4",
+        "cha1"
+      ],
+      "hanViet": [
+        "sai"
+      ],
+      "hanVietByPinyin": {
+        "cha4": "sai",
+        "cha1": "sai"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "工",
+      "radicalNumber": 48,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "师",
+      "traditionalVariants": [
+        "師"
+      ],
+      "pinyinReadings": [
+        "shi1"
+      ],
+      "hanViet": [
+        "sư"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "巾",
+      "radicalNumber": 50,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "帮",
+      "traditionalVariants": [
+        "幫"
+      ],
+      "pinyinReadings": [
+        "bang1"
+      ],
+      "hanViet": [
+        "bang"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "巾",
+      "radicalNumber": 50,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "常",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "chang2"
+      ],
+      "hanViet": [
+        "thường"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "巾",
+      "radicalNumber": 50,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "干",
+      "traditionalVariants": [
+        "乾",
+        "幹"
+      ],
+      "pinyinReadings": [
+        "gan4",
+        "gan1"
+      ],
+      "hanViet": [
+        "cán",
+        "can"
+      ],
+      "hanVietByPinyin": {
+        "gan4": "cán",
+        "gan1": "can"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "干",
+      "radicalNumber": 51,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "年",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nian2"
+      ],
+      "hanViet": [
+        "niên"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "干",
+      "radicalNumber": 51,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "床",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "chuang2"
+      ],
+      "hanViet": [
+        "sàng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "广",
+      "radicalNumber": 53,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "店",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "dian4"
+      ],
+      "hanViet": [
+        "điếm"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "广",
+      "radicalNumber": 53,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "开",
+      "traditionalVariants": [
+        "開"
+      ],
+      "pinyinReadings": [
+        "kai1"
+      ],
+      "hanViet": [
+        "khai"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "廾",
+      "radicalNumber": 55,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "弟",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "di4",
+        "di5"
+      ],
+      "hanViet": [
+        "đệ"
+      ],
+      "hanVietByPinyin": {
+        "di4": "đệ",
+        "di5": "đệ"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "弓",
+      "radicalNumber": 57,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "影",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ying3"
+      ],
+      "hanViet": [
+        "ảnh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 15,
+      "radical": "彡",
+      "radicalNumber": 59,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "很",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "hen3"
+      ],
+      "hanViet": [
+        "ngận"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "彳",
+      "radicalNumber": 60,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "得",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "de2",
+        "de5"
+      ],
+      "hanViet": [
+        "đắc"
+      ],
+      "hanVietByPinyin": {
+        "de2": "đắc",
+        "de5": "đắc"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "彳",
+      "radicalNumber": 60,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "忘",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wang4"
+      ],
+      "hanViet": [
+        "vong"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "忙",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "mang2"
+      ],
+      "hanViet": [
+        "mang"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "快",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "kuai4"
+      ],
+      "hanViet": [
+        "khoái"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "怎",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zen3"
+      ],
+      "hanViet": [
+        "chẩm"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "息",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xi1",
+        "xi5"
+      ],
+      "hanViet": [
+        "tức"
+      ],
+      "hanVietByPinyin": {
+        "xi1": "tức",
+        "xi5": "tức"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "您",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nin2"
+      ],
+      "hanViet": [
+        "nâm"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "想",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xiang3"
+      ],
+      "hanViet": [
+        "tưởng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "慢",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "man4"
+      ],
+      "hanViet": [
+        "mạn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 14,
+      "radical": "心",
+      "radicalNumber": 61,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "我",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wo3"
+      ],
+      "hanViet": [
+        "ngã"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "戈",
+      "radicalNumber": 62,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "房",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fang2"
+      ],
+      "hanViet": [
+        "phòng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "戶",
+      "radicalNumber": 63,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "手",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shou3"
+      ],
+      "hanViet": [
+        "thủ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "手",
+      "radicalNumber": 64,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "打",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "da3"
+      ],
+      "hanViet": [
+        "đả"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "手",
+      "radicalNumber": 64,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "找",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhao3"
+      ],
+      "hanViet": [
+        "trảo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "手",
+      "radicalNumber": 64,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "拿",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "na2"
+      ],
+      "hanViet": [
+        "nã"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "手",
+      "radicalNumber": 64,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "放",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fang4"
+      ],
+      "hanViet": [
+        "phóng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "攴",
+      "radicalNumber": 66,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "教",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "jiao4",
+        "jiao1"
+      ],
+      "hanViet": [
+        "giáo"
+      ],
+      "hanVietByPinyin": {
+        "jiao4": "giáo",
+        "jiao1": "giáo"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "攴",
+      "radicalNumber": 66,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "文",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wen2"
+      ],
+      "hanViet": [
+        "văn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "文",
+      "radicalNumber": 67,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "新",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xin1"
+      ],
+      "hanViet": [
+        "tân"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "斤",
+      "radicalNumber": 69,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "方",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fang1",
+        "fang5"
+      ],
+      "hanViet": [
+        "phương"
+      ],
+      "hanVietByPinyin": {
+        "fang1": "phương",
+        "fang5": "phương"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "方",
+      "radicalNumber": 70,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "旁",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "pang2"
+      ],
+      "hanViet": [
+        "bàng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "方",
+      "radicalNumber": 70,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "日",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ri4"
+      ],
+      "hanViet": [
+        "nhật"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "早",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zao3"
+      ],
+      "hanViet": [
+        "tảo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "时",
+      "traditionalVariants": [
+        "時"
+      ],
+      "pinyinReadings": [
+        "shi2"
+      ],
+      "hanViet": [
+        "thời"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "明",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ming2"
+      ],
+      "hanViet": [
+        "minh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "星",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xing1"
+      ],
+      "hanViet": [
+        "tinh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "昨",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zuo2"
+      ],
+      "hanViet": [
+        "tạc"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "是",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shi4",
+        "shi5"
+      ],
+      "hanViet": [
+        "thị"
+      ],
+      "hanVietByPinyin": {
+        "shi4": "thị",
+        "shi5": "thị"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "晚",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wan3"
+      ],
+      "hanViet": [
+        "vãn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "日",
+      "radicalNumber": 72,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "最",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zui4"
+      ],
+      "hanViet": [
+        "tối"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "冂",
+      "radicalNumber": 13,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "月",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yue4"
+      ],
+      "hanViet": [
+        "nguyệt"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "月",
+      "radicalNumber": 74,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "有",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "you3"
+      ],
+      "hanViet": [
+        "hữu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "月",
+      "radicalNumber": 74,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "朋",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "peng2"
+      ],
+      "hanViet": [
+        "bằng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "月",
+      "radicalNumber": 74,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "服",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fu2",
+        "fu5"
+      ],
+      "hanViet": [
+        "phục"
+      ],
+      "hanVietByPinyin": {
+        "fu2": "phục",
+        "fu5": "phục"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "月",
+      "radicalNumber": 74,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "期",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qi1"
+      ],
+      "hanViet": [
+        "kì"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "月",
+      "radicalNumber": 74,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "本",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ben3"
+      ],
+      "hanViet": [
+        "bản"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "机",
+      "traditionalVariants": [
+        "機"
+      ],
+      "pinyinReadings": [
+        "ji1"
+      ],
+      "hanViet": [
+        "cơ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "条",
+      "traditionalVariants": [
+        "條"
+      ],
+      "pinyinReadings": [
+        "tiao2"
+      ],
+      "hanViet": [
+        "điều"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "来",
+      "traditionalVariants": [
+        "來"
+      ],
+      "pinyinReadings": [
+        "lai2",
+        "lai5"
+      ],
+      "hanViet": [
+        "lai"
+      ],
+      "hanVietByPinyin": {
+        "lai2": "lai",
+        "lai5": "lai"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "杯",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bei1"
+      ],
+      "hanViet": [
+        "bôi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "果",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "guo3"
+      ],
+      "hanViet": [
+        "quả"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "树",
+      "traditionalVariants": [
+        "樹"
+      ],
+      "pinyinReadings": [
+        "shu4"
+      ],
+      "hanViet": [
+        "thụ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "校",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xiao4"
+      ],
+      "hanViet": [
+        "hiệu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "样",
+      "traditionalVariants": [
+        "樣"
+      ],
+      "pinyinReadings": [
+        "yang4"
+      ],
+      "hanViet": [
+        "dạng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "桌",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhuo1"
+      ],
+      "hanViet": [
+        "trác"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "楼",
+      "traditionalVariants": [
+        "樓"
+      ],
+      "pinyinReadings": [
+        "lou2"
+      ],
+      "hanViet": [
+        "lâu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "木",
+      "radicalNumber": 75,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "次",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ci4"
+      ],
+      "hanViet": [
+        "thứ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "欠",
+      "radicalNumber": 76,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "欢",
+      "traditionalVariants": [
+        "歡"
+      ],
+      "pinyinReadings": [
+        "huan1",
+        "huan5"
+      ],
+      "hanViet": [
+        "hoan"
+      ],
+      "hanVietByPinyin": {
+        "huan1": "hoan",
+        "huan5": "hoan"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "欠",
+      "radicalNumber": 76,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "歌",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ge1"
+      ],
+      "hanViet": [
+        "ca"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 14,
+      "radical": "欠",
+      "radicalNumber": 76,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "正",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zheng4"
+      ],
+      "hanViet": [
+        "chính"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "止",
+      "radicalNumber": 77,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "比",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bi3"
+      ],
+      "hanViet": [
+        "tỉ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "比",
+      "radicalNumber": 81,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "毛",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "mao2"
+      ],
+      "hanViet": [
+        "mao"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "毛",
+      "radicalNumber": 82,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "气",
+      "traditionalVariants": [
+        "氣"
+      ],
+      "pinyinReadings": [
+        "qi4",
+        "qi5"
+      ],
+      "hanViet": [
+        "khí"
+      ],
+      "hanVietByPinyin": {
+        "qi4": "khí",
+        "qi5": "khí"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "气",
+      "radicalNumber": 84,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "水",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shui3"
+      ],
+      "hanViet": [
+        "thuỷ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "汉",
+      "traditionalVariants": [
+        "漢"
+      ],
+      "pinyinReadings": [
+        "han4"
+      ],
+      "hanViet": [
+        "hán"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "汽",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qi4"
+      ],
+      "hanViet": [
+        "khí"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "没",
+      "traditionalVariants": [
+        "沒"
+      ],
+      "pinyinReadings": [
+        "mei2"
+      ],
+      "hanViet": [
+        "một"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "洗",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xi3"
+      ],
+      "hanViet": [
+        "tẩy"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "渴",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ke3"
+      ],
+      "hanViet": [
+        "khát"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "水",
+      "radicalNumber": 85,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "火",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "huo3"
+      ],
+      "hanViet": [
+        "hoả"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "火",
+      "radicalNumber": 86,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "点",
+      "traditionalVariants": [
+        "點"
+      ],
+      "pinyinReadings": [
+        "dian3"
+      ],
+      "hanViet": [
+        "điểm"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "火",
+      "radicalNumber": 86,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "热",
+      "traditionalVariants": [
+        "熱"
+      ],
+      "pinyinReadings": [
+        "re4"
+      ],
+      "hanViet": [
+        "nhiệt"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "火",
+      "radicalNumber": 86,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "爱",
+      "traditionalVariants": [
+        "愛"
+      ],
+      "pinyinReadings": [
+        "ai4"
+      ],
+      "hanViet": [
+        "ái"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "爪",
+      "radicalNumber": 87,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "爷",
+      "traditionalVariants": [
+        "爺"
+      ],
+      "pinyinReadings": [
+        "ye2",
+        "ye5"
+      ],
+      "hanViet": [
+        "gia"
+      ],
+      "hanVietByPinyin": {
+        "ye2": "gia",
+        "ye5": "gia"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "父",
+      "radicalNumber": 88,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "爸",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ba4",
+        "ba5"
+      ],
+      "hanViet": [
+        "ba"
+      ],
+      "hanVietByPinyin": {
+        "ba4": "ba",
+        "ba5": "ba"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "父",
+      "radicalNumber": 88,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "牛",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "niu2"
+      ],
+      "hanViet": [
+        "ngưu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "牛",
+      "radicalNumber": 93,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "玩",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "wan2"
+      ],
+      "hanViet": [
+        "ngoạn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "玉",
+      "radicalNumber": 96,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "现",
+      "traditionalVariants": [
+        "現"
+      ],
+      "pinyinReadings": [
+        "xian4"
+      ],
+      "hanViet": [
+        "hiện"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "玉",
+      "radicalNumber": 96,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "班",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ban1"
+      ],
+      "hanViet": [
+        "ban"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "玉",
+      "radicalNumber": 96,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "球",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qiu2"
+      ],
+      "hanViet": [
+        "cầu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "玉",
+      "radicalNumber": 96,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "生",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "sheng1",
+        "sheng5"
+      ],
+      "hanViet": [
+        "sinh"
+      ],
+      "hanVietByPinyin": {
+        "sheng1": "sinh",
+        "sheng5": "sinh"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "生",
+      "radicalNumber": 100,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "用",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yong4"
+      ],
+      "hanViet": [
+        "dụng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "用",
+      "radicalNumber": 101,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "电",
+      "traditionalVariants": [
+        "電"
+      ],
+      "pinyinReadings": [
+        "dian4"
+      ],
+      "hanViet": [
+        "điện"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "田",
+      "radicalNumber": 102,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "男",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "nan2"
+      ],
+      "hanViet": [
+        "nam"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "田",
+      "radicalNumber": 102,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "病",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bing4"
+      ],
+      "hanViet": [
+        "bệnh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "疒",
+      "radicalNumber": 104,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "白",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bai2",
+        "bai5"
+      ],
+      "hanViet": [
+        "bạch"
+      ],
+      "hanVietByPinyin": {
+        "bai2": "bạch",
+        "bai5": "bạch"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "白",
+      "radicalNumber": 106,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "百",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "bai3"
+      ],
+      "hanViet": [
+        "bách"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "白",
+      "radicalNumber": 106,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "的",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "de5"
+      ],
+      "hanViet": [
+        "đích"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "白",
+      "radicalNumber": 106,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "看",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "kan4"
+      ],
+      "hanViet": [
+        "khán"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "目",
+      "radicalNumber": 109,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "真",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhen1"
+      ],
+      "hanViet": [
+        "chân"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "目",
+      "radicalNumber": 109,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "着",
+      "traditionalVariants": [
+        "著"
+      ],
+      "pinyinReadings": [
+        "zhe5"
+      ],
+      "hanViet": [
+        "trước"
+      ],
+      "hanVietByPinyin": {
+        "zhe5": ""
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "目",
+      "radicalNumber": 109,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "睡",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shui4"
+      ],
+      "hanViet": [
+        "thuỵ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "目",
+      "radicalNumber": 109,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "知",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhi1"
+      ],
+      "hanViet": [
+        "tri"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "矢",
+      "radicalNumber": 111,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "票",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "piao4"
+      ],
+      "hanViet": [
+        "phiếu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "示",
+      "radicalNumber": 113,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "穿",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "chuan1"
+      ],
+      "hanViet": [
+        "xuyên"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "穴",
+      "radicalNumber": 116,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "站",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhan4"
+      ],
+      "hanViet": [
+        "trạm"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "立",
+      "radicalNumber": 117,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "笑",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xiao4"
+      ],
+      "hanViet": [
+        "tiếu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "竹",
+      "radicalNumber": 118,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "第",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "di4"
+      ],
+      "hanViet": [
+        "đệ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "竹",
+      "radicalNumber": 118,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "等",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "deng3"
+      ],
+      "hanViet": [
+        "đẳng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "竹",
+      "radicalNumber": 118,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "答",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "da2"
+      ],
+      "hanViet": [
+        "đáp"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "竹",
+      "radicalNumber": 118,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "米",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "mi3"
+      ],
+      "hanViet": [
+        "mễ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "米",
+      "radicalNumber": 119,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "系",
+      "traditionalVariants": [
+        "係",
+        "繫"
+      ],
+      "pinyinReadings": [
+        "xi4",
+        "xi5"
+      ],
+      "hanViet": [
+        "hệ"
+      ],
+      "hanVietByPinyin": {
+        "xi4": "hệ",
+        "xi5": "hệ"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "糸",
+      "radicalNumber": 120,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "累",
+      "traditionalVariants": [
+        "纍"
+      ],
+      "pinyinReadings": [
+        "lei4"
+      ],
+      "hanViet": [
+        "luỵ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "糸",
+      "radicalNumber": 120,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "绍",
+      "traditionalVariants": [
+        "紹"
+      ],
+      "pinyinReadings": [
+        "shao4"
+      ],
+      "hanViet": [
+        "thiệu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "纟",
+      "radicalNumber": 120,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "给",
+      "traditionalVariants": [
+        "給"
+      ],
+      "pinyinReadings": [
+        "gei3"
+      ],
+      "hanViet": [
+        "cấp"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "纟",
+      "radicalNumber": 120,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "网",
+      "traditionalVariants": [
+        "網"
+      ],
+      "pinyinReadings": [
+        "wang3"
+      ],
+      "hanViet": [
+        "võng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "网",
+      "radicalNumber": 122,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "老",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "lao3"
+      ],
+      "hanViet": [
+        "lão"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "老",
+      "radicalNumber": 125,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "考",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "kao3"
+      ],
+      "hanViet": [
+        "khảo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "老",
+      "radicalNumber": 125,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "肉",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "rou4"
+      ],
+      "hanViet": [
+        "nhục"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "肉",
+      "radicalNumber": 130,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "能",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "neng2"
+      ],
+      "hanViet": [
+        "năng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "肉",
+      "radicalNumber": 130,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "脑",
+      "traditionalVariants": [
+        "腦"
+      ],
+      "pinyinReadings": [
+        "nao3"
+      ],
+      "hanViet": [
+        "não"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "肉",
+      "radicalNumber": 130,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "花",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "hua1"
+      ],
+      "hanViet": [
+        "hoa"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "艸",
+      "radicalNumber": 140,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "茶",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "cha2"
+      ],
+      "hanViet": [
+        "trà"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "艸",
+      "radicalNumber": 140,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "菜",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "cai4"
+      ],
+      "hanViet": [
+        "thái"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "艸",
+      "radicalNumber": 140,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "蛋",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "dan4"
+      ],
+      "hanViet": [
+        "đản"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "虫",
+      "radicalNumber": 142,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "行",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xing2"
+      ],
+      "hanViet": [
+        "hành"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "行",
+      "radicalNumber": 144,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "衣",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yi1"
+      ],
+      "hanViet": [
+        "y"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "衣",
+      "radicalNumber": 145,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "西",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "xi1",
+        "xi5"
+      ],
+      "hanViet": [
+        "tây"
+      ],
+      "hanVietByPinyin": {
+        "xi1": "tây",
+        "xi5": "tây"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "襾",
+      "radicalNumber": 146,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "要",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yao4"
+      ],
+      "hanViet": [
+        "yếu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "襾",
+      "radicalNumber": 146,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "见",
+      "traditionalVariants": [
+        "見"
+      ],
+      "pinyinReadings": [
+        "jian4"
+      ],
+      "hanViet": [
+        "kiến"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "见",
+      "radicalNumber": 147,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "视",
+      "traditionalVariants": [
+        "視"
+      ],
+      "pinyinReadings": [
+        "shi4"
+      ],
+      "hanViet": [
+        "thị"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "示",
+      "radicalNumber": 113,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "觉",
+      "traditionalVariants": [
+        "覺"
+      ],
+      "pinyinReadings": [
+        "jue2",
+        "jiao4"
+      ],
+      "hanViet": [
+        "giác"
+      ],
+      "hanVietByPinyin": {
+        "jue2": "giác",
+        "jiao4": "giác"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "见",
+      "radicalNumber": 147,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "认",
+      "traditionalVariants": [
+        "認"
+      ],
+      "pinyinReadings": [
+        "ren4"
+      ],
+      "hanViet": [
+        "nhận"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "记",
+      "traditionalVariants": [
+        "記"
+      ],
+      "pinyinReadings": [
+        "ji4"
+      ],
+      "hanViet": [
+        "kí"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 5,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "识",
+      "traditionalVariants": [
+        "識"
+      ],
+      "pinyinReadings": [
+        "shi2",
+        "shi4",
+        "shi5"
+      ],
+      "hanViet": [
+        "thức"
+      ],
+      "hanVietByPinyin": {
+        "shi2": "thức",
+        "shi4": "thức",
+        "shi5": "thức"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "诉",
+      "traditionalVariants": [
+        "訴"
+      ],
+      "pinyinReadings": [
+        "su4",
+        "su5"
+      ],
+      "hanViet": [
+        "tố"
+      ],
+      "hanVietByPinyin": {
+        "su4": "tố",
+        "su5": "tố"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "试",
+      "traditionalVariants": [
+        "試"
+      ],
+      "pinyinReadings": [
+        "shi4"
+      ],
+      "hanViet": [
+        "thí"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "话",
+      "traditionalVariants": [
+        "話"
+      ],
+      "pinyinReadings": [
+        "hua4"
+      ],
+      "hanViet": [
+        "thoại"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "语",
+      "traditionalVariants": [
+        "語"
+      ],
+      "pinyinReadings": [
+        "yu3"
+      ],
+      "hanViet": [
+        "ngữ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "说",
+      "traditionalVariants": [
+        "說",
+        "説"
+      ],
+      "pinyinReadings": [
+        "shuo1"
+      ],
+      "hanViet": [
+        "thuyết"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "请",
+      "traditionalVariants": [
+        "請"
+      ],
+      "pinyinReadings": [
+        "qing3"
+      ],
+      "hanViet": [
+        "thỉnh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "读",
+      "traditionalVariants": [
+        "讀"
+      ],
+      "pinyinReadings": [
+        "du2"
+      ],
+      "hanViet": [
+        "độc"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "课",
+      "traditionalVariants": [
+        "課"
+      ],
+      "pinyinReadings": [
+        "ke4"
+      ],
+      "hanViet": [
+        "khoá"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "谁",
+      "traditionalVariants": [
+        "誰"
+      ],
+      "pinyinReadings": [
+        "shei2"
+      ],
+      "hanViet": [
+        "thuỳ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "谢",
+      "traditionalVariants": [
+        "謝"
+      ],
+      "pinyinReadings": [
+        "xie4",
+        "xie5"
+      ],
+      "hanViet": [
+        "tạ"
+      ],
+      "hanVietByPinyin": {
+        "xie4": "tạ",
+        "xie5": "tạ"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "讠",
+      "radicalNumber": 149,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "贵",
+      "traditionalVariants": [
+        "貴"
+      ],
+      "pinyinReadings": [
+        "gui4"
+      ],
+      "hanViet": [
+        "quý"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "贝",
+      "radicalNumber": 154,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "走",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zou3"
+      ],
+      "hanViet": [
+        "tẩu"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "走",
+      "radicalNumber": 156,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "起",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "qi3"
+      ],
+      "hanViet": [
+        "khởi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "走",
+      "radicalNumber": 156,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "跑",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "pao3"
+      ],
+      "hanViet": [
+        "bào"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "足",
+      "radicalNumber": 157,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "跟",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "gen1"
+      ],
+      "hanViet": [
+        "cân"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "足",
+      "radicalNumber": 157,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "路",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "lu4"
+      ],
+      "hanViet": [
+        "lộ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "足",
+      "radicalNumber": 157,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "身",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "shen1"
+      ],
+      "hanViet": [
+        "thân"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "身",
+      "radicalNumber": 158,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "车",
+      "traditionalVariants": [
+        "車"
+      ],
+      "pinyinReadings": [
+        "che1"
+      ],
+      "hanViet": [
+        "xa"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "车",
+      "radicalNumber": 159,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "边",
+      "traditionalVariants": [
+        "邊"
+      ],
+      "pinyinReadings": [
+        "bian1",
+        "bian5"
+      ],
+      "hanViet": [
+        "biên"
+      ],
+      "hanVietByPinyin": {
+        "bian1": "biên",
+        "bian5": "biên"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "过",
+      "traditionalVariants": [
+        "過"
+      ],
+      "pinyinReadings": [
+        "guo4"
+      ],
+      "hanViet": [
+        "quá"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "还",
+      "traditionalVariants": [
+        "還"
+      ],
+      "pinyinReadings": [
+        "hai2",
+        "huan2"
+      ],
+      "hanViet": [
+        "hoàn"
+      ],
+      "hanVietByPinyin": {
+        "hai2": "hoàn",
+        "huan2": "hoàn"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "这",
+      "traditionalVariants": [
+        "這"
+      ],
+      "pinyinReadings": [
+        "zhe4"
+      ],
+      "hanViet": [
+        "giá"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "进",
+      "traditionalVariants": [
+        "進"
+      ],
+      "pinyinReadings": [
+        "jin4"
+      ],
+      "hanViet": [
+        "tiến"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "远",
+      "traditionalVariants": [
+        "遠"
+      ],
+      "pinyinReadings": [
+        "yuan3"
+      ],
+      "hanViet": [
+        "viễn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "送",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "song4"
+      ],
+      "hanViet": [
+        "tống"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "道",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "dao4"
+      ],
+      "hanViet": [
+        "đạo"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "辵",
+      "radicalNumber": 162,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "那",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "na4"
+      ],
+      "hanViet": [
+        "na"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "邑",
+      "radicalNumber": 163,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "都",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "dou1",
+        "du1"
+      ],
+      "hanViet": [
+        "đô"
+      ],
+      "hanVietByPinyin": {
+        "dou1": "đô",
+        "du1": "đô"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 12,
+      "radical": "邑",
+      "radicalNumber": 163,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "里",
+      "traditionalVariants": [
+        "裏",
+        "裡"
+      ],
+      "pinyinReadings": [
+        "li3",
+        "li5"
+      ],
+      "hanViet": [
+        "lí"
+      ],
+      "hanVietByPinyin": {
+        "li3": "lí",
+        "li5": "lí"
+      },
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "里",
+      "radicalNumber": 166,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "重",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "zhong4"
+      ],
+      "hanViet": [
+        "trọng"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "里",
+      "radicalNumber": 166,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "钱",
+      "traditionalVariants": [
+        "錢"
+      ],
+      "pinyinReadings": [
+        "qian2"
+      ],
+      "hanViet": [
+        "tiền"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "钅",
+      "radicalNumber": 167,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "错",
+      "traditionalVariants": [
+        "錯"
+      ],
+      "pinyinReadings": [
+        "cuo4"
+      ],
+      "hanViet": [
+        "thác"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "钅",
+      "radicalNumber": 167,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "门",
+      "traditionalVariants": [
+        "門"
+      ],
+      "pinyinReadings": [
+        "men2"
+      ],
+      "hanViet": [
+        "môn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "门",
+      "radicalNumber": 169,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "问",
+      "traditionalVariants": [
+        "問"
+      ],
+      "pinyinReadings": [
+        "wen4"
+      ],
+      "hanViet": [
+        "vấn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "门",
+      "radicalNumber": 169,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "间",
+      "traditionalVariants": [
+        "間"
+      ],
+      "pinyinReadings": [
+        "jian1"
+      ],
+      "hanViet": [
+        "gian"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "门",
+      "radicalNumber": 169,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "院",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yuan4"
+      ],
+      "hanViet": [
+        "viện"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "阜",
+      "radicalNumber": 170,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "难",
+      "traditionalVariants": [
+        "難"
+      ],
+      "pinyinReadings": [
+        "nan2"
+      ],
+      "hanViet": [
+        "nan"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "隹",
+      "radicalNumber": 172,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "雨",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "yu3"
+      ],
+      "hanViet": [
+        "vũ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "雨",
+      "radicalNumber": 173,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "零",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "ling2"
+      ],
+      "hanViet": [
+        "linh"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 13,
+      "radical": "雨",
+      "radicalNumber": 173,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "非",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "fei1"
+      ],
+      "hanViet": [
+        "phi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 8,
+      "radical": "非",
+      "radicalNumber": 175,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "面",
+      "traditionalVariants": [
+        "麵"
+      ],
+      "pinyinReadings": [
+        "mian4"
+      ],
+      "hanViet": [
+        "diện"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 9,
+      "radical": "面",
+      "radicalNumber": 176,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "页",
+      "traditionalVariants": [
+        "頁"
+      ],
+      "pinyinReadings": [
+        "ye4"
+      ],
+      "hanViet": [
+        "hiệt"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 6,
+      "radical": "页",
+      "radicalNumber": 181,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "风",
+      "traditionalVariants": [
+        "風"
+      ],
+      "pinyinReadings": [
+        "feng1"
+      ],
+      "hanViet": [
+        "phong"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 4,
+      "radical": "风",
+      "radicalNumber": 182,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "飞",
+      "traditionalVariants": [
+        "飛"
+      ],
+      "pinyinReadings": [
+        "fei1"
+      ],
+      "hanViet": [
+        "phi"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "飞",
+      "radicalNumber": 183,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "饭",
+      "traditionalVariants": [
+        "飯"
+      ],
+      "pinyinReadings": [
+        "fan4"
+      ],
+      "hanViet": [
+        "phạn"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "饣",
+      "radicalNumber": 184,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "饿",
+      "traditionalVariants": [
+        "餓"
+      ],
+      "pinyinReadings": [
+        "e4"
+      ],
+      "hanViet": [
+        "ngạ"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "饣",
+      "radicalNumber": 184,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "馆",
+      "traditionalVariants": [
+        "館"
+      ],
+      "pinyinReadings": [
+        "guan3"
+      ],
+      "hanViet": [
+        "quán"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 11,
+      "radical": "饣",
+      "radicalNumber": 184,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "马",
+      "traditionalVariants": [
+        "馬"
+      ],
+      "pinyinReadings": [
+        "ma3"
+      ],
+      "hanViet": [
+        "mã"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 3,
+      "radical": "马",
+      "radicalNumber": 187,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "高",
+      "traditionalVariants": [],
+      "pinyinReadings": [
+        "gao1"
+      ],
+      "hanViet": [
+        "cao"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 10,
+      "radical": "高",
+      "radicalNumber": 189,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    },
+    {
+      "hanzi": "鸡",
+      "traditionalVariants": [
+        "雞",
+        "鷄"
+      ],
+      "pinyinReadings": [
+        "ji1"
+      ],
+      "hanViet": [
+        "kê"
+      ],
+      "hanVietByPinyin": null,
+      "hanVietStatus": "derived",
+      "strokeCount": 7,
+      "radical": "鸟",
+      "radicalNumber": 196,
+      "sources": [
+        "unihan",
+        "han-viet-curated"
+      ]
+    }
+  ]
+}

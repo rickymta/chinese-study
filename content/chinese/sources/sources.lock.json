@@ -1,0 +1,38 @@
+{
+  "datasetVersion": "2026-09-17",
+  "files": {
+    "complete-hsk-vocabulary": {
+      "url": "https://raw.githubusercontent.com/drkameleon/complete-hsk-vocabulary/7ac65bf1a6387d35f1ade478906172a19311c7f9/complete.json",
+      "sha256": "c869a0ce353279c9333d9b42c31fc3549785e8b40673dab57ee42bc99cd14131",
+      "bytes": 9763716,
+      "raw": "complete.json"
+    },
+    "hsk30-official": {
+      "url": "https://raw.githubusercontent.com/elkmovie/hsk30/7f3d4fdcfcb6e826001df062747c943d1fa8160e/wordlist.txt",
+      "sha256": "4a8cfdc3a8fa85ced837c71aa187454c4d0ee36a1f70765655a93acb6a463af3",
+      "bytes": 127807,
+      "raw": "hsk30-wordlist.txt"
+    },
+    "cvdict": {
+      "url": "https://raw.githubusercontent.com/ph0ngp/CVDICT/c379d909e308343a247e51619f7839a2060a271c/CVDICT.u8",
+      "sha256": "4dde4b204193efa9c192d7f7daeab1bb579c8ccd7c41ed90d1b6caee22ba0948",
+      "bytes": 10803314,
+      "raw": "CVDICT.u8"
+    },
+    "unihan": {
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/Unihan.zip",
+      "sha256": "4c93ea9c1f636451729a840978f1667a53886af37ba854fdcce109721c63d43e",
+      "bytes": 8340649,
+      "raw": "Unihan.zip"
+    },
+    "cjk-radicals": {
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/CJKRadicals.txt",
+      "sha256": "689e2e5852699e7115823dc0b6d3e615eb767c7f477b615678f4f989d1f06105",
+      "raw": "CJKRadicals.txt"
+    }
+  },
+  "wiktionary": {
+    "fetchedAt": "2026-09-16T18:59:27.196Z",
+    "titles": 416
+  }
+}

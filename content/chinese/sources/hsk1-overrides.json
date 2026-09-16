@@ -1,0 +1,275 @@
+{
+  "byOfficialIndex": {
+    "5": {
+      "pinyin": "ba5"
+    },
+    "24": {
+      "pinyin": "bi3"
+    },
+    "25": {
+      "pinyin": "bie2"
+    },
+    "37": {
+      "pinyin": "cha4"
+    },
+    "42": {
+      "pinyin": "che1"
+    },
+    "48": {
+      "traditional": "出"
+    },
+    "49": {
+      "pinyin": "chu1 lai2"
+    },
+    "54": {
+      "traditional": "從"
+    },
+    "56": {
+      "pinyin": "da3"
+    },
+    "61": {
+      "pinyin": "da4"
+    },
+    "66": {
+      "pinyin": "de5"
+    },
+    "67": {
+      "pinyin": "de5"
+    },
+    "69": {
+      "pinyin": "di4"
+    },
+    "71": {
+      "pinyin": "di4 fang5"
+    },
+    "86": {
+      "pinyin": "dong1 xi5"
+    },
+    "89": {
+      "pinyin": "dou1"
+    },
+    "90": {
+      "pinyin": "du2"
+    },
+    "95": {
+      "pinyin": "duo1 shao5"
+    },
+    "109": {
+      "pinyin": "fen1"
+    },
+    "111": {
+      "pinyin": "gan1",
+      "traditional": "乾"
+    },
+    "112": {
+      "traditional": "乾淨"
+    },
+    "113": {
+      "pinyin": "gan4"
+    },
+    "117": {
+      "pinyin": "gao4 su5"
+    },
+    "120": {
+      "pinyin": "ge4"
+    },
+    "121": {
+      "pinyin": "gei3"
+    },
+    "131": {
+      "pinyin": "guo4"
+    },
+    "132": {
+      "pinyin": "hai2"
+    },
+    "138": {
+      "pinyin": "hao3"
+    },
+    "139": {
+      "pinyin": "hao3 chi1"
+    },
+    "143": {
+      "pinyin": "hao4"
+    },
+    "144": {
+      "pinyin": "he1"
+    },
+    "145": {
+      "pinyin": "he2"
+    },
+    "147": {
+      "traditional": "後"
+    },
+    "153": {
+      "pinyin": "huan2"
+    },
+    "154": {
+      "traditional": "回",
+      "meaningsVi": [
+        "trở về",
+        "lần",
+        "quay lại",
+        "trả lời",
+        "xoay vòng",
+        "xoay"
+      ]
+    },
+    "160": {
+      "pinyin": "hui4"
+    },
+    "165": {
+      "pinyin": "ji3"
+    },
+    "169": {
+      "traditional": "家"
+    },
+    "172": {
+      "pinyin": "jian1"
+    },
+    "173": {
+      "pinyin": "jian4"
+    },
+    "175": {
+      "pinyin": "jiao1"
+    },
+    "192": {
+      "pinyin": "kan4"
+    },
+    "210": {
+      "pinyin": "le5"
+    },
+    "211": {
+      "pinyin": "lei4"
+    },
+    "213": {
+      "traditional": "裡"
+    },
+    "227": {
+      "pinyin": "ma5"
+    },
+    "232": {
+      "pinyin": "mei2"
+    },
+    "250": {
+      "pinyin": "na3"
+    },
+    "251": {
+      "traditional": "哪裡"
+    },
+    "254": {
+      "pinyin": "na4"
+    },
+    "256": {
+      "traditional": "那裡"
+    },
+    "268": {
+      "pinyin": "nan2"
+    },
+    "269": {
+      "pinyin": "ne5"
+    },
+    "276": {
+      "pinyin": "nv3"
+    },
+    "280": {
+      "pinyin": "nv3 ren2"
+    },
+    "283": {
+      "pinyin": "pao3"
+    },
+    "289": {
+      "pinyin": "qi3 lai5"
+    },
+    "315": {
+      "pinyin": "shang4"
+    },
+    "324": {
+      "pinyin": "shao3"
+    },
+    "349": {
+      "pinyin": "shuo1",
+      "traditional": "說"
+    },
+    "358": {
+      "meaningsVi": [
+        "quá (nhiều)",
+        "rất",
+        "cực kỳ",
+        "cao nhất",
+        "vĩ đại"
+      ]
+    },
+    "361": {
+      "pinyin": "ting1"
+    },
+    "413": {
+      "meaningsVi": [
+        "tuần",
+        "ngày trong tuần"
+      ]
+    },
+    "414": {
+      "pinyin": "xing1 qi1 ri4"
+    },
+    "415": {
+      "pinyin": "xing1 qi1 tian1"
+    },
+    "416": {
+      "pinyin": "xing2",
+      "meaningsVi": [
+        "được; ổn",
+        "đi",
+        "đến",
+        "du lịch",
+        "chuyến thăm",
+        "tạm thời"
+      ]
+    },
+    "423": {
+      "pinyin": "yao4"
+    },
+    "426": {
+      "pinyin": "ye4"
+    },
+    "447": {
+      "meaningsVi": [
+        "bên phải; phía tay phải",
+        "(hình thức kết hợp) (chính trị) hữu khuynh",
+        "(hình thức kết hợp) (cũ) phía tây"
+      ]
+    },
+    "449": {
+      "pinyin": "yu3"
+    },
+    "451": {
+      "pinyin": "yuan3"
+    },
+    "460": {
+      "traditional": "怎麼"
+    },
+    "466": {
+      "traditional": "這裡"
+    },
+    "469": {
+      "pinyin": "zhe5"
+    },
+    "471": {
+      "meaningsVi": [
+        "thực sự; thật sự; quả thật",
+        "thật; đúng; chính xác"
+      ]
+    },
+    "472": {
+      "pinyin": "zheng4"
+    },
+    "476": {
+      "pinyin": "zhong1"
+    },
+    "483": {
+      "pinyin": "zhong4"
+    },
+    "489": {
+      "pinyin": "zi5"
+    }
+  }
+}

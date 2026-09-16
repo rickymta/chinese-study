@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://antfarms.xyz/schemas/chinese/han-viet.schema.json",
+  "title": "Âm Hán Việt cấp chữ do dự án biên soạn (content/chinese/sources/han-viet.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["characters"],
+  "properties": {
+    "characters": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hanzi", "readings", "byPinyin", "basis", "note"],
+      "properties": {
+        "hanzi": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "readings": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 32 }
+        },
+        "byPinyin": {
+          "type": ["object", "null"],
+          "propertyNames": { "pattern": "^[a-z]+[1-5]$" },
+          "additionalProperties": { "type": "string", "maxLength": 32 }
+        },
+        "basis": {
+          "type": "array",
+          "items": { "enum": ["wiktionary", "unihan", "manual"] }
+        },
+        "note": { "type": ["string", "null"], "minLength": 1 }
+      }
+    }
+  }
+}
