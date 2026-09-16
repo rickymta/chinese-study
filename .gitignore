@@ -1,0 +1,39 @@
+# ── .NET ─────────────────────────────────────────────────
+bin/
+obj/
+publish/
+.vs/
+*.user
+*.suo
+*.DotSettings.user
+TestResults/
+coverage/
+*.nupkg
+
+# ── Secrets & cấu hình nhạy cảm ─────────────────────────
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.Production.json
+**/secrets.json
+.env
+.env.local
+.env.*.local
+*.pfx
+*.pem
+
+# ── Node / frontend ─────────────────────────────────────
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+.vite/
+
+# ── IDE / OS ────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# ── Claude Code cục bộ ──────────────────────────────────
+.claude/settings.local.json
