@@ -51,8 +51,8 @@
 > Đã kiểm (đánh `[x]`): build qua compose (`additional_contexts`), 4 file trong `/content/chinese/data/pinyin`, `/app` không có
 > học liệu, chạy `docker run` (DB dev qua `host.docker.internal`, `Content__RootPath=/content/chinese`) ⇒ `/health/live` 200 +
 > log "Nạp học liệu pinyin thành công", user chạy là `app` (UID 1654). Lần build đầu **hỏng** vì `groupadd app` trùng user có
-> sẵn của ảnh .NET 8+ ⇒ đã bỏ `groupadd/useradd` trong Dockerfile chinese-backend. **Dockerfile identity-service và gateway còn
-> cùng lỗi** (chưa sửa — ngoài phạm vi F5). Các mục `[ ]` còn lại chưa chạy.
+> sẵn của ảnh .NET 8+ ⇒ đã bỏ `groupadd/useradd` khỏi cả 3 Dockerfile .NET (chinese-backend, identity-service, gateway — soát
+> lại 17/09/2026, không service nào còn dòng này). Các mục `[ ]` còn lại chưa chạy.
 
 - [x] `docker compose -f deploy/docker-compose.yml config` không lỗi với `additional_contexts` (cần Docker Compose ≥ 2.17 — RK38; `docker compose version` kiểm trước).
 - [ ] Build tay (không qua compose): từ `backend/`, `docker build -f services/chinese-backend/src/AntFarm.Chinese.Api/Dockerfile --build-context content=../content .` thành công.
@@ -92,3 +92,25 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] Tạo thử `x.mjs` trong `/usr/share/nginx/html` rồi `curl -I` ⇒ `Content-Type: application/javascript` (khối `.mjs`).
 - [ ] `https://chinese.antfarms.xyz/abc` ⇒ 200 `index.html` (SPA fallback), trình duyệt hiện trang 404 có "Về trang chủ".
 - [ ] `docker run --rm --entrypoint sh <ảnh chinese-frontend> -c 'grep -rl "id.antfarms.xyz" /usr/share/nginx/html | head -1'` có kết quả (biến `VITE_IDENTITY_API_URL` nướng đúng lúc build).
+
+## 6. Bundle triển khai — bổ sung 17/09/2026 (F13 devops, soát theo khuôn MedDental) — CHƯA VERIFY bằng Docker thật
+
+> Đợt này chỉnh sửa `deploy/docker-compose.yml`/`.env.example`/`conf/nginx.conf.example`, thêm
+> `deploy/README.md` (runbook), `deploy/scripts/{preflight,backup-db}.sh`. Đã kiểm bằng
+> `docker compose config -q`, `bash -n`, `nginx -t` (container `nginx:1.27-alpine`, xem dưới) —
+> **CHƯA chạy `up -d` thật trên server có DNS + Docker.**
+
+- [x] `docker compose -f deploy/docker-compose.yml --env-file deploy/.env.example config -q` không lỗi (REGISTRY mặc định đổi sang `localhost/antfarm`, thêm `x-logging`, `shm_size`, `logging:` mỗi service).
+- [x] `frontend/apps/chinese/nginx.conf` (header bảo mật thêm) ⇒ `nginx -t` qua container `nginx:1.27-alpine` thành công.
+- [x] `deploy/conf/nginx.conf.example` (thay `<ID_DOMAIN>`/`<CHINESE_DOMAIN>` bằng giá trị thật + chứng chỉ tự ký tạm trong scratchpad) ⇒ `nginx -t` thành công.
+- [x] `bash -n` sạch cho toàn bộ `deploy/scripts/*.sh` + `deploy/postgres/init/*.sh`.
+- [ ] `./scripts/preflight.sh` chạy thật trên máy đã `cp .env.example .env` + `cp conf/nginx.conf.example conf/nginx.conf` ⇒ báo đúng các mục thiếu, không báo nhầm.
+- [ ] `REGISTRY` để trống ⇒ `docker compose pull <svc>` báo lỗi RÕ RÀNG (không kéo nhầm ảnh Docker Hub công khai) — xác nhận `docker compose config` in ra `image: localhost/antfarm/...`.
+- [ ] Tạo khoá ký RSA vào volume `identity-keys` theo `deploy/README.md` mục 7 (`openssl genpkey`, UID 1654) ⇒ `identity-service` (Production) khởi động được, không ném "Không tìm thấy khoá ký RS256...".
+- [ ] `deploy/README.md` mục 9 (tạo tài khoản đầu tiên qua bật/tắt `AUTH_ALLOW_REGISTRATION`) ⇒ đăng nhập ở `chinese.antfarms.xyz` thấy vai trò `admin` (`GET /api/me`).
+
+### Sao lưu / phục hồi (B3) — CHƯA diễn tập trên máy thật
+
+- [ ] `./scripts/backup-db.sh` chạy thành công trên server thật (compose dev không đại diện đúng — cần volume `identity-keys` + role `af_identity`/`af_chinese` như production) ⇒ tạo đủ `globals.sql`, `af_identity.dump`, `af_chinese.dump`, `identity-keys.tar.gz` trong `deploy/backups/<ts>/`.
+- [ ] Cron `backup-db.sh` đã cài (`crontab -l`), chạy được ít nhất một đêm không lỗi (xem `/var/log/af-backup-db.log`).
+- [ ] **Diễn tập phục hồi đầy đủ trên máy/VM KHÁC** (theo `deploy/README.md` mục 11): `pg_restore` cả hai DB + giải nén `identity-keys.tar.gz` ⇒ đăng nhập lại được, `/api/me` + tra từ điển hoạt động bình thường. Đánh dấu `[x]` kèm ngày + máy đã diễn tập — bản sao lưu chưa từng phục hồi thử coi như không tồn tại.

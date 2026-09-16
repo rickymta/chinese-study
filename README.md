@@ -220,7 +220,8 @@ dotnet test backend/backend.slnx
 
 ## 8. Triển khai production
 
-Xem `deploy/` — `docker-compose.yml`, nginx biên + HTTPS Let's Encrypt, checklist verify ở
+Runbook đầy đủ (yêu cầu máy, DNS, tường lửa, HTTPS, khoá ký, tài khoản đầu tiên, sao lưu/phục
+hồi, xử lý sự cố): **[`deploy/README.md`](deploy/README.md)**. Checklist verify Docker:
 `deploy/VERIFY-DOCKER.md`. Tóm tắt kiến trúc + quy ước đầy đủ: `CLAUDE.md` mục "Triển khai —
 `deploy/`" và hợp đồng
 `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.

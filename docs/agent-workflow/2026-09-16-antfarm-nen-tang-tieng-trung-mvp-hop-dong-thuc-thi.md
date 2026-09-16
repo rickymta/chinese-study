@@ -1304,10 +1304,12 @@ RUN --mount=type=cache,target=/root/.nuget/packages \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 # aspnet image không có wget/curl — cài wget cho HEALTHCHECK. Không cài curl.
+# Ảnh .NET 8+ ĐÃ CÓ SẴN user/group `app` (UID 1654, biến $APP_UID) — KHÔNG groupadd/useradd lại
+# (groupadd báo "group 'app' already exists", exit 9 ⇒ build hỏng; phát hiện khi verify Docker ở F5,
+# đã sửa ở cả 3 Dockerfile .NET — xem VERIFY-DOCKER.md).
 RUN apt-get update -qq \
  && apt-get install -y --no-install-recommends wget \
- && rm -rf /var/lib/apt/lists/* \
- && groupadd --gid 1001 app && useradd --uid 1001 --gid app --shell /bin/false --no-create-home app
+ && rm -rf /var/lib/apt/lists/*
 COPY --from=build --chown=app:app /app/publish .
 USER app
 ENV ASPNETCORE_URLS=http://+:8080
@@ -1317,7 +1319,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
 ENTRYPOINT ["dotnet", "AntFarm.Chinese.Api.dll"]
 ```
 
-- identity-service: đổi đường dẫn/tên; thêm `RUN mkdir -p /keys && chown app:app /keys`.
+- identity-service: đổi đường dẫn/tên; thêm `RUN mkdir -p /keys && chown app:app /keys` (chỉ tạo thư mục, KHÔNG groupadd/useradd).
 - gateway: chỉ một csproj `services/gateway/AntFarm.Gateway.csproj`; `COPY services/gateway/ services/gateway/`; entrypoint `AntFarm.Gateway.dll`.
 - ⚠️ `.dockerignore` ở `backend/` phải loại `**/bin`, `**/obj`, `**/appsettings.Development.json` — thiếu là ảnh chứa mật khẩu dev.
 - ⚠️ Từ F5: chinese-backend cần học liệu `content/chinese/data` ⇒ build context phải đổi thành **gốc repo** (hoặc copy vào ảnh qua `additional_contexts` của compose). Ghi chú này để F5 xử lý; F0 giữ context `./backend`.
@@ -1428,7 +1430,7 @@ services:
       retries: 10
 
   identity-service:
-    image: ${REGISTRY:-antfarm}/identity-service:${IDENTITY_SERVICE_TAG:-latest}
+    image: ${REGISTRY:-localhost/antfarm}/identity-service:${IDENTITY_SERVICE_TAG:-latest}
     build: { context: ../backend, dockerfile: services/identity-service/src/AntFarm.Identity.Api/Dockerfile }
     restart: unless-stopped
     environment:
@@ -1447,7 +1449,7 @@ services:
     networks: [af-net]
 
   chinese-backend:
-    image: ${REGISTRY:-antfarm}/chinese-backend:${CHINESE_BACKEND_TAG:-latest}
+    image: ${REGISTRY:-localhost/antfarm}/chinese-backend:${CHINESE_BACKEND_TAG:-latest}
     build: { context: ../backend, dockerfile: services/chinese-backend/src/AntFarm.Chinese.Api/Dockerfile }
     restart: unless-stopped
     environment:
@@ -1461,7 +1463,7 @@ services:
     networks: [af-net]
 
   gateway:
-    image: ${REGISTRY:-antfarm}/gateway:${GATEWAY_TAG:-latest}
+    image: ${REGISTRY:-localhost/antfarm}/gateway:${GATEWAY_TAG:-latest}
     build: { context: ../backend, dockerfile: services/gateway/Dockerfile }
     restart: unless-stopped
     environment:
@@ -1472,7 +1474,7 @@ services:
 
   # F1 thêm:
   # chinese-frontend:
-  #   image: ${REGISTRY:-antfarm}/chinese-frontend:${CHINESE_FRONTEND_TAG:-latest}
+  #   image: ${REGISTRY:-localhost/antfarm}/chinese-frontend:${CHINESE_FRONTEND_TAG:-latest}
   #   build:
   #     context: ../frontend
   #     dockerfile: apps/chinese/Dockerfile
@@ -1506,9 +1508,13 @@ services:
 
 Ghi chú bắt buộc trong compose (comment): `image:` đặt trên `build:` và giữ cả hai (registry hỏng vẫn tự build được); triển khai luôn `docker compose pull <svc> && docker compose up -d <svc>` (`up -d` không tự kéo ảnh mới cùng tag); trên server chỉ build **từng service một**.
 
-`deploy/.env.example`: `APP_DOMAIN=antfarms.xyz`, `PUBLIC_BIND=127.0.0.1` (server thật: `0.0.0.0`), `LETSENCRYPT_EMAIL=`, `REGISTRY=`, `POSTGRES_USER=postgres`, `POSTGRES_PASSWORD=`, `AF_IDENTITY_DB_PASSWORD=`, `AF_CHINESE_DB_PASSWORD=`, `CHINESE_ADMIN_EMAIL=`, `AUTH_ALLOW_REGISTRATION=false`, các `*_TAG=` để trống (mặc định `latest`).
+⚠️ (soát lại 17/09/2026, F13 devops) `${REGISTRY:-antfarm}` phân giải thành `docker.io/antfarm` — một namespace Docker Hub **không thuộc AntFarm** — khi để trống `REGISTRY` mà chạy `pull`/`up -d` không build trước. Mặc định đúng là `${REGISTRY:-localhost/antfarm}`: tiền tố `localhost/` buộc Docker hiểu đây là ảnh cục bộ (registry host không tồn tại thật) nên `pull` báo lỗi rõ thay vì âm thầm kéo nhầm ảnh người khác. Chưa có registry riêng ⇒ luôn triển khai bằng `docker compose build <svc> && docker compose up -d <svc>` (không `pull`).
+
+`deploy/.env.example`: `APP_DOMAIN=antfarms.xyz`, `PUBLIC_BIND=127.0.0.1` (server thật: `0.0.0.0`), `LETSENCRYPT_EMAIL=`, `REGISTRY=`, `POSTGRES_USER=postgres`, `POSTGRES_PASSWORD=`, `AF_IDENTITY_DB_PASSWORD=`, `AF_CHINESE_DB_PASSWORD=`, `CHINESE_ADMIN_EMAIL=`, `AUTH_ALLOW_REGISTRATION=false`, các `*_TAG=` để trống (mặc định `latest`). `LETSENCRYPT_EMAIL` chỉ để tiện nhớ/kiểm ở `preflight.sh` — `get-cert.sh` (đúng khuôn MedDental) luôn nhận email qua đối số dòng lệnh, không tự đọc `.env`; runbook hướng dẫn `source .env` trước khi gọi lệnh cấp chứng chỉ (xem `deploy/README.md`).
 
 `deploy/postgres/init/01-create-databases.sql`: tạo role `af_identity`, `af_chinese` (mật khẩu đặt tay sau hoặc qua script `.sh` đọc biến môi trường — **agent chọn `.sh` nếu cần đọc biến**, vì `.sql` không đọc được env), `CREATE DATABASE af_identity OWNER af_identity`, tương tự `af_chinese`. Chỉ chạy khi volume trống.
+
+⚠️ (bổ sung 17/09/2026, F13 devops — xem `deploy/docker-compose.yml` bản thật để có nội dung đầy đủ, khối yaml trên chỉ là khung F0): mọi service có thêm `logging: *default-logging` (anchor `x-logging`, driver `json-file`, `max-size: 10m`, `max-file: 5` — driver mặc định ghi log vô hạn, dễ đầy đĩa); `postgres` có `shm_size: 256mb` + `healthcheck.timeout: 5s`; các service .NET có dòng `mem_limit` để **comment sẵn**, không ép mặc định (đo RAM thật của server trước khi bật); `nginx.volumes` có dòng comment mount `./conf/cloudflare-realip.conf` khi cần.
 
 ##### nginx biên + HTTPS Let's Encrypt — **bám đúng khuôn MedDental `deploy/app-core`** (người dùng chốt 16/09/2026; DNS ở Cloudflare)
 

@@ -20,7 +20,11 @@ COPY packages ./packages
 COPY apps/chinese ./apps/chinese
 
 # Vite nướng biến vào bundle LÚC BUILD — sai giá trị thì ảnh vẫn build/chạy, chỉ hỏng khi bấm đăng nhập (RK25).
-# Mặc định production; compose truyền lại qua build args với APP_DOMAIN.
+# ⚠️ Mặc định dưới đây là URL PRODUCTION THẬT (id.antfarms.xyz) — build "chay" không qua compose
+# (vd `docker build` tay, hoặc CI build ảnh dùng thử) mà QUÊN truyền --build-arg sẽ ra một ảnh
+# TRÔNG như build được nhưng đăng nhập của môi trường khác lại gọi sang production thật. Luôn build
+# qua `deploy/docker-compose.yml` (đã truyền `args: { VITE_IDENTITY_API_URL: "https://id.${APP_DOMAIN}/api" }`
+# theo `APP_DOMAIN` trong `.env`), hoặc truyền tay `--build-arg VITE_IDENTITY_API_URL=<url đúng môi trường>`.
 ARG VITE_IDENTITY_API_URL=https://id.antfarms.xyz/api
 ENV VITE_IDENTITY_API_URL=$VITE_IDENTITY_API_URL
 RUN yarn workspace @af/chinese build

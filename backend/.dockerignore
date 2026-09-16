@@ -2,4 +2,8 @@
 **/obj
 **/TestResults
 **/appsettings.Development.json
+**/appsettings.Production.json
+**/appsettings.Local.json
+**/*.pem
+**/*.pfx
 **/.vs
