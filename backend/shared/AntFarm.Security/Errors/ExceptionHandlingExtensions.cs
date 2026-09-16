@@ -29,9 +29,8 @@ public static class ExceptionHandlingExtensions
     /// </summary>
     public static IApplicationBuilder UseAfExceptionHandler(this IApplicationBuilder app)
     {
-        app.UseExceptionHandler(errorApp =>
-        {
-            errorApp.Run(async context =>
+        var errorApp = app.New();
+        errorApp.Run(async context =>
             {
                 var feature = context.Features.Get<IExceptionHandlerFeature>();
                 var exception = feature?.Error ?? new Exception("Không xác định được ngoại lệ.");
@@ -51,6 +50,14 @@ public static class ExceptionHandlingExtensions
                 context.Response.ContentType = "application/json; charset=utf-8";
                 await context.Response.WriteAsJsonAsync(body, JsonOptions);
             });
+
+        app.UseExceptionHandler(new ExceptionHandlerOptions
+        {
+            ExceptionHandler = errorApp.Build(),
+            // Middleware mặc định tự log Error "An unhandled exception has occurred" cho MỌI ngoại lệ,
+            // kể cả lỗi nghiệp vụ 4xx (WRONG_PASSWORD, REFRESH_INVALID...) ⇒ log nhiễu. Handler ở trên
+            // đã tự log đúng mức (Warning cho 4xx, Error cho 5xx) nên tắt log chẩn đoán mặc định.
+            SuppressDiagnosticsCallback = _ => true
         });
 
         return app;

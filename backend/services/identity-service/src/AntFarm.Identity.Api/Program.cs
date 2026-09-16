@@ -128,8 +128,10 @@ var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseAfSecurityHeaders();
 app.UseAfCorrelationId();
-app.UseAfExceptionHandler(); // AppException → status+code; còn lại 500 "Đã xảy ra lỗi nội bộ." + log Error
+// Request logging đứng NGOÀI exception handler: thấy mã trả về cuối cùng (422/401...) thay vì
+// thấy ngoại lệ bay qua rồi ghi nhầm "responded 500" kèm stack trace.
 app.UseSerilogRequestLogging();
+app.UseAfExceptionHandler(); // AppException → status+code; còn lại 500 "Đã xảy ra lỗi nội bộ." + log Error
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); // /openapi/v1.json
