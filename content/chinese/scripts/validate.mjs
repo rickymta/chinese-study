@@ -617,6 +617,386 @@ if (!fs.existsSync(RAW_DIR_F6) || !fs.existsSync(path.join(RAW_DIR_F6, 'unihan')
   }
 }
 
+// ---------------------------------------------------------------------------
+// 12. MỞ RỘNG F9 — data/lessons/*.json (bài học + quiz), schema lesson.schema.json
+// ---------------------------------------------------------------------------
+
+const LESSONS_DIR = path.join(CHINESE_ROOT, 'data', 'lessons');
+const LESSON_FILE_RE = /^(\d{2})-([a-z0-9-]+)\.json$/;
+
+// Dấu câu cho phép trong hanzi/audioText (Trung + ASCII tương ứng) — R§5.4.3.
+const PUNCT_CLASS = '，。！？、：；“”‘’…,.!?:;\'"-';
+const HANZI_LINE_RE = new RegExp(`^[\\s\\p{Script=Han}${PUNCT_CLASS}]+$`, 'u');
+const PUNCT_STRIP_RE = new RegExp(`[${PUNCT_CLASS}]`, 'gu');
+const HAN_CHAR_RE = /\p{Script=Han}/gu;
+const LATIN_RE = /[A-Za-z]/;
+
+function countHanChars(s) {
+  return (s.match(HAN_CHAR_RE) ?? []).length;
+}
+
+/** Kiểm một cặp {hanzi, pinyin} (dòng hội thoại / ví dụ ngữ pháp): trả mảng lỗi (rỗng nếu hợp lệ). */
+function checkHanziPinyinPair(loc, hanzi, pinyin) {
+  const errors = [];
+  if (LATIN_RE.test(hanzi.replace(PUNCT_STRIP_RE, ''))) {
+    errors.push(`${loc} — hanzi "${hanzi}" chứa chữ Latin (chỉ được chữ Hán + dấu câu)`);
+    return errors;
+  }
+  if (!HANZI_LINE_RE.test(hanzi)) {
+    errors.push(`${loc} — hanzi "${hanzi}" chứa ký tự không hợp lệ (chỉ được chữ Hán + dấu câu)`);
+    return errors;
+  }
+  const hanziCount = countHanChars(hanzi);
+  const tokens = pinyin.replace(PUNCT_STRIP_RE, ' ').trim().split(/\s+/).filter(Boolean);
+  if (tokens.length !== hanziCount) {
+    errors.push(`${loc} — số âm tiết pinyin (${tokens.length}) khác số chữ Hán (${hanziCount}) trong "${hanzi}" / "${pinyin}"`);
+    return errors;
+  }
+  for (const tok of tokens) {
+    const m = tok.match(/^([A-Za-z]+)([1-5])$/);
+    if (!m) {
+      errors.push(`${loc} — âm tiết "${tok}" (trong "${pinyin}") không đúng cú pháp (chữ cái + số thanh 1-5)`);
+      continue;
+    }
+    if (!KNOWN_SYLLABLES.has(m[1].toLowerCase())) {
+      errors.push(`${loc} — âm tiết "${m[1]}" (trong "${tok}") không có trong bảng âm tiết F5 và khác 'r'`);
+    }
+  }
+  return errors;
+}
+
+/** Kiểm cú pháp chữ Hán nội dòng [[hanzi|pinyin]] trong một chuỗi văn bản tự do. */
+function checkInlineZh(loc, text) {
+  const errors = [];
+  const usedChars = new Set();
+  const INLINE_RE = /\[\[([^[\]|]*)\|([^[\]]*)\]\]/g;
+  let m;
+  let stripped = text;
+  while ((m = INLINE_RE.exec(text)) !== null) {
+    const [whole, hanziPart, pinyinPart] = m;
+    stripped = stripped.replace(whole, '');
+    const chars = [...hanziPart];
+    if (chars.length < 1 || chars.length > 10 || !/^\p{Script=Han}+$/u.test(hanziPart)) {
+      errors.push(`${loc} — token nội dòng "${whole}" có phần chữ Hán không hợp lệ (phải là 1–10 chữ Hán)`);
+      continue;
+    }
+    const tokens = pinyinPart.trim().split(/\s+/).filter(Boolean);
+    if (tokens.length !== chars.length) {
+      errors.push(`${loc} — token nội dòng "${whole}" — số âm tiết (${tokens.length}) khác số chữ Hán (${chars.length})`);
+      continue;
+    }
+    let tokenOk = true;
+    for (const tok of tokens) {
+      const tm = tok.match(/^([A-Za-z]+)([1-5])$/);
+      if (!tm || !KNOWN_SYLLABLES.has(tm[1].toLowerCase())) {
+        errors.push(`${loc} — token nội dòng "${whole}" — âm tiết "${tok}" không hợp lệ`);
+        tokenOk = false;
+      }
+    }
+    if (tokenOk) for (const c of chars) usedChars.add(c);
+  }
+  if (/\[\[|\]\]/.test(stripped)) {
+    errors.push(`${loc} — cú pháp nội dòng [[...|...]] hỏng (thiếu "|" hoặc "]]") trong: "${text}"`);
+  }
+  return { errors, usedChars };
+}
+
+const lessonFileNames = fs.existsSync(LESSONS_DIR)
+  ? fs.readdirSync(LESSONS_DIR).filter((f) => LESSON_FILE_RE.test(f)).sort()
+  : [];
+
+if (!fs.existsSync(LESSONS_DIR)) {
+  fail(`Không tìm thấy thư mục ${path.relative(CHINESE_ROOT, LESSONS_DIR)} (F9)`);
+} else if (lessonFileNames.length === 0) {
+  fail(`Thư mục ${path.relative(CHINESE_ROOT, LESSONS_DIR)} không có file bài học nào khớp mẫu NN-slug.json (F9)`);
+}
+
+const lessonSchema = ajv.compile(loadSchema('lesson.schema.json'));
+const hskWordKeySet = new Set(
+  hskWordsOk && hskWords ? hskWords.words.map((w) => `${w.simplified} ${w.pinyin}`) : []
+);
+const characterHanziSet = new Set(
+  charactersOk && characters ? characters.characters.map((c) => c.hanzi) : []
+);
+
+// Cách đọc từng CHỮ suy ra từ hsk-words.json (mỗi từ: chữ[i] ↔ âm tiết pinyin[i]) — dùng để
+// phát hiện lệch cách đọc (vd biến điệu lọt vào pinyin lưu trữ) trong dòng hội thoại/ví dụ ngữ pháp.
+const charReadingsFromHskWords = new Map(); // hanzi -> Set(âm tiết chữ thường, có số thanh)
+if (hskWordsOk && hskWords) {
+  for (const w of hskWords.words) {
+    const wChars = [...w.simplified];
+    const wToks = w.pinyin.split(' ');
+    if (wChars.length !== wToks.length) continue; // từ đặc biệt (儿化...) — bỏ qua, không đủ tin cậy
+    wChars.forEach((ch, i) => {
+      const set = charReadingsFromHskWords.get(ch) ?? new Set();
+      set.add(wToks[i].toLowerCase());
+      charReadingsFromHskWords.set(ch, set);
+    });
+  }
+}
+
+/** WARN nếu một chữ trong hanzi đọc khác mọi cách đọc đã ghi nhận của chữ đó trong hsk-words.json. */
+function warnReadingMismatch(loc, hanzi, pinyin) {
+  const chars = [...hanzi].filter((c) => /\p{Script=Han}/u.test(c));
+  const tokens = pinyin.replace(PUNCT_STRIP_RE, ' ').trim().split(/\s+/).filter(Boolean);
+  if (chars.length !== tokens.length) return; // lệch số lượng đã báo FAIL ở checkHanziPinyinPair
+  chars.forEach((ch, i) => {
+    const tok = tokens[i].toLowerCase();
+    const known = charReadingsFromHskWords.get(ch);
+    if (known && known.size > 0 && !known.has(tok)) {
+      warn(`${loc} — chữ "${ch}" đọc "${tok}" lệch cách đọc đã ghi nhận trong hsk-words.json (${[...known].join('/')}) — kiểm xem có lẫn biến điệu vào pinyin lưu trữ không`);
+    }
+  });
+}
+
+// Một từ (simplified+pinyin) chỉ được khai trong `words` của bài ĐẦU TIÊN dùng nó (R-LS13).
+const wordFirstDeclaredIn = new Map(); // key "simplified pinyin" -> slug bài đã khai trước
+
+const lessons = []; // { fileName, orderIndex(from file), doc }
+const slugSet = new Set();
+const orderIndexSet = new Set();
+
+for (const fileName of lessonFileNames) {
+  const p = path.join(LESSONS_DIR, fileName);
+  const loc0 = `data/lessons/${fileName}`;
+  let doc;
+  try {
+    doc = JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch (err) {
+    fail(`${loc0} không phải JSON hợp lệ: ${err.message}`);
+    continue;
+  }
+  const ok = lessonSchema(doc);
+  if (!ok) {
+    for (const err of lessonSchema.errors ?? []) {
+      const at = err.instancePath ? err.instancePath.replace(/\//g, ' › ') : '(gốc)';
+      fail(`${loc0} › ${at} — ${err.message} (${JSON.stringify(err.params)})`);
+    }
+    continue; // bỏ qua các kiểm tra sâu hơn nếu sai schema
+  }
+
+  const [, fileOrder, fileSlug] = fileName.match(LESSON_FILE_RE);
+  if (doc.slug !== fileSlug) {
+    fail(`${loc0} — slug "${doc.slug}" khác phần tên file "${fileSlug}"`);
+  }
+  if (String(doc.orderIndex).padStart(2, '0') !== fileOrder && doc.orderIndex !== Number(fileOrder)) {
+    fail(`${loc0} — orderIndex ${doc.orderIndex} khác số thứ tự trong tên file "${fileOrder}"`);
+  }
+  if (slugSet.has(doc.slug)) fail(`${loc0} — slug "${doc.slug}" trùng với bài khác`);
+  slugSet.add(doc.slug);
+  if (orderIndexSet.has(doc.orderIndex)) fail(`${loc0} — orderIndex ${doc.orderIndex} trùng với bài khác`);
+  orderIndexSet.add(doc.orderIndex);
+
+  for (const src of doc.sources) {
+    if (sourcesText && !sourcesText.includes(src)) {
+      fail(`${loc0} — nguồn "${src}" không thấy nhắc trong SOURCES.md`);
+    }
+  }
+
+  lessons.push({ fileName, doc });
+}
+
+lessons.sort((a, b) => a.doc.orderIndex - b.doc.orderIndex);
+
+let coveredChars = new Set(); // luỹ kế chữ đã "dạy" qua các bài có orderIndex nhỏ hơn
+const lessonStats = [];
+
+for (const { fileName, doc } of lessons) {
+  const loc0 = `data/lessons/${fileName}`;
+
+  // --- words: 8–15 khuyến nghị, tồn tại trong hsk-words.json, không trùng trong bài ---
+  if (doc.words.length > 15) fail(`${loc0} — words có ${doc.words.length} mục (> 15, R-LS13 FAIL)`);
+  if (doc.words.length < 8) warn(`${loc0} — words chỉ có ${doc.words.length} mục (< 8, khuyến nghị R-LS13)`);
+
+  const wordKeysInLesson = new Set();
+  const lessonWordChars = new Set();
+  for (const [idx, w] of doc.words.entries()) {
+    const wloc = `${loc0} › words[${idx}] (${w.simplified} ${w.pinyin})`;
+    const key = `${w.simplified} ${w.pinyin}`;
+    if (wordKeysInLesson.has(key)) fail(`${wloc} — trùng từ trong cùng bài`);
+    wordKeysInLesson.add(key);
+    if (hskWordsOk && !hskWordKeySet.has(key)) {
+      fail(`${wloc} — không tìm thấy (simplified, pinyin) này trong hsk-words.json`);
+    }
+    if (wordFirstDeclaredIn.has(key)) {
+      fail(`${wloc} — từ này đã khai ở bài "${wordFirstDeclaredIn.get(key)}", một từ chỉ khai ở bài ĐẦU TIÊN dùng nó (R-LS13)`);
+    } else {
+      wordFirstDeclaredIn.set(key, doc.slug);
+    }
+    for (const ch of [...w.simplified]) {
+      lessonWordChars.add(ch);
+      if (charactersOk && !characterHanziSet.has(ch)) {
+        fail(`${wloc} — chữ "${ch}" không có trong characters.json (không viết được ở F8)`);
+      }
+    }
+  }
+
+  // --- glossary: 0–10, hanzi toàn chữ Hán ≤10, pinyin khớp số âm tiết, vi 1–100 (schema đã kiểm độ dài) ---
+  const lessonGlossaryChars = new Set();
+  for (const [idx, g] of doc.glossary.entries()) {
+    const gloc = `${loc0} › glossary[${idx}] (${g.hanzi})`;
+    if (!/^\p{Script=Han}+$/u.test(g.hanzi)) {
+      fail(`${gloc} — hanzi "${g.hanzi}" phải toàn chữ Hán`);
+    } else {
+      for (const err of checkHanziPinyinPair(gloc, g.hanzi, g.pinyin)) fail(err);
+      for (const ch of [...g.hanzi]) lessonGlossaryChars.add(ch);
+    }
+  }
+
+  // --- blocks: ≥1 dialogue, ≥1 grammar; nội dung từng loại ---
+  const dialogueCount = doc.blocks.filter((b) => b.type === 'dialogue').length;
+  const grammarCount = doc.blocks.filter((b) => b.type === 'grammar').length;
+  if (dialogueCount < 1) fail(`${loc0} — thiếu khối "dialogue" (R-LS13 yêu cầu ≥ 1)`);
+  if (grammarCount < 1) fail(`${loc0} — thiếu khối "grammar" (R-LS13 yêu cầu ≥ 1)`);
+
+  const dialogueHanChars = new Set(); // chữ Hán trong dialogue/grammar.examples — phải được "phủ"
+  const inlineUsedChars = new Set(); // chữ trong cú pháp nội dòng — không bắt buộc phủ (giải thích thêm)
+
+  doc.blocks.forEach((block, bIdx) => {
+    const bloc = `${loc0} › blocks[${bIdx}] (${block.type})`;
+    if (block.type === 'text') {
+      block.payload.paragraphs.forEach((p, pIdx) => {
+        const { errors, usedChars } = checkInlineZh(`${bloc} › paragraphs[${pIdx}]`, p);
+        errors.forEach(fail);
+        for (const c of usedChars) inlineUsedChars.add(c);
+      });
+    } else if (block.type === 'dialogue') {
+      block.payload.lines.forEach((line, lIdx) => {
+        const lloc = `${bloc} › lines[${lIdx}]`;
+        for (const err of checkHanziPinyinPair(lloc, line.hanzi, line.pinyin)) fail(err);
+        warnReadingMismatch(lloc, line.hanzi, line.pinyin);
+        for (const c of [...line.hanzi]) {
+          if (/\p{Script=Han}/u.test(c)) dialogueHanChars.add(c);
+        }
+      });
+    } else if (block.type === 'grammar') {
+      if (block.payload.pattern) {
+        const { errors, usedChars } = checkInlineZh(`${bloc} › pattern`, block.payload.pattern);
+        errors.forEach(fail);
+        for (const c of usedChars) inlineUsedChars.add(c);
+      }
+      {
+        const { errors, usedChars } = checkInlineZh(`${bloc} › explanation`, block.payload.explanation);
+        errors.forEach(fail);
+        for (const c of usedChars) inlineUsedChars.add(c);
+      }
+      block.payload.examples.forEach((ex, eIdx) => {
+        const eloc = `${bloc} › examples[${eIdx}]`;
+        for (const err of checkHanziPinyinPair(eloc, ex.hanzi, ex.pinyin)) fail(err);
+        warnReadingMismatch(eloc, ex.hanzi, ex.pinyin);
+        for (const c of [...ex.hanzi]) {
+          if (/\p{Script=Han}/u.test(c)) dialogueHanChars.add(c);
+        }
+      });
+    } else if (block.type === 'tip') {
+      const { errors, usedChars } = checkInlineZh(`${bloc} › text`, block.payload.text);
+      errors.forEach(fail);
+      for (const c of usedChars) inlineUsedChars.add(c);
+    }
+  });
+
+  // --- quiz: 5–10 (schema), key duy nhất, tỉ lệ nghe ≥30%, phân bố đáp án, nội dung câu ---
+  const quizKeys = new Set();
+  const quizAudioChars = new Set();
+  const quizOptionZhChars = new Set();
+  const correctIdCounts = { a: 0, b: 0, c: 0, d: 0 };
+
+  doc.quiz.forEach((q, qIdx) => {
+    const qloc = `${loc0} › quiz[${qIdx}] (${q.key})`;
+    if (quizKeys.has(q.key)) fail(`${qloc} — key trùng trong cùng bài`);
+    quizKeys.add(q.key);
+
+    if (q.promptPinyin && q.promptLang !== 'zh') {
+      fail(`${qloc} — promptPinyin chỉ hợp lệ khi promptLang="zh"`);
+    }
+    if (q.promptPinyin) {
+      for (const err of checkHanziPinyinPair(`${qloc} › promptPinyin`, q.prompt, q.promptPinyin)) fail(err);
+    }
+    if (q.type === 'listen_choice') {
+      if (!q.audioText) {
+        fail(`${qloc} — type="listen_choice" bắt buộc phải có audioText`);
+      } else {
+        if (LATIN_RE.test(q.audioText.replace(PUNCT_STRIP_RE, '')) || !HANZI_LINE_RE.test(q.audioText)) {
+          fail(`${qloc} — audioText "${q.audioText}" phải toàn chữ Hán (+ dấu câu)`);
+        } else {
+          for (const c of [...q.audioText]) {
+            if (/\p{Script=Han}/u.test(c)) quizAudioChars.add(c);
+          }
+        }
+      }
+    } else if (q.type === 'single_choice' && q.audioText) {
+      fail(`${qloc} — type="single_choice" không được có audioText`);
+    }
+
+    const expectedIds = ['a', 'b', 'c', 'd'].slice(0, q.options.length);
+    const optionTexts = new Set();
+    q.options.forEach((opt, oIdx) => {
+      const oloc = `${qloc} › options[${oIdx}]`;
+      if (opt.id !== expectedIds[oIdx]) {
+        fail(`${oloc} — id "${opt.id}" phải theo đúng thứ tự a,b,c,d (kỳ vọng "${expectedIds[oIdx]}")`);
+      }
+      if (optionTexts.has(opt.text)) fail(`${oloc} — text "${opt.text}" trùng với lựa chọn khác trong cùng câu`);
+      optionTexts.add(opt.text);
+      if (opt.lang === 'pinyin') {
+        for (const tok of opt.text.trim().split(/\s+/)) {
+          const m = tok.match(/^([A-Za-z]+)([1-5])$/);
+          if (!m || !KNOWN_SYLLABLES.has(m[1].toLowerCase())) {
+            fail(`${oloc} — lang="pinyin" nhưng text "${opt.text}" không đúng cú pháp pinyin số thanh`);
+          }
+        }
+      } else if (opt.lang === 'zh') {
+        for (const c of [...opt.text]) {
+          if (/\p{Script=Han}/u.test(c)) quizOptionZhChars.add(c);
+        }
+      }
+    });
+    if (!q.options.some((o) => o.id === q.correctOptionId)) {
+      fail(`${qloc} — correctOptionId "${q.correctOptionId}" không thuộc danh sách lựa chọn`);
+    } else {
+      correctIdCounts[q.correctOptionId] = (correctIdCounts[q.correctOptionId] ?? 0) + 1;
+    }
+
+    if (q.explanation) {
+      const { errors } = checkInlineZh(`${qloc} › explanation`, q.explanation);
+      errors.forEach(fail);
+    }
+  });
+
+  const total = doc.quiz.length;
+  const listenCount = doc.quiz.filter((q) => q.type === 'listen_choice').length;
+  const requiredListen = Math.ceil(total * 0.3);
+  if (listenCount < requiredListen) {
+    fail(`${loc0} — chỉ có ${listenCount}/${total} câu listen_choice, cần ≥ ${requiredListen} (≥30%)`);
+  }
+  const maxCorrectShare = Math.max(...Object.values(correctIdCounts)) / total;
+  if (maxCorrectShare > 0.6) {
+    warn(`${loc0} — đáp án đúng lặp một id ở ${Math.round(maxCorrectShare * 100)}% số câu (> 60%, dễ đoán mò)`);
+  }
+
+  // --- phủ chữ (WARN): dialogue + grammar.examples + audioText + option zh phải thuộc chữ đã dạy ---
+  const allowedNow = new Set([...coveredChars, ...lessonWordChars, ...lessonGlossaryChars]);
+  const mustCover = new Set([...dialogueHanChars, ...quizAudioChars, ...quizOptionZhChars]);
+  const missingCoverage = [...mustCover].filter((c) => !allowedNow.has(c));
+  if (missingCoverage.length > 0) {
+    warn(`${loc0} — có ${missingCoverage.length} chữ dùng trong hội thoại/quiz chưa thuộc từ đã dạy: ${missingCoverage.join(', ')}`);
+  }
+
+  coveredChars = new Set([...coveredChars, ...lessonWordChars]);
+
+  lessonStats.push({
+    slug: doc.slug, words: doc.words.length, blocks: doc.blocks.length,
+    quiz: total, listenPct: total > 0 ? Math.round((listenCount / total) * 100) : 0,
+  });
+}
+
+console.log('\n--- Thống kê học liệu bài học (F9) ---');
+console.log('slug            | từ | khối | câu quiz | % nghe');
+for (const s of lessonStats) {
+  console.log(
+    `${s.slug.padEnd(15)} | ${String(s.words).padStart(2)} | ${String(s.blocks).padStart(4)} | ${String(s.quiz).padStart(8)} | ${s.listenPct}%`
+  );
+}
+
 console.log('\n--- Thống kê học liệu pinyin ---');
 console.log(`Thanh mẫu:            ${initials.length}`);
 console.log(`Vận mẫu:               ${finals.length}`);

@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "slug": "chao-hoi",
+  "title": "Chào hỏi",
+  "topic": "giao-tiep",
+  "level": "hsk1",
+  "orderIndex": 1,
+  "status": "published",
+  "summary": "Chào, cảm ơn, xin lỗi và tạm biệt bằng tiếng Trung — dùng được ngay hôm nay.",
+  "objectives": [
+    "Chào hỏi và đáp lại lời chào bằng 你好/您好",
+    "Nói cảm ơn, xin lỗi, tạm biệt đúng lúc",
+    "Đặt câu hỏi có/không với 吗"
+  ],
+  "estimatedMinutes": 15,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "你", "pinyin": "ni3" },
+    { "simplified": "好", "pinyin": "hao3" },
+    { "simplified": "您", "pinyin": "nin2" },
+    { "simplified": "我", "pinyin": "wo3" },
+    { "simplified": "他", "pinyin": "ta1" },
+    { "simplified": "她", "pinyin": "ta1" },
+    { "simplified": "我们", "pinyin": "wo3 men5" },
+    { "simplified": "老师", "pinyin": "lao3 shi1" },
+    { "simplified": "谢谢", "pinyin": "xie4 xie5" },
+    { "simplified": "不客气", "pinyin": "bu4 ke4 qi5" },
+    { "simplified": "对不起", "pinyin": "dui4 bu5 qi3" },
+    { "simplified": "没关系", "pinyin": "mei2 guan1 xi5" },
+    { "simplified": "再见", "pinyin": "zai4 jian4" },
+    { "simplified": "吗", "pinyin": "ma5" }
+  ],
+  "glossary": [],
+  "blocks": [
+    {
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Câu chào phổ biến nhất trong tiếng Trung là [[你好|ni3 hao3]], dùng được với hầu hết mọi người.",
+          "Với thầy cô hoặc người lớn tuổi, người Trung Quốc thường dùng [[您好|nin2 hao3]] để lịch sự hơn.",
+          "Khi chia tay, chỉ cần nói [[再见|zai4 jian4]] là đủ."
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Gặp nhau buổi sáng",
+        "lines": [
+          { "speaker": "Lan", "hanzi": "你好！", "pinyin": "Ni3 hao3!", "vi": "Chào bạn!" },
+          { "speaker": "Minh", "hanzi": "你好！", "pinyin": "Ni3 hao3!", "vi": "Chào bạn!" },
+          { "speaker": "Lan", "hanzi": "谢谢你！", "pinyin": "Xie4 xie5 ni3!", "vi": "Cảm ơn bạn!" },
+          { "speaker": "Minh", "hanzi": "不客气。", "pinyin": "Bu4 ke4 qi5.", "vi": "Không có chi." }
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Xin lỗi và tạm biệt",
+        "lines": [
+          { "speaker": "Lan", "hanzi": "对不起！", "pinyin": "Dui4 bu5 qi3!", "vi": "Xin lỗi!" },
+          { "speaker": "Minh", "hanzi": "没关系。", "pinyin": "Mei2 guan1 xi5.", "vi": "Không sao đâu." },
+          { "speaker": "Lan", "hanzi": "再见！", "pinyin": "Zai4 jian4!", "vi": "Tạm biệt!" },
+          { "speaker": "Minh", "hanzi": "再见！", "pinyin": "Zai4 jian4!", "vi": "Tạm biệt!" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Câu hỏi có/không với 吗",
+        "pattern": "Câu trần thuật + [[吗|ma5]]？",
+        "explanation": "Thêm [[吗|ma5]] vào cuối một câu trần thuật để biến nó thành câu hỏi có/không — người nghe chỉ cần trả lời có hoặc không.",
+        "examples": [
+          { "hanzi": "你好吗？", "pinyin": "Ni3 hao3 ma5?", "vi": "Bạn khoẻ không?", "note": "Lời hỏi thăm quen thuộc, không phải câu chào lần đầu" },
+          { "hanzi": "老师，您好吗？", "pinyin": "Lao3 shi1, nin2 hao3 ma5?", "vi": "Thưa thầy/cô, thầy/cô khoẻ không?" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "您 — cách xưng hô lịch sự",
+        "explanation": "[[您|nin2]] là cách xưng hô lịch sự của [[你|ni3]], dùng với thầy cô, người lớn tuổi hoặc người mới gặp lần đầu cần tôn trọng.",
+        "examples": [
+          { "hanzi": "您好！", "pinyin": "Nin2 hao3!", "vi": "Chào thầy/cô ạ!", "note": "Dùng khi gặp người lớn tuổi/thầy cô" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "们 — số nhiều của đại từ",
+        "pattern": "Đại từ (我/你/他) + [[们|men5]]",
+        "explanation": "Thêm [[们|men5]] sau đại từ nhân xưng để chỉ số nhiều: [[我们|wo3 men5]] (chúng tôi/chúng ta), [[你们|ni3 men5]] (các bạn), [[他们|ta1 men5]] (họ).",
+        "examples": [
+          { "hanzi": "你们好！", "pinyin": "Ni3 men5 hao3!", "vi": "Chào các bạn!" },
+          { "hanzi": "她好。", "pinyin": "Ta1 hao3.", "vi": "Chị ấy khoẻ.", "note": "她 dùng để chỉ một người nữ, số ít" }
+        ]
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "Hai thanh 3 đứng liền nhau: thanh đầu đọc gần giống thanh 2. [[你好|ni3 hao3]] nghe như \"ní hǎo\", nhưng pinyin vẫn viết giữ thanh gốc \"ni3 hao3\"."
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "[[谢谢|xie4 xie5]] có âm sau đọc nhẹ và ngắn hơn (thanh nhẹ, số 5) — không nhấn như âm đầu."
+      }
+    }
+  ],
+  "quiz": [
+    { "key": "q1", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你好",
+      "options": [
+        { "id": "a", "text": "Tạm biệt", "lang": "vi" },
+        { "id": "b", "text": "Chào bạn", "lang": "vi" },
+        { "id": "c", "text": "Cảm ơn", "lang": "vi" },
+        { "id": "d", "text": "Xin lỗi", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[你好|ni3 hao3]] là lời chào phổ biến nhất." },
+    { "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "谢谢",
+      "options": [
+        { "id": "a", "text": "Xin lỗi", "lang": "vi" },
+        { "id": "b", "text": "Không sao đâu", "lang": "vi" },
+        { "id": "c", "text": "Cảm ơn", "lang": "vi" },
+        { "id": "d", "text": "Tạm biệt", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[谢谢|xie4 xie5]] nghĩa là cảm ơn." },
+    { "key": "q3", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "再见",
+      "options": [
+        { "id": "a", "text": "Cảm ơn", "lang": "vi" },
+        { "id": "b", "text": "Tạm biệt", "lang": "vi" },
+        { "id": "c", "text": "Xin lỗi", "lang": "vi" },
+        { "id": "d", "text": "Không có chi", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[再见|zai4 jian4]] dùng khi chia tay." },
+    { "key": "q4", "type": "single_choice", "prompt": "你好吗？", "promptLang": "zh", "promptPinyin": "Ni3 hao3 ma5?",
+      "options": [
+        { "id": "a", "text": "Bạn khoẻ không?", "lang": "vi" },
+        { "id": "b", "text": "Bạn là ai?", "lang": "vi" },
+        { "id": "c", "text": "Bạn tên gì?", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[吗|ma5]] cuối câu tạo câu hỏi có/không: hỏi thăm sức khoẻ." },
+    { "key": "q5", "type": "single_choice", "prompt": "Câu nào dùng khi muốn xin lỗi ai đó?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "谢谢", "lang": "zh" },
+        { "id": "b", "text": "对不起", "lang": "zh" },
+        { "id": "c", "text": "再见", "lang": "zh" },
+        { "id": "d", "text": "不客气", "lang": "zh" }
+      ],
+      "correctOptionId": "b", "explanation": "[[对不起|dui4 bu5 qi3]] nghĩa là xin lỗi." },
+    { "key": "q6", "type": "single_choice", "prompt": "您 dùng để xưng hô với ai?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "Bạn thân cùng tuổi", "lang": "vi" },
+        { "id": "b", "text": "Trẻ em", "lang": "vi" },
+        { "id": "c", "text": "Thầy cô, người lớn tuổi", "lang": "vi" },
+        { "id": "d", "text": "Động vật", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[您|nin2]] là cách xưng hô lịch sự, dùng với người cần tôn trọng." },
+    { "key": "q7", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "没关系",
+      "options": [
+        { "id": "a", "text": "Không sao đâu", "lang": "vi" },
+        { "id": "b", "text": "Xin lỗi", "lang": "vi" },
+        { "id": "c", "text": "Cảm ơn", "lang": "vi" },
+        { "id": "d", "text": "Tạm biệt", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[没关系|mei2 guan1 xi5]] dùng để đáp lại lời xin lỗi." }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "slug": "gia-dinh",
+  "title": "Gia đình",
+  "topic": "gia-dinh",
+  "level": "hsk1",
+  "orderIndex": 4,
+  "status": "published",
+  "summary": "Nói về số người trong nhà và các thành viên gia đình bằng 有/没有, 和, 的.",
+  "objectives": [
+    "Hỏi và trả lời số người trong nhà bằng 几口人",
+    "Gọi tên các thành viên gia đình",
+    "Dùng 有/没有 và 的 để nói về sở hữu"
+  ],
+  "estimatedMinutes": 15,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "家", "pinyin": "jia1" },
+    { "simplified": "爸爸", "pinyin": "ba4 ba5" },
+    { "simplified": "妈妈", "pinyin": "ma1 ma5" },
+    { "simplified": "哥哥", "pinyin": "ge1 ge5" },
+    { "simplified": "姐姐", "pinyin": "jie3 jie5" },
+    { "simplified": "弟弟", "pinyin": "di4 di5" },
+    { "simplified": "妹妹", "pinyin": "mei4 mei5" },
+    { "simplified": "儿子", "pinyin": "er2 zi5" },
+    { "simplified": "女儿", "pinyin": "nv3 er2" },
+    { "simplified": "有", "pinyin": "you3" },
+    { "simplified": "没有", "pinyin": "mei2 you3" },
+    { "simplified": "和", "pinyin": "he2" },
+    { "simplified": "口", "pinyin": "kou3" },
+    { "simplified": "的", "pinyin": "de5" }
+  ],
+  "glossary": [],
+  "blocks": [
+    {
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Gia đình tiếng Trung là [[家|jia1]]. Để hỏi có bao nhiêu người trong nhà, người Trung Quốc hỏi [[你家有几口人|ni3 jia1 you3 ji3 kou3 ren2]]？",
+          "[[口|kou3]] vốn nghĩa là 'miệng', nhưng khi đếm người trong nhà lại dùng làm lượng từ, giống như đếm 'miệng ăn'.",
+          "Muốn nói sở hữu, dùng [[的|de5]]: [[我的妈妈|wo3 de5 ma1 ma5]] (mẹ của tôi). Với người thân gần, có thể bỏ [[的|de5]]: chỉ cần nói [[我妈妈|wo3 ma1 ma5]]."
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Hỏi thăm gia đình",
+        "lines": [
+          { "speaker": "Hoa", "hanzi": "你家有几口人？", "pinyin": "Ni3 jia1 you3 ji3 kou3 ren2?", "vi": "Nhà bạn có mấy người?" },
+          { "speaker": "Minh", "hanzi": "我家有五口人：爸爸、妈妈、哥哥、姐姐和我。", "pinyin": "Wo3 jia1 you3 wu3 kou3 ren2: ba4 ba5, ma1 ma5, ge1 ge5, jie3 jie5 he2 wo3.", "vi": "Nhà mình có năm người: bố, mẹ, anh trai, chị gái và mình." },
+          { "speaker": "Hoa", "hanzi": "你有没有妹妹？", "pinyin": "Ni3 you3 mei2 you3 mei4 mei5?", "vi": "Bạn có em gái không?" },
+          { "speaker": "Minh", "hanzi": "没有，我没有妹妹，也没有弟弟。", "pinyin": "Mei2 you3, wo3 mei2 you3 mei4 mei5, ye3 mei2 you3 di4 di5.", "vi": "Không, mình không có em gái, cũng không có em trai." },
+          { "speaker": "Minh", "hanzi": "你呢？你家有几口人？", "pinyin": "Ni3 ne5? Ni3 jia1 you3 ji3 kou3 ren2?", "vi": "Còn bạn? Nhà bạn có mấy người?" },
+          { "speaker": "Hoa", "hanzi": "我家有四口人：爸爸、妈妈、弟弟和我。", "pinyin": "Wo3 jia1 you3 si4 kou3 ren2: ba4 ba5, ma1 ma5, di4 di5 he2 wo3.", "vi": "Nhà mình có bốn người: bố, mẹ, em trai và mình." },
+          { "speaker": "Hoa", "hanzi": "我妈妈是老师。", "pinyin": "Wo3 ma1 ma5 shi4 lao3 shi1.", "vi": "Mẹ mình là giáo viên." },
+          { "speaker": "Minh", "hanzi": "我妈妈也是老师！", "pinyin": "Wo3 ma1 ma5 ye3 shi4 lao3 shi1!", "vi": "Mẹ mình cũng là giáo viên!" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "有 / 没有 — biểu thị sở hữu",
+        "pattern": "Chủ ngữ + [[有|you3]]/[[没有|mei2 you3]] + Tân ngữ",
+        "explanation": "[[有|you3]] nghĩa là 'có', phủ định là [[没有|mei2 you3]] (KHÔNG dùng 不 với 有). Câu hỏi có/không dùng dạng lặp [[有没有|you3 mei2 you3]] hoặc thêm 吗.",
+        "examples": [
+          { "hanzi": "我家有五口人。", "pinyin": "Wo3 jia1 you3 wu3 kou3 ren2.", "vi": "Nhà tôi có năm người." },
+          { "hanzi": "我没有妹妹。", "pinyin": "Wo3 mei2 you3 mei4 mei5.", "vi": "Tôi không có em gái." },
+          { "hanzi": "我没有儿子，有一个女儿。", "pinyin": "Wo3 mei2 you3 er2 zi5, you3 yi1 ge4 nv3 er2.", "vi": "Tôi không có con trai, tôi có một con gái." }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "的 — chỉ sở hữu",
+        "pattern": "Người sở hữu + [[的|de5]] + Vật/Người được sở hữu",
+        "explanation": "[[的|de5]] nối người sở hữu với vật/người được sở hữu, giống 'của' trong tiếng Việt nhưng đặt TRƯỚC. Với người thân trong gia đình, có thể bỏ [[的|de5]] khi nói chuyện thân mật.",
+        "examples": [
+          { "hanzi": "我的妈妈", "pinyin": "wo3 de5 ma1 ma5", "vi": "mẹ của tôi", "note": "Trang trọng/rõ ràng hơn" },
+          { "hanzi": "我妈妈", "pinyin": "wo3 ma1 ma5", "vi": "mẹ tôi", "note": "Cách nói thân mật, bỏ 的" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "和 — nối danh từ",
+        "pattern": "Danh từ A + [[和|he2]] + Danh từ B",
+        "explanation": "[[和|he2]] nghĩa là 'và', chỉ dùng để nối DANH TỪ (người, vật), không dùng để nối hai câu.",
+        "examples": [
+          { "hanzi": "爸爸和妈妈", "pinyin": "ba4 ba5 he2 ma1 ma5", "vi": "bố và mẹ" }
+        ]
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "Âm thứ hai trong các từ xưng hô lặp như [[爸爸|ba4 ba5]], [[妈妈|ma1 ma5]], [[哥哥|ge1 ge5]] luôn đọc thanh nhẹ (số 5) — nhẹ và ngắn hơn hẳn âm đầu."
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "memory",
+        "text": "Mẹo nhớ: [[口|kou3]] nghĩa gốc là 'miệng' — coi mỗi người trong nhà là 'một miệng ăn' sẽ dễ nhớ vì sao đếm người lại dùng [[口|kou3]] chứ không dùng [[个|ge4]]."
+      }
+    }
+  ],
+  "quiz": [
+    { "key": "q1", "type": "listen_choice", "prompt": "Nghe câu hỏi và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你家有几口人？",
+      "options": [
+        { "id": "a", "text": "Nhà bạn có mấy người?", "lang": "vi" },
+        { "id": "b", "text": "Bạn mấy tuổi?", "lang": "vi" },
+        { "id": "c", "text": "Bạn tên là gì?", "lang": "vi" },
+        { "id": "d", "text": "Nhà bạn ở đâu?", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[几口人|ji3 kou3 ren2]] dùng để hỏi số người trong nhà." },
+    { "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "我没有妹妹",
+      "options": [
+        { "id": "a", "text": "Tôi không có em trai", "lang": "vi" },
+        { "id": "b", "text": "Tôi không có em gái", "lang": "vi" },
+        { "id": "c", "text": "Tôi có em gái", "lang": "vi" },
+        { "id": "d", "text": "Tôi có anh trai", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[没有|mei2 you3]] là phủ định của 有; [[妹妹|mei4 mei5]] là em gái." },
+    { "key": "q3", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "爸爸和妈妈",
+      "options": [
+        { "id": "a", "text": "Bố và mẹ", "lang": "vi" },
+        { "id": "b", "text": "Anh trai và chị gái", "lang": "vi" },
+        { "id": "c", "text": "Ông và bà", "lang": "vi" },
+        { "id": "d", "text": "Em trai và em gái", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[和|he2]] nối hai danh từ [[爸爸|ba4 ba5]] và [[妈妈|ma1 ma5]]." },
+    { "key": "q4", "type": "single_choice", "prompt": "我的妈妈是老师。", "promptLang": "zh", "promptPinyin": "Wo3 de5 ma1 ma5 shi4 lao3 shi1.",
+      "options": [
+        { "id": "a", "text": "Mẹ của tôi là học sinh.", "lang": "vi" },
+        { "id": "b", "text": "Mẹ của tôi là giáo viên.", "lang": "vi" },
+        { "id": "c", "text": "Bố của tôi là giáo viên.", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[的|de5]] nối 我 với 妈妈, câu nghĩa là 'mẹ của tôi'." },
+    { "key": "q5", "type": "single_choice", "prompt": "Từ nào dùng để phủ định 有 (có)?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "不", "lang": "zh" },
+        { "id": "b", "text": "很", "lang": "zh" },
+        { "id": "c", "text": "没有", "lang": "zh" }
+      ],
+      "correctOptionId": "c", "explanation": "Phủ định [[有|you3]] phải dùng [[没有|mei2 you3]]; 不 và 很 không dùng để phủ định 有." },
+    { "key": "q6", "type": "single_choice", "prompt": "口 trong '几口人' đóng vai trò gì?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "Động từ", "lang": "vi" },
+        { "id": "b", "text": "Lượng từ đếm người trong nhà", "lang": "vi" },
+        { "id": "c", "text": "Tính từ", "lang": "vi" },
+        { "id": "d", "text": "Trạng từ", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[口|kou3]] là lượng từ dùng riêng khi đếm số người trong một gia đình." },
+    { "key": "q7", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "我家有四口人",
+      "options": [
+        { "id": "a", "text": "Nhà tôi có ba người", "lang": "vi" },
+        { "id": "b", "text": "Nhà tôi có bốn người", "lang": "vi" },
+        { "id": "c", "text": "Nhà tôi có năm người", "lang": "vi" },
+        { "id": "d", "text": "Nhà tôi có hai người", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[四|si4]] là số 4, nên [[四口人|si4 kou3 ren2]] là bốn người." }
+  ]
+}

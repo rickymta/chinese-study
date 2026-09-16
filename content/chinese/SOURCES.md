@@ -107,3 +107,43 @@ hàng `hsk1-overrides` ở trên). `validate.mjs` có 2 từ neo (和/菜) + lư
 lánh" — xem `BANNED_MEANING_TERMS` trong `validate.mjs`) để chặn tái diễn.
 
 **Mã nguồn tham chiếu:** không có ở F6.1 (F7 sẽ ghi chú `py-fsrs` khi triển khai `FsrsScheduler`).
+
+---
+
+## F9 — Bài học chủ đề HSK 1 + quiz (5 bài seed)
+
+Toàn bộ nội dung 5 bài học (`data/lessons/01-chao-hoi.json` … `05-thoi-gian.json`: hội thoại, ngữ pháp,
+mẹo, câu quiz và lời giải) do content-implement **tự soạn** (`sources: ["original"]`), dùng khoá
+`original` đã khai ở bảng đầu file này. Không sao chép từ giáo trình nào. Mọi từ trong trường `words` của
+từng bài được đối chiếu (khoá `simplified` + `pinyin`) với `data/vocabulary/hsk-words.json` (F6.1); mọi chữ
+Hán xuất hiện trong hội thoại/ví dụ ngữ pháp/audio quiz đều thuộc từ đã "dạy" ở bài này hoặc các bài có
+`orderIndex` nhỏ hơn (kiểm bằng `scripts/validate.mjs`, mục "MỞ RỘNG F9").
+
+| Khoá | Tên | URL | Giấy phép | Ngày lấy | Phiên bản | Phần đã dùng | Nghĩa vụ | File |
+|---|---|---|---|---|---|---|---|---|
+| `original` | Nội dung tự soạn AntFarm (content-implement) | — | Thuộc dự án AntFarm | 2026-09-17 | — | 5 bài học: tiêu đề, mục tiêu, khối văn bản/hội thoại/ngữ pháp/mẹo, 35 câu quiz (7 câu/bài) và lời giải | Không (thuộc dự án) | `data/lessons/01-chao-hoi.json`, `02-ban-than.json`, `03-so-dem.json`, `04-gia-dinh.json`, `05-thoi-gian.json` |
+
+File JSON học liệu **không có trường `reviewStatus`** — đây là cột của bảng `content.lessons` do
+`LessonImporter` (backend F9) gán khi nạp: bài mới (chưa có `slug` trong DB) luôn được gán
+`review_status='machine'` (R-LS14), học viên sẽ thấy nhãn "Nội dung chưa được duyệt" cho tới khi F10 duyệt
+tay. Thứ tự bài: chào hỏi (1) → giới thiệu bản thân (2) → số đếm (3) → gia đình (4) → ngày giờ (5) — lý do
+sư phạm xem `docs/agent-workflow/2026-09-17-antfarm-f8-f11-chi-tiet.md` §1.3.
+
+**Từ vựng dùng ngoài phạm vi khai trong `words` của bài (chấp nhận được — chỉ là ghép ký tự đã dạy):** một
+số cụm trong hội thoại/ngữ pháp là tổ hợp của các CHỮ đã học riêng lẻ chứ không phải từ mới cần thêm vào
+SRS, ví dụ `你们`/`他们`/`她们` (bài 1, ghép 你/他/她 + 们 qua từ đã khai 我们, dùng trong khối ngữ pháp "们 —
+số nhiều của đại từ"), `不是`/`哪国人` (bài 2, ghép từ các từ đã khai) — đúng theo quy tắc "phủ chữ" ở mức
+từng CHỮ Hán (không phải từng TỪ) của hợp đồng F8–F11 §5.4.3. `scripts/validate.mjs` còn kiểm thêm: một từ
+(cặp `simplified`+`pinyin`) chỉ được khai trong `words` của bài ĐẦU TIÊN dùng nó (FAIL nếu khai lại ở bài
+sau), và cách đọc từng chữ trong dòng hội thoại/ví dụ ngữ pháp phải khớp cách đọc suy ra từ
+`hsk-words.json` (WARN nếu lệch — bắt các trường hợp lỡ ghi biến điệu vào pinyin lưu trữ thay vì thanh gốc).
+
+**Glossary (từ bổ sung, không vào SRS)** cũng do content-implement tự soạn: hai tên riêng dùng làm nhân vật
+hội thoại bài 2 (`阮兰` Ruǎn Lán — phiên âm Hán Việt của "Nguyễn Lan"; `王明` Wáng Míng — tên nhân vật người
+Trung Quốc), trợ từ toán học `加` (cộng) ở bài 3 cho ví dụ cộng trừ đơn giản, và `零` (số 0) ở bài 5 để đọc
+năm theo từng chữ số (`二零二六年` = năm 2026).
+
+**Chưa dùng chữ ngoài HSK 1:** tất cả 71 lượt khai `words` (mỗi từ chỉ khai đúng MỘT LẦN, ở bài đầu tiên
+dùng nó — không có từ nào bị khai lặp ở nhiều bài, xem kiểm tra ở trên) đều nằm trong
+`data/vocabulary/hsk-words.json` (`hsk3Level=1`) và mọi chữ Hán rời đều có trong
+`data/characters/characters.json` — không có ngoại lệ cần ghi chú.
