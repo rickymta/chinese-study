@@ -20,8 +20,10 @@ export interface ErrorPageProps {
   description?: string
   /** Đường dẫn nút "Về trang chủ" — luôn hiển thị. */
   homeHref?: string
-  /** Có ⇒ hiện nút "Đăng nhập" (F3: trang /401). */
+  /** Có ⇒ hiện nút đăng nhập (F3: trang /401). */
   onLogin?: () => void
+  /** Nhãn nút đăng nhập. Mặc định "Đăng nhập"; trang /401 dùng "Đăng nhập lại" (hợp đồng §5.3.2). */
+  loginLabel?: string
   /** Có ⇒ hiện nút "Đăng xuất" (F3: trang /403 cho tài khoản 0 quyền). */
   onLogout?: () => void
   /** Có ⇒ hiện nút "Quay lại". */
@@ -81,6 +83,7 @@ export function ErrorPage({
   description,
   homeHref = '/',
   onLogin,
+  loginLabel = 'Đăng nhập',
   onLogout,
   onBack,
   children,
@@ -124,7 +127,7 @@ export function ErrorPage({
         )}
         {onLogin && (
           <Button variant="contained" onClick={onLogin}>
-            Đăng nhập
+            {loginLabel}
           </Button>
         )}
         {onLogout && (

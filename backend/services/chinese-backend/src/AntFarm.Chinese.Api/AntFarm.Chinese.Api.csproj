@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\..\..\shared\AntFarm.Logging\AntFarm.Logging.csproj" />
     <ProjectReference Include="..\..\..\..\shared\AntFarm.Security\AntFarm.Security.csproj" />
     <ProjectReference Include="..\..\..\..\shared\AntFarm.HealthChecks\AntFarm.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Auth\AntFarm.Auth.csproj" />
   </ItemGroup>
 
 </Project>

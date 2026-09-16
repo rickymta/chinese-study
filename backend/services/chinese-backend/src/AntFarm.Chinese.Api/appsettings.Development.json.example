@@ -8,6 +8,10 @@
   },
   "Serilog": { "MinimumLevel": { "Default": "Debug" } },
 
+  // R-P6: email của CHÍNH BẠN được gán vai trò admin lúc provision lần đầu (đăng nhập lần đầu ở
+  // apps/chinese) — không điền thì tài khoản mới chỉ nhận "learner", vào /admin/* sẽ bị 403.
+  "ChineseAdmin": { "BootstrapEmails": ["<email-cua-ban>"] },
+
   // Mẫu cấu hình MinIO — CHƯA có package/code nào đọc khối này ở F0 (bucket "af-chinese"
   // đã được deploy/dev/docker-compose.dev.yml tạo sẵn qua service minio-init để dành cho
   // feature sau, vd F8 luyện viết chữ Hán, F10 quản trị nội dung upload ảnh/audio).

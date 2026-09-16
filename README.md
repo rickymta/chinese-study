@@ -134,6 +134,40 @@ Development tự sinh khi thư mục trống; **mất thư mục này ⇒ mọi 
 (phải đăng nhập lại — refresh token trong DB không mất nên chỉ cần làm mới phiên, không mất dữ
 liệu học).
 
+## 5c. Phân quyền cục bộ (F3 — chinese-backend)
+
+`chinese-backend` kiểm access token qua JWKS của `identity-service` (mạng nội bộ, `Auth:JwksUrl`
+trong `appsettings.json`) — **chạy `identity-service` TRƯỚC** `chinese-backend` (RK9: JWKS tải
+lười + tự thử lại nên chạy sai thứ tự không crash, chỉ 401 tới khi tải được).
+
+Điền email của bạn vào `ChineseAdmin:BootstrapEmails` trong
+`appsettings.Development.json` của chinese-backend (đã có sẵn khoá mẫu trong `.example`) để
+được gán vai trò `admin` ngay lần đăng nhập đầu tiên (R-P6) — không điền thì tài khoản mới chỉ
+nhận `learner` (`ChineseAccess:DefaultRoles`).
+
+```bash
+TOKEN=$(curl -s -X POST http://localhost:5281/api/auth/login \
+  -H "Content-Type: application/json" -H "Origin: http://localhost:3280" \
+  -d '{"email":"ban@vidu.com","password":"mat-khau-du-dai"}' | python3 -c "import sys,json;print(json.load(sys.stdin)['accessToken'])")
+
+curl -s http://localhost:5282/api/me -H "Authorization: Bearer $TOKEN"
+curl -i http://localhost:5282/api/admin/ping -H "Authorization: Bearer $TOKEN"
+```
+
+- `GET /api/me` (`[Authorize]`, mọi người dùng đã đăng nhập) →
+  `{ "id", "email", "displayName", "timeZone", "roles": ["learner"], "permissions": ["study.use"], "firstSeenAt" }`
+  — lần đầu gọi tự **provision** dòng trong `access.users` + gán vai trò mặc định (R-P4/R-P5).
+- `GET /api/admin/ping` (`users.manage`) → `{ "ok": true }` cho admin; learner ⇒ `403`
+  `{ "error", "code": "FORBIDDEN" }`.
+- Không có/hỏng Bearer token ⇒ `401 { "error", "code": "UNAUTHENTICATED" }` (kể cả đường dẫn
+  không tồn tại — `FallbackPolicy = RequireAuthenticatedUser` áp cho MỌI endpoint không có
+  `[AllowAnonymous]`, xem test `HealthAndInfoTests.DuongDanKhongTonTai_ChuaXacThuc_TraVe401`).
+- Gỡ hết vai trò một người dùng trong DB (`access.user_roles`) ⇒ `/api/me` của người đó trả
+  `roles: [], permissions: []` ngay lập tức (MeService đọc thẳng DB, không qua cache 60 giây của
+  `PermissionResolver` — R-P8).
+- **Danh mục vai trò/quyền đầy đủ** (`GET /api/admin/roles`, `GET /api/admin/users`,
+  `PUT /api/admin/users/{id}/roles`) là **F4**, chưa có ở F3 — xem mục bàn giao.
+
 ## 6. Test tích hợp DB
 
 ```bash

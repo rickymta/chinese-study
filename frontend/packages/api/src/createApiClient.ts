@@ -201,6 +201,12 @@ export function createApiClient({
     (err: AxiosError | ApiError) => {
       if (isApiError(err)) return Promise.reject(err)
       const status = err.response?.status
+      // 401 (F3): tới đây nghĩa là KHÔNG làm mới được (không có `refresh`, hoặc làm mới hỏng, hoặc `skipAuthRefresh`).
+      // - Client có `onAuthLost` (app có `@af/auth`): mất phiên đã được báo ở (1) ⇒ `RequireAuth` đưa về
+      //   `/dang-nhap?returnTo=...&reason=expired` (giữ được trang đang xem) — KHÔNG nhảy `/401` để khỏi mất returnTo.
+      // - Client không có quản lý phiên: GET ⇒ `/401` (quy tắc "Trang lỗi 4xx thống nhất"). `/auth/*` là câu trả
+      //   lời thật của identity (sai mật khẩu...) nên không điều hướng.
+      if (status === 401 && !onAuthLost && !isAuthUrl(err.config?.url)) maybeRedirectToErrorPage(err.config, '/401')
       if (status === 403) maybeRedirectToErrorPage(err.config, '/403')
       if (status === 404) maybeRedirectToErrorPage(err.config, '/404')
       return Promise.reject(toApiError(err))

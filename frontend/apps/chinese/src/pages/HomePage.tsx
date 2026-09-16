@@ -2,9 +2,11 @@ import { Alert, AlertTitle, Box, Card, CardContent, Stack, Typography } from '@m
 import { LangText, PageContainer } from '@af/ui'
 import { useSystemInfo } from '@/features/system/hooks'
 import { ServiceStatusChip } from '@/features/system/components/ServiceStatusChip'
+import { MeCard } from '@/features/auth/components/MeCard'
 
 /**
- * Trang chủ F1: lời chào + 2 chip trạng thái service qua gateway. F11 thay bằng tổng quan tiến độ/streak.
+ * Trang chủ F1: lời chào + 2 chip trạng thái service qua gateway; F3 thêm thẻ vai trò/quyền từ `/api/me`.
+ * F11 thay bằng tổng quan tiến độ/streak.
  */
 export function HomePage() {
   const chinese = useSystemInfo('chinese')
@@ -28,6 +30,8 @@ export function HomePage() {
             </Typography>
           </CardContent>
         </Card>
+
+        <MeCard />
 
         <Card>
           <CardContent>

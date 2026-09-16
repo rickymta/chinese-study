@@ -839,7 +839,7 @@ F1 là frontend thuần. Ngoại lệ duy nhất cho phép: sửa lỗi F0 phát
 | `Authorization/PermissionPolicyProvider.cs`, `PermissionRequirement.cs`, `PermissionAuthorizationHandler.cs` | Policy `Permission:*` → requirement; handler gọi `IPermissionResolver` (interface khai trong AntFarm.Auth, **mỗi service hiện thực** trên DB của mình) |
 | `Authorization/IPermissionResolver.cs` | `Task<IReadOnlySet<string>> GetPermissionsAsync(Guid userId, CancellationToken)` |
 
-Test cho service ngôn ngữ không cần identity chạy: factory `PostConfigure<JwtBearerOptions>` gán `options.Configuration = new OpenIdConnectConfiguration { Issuer = ... }` + `SigningKeys.Add(testRsaKey)` và `options.ConfigurationManager = null`; tiện ích `TestTokenFactory` đặt trong `AntFarm.Testing`.
+Test cho service ngôn ngữ không cần identity chạy: factory `PostConfigure<JwtBearerOptions>` gán `options.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(new OpenIdConnectConfiguration { Issuer = ... } + SigningKeys.Add(testRsaKey))` (**sửa 17/09/2026**: cách cũ `Configuration = ...` + `ConfigurationManager = null` KHÔNG chạy trên ASP.NET Core 10 — handler chỉ đọc `ConfigurationManager`; mẫu đúng ở `ChineseDbApiFactory.cs`); tiện ích `TestTokenFactory` đặt trong `AntFarm.Testing`.
 
 **identity-service**
 

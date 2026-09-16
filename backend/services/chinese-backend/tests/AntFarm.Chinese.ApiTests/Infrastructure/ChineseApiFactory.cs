@@ -10,6 +10,14 @@ namespace AntFarm.Chinese.ApiTests.Infrastructure;
 ///
 /// ⚠️ Dùng BIẾN MÔI TRƯỜNG chứ không phải ConfigureAppConfiguration — xem giải thích đầy
 /// đủ ở IdentityApiFactory (cùng bẫy, cùng lý do: Program.cs đọc cấu hình TRƯỚC Build()).
+///
+/// F3: <c>AddAfJwtBearer(IConfiguration)</c> ném ngay lúc khởi động nếu thiếu section "Auth" —
+/// các giá trị dưới đây KHÔNG cần đúng thật (health/system-info là AllowAnonymous, không request
+/// nào ở đây mang Bearer token) chỉ cần khác rỗng để service khởi động được.
+///
+/// ⚠️ Biến môi trường DÙNG CHUNG TOÀN TIẾN TRÌNH với <see cref="ChineseDbApiFactory"/> — MỌI lớp
+/// test dùng bất kỳ factory chinese nào phải nằm trong CÙNG <see cref="ChineseApiCollection"/> để
+/// chạy TUẦN TỰ (giống IdentityApiFactory, §9.2).
 /// </summary>
 public sealed class ChineseApiFactory : WebApplicationFactory<Program>
 {
@@ -17,6 +25,10 @@ public sealed class ChineseApiFactory : WebApplicationFactory<Program>
     {
         Environment.SetEnvironmentVariable("ConnectionStrings__Default", "Host=localhost;Database=unused");
         Environment.SetEnvironmentVariable("AutoMigrate", "false");
+        Environment.SetEnvironmentVariable("Auth__Issuer", "https://id.antfarms.xyz.test");
+        Environment.SetEnvironmentVariable("Auth__Audience", "af-chinese");
+        Environment.SetEnvironmentVariable("Auth__JwksUrl", "http://localhost:65535/.well-known/jwks.json");
+        Environment.SetEnvironmentVariable("Auth__RequireHttpsMetadata", "false");
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

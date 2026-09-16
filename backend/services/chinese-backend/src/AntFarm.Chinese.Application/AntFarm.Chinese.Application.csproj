@@ -9,6 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\AntFarm.Chinese.Domain\AntFarm.Chinese.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\shared\AntFarm.Core\AntFarm.Core.csproj" />
+    <!-- Chỉ cần cho IPermissionResolver (interface thuần, không kiểu ASP.NET Core nào trong chữ
+         ký) — PermissionResolver/UserProvisioningService hiện thực cổng phân quyền của
+         AntFarm.Auth trên DB access.* của chính service (F3, R-P1). -->
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Auth\AntFarm.Auth.csproj" />
   </ItemGroup>
 
 </Project>

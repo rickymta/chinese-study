@@ -1,3 +1,4 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,7 +14,12 @@ public static class ExceptionHandlingExtensions
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        // Mặc định System.Text.Json escape MỌI ký tự ngoài ASCII (kể cả chữ Việt có dấu) thành
+        // \uXXXX — đúng JSON, trình duyệt/JS parse lại ra chữ đúng, nhưng khó đọc khi debug bằng
+        // mắt (curl/log/devtools). UnsafeRelaxedJsonEscaping an toàn cho JSON API thuần (không
+        // nhúng thẳng vào HTML/script) — chỉ né các ký tự thật sự nhạy cảm HTML.
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
     /// <summary>

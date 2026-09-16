@@ -8,10 +8,19 @@ namespace AntFarm.Testing;
 /// Ký JWT RS256 bằng khoá RSA tạm (sinh mới mỗi instance) — cho phép ApiTests của service ngôn
 /// ngữ (chinese-backend từ F3) chấp nhận token mà KHÔNG cần identity-service chạy thật (§5.2.2,
 /// §9.2). Test tự nối <see cref="PublicKey"/> vào <c>JwtBearerOptions</c> của chính service qua
-/// <c>services.PostConfigure&lt;JwtBearerOptions&gt;(o =&gt; { o.ConfigurationManager = null;
-/// o.Configuration = new OpenIdConnectConfiguration { Issuer = factory.Issuer };
-/// o.Configuration.SigningKeys.Add(factory.PublicKey); })</c> — AntFarm.Testing cố tình KHÔNG
-/// tham chiếu ASP.NET Core Authentication để giữ nhẹ, việc nối dây là của từng ApiFactory.
+/// <c>services.PostConfigure&lt;JwtBearerOptions&gt;(o =&gt; { var config = new
+/// OpenIdConnectConfiguration { Issuer = factory.Issuer }; config.SigningKeys.Add(factory.PublicKey);
+/// o.Configuration = config; o.ConfigurationManager = new
+/// StaticConfigurationManager&lt;OpenIdConnectConfiguration&gt;(config); })</c> — **PHẢI** gán
+/// <c>ConfigurationManager</c> bằng <c>StaticConfigurationManager&lt;T&gt;</c> (gói
+/// <c>Microsoft.IdentityModel.Protocols</c>), KHÔNG chỉ gán <c>o.Configuration</c> rồi để
+/// <c>ConfigurationManager = null</c> — <c>JwtBearerHandler.SetupTokenValidationParametersAsync</c>
+/// (aspnetcore v10) CHỈ đọc <c>Options.ConfigurationManager</c> để lấy khoá ký, không bao giờ đọc
+/// <c>Options.Configuration</c> trực tiếp lúc xác thực; làm sai theo cách cũ ⇒ mọi token đều bị từ
+/// chối với "IDX10500: No security keys were provided" dù khoá đúng (bài học review F3 17/09/2026,
+/// xem <c>AntFarm.Chinese.ApiTests.Infrastructure.ChineseDbApiFactory</c> để có ví dụ đầy đủ).
+/// AntFarm.Testing cố tình KHÔNG tham chiếu ASP.NET Core Authentication để giữ nhẹ, việc nối dây
+/// (bao gồm cả gói <c>Microsoft.IdentityModel.Protocols</c>) là của từng ApiFactory.
 /// </summary>
 public sealed class TestTokenFactory : IDisposable
 {
