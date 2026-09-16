@@ -9,6 +9,9 @@ import { PERMISSIONS } from './features/auth/permissions'
 import { AdminHomePage } from './features/admin/pages/AdminHomePage'
 import { AdminUsersPage } from './features/admin-users/pages/AdminUsersPage'
 import { PinyinPage } from './features/pinyin/pages/PinyinPage'
+import { DictionarySearchPage } from './features/dictionary/pages/DictionarySearchPage'
+import { WordDetailPage } from './features/dictionary/pages/WordDetailPage'
+import { CharacterDetailPage } from './features/dictionary/pages/CharacterDetailPage'
 import { ProfilePage } from './features/profile/pages/ProfilePage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
@@ -32,6 +35,17 @@ export const router = createBrowserRouter([
                 <PinyinPage />
               </RequirePermission>
             ),
+          },
+          {
+            // F6: từ điển — tra từ (`?q=&hsk=&page=`), chi tiết từ, chi tiết chữ. `chu/:hanzi` khai TRƯỚC `:id`
+            // cho dễ đọc (router xếp hạng theo đoạn tĩnh nên thứ tự không quyết định, nhưng giữ rõ ý).
+            path: 'tu-dien',
+            element: <RequirePermission permission={PERMISSIONS.STUDY_USE} />,
+            children: [
+              { index: true, element: <DictionarySearchPage /> },
+              { path: 'chu/:hanzi', element: <CharacterDetailPage /> },
+              { path: ':id', element: <WordDetailPage /> },
+            ],
           },
           {
             // F4: hồ sơ (`?tab=thong-tin|mat-khau`; F7 thêm `hoc-tap`) — chỉ cần đăng nhập, không cần quyền riêng

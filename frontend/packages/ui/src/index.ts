@@ -44,6 +44,10 @@ export type { AppDrawerProps } from './components/dialog/AppDrawer'
 
 // ─── Hook ───
 export { useTabParam } from './hooks/useTabParam'
+// F6: quay lại trang cha có chủ đích + giữ vị trí cuộn danh sách khi mở chi tiết rồi back.
+export { useBackTo, linkState, isInternalPath } from './hooks/useBackTo'
+export type { BackToState } from './hooks/useBackTo'
+export { useScrollRestore } from './hooks/useScrollRestore'
 
 // ─── Đọc văn bản (Web Speech API) — dùng chung mọi ngôn ngữ ───
 export { isSpeechSupported, listVoices, pickVoice, speak, cancelSpeech } from './speech/speech'

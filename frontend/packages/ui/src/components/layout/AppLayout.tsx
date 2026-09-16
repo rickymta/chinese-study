@@ -158,8 +158,9 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
             {userMenu}
           </Box>
         </Drawer>
-        {/* `--af-bottom-nav-offset`: md+ không có bottom nav ⇒ 0 (StickyActionBar dính sát đáy viewport). */}
-        <Box component="main" sx={{ flex: 1, minWidth: 0, p: 3, '--af-bottom-nav-offset': '0px' }}>
+        {/* `--af-bottom-nav-offset`: md+ không có bottom nav ⇒ 0 (StickyActionBar dính sát đáy viewport).
+            `--af-top-bar-offset`: md+ không có AppBar trên ⇒ 0 (phần tử `position: sticky; top` của trang dùng). */}
+        <Box component="main" sx={{ flex: 1, minWidth: 0, p: 3, '--af-bottom-nav-offset': '0px', '--af-top-bar-offset': '0px' }}>
           <Outlet />
         </Box>
       </Box>
@@ -189,6 +190,8 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
           // Biến CSS cho `StickyActionBar` (@af/ui) — thanh hành động dính đáy phải nằm TRÊN bottom nav.
           '--af-bottom-nav-offset':
             mobileItems.length > 0 ? `calc(${MOBILE_BAR_HEIGHT}px + env(safe-area-inset-bottom))` : '0px',
+          // Biến CSS cho phần tử dính ĐẦU trang (ô tìm từ điển F6): AppBar trên là `sticky` cao MOBILE_BAR_HEIGHT.
+          '--af-top-bar-offset': `${MOBILE_BAR_HEIGHT}px`,
         }}
       >
         <Outlet />
