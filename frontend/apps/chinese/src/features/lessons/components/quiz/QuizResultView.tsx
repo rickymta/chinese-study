@@ -6,6 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import ReplayIcon from '@mui/icons-material/Replay'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
+import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
 import { SpeakButton } from '@/components/speech/SpeakButton'
 import type { QuizOption, QuizQuestion, QuizQuestionResult, QuizResult } from '../../types'
 import { minCorrectToPass } from '../../lib/quizScore'
@@ -17,6 +18,8 @@ export interface QuizResultViewProps {
   /** Ảnh chụp câu hỏi của lượt (không đọc lại từ query — admin có thể vừa sửa quiz). */
   questions: QuizQuestion[]
   onRetry: () => void
+  /** Slug bài — có thì hiện nút "Luyện viết chữ của bài" (F8) khi hoàn thành lần đầu. */
+  lessonSlug?: string
 }
 
 function findOption(q: QuizQuestion | undefined, id: string): QuizOption | undefined {
@@ -76,7 +79,7 @@ function ResultRow({ index, question, r }: { index: number; question: QuizQuesti
  * ("Đã thêm N từ vào ôn tập" chỉ khi N > 0 — phát lại cùng `clientAttemptId` trả 0), từng câu với đáp án đã
  * chọn / đáp án đúng / lời giải, nút "Làm lại". F8 thêm nút "Luyện viết chữ của bài" ở đây.
  */
-export function QuizResultView({ result, questions, onRetry }: QuizResultViewProps) {
+export function QuizResultView({ result, questions, onRetry, lessonSlug }: QuizResultViewProps) {
   const byId = useMemo(() => new Map(questions.map((q) => [q.id, q])), [questions])
   const needed = minCorrectToPass(result.total, result.passThresholdPercent)
 
@@ -129,6 +132,16 @@ export function QuizResultView({ result, questions, onRetry }: QuizResultViewPro
               <Button component={RouterLink} to="/on-tap" variant="contained" startIcon={<StyleOutlinedIcon />}>
                 Ôn tập ngay
               </Button>
+              {lessonSlug && (
+                <Button
+                  component={RouterLink}
+                  to={`/luyen-viet?tab=bai-hoc&bai=${encodeURIComponent(lessonSlug)}`}
+                  variant="outlined"
+                  startIcon={<DrawOutlinedIcon />}
+                >
+                  Luyện viết chữ của bài
+                </Button>
+              )}
             </Box>
           </CardContent>
         </Card>

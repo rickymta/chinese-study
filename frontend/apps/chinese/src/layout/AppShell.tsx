@@ -10,19 +10,18 @@ import RecordVoiceOverOutlinedIcon from '@mui/icons-material/RecordVoiceOverOutl
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
+import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
 import { APP_BRAND } from '@/constants'
 import { UserMenu } from '@/features/auth/components/UserMenu'
 import { PERMISSIONS } from '@/features/auth/permissions'
 import { useSrsSummary } from '@/features/srs/hooks'
 
-// Các feature sau chèn GIỮA Trang chủ và Quản trị: /pinyin (F5), /tu-dien (F6), /on-tap (F7), /luyen-viet (F8),
-// /bai-hoc (F9). Mục quản trị luôn ở cuối (mobile: rơi vào "Thêm" khi quá 5 mục). F4 thêm /quan-tri/nguoi-dung,
+// Thứ tự menu theo hợp đồng §5.3 (chốt ở F8): Trang chủ · Ôn tập · Bài học · Luyện viết · Pinyin · Từ điển — việc
+// hằng ngày (ôn, học bài, viết) lên trước, tra cứu (Pinyin, Từ điển) sau. Mục quản trị luôn ở cuối. Ở điện thoại
+// học viên có 6 mục ⇒ bottom nav hiện 4 mục đầu + "Thêm" (AppLayout gom phần thừa). F4 thêm /quan-tri/nguoi-dung,
 // F10 thêm /quan-tri/bai-hoc, /quan-tri/tu-vung (requiredPermission: 'content.manage').
 const buildNavItems = (dueBadge: number): NavItem[] => [
   { label: 'Trang chủ', to: '/', icon: <HomeOutlinedIcon />, end: true },
-  { label: 'Pinyin', to: '/pinyin', icon: <RecordVoiceOverOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
-  // F6: từ điển — mục không `end` để /tu-dien/:id và /tu-dien/chu/:hanzi vẫn sáng mục này.
-  { label: 'Từ điển', to: '/tu-dien', icon: <MenuBookOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
   // F7: ôn tập — huy hiệu = thẻ đến hạn lúc này + từ mới còn học được (tối đa "99+"), từ `GET /api/srs/summary`.
   {
     label: 'Ôn tập',
@@ -34,9 +33,13 @@ const buildNavItems = (dueBadge: number): NavItem[] => [
     ),
     requiredPermission: PERMISSIONS.STUDY_USE,
   },
-  // F9: bài học chủ đề — không `end` để /bai-hoc/:slug vẫn sáng mục này. Học viên thường có đúng 5 mục ở bottom nav
-  // (Trang chủ · Pinyin · Từ điển · Ôn tập · Bài học); admin có thêm Quản trị ⇒ AppLayout gom vào "Thêm".
+  // F9: bài học chủ đề — không `end` để /bai-hoc/:slug vẫn sáng mục này.
   { label: 'Bài học', to: '/bai-hoc', icon: <AutoStoriesOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
+  // F8: luyện viết — không `end` để /luyen-viet/:hanzi vẫn sáng mục này.
+  { label: 'Luyện viết', to: '/luyen-viet', icon: <DrawOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
+  { label: 'Pinyin', to: '/pinyin', icon: <RecordVoiceOverOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
+  // F6: từ điển — mục không `end` để /tu-dien/:id và /tu-dien/chu/:hanzi vẫn sáng mục này.
+  { label: 'Từ điển', to: '/tu-dien', icon: <MenuBookOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
   // Ẩn với người không có `users.manage` — `AppLayout` lọc theo `hasPermission` (quyền từ GET /chinese/api/me).
   { label: 'Quản trị', to: '/quan-tri', icon: <AdminPanelSettingsOutlinedIcon />, requiredPermission: PERMISSIONS.USERS_MANAGE },
   // F4: trang con của Quản trị — ở điện thoại KHÔNG chiếm thêm ô trên bottom nav (vào qua thẻ trong /quan-tri);

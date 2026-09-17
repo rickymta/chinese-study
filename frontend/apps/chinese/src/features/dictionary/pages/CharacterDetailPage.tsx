@@ -1,8 +1,9 @@
 import { useLayoutEffect, type ReactNode } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom'
 import { Box, Button, List, Skeleton, Stack, Typography } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { LangText, PageContainer, useBackTo } from '@af/ui'
+import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
+import { LangText, PageContainer, linkState, useBackTo } from '@af/ui'
 import { Hanzi } from '@/components/Hanzi'
 import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeech'
 import { SpeakButton } from '@/components/speech/SpeakButton'
@@ -28,6 +29,7 @@ function InfoRow({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function CharacterBody({ ch }: { ch: CharacterDetail }) {
+  const location = useLocation()
   const readings = (ch.pinyinReadings ?? []).filter(Boolean)
   const hanViet = (ch.hanViet ?? []).filter(Boolean)
   const traditional = (ch.traditionalVariants ?? []).filter((t) => t && t !== ch.hanzi)
@@ -104,7 +106,20 @@ function CharacterBody({ ch }: { ch: CharacterDetail }) {
             ))}
           </List>
         )}
-        {/* F8 sẽ thêm nút "Luyện viết" ở đây. */}
+      </Box>
+
+      {/* F8: sang trang luyện viết chữ này (không gắn bộ — "Chữ tiếp" không có; Quay lại về trang này). */}
+      <Box>
+        <Button
+          component={RouterLink}
+          to={`/luyen-viet/${encodeURIComponent(ch.hanzi)}`}
+          state={linkState(location)}
+          variant="contained"
+          startIcon={<DrawOutlinedIcon />}
+          sx={{ minHeight: 44 }}
+        >
+          Luyện viết chữ này
+        </Button>
       </Box>
     </Stack>
   )

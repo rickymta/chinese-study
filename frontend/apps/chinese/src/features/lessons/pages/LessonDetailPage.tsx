@@ -3,6 +3,7 @@ import { Link as RouterLink, useParams } from 'react-router-dom'
 import {
   Alert,
   Box,
+  Button,
   Chip,
   FormControlLabel,
   IconButton,
@@ -23,6 +24,7 @@ import {
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
+import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
 import { PageContainer, useBackTo, useTabParam } from '@af/ui'
 import { ChineseSpeechProvider, useChineseSpeech } from '@/components/speech/ChineseSpeech'
 import { QueryErrorAlert } from '@/features/dictionary/components/QueryErrorAlert'
@@ -201,6 +203,20 @@ function LessonDetailInner() {
                 Hoàn thành quiz ({'≥'} 80%) thì các từ dưới đây tự vào ôn tập. Bấm một từ để xem chi tiết trong từ điển.
               </Typography>
               <LessonWordList words={lesson.words} />
+              {/* F8: sang trang luyện viết với bộ chữ của bài này (`set=lesson:<slug>`). */}
+              {lesson.words.length > 0 && (
+                <Box>
+                  <Button
+                    component={RouterLink}
+                    to={`/luyen-viet?tab=bai-hoc&bai=${encodeURIComponent(lesson.slug)}`}
+                    variant="outlined"
+                    startIcon={<DrawOutlinedIcon />}
+                    sx={{ minHeight: 44 }}
+                  >
+                    Luyện viết chữ của bài
+                  </Button>
+                </Box>
+              )}
               {lesson.glossary && lesson.glossary.length > 0 && <GlossaryList entries={lesson.glossary} />}
             </Stack>
           </Box>

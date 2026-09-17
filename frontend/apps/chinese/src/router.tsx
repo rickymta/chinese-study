@@ -16,6 +16,8 @@ import { ReviewHomePage } from './features/srs/pages/ReviewHomePage'
 import { ReviewSessionPage } from './features/srs/pages/ReviewSessionPage'
 import { LessonListPage } from './features/lessons/pages/LessonListPage'
 import { LessonDetailPage } from './features/lessons/pages/LessonDetailPage'
+import { WritingHomePage } from './features/writing/pages/WritingHomePage'
+import { WritingPracticePage } from './features/writing/pages/WritingPracticePage'
 import { ProfilePage } from './features/profile/pages/ProfilePage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
@@ -68,6 +70,16 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <LessonListPage /> },
               { path: ':slug', element: <LessonDetailPage /> },
+            ],
+          },
+          {
+            // F8: luyện viết chữ Hán — danh sách theo bộ (`?tab=hsk1|bai-hoc|can-luyen|da-luyen&bai=&page=`) + trang
+            // luyện một chữ (`:hanzi` encode, `?tab=xem|to-theo|tu-viet&tu=<bộ>`). Chữ không có trong kho ⇒ 404.
+            path: 'luyen-viet',
+            element: <RequirePermission permission={PERMISSIONS.STUDY_USE} />,
+            children: [
+              { index: true, element: <WritingHomePage /> },
+              { path: ':hanzi', element: <WritingPracticePage /> },
             ],
           },
           {

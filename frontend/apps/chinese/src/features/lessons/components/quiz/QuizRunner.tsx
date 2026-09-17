@@ -194,7 +194,7 @@ export function QuizRunner({ lesson, slug, onLessonChanged, active = true }: Qui
 
   // ─── Kết quả ───
   if (phase === 'result' && result && attempt) {
-    return <QuizResultView result={result} questions={attempt.questions} onRetry={start} />
+    return <QuizResultView result={result} questions={attempt.questions} onRetry={start} lessonSlug={slug} />
   }
 
   // ─── Màn mở đầu ───

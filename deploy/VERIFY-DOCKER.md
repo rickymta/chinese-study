@@ -114,3 +114,19 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] `./scripts/backup-db.sh` chạy thành công trên server thật (compose dev không đại diện đúng — cần volume `identity-keys` + role `af_identity`/`af_chinese` như production) ⇒ tạo đủ `globals.sql`, `af_identity.dump`, `af_chinese.dump`, `identity-keys.tar.gz` trong `deploy/backups/<ts>/`.
 - [ ] Cron `backup-db.sh` đã cài (`crontab -l`), chạy được ít nhất một đêm không lỗi (xem `/var/log/af-backup-db.log`).
 - [ ] **Diễn tập phục hồi đầy đủ trên máy/VM KHÁC** (theo `deploy/README.md` mục 11): `pg_restore` cả hai DB + giải nén `identity-keys.tar.gz` ⇒ đăng nhập lại được, `/api/me` + tra từ điển hoạt động bình thường. Đánh dấu `[x]` kèm ngày + máy đã diễn tập — bản sao lưu chưa từng phục hồi thử coi như không tồn tại.
+
+## 7. Dữ liệu nét chữ `/hanzi-data/` trong ảnh `chinese-frontend` (F8) — đã verify ảnh trên máy dev, CHƯA verify trên server
+
+> F8 đóng gói tập con `hanzi-writer-data@2.0.1` vào `frontend/apps/chinese/public/hanzi-data/` (commit vào git,
+> `COPY apps/chinese` của Dockerfile đã gồm `public/`) và thêm `location /hanzi-data/` + `/licenses/` vào
+> `apps/chinese/nginx.conf` (`try_files $uri =404` — KHÔNG rơi về `index.html`). Mới kiểm `nginx -t` qua container
+> `nginx:1.27-alpine` trên máy dev (17/09/2026). Ảnh thật đã build + chạy thử trên máy dev (17/09/2026, không qua
+> nginx biên/HTTPS); các mục `https://chinese.antfarms.xyz/...` bên dưới vẫn chờ server.
+
+- [x] (17/09/2026, MacBook) `docker run --rm -v "$PWD/apps/chinese/nginx.conf":/etc/nginx/conf.d/default.conf:ro nginx:1.27-alpine nginx -t` (chạy trong `frontend/`) ⇒ "syntax is ok / test is successful".
+- [x] (17/09/2026, MacBook) `docker build -f apps/chinese/Dockerfile --build-arg VITE_IDENTITY_API_URL=https://id.antfarms.xyz/api frontend` + `docker run -p 127.0.0.1:18080:80` ⇒ `hanzi-data` 303 file (300 chữ + 3), có `licenses/hanzi-writer.LICENSE.txt`; `curl -I /hanzi-data/7231.json` ⇒ 200 `application/json`, đúng MỘT dòng `Cache-Control: public, max-age=604800`, không `Expires`, có `nosniff`; `/hanzi-data/ffff.json` ⇒ 404 (không phải `index.html`); `ARPHICPL.TXT` và `/licenses/hanzi-writer.LICENSE.txt` ⇒ 200 `text/plain`; `/assets/*.js` ⇒ một dòng `Cache-Control: public, max-age=31536000, immutable`. Container/ảnh tạm đã xoá.
+- [ ] `docker compose build chinese-frontend` (trên server) ⇒ `docker run --rm --entrypoint sh <ảnh> -c 'ls /usr/share/nginx/html/hanzi-data | wc -l'` ≈ số chữ + 3 (`index.json`, `ARPHICPL.TXT`, `NOTICE.md`); có `/usr/share/nginx/html/licenses/hanzi-writer.LICENSE.txt`.
+- [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/7231.json` ⇒ `200`, `Content-Type: application/json`, `Cache-Control: public, max-age=604800` (không `immutable`), có `X-Content-Type-Options: nosniff`.
+- [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/ffff.json` ⇒ `404` (KHÔNG phải 200 `text/html` của `index.html`).
+- [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/ARPHICPL.TXT` ⇒ 200 `text/plain`; `/licenses/hanzi-writer.LICENSE.txt` ⇒ 200.
+- [ ] Mở `/luyen-viet/爱` trên trình duyệt, DevTools Network suốt phiên luyện: KHÔNG có request tới `cdn.jsdelivr.net` (R-W1); `/hanzi-data/7231.json` 200 và lần tải trang sau lấy từ cache.
