@@ -50,6 +50,9 @@ public sealed class WordConfiguration : IEntityTypeConfiguration<Word>
         builder.Property(w => w.CreatedAt).IsRequired();
         builder.Property(w => w.UpdatedAt).IsRequired();
 
+        // Concurrency token ánh xạ cột hệ thống xmin (Npgsql) — KHÔNG tạo cột thật (§5.1, F10 R-CA3).
+        builder.Property(w => w.Version).IsRowVersion();
+
         builder.HasIndex(w => new { w.Simplified, w.Pinyin }).IsUnique().HasDatabaseName("ux_words_simplified_pinyin");
 
         // varchar_pattern_ops: cần cho LIKE 'x%' khi collation DB không phải 'C' (§5.1.1).
@@ -65,5 +68,9 @@ public sealed class WordConfiguration : IEntityTypeConfiguration<Word>
 
         builder.HasIndex(w => w.SearchVi).HasDatabaseName("ix_words_search_vi_trgm").HasMethod("gin").HasOperators("gin_trgm_ops");
         builder.HasIndex(w => w.SearchViPlain).HasDatabaseName("ix_words_search_vi_plain_trgm").HasMethod("gin").HasOperators("gin_trgm_ops");
+
+        // F10 (§5.1.3, R-CA11): màn duyệt nghĩa lọc/sắp theo đúng thứ tự ba cột này (path_order tăng dần
+        // trong CÙNG cấp/trạng thái — từ sắp học lên trước, RK4).
+        builder.HasIndex(w => new { w.MeaningViStatus, w.Hsk3Level, w.PathOrder }).HasDatabaseName("ix_words_review");
     }
 }

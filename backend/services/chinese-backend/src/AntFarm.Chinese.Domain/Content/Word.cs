@@ -41,6 +41,9 @@ public sealed class Word
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
+    /// <summary>Concurrency token ánh xạ cột hệ thống <c>xmin</c> (Npgsql <c>IsRowVersion</c>, §5.1, migration F10_ContentAdmin) — chống ghi đè đồng thời khi hai admin cùng sửa một từ (R-CA3).</summary>
+    public uint Version { get; private set; }
+
     // EF Core cần constructor không tham số.
     private Word()
     {
@@ -130,6 +133,36 @@ public sealed class Word
         UsageNote = data.UsageNote;
         MeaningsEn = [.. data.MeaningsEn];
         Sources = [.. data.Sources];
+    }
+
+    /// <summary>
+    /// F10 (R-CA9) — admin duyệt/sửa nghĩa Việt và/hoặc Hán Việt. <paramref name="meaningsVi"/> PHẢI
+    /// đã chuẩn hoá (trim, bỏ rỗng, bỏ trùng giữ thứ tự) ở Application TRƯỚC khi gọi — Domain chỉ so
+    /// sánh với giá trị hiện có để quyết <see cref="MeaningViSource"/> (đổi nội dung ⇒
+    /// <see cref="Content.MeaningViSource.Manual"/>; giữ nguyên nội dung, chỉ đổi trạng thái ⇒ GIỮ
+    /// nguồn cũ). <paramref name="hanViet"/> rỗng/khoảng trắng ⇒ <c>null</c> (kéo theo
+    /// <see cref="HanVietStatus"/> cũng <c>null</c>, bất kể <paramref name="hanVietStatus"/> truyền
+    /// gì — chữ không có âm Hán Việt thì không có "trạng thái duyệt" cho thứ không tồn tại).
+    /// Duyệt hàng loạt (không đổi nội dung) gọi hàm này với <paramref name="meaningsVi"/>/
+    /// <paramref name="hanViet"/> giữ NGUYÊN giá trị hiện tại, chỉ đổi <paramref name="meaningViStatus"/>.
+    /// </summary>
+    public void ApplyReview(IReadOnlyList<string> meaningsVi, string meaningViStatus, string? hanViet, string? hanVietStatus, Guid userId, DateTime nowUtc)
+    {
+        var meaningsChanged = !SequenceEqualsOrdinal(MeaningsVi, meaningsVi);
+        MeaningsVi = [.. meaningsVi];
+        MeaningViStatus = meaningViStatus;
+        if (meaningsChanged)
+            MeaningViSource = Content.MeaningViSource.Manual;
+
+        var normalizedHanViet = string.IsNullOrWhiteSpace(hanViet) ? null : hanViet;
+        HanViet = normalizedHanViet;
+        HanVietStatus = normalizedHanViet is null ? null : hanVietStatus;
+
+        RecomputeSearchKeys();
+
+        EditedAt = nowUtc;
+        EditedBy = userId;
+        UpdatedAt = nowUtc;
     }
 
     private void RecomputeSearchKeys()

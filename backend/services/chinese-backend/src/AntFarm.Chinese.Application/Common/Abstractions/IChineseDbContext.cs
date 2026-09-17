@@ -71,4 +71,15 @@ public interface IChineseDbContext
     /// (vd controller khác) sẽ cố chèn lại chúng ⇒ lỗi 500 (review F3 17/09/2026).
     /// </summary>
     void ClearTracking();
+
+    /// <summary>
+    /// F10 (R-CA3): gán <c>OriginalValue</c> của thuộc tính concurrency token <c>Version</c> (ánh xạ
+    /// <c>xmin</c>, <see cref="Microsoft.EntityFrameworkCore.PropertyBuilder.IsRowVersion"/>) bằng
+    /// giá trị người gọi gửi lên — <c>SaveChangesAsync</c> sinh <c>UPDATE ... WHERE xmin = @original</c>;
+    /// lệch (đã bị sửa ở nơi khác) ⇒ 0 dòng ảnh hưởng ⇒ EF ném
+    /// <see cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException"/> (Application dịch
+    /// thành <c>409 CONCURRENCY_CONFLICT</c>). Dùng chung cho <c>Lesson</c>/<c>Word</c> — cả hai đặt
+    /// TÊN thuộc tính GIỐNG NHAU ("Version") nên không cần generic theo kiểu cụ thể.
+    /// </summary>
+    void SetOriginalVersion(object entity, uint version);
 }

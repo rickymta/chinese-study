@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.RegularExpressions;
 using AntFarm.Chinese.Domain.Lessons;
 
@@ -272,7 +272,11 @@ public static partial class LessonContentValidator
     // ---- câu hỏi quiz ----
 
     /// <summary>Kiểm một câu quiz (§5.4.3, R-CA4) — KHÔNG kiểm số lượng câu/tỉ lệ nghe của CẢ BÀI (đó là việc của <c>LessonPublishRules</c>, cần nhìn toàn bộ danh sách câu).</summary>
-    public static IReadOnlyList<ValidationProblem> ValidateQuestion(QuestionValidationInput input, string path = "question")
+    /// <param name="requireExplanation">
+    /// <c>true</c> (mặc định — file seed, luật §5.4.3): <c>explanation</c> bắt buộc 1–500. <c>false</c> (API admin F10,
+    /// §6.3 <c>explanation?</c>): được để rỗng — kết quả quiz chỉ không hiện lời giải; có thì vẫn ≤ 500 + kiểm cú pháp nội dòng.
+    /// </param>
+    public static IReadOnlyList<ValidationProblem> ValidateQuestion(QuestionValidationInput input, string path = "question", bool requireExplanation = true)
     {
         var problems = new List<ValidationProblem>();
 
@@ -339,10 +343,19 @@ public static partial class LessonContentValidator
                 problems.Add(new ValidationProblem($"{path}.correctOptionId", $"correctOptionId '{input.CorrectOptionId}' không thuộc danh sách lựa chọn."));
         }
 
-        if (string.IsNullOrEmpty(input.Explanation) || input.Explanation.Length > 500)
-            problems.Add(new ValidationProblem($"{path}.explanation", "explanation phải 1–500 ký tự."));
+        if (string.IsNullOrEmpty(input.Explanation))
+        {
+            if (requireExplanation)
+                problems.Add(new ValidationProblem($"{path}.explanation", "explanation phải 1–500 ký tự."));
+        }
+        else if (input.Explanation.Length > 500)
+        {
+            problems.Add(new ValidationProblem($"{path}.explanation", requireExplanation ? "explanation phải 1–500 ký tự." : "explanation tối đa 500 ký tự."));
+        }
         else
+        {
             problems.AddRange(ValidateInlineTokens($"{path}.explanation", input.Explanation));
+        }
 
         return problems;
     }

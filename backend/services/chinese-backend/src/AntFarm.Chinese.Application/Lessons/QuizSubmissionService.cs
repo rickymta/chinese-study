@@ -1,4 +1,4 @@
-using AntFarm.Chinese.Application.Common.Abstractions;
+﻿using AntFarm.Chinese.Application.Common.Abstractions;
 using AntFarm.Chinese.Application.Learning;
 using AntFarm.Chinese.Application.Lessons.Dtos;
 using AntFarm.Chinese.Domain.Learning;
@@ -50,6 +50,14 @@ public sealed class QuizSubmissionService(
 
             EnsureMatchesRequest(winner, userId, lessonId);
             return (await BuildReplayResponseAsync(winner, ct), true);
+        }
+        catch (Exception ex) when (IsLessonForeignKeyViolation(ex))
+        {
+            // Đua hiếm (F10, R-CA7): admin xoá cứng bài NGAY SAU khi ta đọc thấy bài published — lần
+            // ghi lesson_progress/quiz_attempts vấp FK tới content.lessons. Transaction đã ROLLBACK
+            // khi dispose; với học viên bài coi như không còn ⇒ 404 thay vì 500.
+            db.ClearTracking();
+            throw new NotFoundException($"Không tìm thấy bài học '{lessonId}'.");
         }
     }
 
@@ -206,6 +214,19 @@ public sealed class QuizSubmissionService(
     }
 
     /// <summary>Tên ràng buộc do CHÍNH ta đặt trong <c>QuizAttemptConfiguration</c> — ổn định, không phụ thuộc kiểu Npgsql cụ thể (cùng kỹ thuật <c>SrsReviewService.IsClientReviewIdUniqueViolation</c>).</summary>
+    /// <summary>Vi phạm FK tới <c>content.lessons</c> (tên do EF đặt theo quy ước snake_case — ổn định). <c>ExecuteSqlAsync</c> ném thẳng lỗi Postgres (không bọc <c>DbUpdateException</c>) nên duyệt cả chuỗi <c>InnerException</c>.</summary>
+    private static bool IsLessonForeignKeyViolation(Exception ex)
+    {
+        for (var current = ex; current is not null; current = current.InnerException)
+        {
+            if (current.Message.Contains("fk_lesson_progress_lessons_lesson_id", StringComparison.OrdinalIgnoreCase)
+                || current.Message.Contains("fk_quiz_attempts_lessons_lesson_id", StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
+    }
+
     private static bool IsClientAttemptIdUniqueViolation(DbUpdateException ex) =>
         ex.InnerException?.Message.Contains("ux_quiz_attempts_client_attempt_id", StringComparison.OrdinalIgnoreCase) == true;
 }

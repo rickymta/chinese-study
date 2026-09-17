@@ -1,6 +1,7 @@
 using System.Reflection;
 using AntFarm.Auth.Authorization;
 using AntFarm.Chinese.Application.Access;
+using AntFarm.Chinese.Application.Admin.Content;
 using AntFarm.Chinese.Application.Common.Time;
 using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Application.Learning;
@@ -42,6 +43,9 @@ public static class DependencyInjection
         // tiến trình, khoá theo id lượt nạp gần nhất (review F6.2) — an toàn gọi nhiều lần
         // (idempotent, chỉ đăng ký nếu chưa có IMemoryCache nào khác).
         services.AddMemoryCache();
+        // F10: Singleton — chỉ một số nguyên đếm số lần admin sửa từ, dùng ghép vào khoá cache của
+        // DictionaryService (R-CA9 "cache từ điển được làm mới sau khi sửa").
+        services.AddSingleton<DictionaryCacheVersion>();
         services.AddScoped<DictionaryQueryParser>();
         services.AddScoped<DictionaryService>();
 
@@ -67,6 +71,10 @@ public static class DependencyInjection
         // sạch KHÁC NGÀY" tính theo múi giờ người học, không phải UTC.
         services.AddScoped<WritingService>();
         services.AddScoped<WritingCharacterQueryService>();
+
+        // F10: quản trị nội dung (§5.2.3) — soạn/sửa/xuất bản bài học + quiz, duyệt nghĩa từ vựng.
+        services.AddScoped<LessonAdminService>();
+        services.AddScoped<WordReviewService>();
 
         return services;
     }

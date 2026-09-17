@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using AntFarm.Chinese.Application.Lessons;
 using AntFarm.Chinese.Domain.Lessons;
 using FluentAssertions;
@@ -169,6 +169,20 @@ public class LessonContentValidatorTests
             [new QuizOption("a", "xin lỗi", "vi"), new QuizOption("b", "cảm ơn", "vi")], "b", "谢谢 nghĩa là cảm ơn.");
         var problems = LessonContentValidator.ValidateQuestion(input);
         problems.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Question_KhongLoiGiai_SeedBaoLoi_AdminChoPhep()
+    {
+        var input = new QuestionValidationInput(
+            QuizQuestionTypes.SingleChoice, "1 cộng 1 bằng mấy?", "vi", null, null,
+            [new QuizOption("a", "1", "vi"), new QuizOption("b", "2", "vi")], "b", "");
+
+        LessonContentValidator.ValidateQuestion(input).Should().Contain(p => p.Path.EndsWith("explanation"));
+        LessonContentValidator.ValidateQuestion(input, requireExplanation: false).Should().BeEmpty();
+
+        var tooLong = input with { Explanation = new string('x', 501) };
+        LessonContentValidator.ValidateQuestion(tooLong, requireExplanation: false).Should().Contain(p => p.Path.EndsWith("explanation"));
     }
 
     // ---- cú pháp chữ Hán nội dòng ----

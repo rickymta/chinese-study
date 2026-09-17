@@ -16,7 +16,7 @@ namespace AntFarm.Chinese.Application.Dictionary;
 /// F6), nên đẩy lọc xuống SQL bằng các chỉ mục trgm/pattern đã có sẵn trong migration (§5.1.1) thay
 /// vì tải hết vào bộ nhớ.
 /// </summary>
-public sealed class DictionaryService(IChineseDbContext db, DictionaryQueryParser parser, IMemoryCache cache)
+public sealed class DictionaryService(IChineseDbContext db, DictionaryQueryParser parser, IMemoryCache cache, DictionaryCacheVersion cacheVersion)
 {
     private const string WordsCacheKeyPrefix = "dictionary:words-by-run:";
 
@@ -149,7 +149,12 @@ public sealed class DictionaryService(IChineseDbContext db, DictionaryQueryParse
             .Select(r => (Guid?)r.Id)
             .FirstOrDefaultAsync(ct);
 
-        var cacheKey = WordsCacheKeyPrefix + (latestRunId?.ToString() ?? "unknown");
+        // F10: ghép thêm DictionaryCacheVersion.Current — admin sửa một từ (WordReviewService) không
+        // tạo lượt nạp mới nên latestRunId không đổi; Invalidate() tăng số này để buộc đọc lại NGAY.
+        var cacheKey = WordsCacheKeyPrefix + (latestRunId?.ToString() ?? "unknown") + ":" + cacheVersion.Current;
+        // Ghi lại khoá VỪA DÙNG — Invalidate() xoá THẲNG mục này khỏi cache khi admin sửa từ, không
+        // chờ hết hạn dự phòng 1 giờ bên dưới (review điều phối 17/09/2026, mục 7).
+        cacheVersion.TrackKey(cacheKey);
 
         if (cache.TryGetValue(cacheKey, out IReadOnlyList<Word>? cached) && cached is not null)
             return cached;

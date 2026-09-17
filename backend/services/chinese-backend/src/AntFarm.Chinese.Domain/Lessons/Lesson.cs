@@ -107,4 +107,64 @@ public sealed class Lesson
         EditedBy = userId;
         UpdatedAt = nowUtc;
     }
+
+    /// <summary>F10: tạo bài mới qua màn quản trị (§5.2.3 "Tạo bài") — luôn <c>draft</c>/<c>machine</c>/<c>admin</c>, không có <see cref="SourceHash"/> (không đến từ tệp).</summary>
+    public static Lesson CreateDraft(string slug, string title, string topic, int orderIndex, string summary, Guid userId, DateTime nowUtc) => new()
+    {
+        Id = Guid.CreateVersion7(),
+        Slug = slug,
+        Title = title,
+        Topic = topic,
+        Level = "hsk1",
+        OrderIndex = orderIndex,
+        Summary = summary,
+        Objectives = [],
+        EstimatedMinutes = 15,
+        Glossary = "[]",
+        Status = LessonStatuses.Draft,
+        ReviewStatus = LessonReviewStatuses.Machine,
+        Source = LessonSources.Admin,
+        CreatedBy = userId,
+        EditedAt = nowUtc,
+        EditedBy = userId,
+        CreatedAt = nowUtc,
+        UpdatedAt = nowUtc
+    };
+
+    /// <summary>F10: đổi thông tin chung (§6.3 <c>PUT /api/admin/lessons/{id}</c>) — KHÔNG đổi <see cref="Status"/>/<see cref="Level"/> (chỉ hai giá trị hằng, đổi qua các thao tác riêng).</summary>
+    public void UpdateMeta(
+        string slug, string title, string topic, int orderIndex, string summary,
+        IReadOnlyList<string> objectives, short estimatedMinutes, string glossaryJson)
+    {
+        Slug = slug;
+        Title = title;
+        Topic = topic;
+        OrderIndex = orderIndex;
+        Summary = summary;
+        Objectives = [.. objectives];
+        EstimatedMinutes = estimatedMinutes;
+        Glossary = glossaryJson;
+    }
+
+    /// <summary>R-CA4: xuất bản — <see cref="PublishedAt"/> chỉ đặt LẦN ĐẦU (<c>??=</c>), gỡ rồi xuất bản lại KHÔNG đổi mốc này (R-CA8 dựa vào mốc gốc để khoá slug).</summary>
+    public void Publish(DateTime nowUtc)
+    {
+        Status = LessonStatuses.Published;
+        PublishedAt ??= nowUtc;
+    }
+
+    public void Unpublish() => Status = LessonStatuses.Draft;
+
+    public void Archive() => Status = LessonStatuses.Archived;
+
+    /// <summary>R-CA7: bài lưu trữ khôi phục lại luôn về <c>draft</c> (admin xuất bản lại thủ công nếu muốn).</summary>
+    public void RestoreFromArchive() => Status = LessonStatuses.Draft;
+
+    /// <summary>R-CA6: duyệt bài — cho phép ở MỌI trạng thái (kể cả <c>draft</c>).</summary>
+    public void Review(Guid userId, DateTime nowUtc)
+    {
+        ReviewStatus = LessonReviewStatuses.Reviewed;
+        ReviewedAt = nowUtc;
+        ReviewedBy = userId;
+    }
 }

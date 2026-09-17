@@ -67,4 +67,7 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
 
     public Task<int> ExecuteSqlAsync(FormattableString sql, CancellationToken cancellationToken = default)
         => Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
+
+    public void SetOriginalVersion(object entity, uint version) =>
+        Entry(entity).Property("Version").OriginalValue = version;
 }

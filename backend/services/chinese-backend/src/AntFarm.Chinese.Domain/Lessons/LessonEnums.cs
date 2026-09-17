@@ -6,6 +6,8 @@ public static class LessonStatuses
     public const string Draft = "draft";
     public const string Published = "published";
     public const string Archived = "archived";
+
+    public static readonly IReadOnlyList<string> All = [Draft, Published, Archived];
 }
 
 /// <summary>Trạng thái duyệt nội dung bài học (§5.1.1, R-LS2) — giống <c>MeaningViStatus</c> của F6 nhưng RIÊNG cho bài học (không dùng chung hằng số — hai khái niệm nghiệp vụ độc lập, đổi một bên không kéo bên kia).</summary>
