@@ -1,0 +1,65 @@
+{
+  "items": [
+    {
+      "id": "01a0ad0f-1ed8-77c1-a8e1-6892f6601677",
+      "slug": "chao-hoi",
+      "title": "Chào hỏi",
+      "topic": "giao-tiep",
+      "orderIndex": 1,
+      "summary": "Chào, cảm ơn, xin lỗi và tạm biệt bằng tiếng Trung — dùng được ngay hôm nay.",
+      "estimatedMinutes": 15,
+      "wordCount": 14,
+      "questionCount": 7,
+      "reviewStatus": "machine"
+    },
+    {
+      "id": "01a0ad0f-1f71-76c9-adbc-3672fddb056a",
+      "slug": "ban-than",
+      "title": "Giới thiệu bản thân",
+      "topic": "ban-than",
+      "orderIndex": 2,
+      "summary": "Hỏi tên, nói mình là học sinh, hỏi quốc tịch — mẫu câu để làm quen người mới.",
+      "estimatedMinutes": 15,
+      "wordCount": 14,
+      "questionCount": 7,
+      "reviewStatus": "machine"
+    },
+    {
+      "id": "01a0ad0f-1f8b-7776-a25b-f55d7da0c1e2",
+      "slug": "so-dem",
+      "title": "Số đếm",
+      "topic": "so-dem",
+      "orderIndex": 3,
+      "summary": "Đếm từ 1 đến 99, hỏi tuổi và phân biệt 几/多少, 两/二 — nền tảng cho các bài sau.",
+      "estimatedMinutes": 15,
+      "wordCount": 15,
+      "questionCount": 7,
+      "reviewStatus": "machine"
+    },
+    {
+      "id": "01a0ad0f-1fa9-7b23-987f-8ca18dff88a9",
+      "slug": "gia-dinh",
+      "title": "Gia đình",
+      "topic": "gia-dinh",
+      "orderIndex": 4,
+      "summary": "Nói về số người trong nhà và các thành viên gia đình bằng 有/没有, 和, 的.",
+      "estimatedMinutes": 15,
+      "wordCount": 14,
+      "questionCount": 7,
+      "reviewStatus": "machine"
+    },
+    {
+      "id": "01a0ad0f-1fbf-730e-b0be-a3aa294d1dc7",
+      "slug": "thoi-gian",
+      "title": "Ngày giờ",
+      "topic": "thoi-gian",
+      "orderIndex": 5,
+      "summary": "Hỏi giờ, hỏi ngày tháng, hỏi thứ trong tuần — tổng hợp số đếm đã học ở bài trước.",
+      "estimatedMinutes": 15,
+      "wordCount": 14,
+      "questionCount": 7,
+      "reviewStatus": "machine"
+    }
+  ],
+  "nextLessonSlug": "chao-hoi"
+}

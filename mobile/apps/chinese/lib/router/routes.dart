@@ -6,7 +6,7 @@ abstract final class AppRoutes {
   static const reviewSession = '/on-tap/phien';
   static const lessons = '/bai-hoc';
 
-  /// Mẫu route bài học chi tiết (`:slug`), M9 — M5 dẫn tới `ComingSoonPage`.
+  /// Mẫu route bài học chi tiết (`:slug`, M9): `/bai-hoc/:slug?tab=noi-dung|tu-vung|quiz`.
   static const lessonPattern = '/bai-hoc/:slug';
 
   /// `/bai-hoc/<slug>` (slug đã `Uri.encodeComponent`, giống web).

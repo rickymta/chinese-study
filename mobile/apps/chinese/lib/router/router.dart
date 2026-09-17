@@ -8,6 +8,8 @@ import '../features/auth/presentation/pages/error_pages.dart';
 import '../features/dictionary/presentation/pages/character_detail_page.dart';
 import '../features/dictionary/presentation/pages/dictionary_search_page.dart';
 import '../features/dictionary/presentation/pages/word_detail_page.dart';
+import '../features/lessons/presentation/pages/lesson_detail_page.dart';
+import '../features/lessons/presentation/pages/lesson_list_page.dart';
 import '../features/licenses/presentation/pages/licenses_page.dart';
 import '../features/pinyin/presentation/pages/pinyin_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
@@ -60,17 +62,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.review, builder: (_, _) => const ReviewHomePage())],
           ),
+          // Bài học (M9): danh sách + chi tiết là hai route PHẲNG trong nhánh (không lồng) — `go` tới bài từ "Việc hôm
+          // nay"/thẻ Bài học không chồng trang; nút quay lại của trang bài `pop` nếu được, không thì `go('/bai-hoc')`.
           StatefulShellBranch(
             routes: [
-              GoRoute(
-                path: AppRoutes.lessons,
-                builder: (_, _) => const ComingSoonPage(title: 'Bài học', icon: Icons.menu_book_outlined),
-              ),
-              // `/bai-hoc/:slug` — đích của "Việc hôm nay"/thẻ Bài học (M5); màn thật ở M9. Route riêng (không lồng
-              // dưới `/bai-hoc`) để không chồng trang tạm lên nhau.
+              GoRoute(path: AppRoutes.lessons, builder: (_, _) => const LessonListPage()),
               GoRoute(
                 path: AppRoutes.lessonPattern,
-                builder: (_, _) => const ComingSoonPage(title: 'Bài học', icon: Icons.menu_book_outlined),
+                builder: (_, state) => LessonDetailPage(slug: state.pathParameters['slug'] ?? ''),
               ),
             ],
           ),

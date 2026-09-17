@@ -20,9 +20,10 @@ void main() {
     expect(find.text('Hôm nay, Thứ Năm 17/09'), findsOneWidget); // tiêu đề trang chủ theo localDate server (M5)
 
     // Chỉ tìm trong thanh nav: trang chủ M5 cũng có thẻ "Bài học".
+    // Bài học là trang thật từ M9 — adapter giả trả thân `system/info` cho `/lessons` ⇒ danh sách rỗng.
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bài học')));
     await tester.pumpAndSettle();
-    expect(find.text('Tính năng này sắp có trên ứng dụng'), findsOneWidget);
+    expect(find.text('Chưa có bài học nào được xuất bản.'), findsOneWidget);
 
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Thêm')));
     await tester.pumpAndSettle();

@@ -1,0 +1,70 @@
+{
+  "attemptId": "01a0b0e7-a016-7924-b6ea-b47291d18bc7",
+  "submittedAt": "2026-09-17T19:46:04.9443Z",
+  "total": 7,
+  "correct": 7,
+  "scorePercent": 100,
+  "passed": true,
+  "passThresholdPercent": 80,
+  "firstCompletion": true,
+  "srsCardsAdded": 14,
+  "results": [
+    {
+      "questionId": "01a0ad0f-1f1b-70e7-9570-37e396cf7d8d",
+      "optionId": "b",
+      "correct": true,
+      "correctOptionId": "b",
+      "explanation": "[[你好|ni3 hao3]] là lời chào phổ biến nhất."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-7e86-a204-b2f4c5ea7f38",
+      "optionId": "c",
+      "correct": true,
+      "correctOptionId": "c",
+      "explanation": "[[谢谢|xie4 xie5]] nghĩa là cảm ơn."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-7112-8b23-0d8d4e92eaee",
+      "optionId": "b",
+      "correct": true,
+      "correctOptionId": "b",
+      "explanation": "[[再见|zai4 jian4]] dùng khi chia tay."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-71e0-8c62-f656d95056bf",
+      "optionId": "a",
+      "correct": true,
+      "correctOptionId": "a",
+      "explanation": "[[吗|ma5]] cuối câu tạo câu hỏi có/không: hỏi thăm sức khoẻ."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-777d-82f8-e3d3c5af44f2",
+      "optionId": "b",
+      "correct": true,
+      "correctOptionId": "b",
+      "explanation": "[[对不起|dui4 bu5 qi3]] nghĩa là xin lỗi."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-701c-a7fb-dc8a76503df4",
+      "optionId": "c",
+      "correct": true,
+      "correctOptionId": "c",
+      "explanation": "[[您|nin2]] là cách xưng hô lịch sự, dùng với người cần tôn trọng."
+    },
+    {
+      "questionId": "01a0ad0f-1f22-77a8-9223-4715b76b8e3c",
+      "optionId": "a",
+      "correct": true,
+      "correctOptionId": "a",
+      "explanation": "[[没关系|mei2 guan1 xi5]] dùng để đáp lại lời xin lỗi."
+    }
+  ],
+  "progress": {
+    "status": "completed",
+    "bestScorePercent": 100,
+    "attemptsCount": 2,
+    "startedAt": "2026-09-17T19:45:46.718685Z",
+    "completedAt": "2026-09-17T19:46:04.9443Z",
+    "lastAttemptAt": "2026-09-17T19:46:04.9443Z"
+  }
+}

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:af_auth/af_auth.dart';
+import 'package:af_chinese/features/lessons/presentation/pages/lesson_detail_page.dart';
 import 'package:af_chinese/features/progress/presentation/widgets/activity_heatmap.dart';
 import 'package:af_chinese/features/progress/presentation/widgets/streak_card.dart';
 import 'package:af_core/af_core.dart';
@@ -116,12 +117,12 @@ void main() {
     expect(find.text('Thanh 2'), findsOneWidget);
     expect(find.text('Thanh 3'), findsOneWidget);
 
-    // Bấm "Bài tiếp theo" ⇒ /bai-hoc/so-dem ⇒ ComingSoon "Bài học" (M9 thay), bottom nav còn.
+    // Bấm "Bài tiếp theo" ⇒ /bai-hoc/so-dem ⇒ trang bài (M9; adapter giả trả thân `system/info` ⇒ bài rỗng nhưng
+    // không vỡ), bottom nav còn.
     await scrollTo(tester, find.byKey(const ValueKey('today-task-lesson')));
     await tester.tap(find.byKey(const ValueKey('today-task-lesson')));
     await tester.pumpAndSettle();
-    expect(find.text('Tính năng này sắp có trên ứng dụng'), findsOneWidget);
-    expect(find.widgetWithText(AppBar, 'Bài học'), findsOneWidget);
+    expect(find.byType(LessonDetailPage), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
