@@ -193,10 +193,16 @@ public sealed class AuthService(
     }
 
     /// <summary>
-    /// Đăng xuất. Web (<see cref="RefreshClientType.Web"/>) giữ hành vi cũ: chỉ thu hồi ĐÚNG token
-    /// đang dùng. Mobile (RM-A7): một thiết bị = một họ ⇒ thu hồi CẢ HỌ. Token không tồn tại/đã
-    /// thu hồi/thuộc kênh khác ⇒ bỏ qua im lặng (không lộ thông tin qua thời gian phản hồi/lỗi —
-    /// caller luôn nhận 204).
+    /// Đăng xuất — CẢ web lẫn mobile đều thu hồi CẢ HỌ (revoke_reason=logout), không chỉ token
+    /// đang cầm. Sửa lỗi phát hiện ở review M2: trước đây web chỉ thu hồi đúng token gửi lên
+    /// (<c>token.Revoke</c> đơn lẻ) — nếu một lần refresh chạy song song vừa xoay token đó xong
+    /// (<see cref="RefreshToken.RotatedAt"/> khác <c>null</c> nhưng <see cref="RefreshToken.RevokedAt"/>
+    /// KHÔNG tự đặt theo xoay, xem <c>MarkRotated</c>) thì token kế nhiệm cùng họ vẫn sống dù người
+    /// dùng vừa bấm đăng xuất ⇒ phiên "sống lại". Vì vậy chỉ cần token gửi lên còn hợp lệ (tồn
+    /// tại, đúng kênh, chưa bị thu hồi hẳn) — bất kể đã xoay hay chưa, trong hay ngoài cửa sổ ân
+    /// hạn — là đủ điều kiện thu hồi nguyên họ. Token không tồn tại/đã bị thu hồi (dùng lại đã
+    /// phát hiện/đã logout trước đó/tài khoản khoá)/thuộc kênh khác ⇒ bỏ qua im lặng như cũ
+    /// (không lộ thông tin qua thời gian phản hồi/lỗi — caller luôn nhận 204).
     /// </summary>
     public async Task LogoutAsync(string? tokenPlain, RefreshClientType channel, CancellationToken ct)
     {
@@ -209,10 +215,7 @@ public sealed class AuthService(
             return;
 
         var now = timeProvider.GetUtcNow().UtcDateTime;
-        if (channel == RefreshClientType.Mobile)
-            await RevokeFamilyAsync(token.FamilyId, now, "logout", ct);
-        else
-            token.Revoke(now, "logout");
+        await RevokeFamilyAsync(token.FamilyId, now, "logout", ct);
 
         await db.SaveChangesAsync(ct);
     }
