@@ -46,6 +46,9 @@ public interface IChineseDbContext
     DbSet<LessonProgress> LessonProgress { get; }
     DbSet<QuizAttempt> QuizAttempts { get; }
 
+    DbSet<WritingAttempt> WritingAttempts { get; }
+    DbSet<CharacterWritingStats> CharacterWritingStats { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);

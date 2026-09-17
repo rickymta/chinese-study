@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AntFarm.Chinese.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ChineseDbContext))]
-    partial class ChineseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260917023319_F8_Writing")]
+    partial class F8_Writing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

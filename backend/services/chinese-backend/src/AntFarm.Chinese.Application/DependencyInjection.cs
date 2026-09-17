@@ -7,6 +7,7 @@ using AntFarm.Chinese.Application.Learning;
 using AntFarm.Chinese.Application.Lessons;
 using AntFarm.Chinese.Application.Pinyin;
 using AntFarm.Chinese.Application.Srs;
+using AntFarm.Chinese.Application.Writing;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -61,6 +62,11 @@ public static class DependencyInjection
         services.AddScoped<LessonQueryService>();
         services.AddScoped<LessonProgressService>();
         services.AddScoped<QuizSubmissionService>();
+
+        // F8: luyện viết chữ Hán (§5.2.2) — dùng lại IUserDayContext (K5) để "hôm nay"/"lần viết
+        // sạch KHÁC NGÀY" tính theo múi giờ người học, không phải UTC.
+        services.AddScoped<WritingService>();
+        services.AddScoped<WritingCharacterQueryService>();
 
         return services;
     }

@@ -44,7 +44,14 @@ public sealed class CharacterConfiguration : IEntityTypeConfiguration<Character>
         builder.Property(c => c.CreatedAt).IsRequired();
         builder.Property(c => c.UpdatedAt).IsRequired();
 
-        builder.HasIndex(c => c.Hanzi).IsUnique().HasDatabaseName("ux_characters_hanzi");
+        // F8 (migration F8_Writing): writing_attempts/character_writing_stats trỏ FK tới CHÍNH
+        // Hanzi (không có character_id) ⇒ cần khai khoá THAY THẾ (HasAlternateKey qua HasPrincipalKey
+        // ở phía FK) — KHÔNG giữ thêm HasIndex(...).IsUnique() song song vì EF sẽ sinh CẢ HAI đối
+        // tượng (unique constraint ak_characters_hanzi + unique index ux_characters_hanzi) cùng
+        // thực thi một việc trên một cột (đã kiểm bằng `dotnet ef migrations add` rồi bỏ dòng này,
+        // review F8 17/09/2026) — bản thân alternate key CŨNG là một unique index ở Postgres nên
+        // không mất tính năng tra cứu nhanh theo hanzi.
+        builder.HasAlternateKey(c => c.Hanzi).HasName("ak_characters_hanzi");
     }
 
     private static ValueComparer<Dictionary<string, string>?> BuildDictionaryComparer() => new(

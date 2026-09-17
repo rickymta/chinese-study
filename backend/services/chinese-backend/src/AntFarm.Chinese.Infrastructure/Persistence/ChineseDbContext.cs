@@ -51,6 +51,9 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     public DbSet<LessonProgress> LessonProgress => Set<LessonProgress>();
     public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
 
+    public DbSet<WritingAttempt> WritingAttempts => Set<WritingAttempt>();
+    public DbSet<CharacterWritingStats> CharacterWritingStats => Set<CharacterWritingStats>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("pg_trgm");
