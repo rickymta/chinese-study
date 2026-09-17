@@ -9,6 +9,8 @@ import { UnauthorizedPage } from './pages/UnauthorizedPage'
 import { CmsUsersPage } from './features/cms-users/pages/CmsUsersPage'
 import { SiteSettingsPage } from './features/site-settings/pages/SiteSettingsPage'
 import { LanguagesPage } from './features/site-languages/pages/LanguagesPage'
+import { FaqsPage } from './features/site-faqs/pages/FaqsPage'
+import { AuditLogsPage } from './features/audit-logs/pages/AuditLogsPage'
 import { CMS_PERMS } from './auth/permissions'
 import { hasUnavailableService } from './auth/mergeMe'
 import { LANGUAGE_MODULES } from './modules/registry'
@@ -54,6 +56,15 @@ export const router = createBrowserRouter([
               </RequirePermission>
             ),
           },
+          // Website (W3b): câu hỏi thường gặp — cần `cms:site.manage`.
+          {
+            path: 'website/faq',
+            element: (
+              <RequirePermission permission={CMS_PERMS.SITE_MANAGE}>
+                <FaqsPage />
+              </RequirePermission>
+            ),
+          },
           // Hệ thống: Người dùng CMS chuyển sang `/he-thong/...` (W3a); đường cũ W2 tự chuyển hướng.
           {
             path: 'he-thong/nguoi-dung-cms',
@@ -64,6 +75,15 @@ export const router = createBrowserRouter([
             ),
           },
           { path: 'nguoi-dung-cms', element: <Navigate to="/he-thong/nguoi-dung-cms" replace /> },
+          // Hệ thống (W3b): nhật ký thao tác — cần `cms:users.manage`.
+          {
+            path: 'he-thong/nhat-ky',
+            element: (
+              <RequirePermission permission={CMS_PERMS.USERS_MANAGE}>
+                <AuditLogsPage />
+              </RequirePermission>
+            ),
+          },
           ...languageRoutes,
         ],
       },

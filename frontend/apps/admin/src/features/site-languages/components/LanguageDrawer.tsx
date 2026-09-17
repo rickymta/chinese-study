@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { AppDrawer, useToast } from '@af/ui'
 import { parseApiError } from '@af/utils'
+import { MarkdownEditor } from '@/components/MarkdownEditor'
 import { useCreateLanguage, useLanguages, useUpdateLanguage } from '../hooks'
 import type { LanguageDto } from '../types'
 import { LANGUAGE_STATUS_OPTIONS } from './LanguageCard'
@@ -57,8 +58,8 @@ export interface LanguageDrawerProps {
 
 /**
  * Ngăn kéo tạo/sửa ngôn ngữ (hợp đồng W3a §5.3.3a): `AppDrawer` không đóng khi bấm ra ngoài. `code` chỉ nhập khi
- * tạo (sửa ⇒ chỉ đọc, "Mã không đổi được sau khi tạo"). `descriptionMarkdown` là TextField nhiều dòng ở W3a (W3b
- * thay `MarkdownEditor`). Lỗi: 409 `CODE_TAKEN` ⇒ ô mã; 422 `APP_URL_REQUIRED` ⇒ ô appUrl; 400 VALIDATION ⇒ map
+ * tạo (sửa ⇒ chỉ đọc, "Mã không đổi được sau khi tạo"). `descriptionMarkdown` dùng `MarkdownEditor` (W3b, có xem
+ * trước). Lỗi: 409 `CODE_TAKEN` ⇒ ô mã; 422 `APP_URL_REQUIRED` ⇒ ô appUrl; 400 VALIDATION ⇒ map
  * `details`; 409 `CONCURRENCY_CONFLICT` ⇒ Alert + nút "Tải lại bản mới" (không đóng drawer, giữ giá trị đang gõ).
  */
 export function LanguageDrawer({ target, onClose }: LanguageDrawerProps) {
@@ -294,17 +295,18 @@ export function LanguageDrawer({ target, onClose }: LanguageDrawerProps) {
           name="descriptionMarkdown"
           control={control}
           render={({ field, fieldState }) => (
-            // W3a: ô Markdown thuần; W3b thay bằng `MarkdownEditor` (có xem trước).
-            <TextField
-              {...field}
+            // W3b: `MarkdownEditor` (soạn + xem trước, skipHtml) thay TextField thuần của W3a.
+            <MarkdownEditor
+              name={field.name}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
               label="Mô tả (Markdown)"
-              fullWidth
-              multiline
               minRows={6}
+              maxLength={4000}
               disabled={pending}
               error={!!fieldState.error}
               helperText={fieldState.error?.message ?? `${field.value.length}/4000 ký tự · hỗ trợ Markdown, không HTML`}
-              slotProps={{ htmlInput: { maxLength: 4000 } }}
             />
           )}
         />

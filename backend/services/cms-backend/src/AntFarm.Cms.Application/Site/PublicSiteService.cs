@@ -6,8 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace AntFarm.Cms.Application.Site;
 
 /// <summary>
-/// Dữ liệu nền website công khai (§5.2.3, §6.2 W3a) — <c>GET /api/public/site</c>, ẩn danh. W3a:
-/// <c>faqs</c> luôn rỗng (W3b điền), <c>ogImageUrl</c>/<c>coverUrl</c> luôn null (W4 điền ảnh).
+/// Dữ liệu nền website công khai (§5.2.3, §6.2 W3a/W3b) — <c>GET /api/public/site</c>, ẩn danh.
+/// <c>ogImageUrl</c>/<c>coverUrl</c> luôn null tới W4 (bảng media). W3b: <c>faqs</c> chỉ gồm
+/// <c>is_published=true</c>, sắp theo <c>group_key, sort_order</c>.
 /// </summary>
 public sealed class PublicSiteService(ICmsDbContext db)
 {
@@ -29,6 +30,12 @@ public sealed class PublicSiteService(ICmsDbContext db)
                 LanguageStatuses.ToCode(l.Status), l.AppUrl, l.AccentColor, null))
             .ToList();
 
-        return new PublicSiteDto(values, null, languageDtos, []);
+        var faqs = await db.Faqs.AsNoTracking()
+            .Where(f => f.IsPublished)
+            .OrderBy(f => f.GroupKey).ThenBy(f => f.SortOrder)
+            .Select(f => new PublicFaqDto(f.Id, f.Question, f.AnswerMarkdown, f.GroupKey))
+            .ToListAsync(ct);
+
+        return new PublicSiteDto(values, null, languageDtos, faqs);
     }
 }

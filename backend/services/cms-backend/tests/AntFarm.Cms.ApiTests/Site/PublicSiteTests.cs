@@ -31,7 +31,7 @@ public class PublicSiteTests(CmsDbApiFactory factory) : IClassFixture<CmsDbApiFa
         response.Headers.CacheControl!.ToString().Should().Be("public, max-age=60");
 
         var body = await response.Content.ReadFromJsonAsync<PublicSiteDto>(JsonDefaults.Options);
-        body!.Faqs.Should().BeEmpty(); // W3a chưa có FAQ (W3b điền)
+        body!.Faqs.Should().NotBeNull(); // W3b điền — nội dung cụ thể (chỉ isPublished=true) được kiểm ở FaqsTests
         body.Languages.Should().NotBeEmpty();
         body.Languages.Should().OnlyContain(l => l.Status != "hidden");
         body.Languages.Select(l => l.Code).Should().Contain("chinese"); // seed mặc định (§5.2.3)

@@ -9,7 +9,7 @@ namespace AntFarm.Cms.Application.Common.Abstractions;
 /// Application chỉ phụ thuộc interface này, không phụ thuộc thẳng EF Core DbContext của
 /// Infrastructure (DDD 4 lớp). W1: DbSet của schema `access` (§5.1.1). W3a: DbSet schema `site`
 /// phần nền (`settings`, `languages`, `audit_logs`, §5.1.2) + <see cref="SetOriginalVersion"/> cho
-/// concurrency (xmin, khuôn chinese-backend F10) trên <c>Language</c>.
+/// concurrency (xmin, khuôn chinese-backend F10) trên <c>Language</c>. W3b: thêm `faqs`.
 /// </summary>
 public interface ICmsDbContext
 {
@@ -22,6 +22,7 @@ public interface ICmsDbContext
     DbSet<SiteSetting> SiteSettings { get; }
     DbSet<Language> Languages { get; }
     DbSet<AuditLog> AuditLogs { get; }
+    DbSet<Faq> Faqs { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

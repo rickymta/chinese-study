@@ -2,6 +2,8 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined'
+import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined'
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import type { NavItem } from '@af/ui'
 import { CMS_PERMS, perm } from '@/auth/permissions'
 import { LANGUAGE_MODULES } from '@/modules/registry'
@@ -48,8 +50,14 @@ export function buildNavGroups(perms: ReadonlySet<string>): NavGroupDef[] {
           icon: <TranslateOutlinedIcon />,
           requiredPermission: CMS_PERMS.SITE_MANAGE,
         },
+        {
+          label: 'Câu hỏi thường gặp',
+          to: '/website/faq',
+          icon: <QuizOutlinedIcon />,
+          requiredPermission: CMS_PERMS.SITE_MANAGE,
+        },
       ],
-      planned: 'FAQ (đợt W3b), thư viện ảnh (W4), trang tĩnh + banner (W5), bài viết (W6).',
+      planned: 'Thư viện ảnh (W4), trang tĩnh + banner (W5), bài viết (W6).',
     },
     {
       key: 'hop-thu',
@@ -83,8 +91,13 @@ export function buildNavGroups(perms: ReadonlySet<string>): NavGroupDef[] {
           icon: <ManageAccountsOutlinedIcon />,
           requiredPermission: CMS_PERMS.USERS_MANAGE,
         },
+        {
+          label: 'Nhật ký thao tác',
+          to: '/he-thong/nhat-ky',
+          icon: <HistoryOutlinedIcon />,
+          requiredPermission: CMS_PERMS.USERS_MANAGE,
+        },
       ],
-      planned: 'Nhật ký thao tác (đợt W3b).',
     },
   ]
 }

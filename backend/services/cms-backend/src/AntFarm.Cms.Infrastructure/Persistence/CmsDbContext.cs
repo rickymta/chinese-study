@@ -25,6 +25,7 @@ public sealed class CmsDbContext(DbContextOptions<CmsDbContext> options)
     public DbSet<SiteSetting> SiteSettings => Set<SiteSetting>();
     public DbSet<Language> Languages => Set<Language>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Faq> Faqs => Set<Faq>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

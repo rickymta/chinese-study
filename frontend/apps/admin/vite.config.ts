@@ -24,9 +24,10 @@ export default defineConfig({
       '/chinese': { target: GATEWAY, changeOrigin: false },
     },
   },
-  // vitest: chỉ test hàm thuần (gộp quyền nhiều service) — môi trường node, không jsdom/testing-library.
+  // vitest: test hàm thuần (gộp quyền nhiều service) + render tĩnh `react-dom/server` (MarkdownPreview) — môi trường
+  // node, không jsdom/testing-library.
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
   },
 })

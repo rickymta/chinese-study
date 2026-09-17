@@ -15,7 +15,8 @@ public static class DependencyInjection
     /// PermissionResolver — hiện thực cổng <see cref="IPermissionResolver"/> của AntFarm.Auth trên
     /// DB access.* của chính service (R-W1), MeService (§6.1), UserAdminService (§5.2.1, §6.1).
     /// W3a: cấu hình site/SEO + ngôn ngữ + trang public + nhật ký (§5.2.3) — <see cref="IRevalidationNotifier"/>
-    /// đăng ký ở <c>AddInfrastructure</c> (chỉ Infrastructure mới có hiện thực cụ thể).
+    /// đăng ký ở <c>AddInfrastructure</c> (chỉ Infrastructure mới có hiện thực cụ thể). W3b: FAQ +
+    /// truy vấn nhật ký.
     /// </summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
@@ -32,6 +33,8 @@ public static class DependencyInjection
         services.AddScoped<SiteSettingsService>();
         services.AddScoped<LanguageAdminService>();
         services.AddScoped<PublicSiteService>();
+        services.AddScoped<FaqAdminService>();
+        services.AddScoped<AuditLogQueryService>();
 
         return services;
     }
