@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using AntFarm.Auth;
 using AntFarm.Auth.Authorization;
 using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Domain.Access;
@@ -26,8 +27,9 @@ public sealed partial class DictionaryController(DictionaryService dictionarySer
     [HttpGet("words/{id:guid}")]
     public async Task<ActionResult<WordDetailDto>> GetWord(Guid id, CancellationToken ct)
     {
-        // F6: chưa có SRS — userId luôn null (F7 gắn khối srs của người đang gọi vào chi tiết từ).
-        var detail = await dictionaryService.GetWordAsync(id, null, ct);
+        // F7: gắn khối srs của NGƯỜI ĐANG GỌI (§6.2 GET /api/dictionary/words/{id}).
+        var userId = User.GetAccountId();
+        var detail = await dictionaryService.GetWordAsync(id, userId, ct);
         if (detail is null)
             throw new NotFoundException($"Không tìm thấy từ '{id}'.");
 

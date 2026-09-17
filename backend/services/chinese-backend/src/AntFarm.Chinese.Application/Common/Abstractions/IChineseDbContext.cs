@@ -2,6 +2,7 @@ using AntFarm.Chinese.Domain.Access;
 using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
 using AntFarm.Chinese.Domain.Pinyin;
+using AntFarm.Chinese.Domain.Srs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -12,7 +13,8 @@ namespace AntFarm.Chinese.Application.Common.Abstractions;
 /// Infrastructure (DDD 4 lớp). F3 bổ sung DbSet của schema `access` (§5.1.2); F5 bổ sung schema
 /// `learning` (§5.1.1) + <see cref="BeginTransactionAsync"/> (nộp bài luyện thanh ghi
 /// session + answers + study_event trong CÙNG một transaction, R5-12). F6 bổ sung schema `content`
-/// (§5.1.1) — từ vựng, chữ Hán, nhật ký nạp học liệu.
+/// (§5.1.1) — từ vựng, chữ Hán, nhật ký nạp học liệu. F7 bổ sung thẻ SRS + cài đặt học tập
+/// (§5.1.2, schema `learning`).
 /// </summary>
 public interface IChineseDbContext
 {
@@ -31,9 +33,23 @@ public interface IChineseDbContext
     DbSet<WordCharacter> WordCharacters { get; }
     DbSet<ImportRun> ImportRuns { get; }
 
+    DbSet<SrsCard> SrsCards { get; }
+    DbSet<SrsReviewLog> SrsReviewLogs { get; }
+    DbSet<LearnerSettings> LearnerSettings { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Chạy một câu lệnh SQL tham số hoá qua interpolated string (KHÔNG <c>FromSqlRaw</c> nối chuỗi
+    /// tay) — dùng cho <c>INSERT ... ON CONFLICT DO NOTHING</c> khi hai request đua nhau tạo cùng
+    /// một khoá duy nhất (F7: <c>ux_srs_cards_user_word_type</c>, review F7.1 17/09/2026 — trước đó
+    /// dùng <c>Add()</c> + <c>SaveChangesAsync</c> nên đụng độ ném <c>23505</c> ⇒ 500) hoặc các câu
+    /// lệnh ghi khác không cần theo dõi qua ChangeTracker. Tự tham gia transaction hiện tại của
+    /// DbContext nếu người gọi đã <see cref="BeginTransactionAsync"/> trước đó. Trả số dòng bị ảnh hưởng.
+    /// </summary>
+    Task<int> ExecuteSqlAsync(FormattableString sql, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gỡ TOÀN BỘ entity đang theo dõi khỏi ChangeTracker — dùng khi một lượt ghi thất bại do

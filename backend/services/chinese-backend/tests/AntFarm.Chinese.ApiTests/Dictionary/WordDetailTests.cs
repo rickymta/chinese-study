@@ -34,7 +34,31 @@ public class WordDetailTests : IClassFixture<ChineseDbApiFactory>
         body!.Simplified.Should().Be("爱");
         body.HanViet.Should().Be("ái");
         body.Characters.Should().ContainSingle(c => c.Hanzi == "爱");
-        body.Srs.Should().BeNull(); // F6: chưa có SRS
+        body.Srs.Should().BeNull(); // F7: người gọi CHƯA có thẻ SRS cho từ này.
+    }
+
+    [DbFact]
+    public async Task GetWord_SauKhiCoThe_SrsCardIdDungTheoNguoiGoi()
+    {
+        var id = await GetWordIdAsync("爱", "ai4");
+        var client = LearnerClientForUser(out _);
+
+        var addResponse = await client.PostAsJsonAsync("/api/srs/cards", new { wordIds = new[] { id } }, JsonDefaults.Options);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+
+        var response = await client.GetAsync($"/api/dictionary/words/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await response.Content.ReadFromJsonAsync<WordDetailResponse>(JsonDefaults.Options);
+
+        body!.Srs.Should().NotBeNull();
+        body.Srs!.State.Should().Be("new");
+        body.Srs.IsSuspended.Should().BeFalse();
+
+        // Người khác vẫn thấy null cho CÙNG một từ (khối srs của người ĐANG GỌI, không chung).
+        var otherClient = LearnerClient();
+        var otherResponse = await otherClient.GetAsync($"/api/dictionary/words/{id}");
+        var otherBody = await otherResponse.Content.ReadFromJsonAsync<WordDetailResponse>(JsonDefaults.Options);
+        otherBody!.Srs.Should().BeNull();
     }
 
     [DbFact]
@@ -80,10 +104,13 @@ public class WordDetailTests : IClassFixture<ChineseDbApiFactory>
         return word.Id;
     }
 
-    private HttpClient LearnerClient()
+    private HttpClient LearnerClient() => LearnerClientForUser(out _);
+
+    private HttpClient LearnerClientForUser(out Guid userId)
     {
+        userId = Guid.NewGuid();
         var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.TokenFactory.CreateToken(Guid.NewGuid()));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _factory.TokenFactory.CreateToken(userId));
         return client;
     }
 
@@ -103,7 +130,9 @@ public class WordDetailTests : IClassFixture<ChineseDbApiFactory>
 
     private sealed record WordCharacterResponse(string Hanzi, List<string> PinyinReadings, List<string> HanViet, short? StrokeCount);
 
-    private sealed record WordDetailResponse(Guid Id, string Simplified, string? HanViet, List<WordCharacterResponse> Characters, object? Srs);
+    private sealed record WordSrsResponse(Guid CardId, string State, DateTime DueAt, bool IsSuspended);
+
+    private sealed record WordDetailResponse(Guid Id, string Simplified, string? HanViet, List<WordCharacterResponse> Characters, WordSrsResponse? Srs);
 
     private sealed record CharacterWordResponse(Guid Id, string Simplified);
 

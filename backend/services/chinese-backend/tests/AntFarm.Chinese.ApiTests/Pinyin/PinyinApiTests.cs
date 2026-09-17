@@ -208,7 +208,7 @@ public class PinyinApiTests : IClassFixture<ChineseDbApiFactory>
     [DbFact]
     public async Task PostToneDrills_LucBinhMinhGioVN_LocalDateLaNgayVN()
     {
-        _factory.TimeProvider.SetUtcNow(new DateTimeOffset(2026, 9, 16, 23, 35, 0, TimeSpan.Zero));
+        _factory.TimeProvider.AdjustTime(new DateTimeOffset(2026, 9, 16, 23, 35, 0, TimeSpan.Zero));
         var client = LearnerClient(); // mặc định timeZone claim = Asia/Ho_Chi_Minh (TestTokenFactory)
         var finishedAt = new DateTime(2026, 9, 16, 23, 30, 0, DateTimeKind.Utc);
         var request = BuildValidListenToneRequest(Guid.NewGuid()) with

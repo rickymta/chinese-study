@@ -106,7 +106,14 @@ hàng `hsk1-overrides` ở trên). `validate.mjs` có 2 từ neo (和/菜) + lư
 "lóng"/"dâm" (trừ các cụm tiếng Việt trung tính chứa các chuỗi con này, vd "tiếp tục", "phong tục", "lóng
 lánh" — xem `BANNED_MEANING_TERMS` trong `validate.mjs`) để chặn tái diễn.
 
-**Mã nguồn tham chiếu:** không có ở F6.1 (F7 sẽ ghi chú `py-fsrs` khi triển khai `FsrsScheduler`).
+**Mã nguồn tham chiếu:** `py-fsrs` — https://github.com/open-spaced-repetition/py-fsrs — MIT
+License, Copyright (c) 2022 Open Spaced Repetition — commit ghim
+`9446cb06605c597a063aeee49f7d188d42e34dc2` (tag `v6.3.2`, tệp `fsrs/scheduler.py`,
+`tests/test_basic.py`). F7.1 chép NGUYÊN thuật toán FSRS-6 (21 trọng số mặc định, công thức
+S/D/khoảng ôn, máy trạng thái Learning/Review/Relearning) sang
+`AntFarm.Chinese.Domain/Srs/FsrsScheduler.cs` (C#, không copy mã nguồn Python) và đối chiếu vector
+vàng bằng cách chạy trực tiếp thư viện Python đúng commit này (`AntFarm.Chinese.UnitTests/Srs/FsrsGoldenTests.cs`).
+Giấy phép đầy đủ: `LICENSES/MIT-py-fsrs.txt`.
 
 ---
 

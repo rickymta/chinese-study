@@ -32,9 +32,25 @@ public static class UserLocalDate
         var startLocal = date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Unspecified);
         var endLocal = date.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Unspecified);
 
-        var fromUtc = TimeZoneInfo.ConvertTimeToUtc(startLocal, timeZone);
-        var toUtcExclusive = TimeZoneInfo.ConvertTimeToUtc(endLocal, timeZone);
+        var fromUtc = TimeZoneInfo.ConvertTimeToUtc(ResolveValidLocal(startLocal, timeZone), timeZone);
+        var toUtcExclusive = TimeZoneInfo.ConvertTimeToUtc(ResolveValidLocal(endLocal, timeZone), timeZone);
         return (fromUtc, toUtcExclusive);
+    }
+
+    /// <summary>
+    /// 00:00 của một ngày có thể rơi vào "giờ không tồn tại" khi múi giờ đó chuyển sang giờ mùa hè
+    /// đúng lúc nửa đêm (không phải trường hợp <c>America/New_York</c>/<c>Asia/Ho_Chi_Minh</c> — hai
+    /// múi kiểm ở test đã đúng bằng công thức thường — nhưng một số múi giờ khác, vd Brazil trước
+    /// 2019, nhảy DST lúc 00:00) — <see cref="TimeZoneInfo.ConvertTimeToUtc(DateTime, TimeZoneInfo)"/>
+    /// ném <see cref="ArgumentException"/> cho giờ không hợp lệ này. Cộng dồn 1 giờ tới khi hợp lệ
+    /// (R7-3) thay vì để cả việc lọc "hôm nay" sập vì một mốc nửa đêm hiếm gặp.
+    /// </summary>
+    private static DateTime ResolveValidLocal(DateTime local, TimeZoneInfo timeZone)
+    {
+        while (timeZone.IsInvalidTime(local))
+            local = local.AddHours(1);
+
+        return local;
     }
 
     private static TimeZoneInfo ResolveTimeZone(string? timeZoneId)

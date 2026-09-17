@@ -4,6 +4,7 @@ using AntFarm.Chinese.Domain.Access;
 using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
 using AntFarm.Chinese.Domain.Pinyin;
+using AntFarm.Chinese.Domain.Srs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -15,7 +16,8 @@ namespace AntFarm.Chinese.Infrastructure.Persistence;
 /// tone_drill_sessions, tone_drill_answers. F6: schema `content` (migration F6_Vocabulary, §5.1.1)
 /// — words, characters, word_characters, import_runs; bật extension <c>pg_trgm</c> (RK39: role
 /// af_chinese là OWNER của DB af_chinese, extension trusted nên tự CREATE EXTENSION được, không
-/// cần superuser). KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự khai schema riêng.
+/// cần superuser). F7: schema `learning` (migration F7_Srs, §5.1.2) — srs_cards, srs_review_logs,
+/// learner_settings. KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự khai schema riêng.
 /// </summary>
 public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     : DbContext(options), IChineseDbContext
@@ -35,6 +37,10 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     public DbSet<WordCharacter> WordCharacters => Set<WordCharacter>();
     public DbSet<ImportRun> ImportRuns => Set<ImportRun>();
 
+    public DbSet<SrsCard> SrsCards => Set<SrsCard>();
+    public DbSet<SrsReviewLog> SrsReviewLogs => Set<SrsReviewLog>();
+    public DbSet<LearnerSettings> LearnerSettings => Set<LearnerSettings>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("pg_trgm");
@@ -45,4 +51,7 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
         => await Database.BeginTransactionAsync(cancellationToken);
+
+    public Task<int> ExecuteSqlAsync(FormattableString sql, CancellationToken cancellationToken = default)
+        => Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken);
 }

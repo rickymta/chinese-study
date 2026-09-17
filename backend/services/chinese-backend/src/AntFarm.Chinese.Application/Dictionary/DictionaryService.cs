@@ -1,5 +1,6 @@
 using AntFarm.Chinese.Application.Common.Abstractions;
 using AntFarm.Chinese.Domain.Content;
+using AntFarm.Chinese.Domain.Srs;
 using AntFarm.Chinese.Domain.Text;
 using AntFarm.Core.Errors;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,7 @@ public sealed class DictionaryService(IChineseDbContext db, DictionaryQueryParse
             return null;
 
         var characters = await LoadWordCharactersAsync(id, ct);
+        var srs = userId is null ? null : await LoadWordSrsAsync(userId.Value, id, ct);
 
         return new WordDetailDto(
             word.Id, word.Simplified, word.Traditional, word.Variants, word.Pinyin,
@@ -83,7 +85,14 @@ public sealed class DictionaryService(IChineseDbContext db, DictionaryQueryParse
             word.Pos, word.UsageNote, word.MeaningsEn, word.MeaningsVi,
             word.MeaningViStatus, word.MeaningViSource, word.HanViet, word.HanVietStatus,
             word.Sources, characters,
-            null); // F6: srs LUÔN null — F7 gắn khối SRS của người đang gọi (§6.1).
+            srs);
+    }
+
+    /// <summary>F7: khối SRS của NGƯỜI ĐANG GỌI trong chi tiết từ (§6.1/§6.2) — <c>null</c> khi chưa đăng nhập (không nên xảy ra, mọi endpoint yêu cầu <c>study.use</c>) hoặc chưa có thẻ cho từ này.</summary>
+    private async Task<WordSrsSummaryDto?> LoadWordSrsAsync(Guid userId, Guid wordId, CancellationToken ct)
+    {
+        var card = await db.SrsCards.AsNoTracking().FirstOrDefaultAsync(c => c.UserId == userId && c.WordId == wordId, ct);
+        return card is null ? null : new WordSrsSummaryDto(card.Id, SrsStateCodes.ToCode(card.State), card.DueAt, card.IsSuspended);
     }
 
     public async Task<CharacterDetailDto?> GetCharacterAsync(string hanzi, CancellationToken ct)

@@ -1,9 +1,11 @@
 using System.Reflection;
 using AntFarm.Auth.Authorization;
 using AntFarm.Chinese.Application.Access;
+using AntFarm.Chinese.Application.Common.Time;
 using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Application.Learning;
 using AntFarm.Chinese.Application.Pinyin;
+using AntFarm.Chinese.Application.Srs;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +17,9 @@ public static class DependencyInjection
     /// (R-P4/R-P5/R-P6), PermissionResolver — hiện thực cổng <see cref="IPermissionResolver"/> của
     /// AntFarm.Auth trên DB access.* của chính service (R-P1), MeService (§6.3). F5: sổ hoạt động
     /// học dùng chung (<see cref="IStudyActivityRecorder"/>) + bài luyện thanh (§5.2.1). F4:
-    /// UserAdminService (§5.2.3) — quản trị người dùng/vai trò cục bộ.</summary>
+    /// UserAdminService (§5.2.3) — quản trị người dùng/vai trò cục bộ. F7: "hôm nay" của người học
+    /// (<see cref="IUserDayContext"/>), cài đặt học tập, SRS (tóm tắt/hàng đợi/chấm thẻ/thêm thẻ —
+    /// §5.2.8).</summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -38,6 +42,17 @@ public static class DependencyInjection
         services.AddMemoryCache();
         services.AddScoped<DictionaryQueryParser>();
         services.AddScoped<DictionaryService>();
+
+        // F7: SRS FSRS-6 (§5.2.8) — IUserDayContext cắt "hôm nay" theo múi giờ người học dùng
+        // chung cho summary/queue/review; ISrsCardService đăng ký CỤ THỂ (không chỉ qua interface)
+        // để SrsReviewService/SrsQueueService gọi thẳng phương thức tĩnh ToDto (internal, cùng assembly).
+        services.AddScoped<IUserDayContext, UserDayContext>();
+        services.AddScoped<LearnerSettingsService>();
+        services.AddScoped<SrsSummaryService>();
+        services.AddScoped<SrsCardService>();
+        services.AddScoped<ISrsCardService>(sp => sp.GetRequiredService<SrsCardService>());
+        services.AddScoped<SrsQueueService>();
+        services.AddScoped<SrsReviewService>();
 
         return services;
     }
