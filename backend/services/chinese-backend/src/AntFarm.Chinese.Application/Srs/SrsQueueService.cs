@@ -24,36 +24,69 @@ public sealed class SrsQueueService(
         var day = await userDayContext.GetAsync(userId, ct);
         var settings = await learnerSettingsService.GetEffectiveAsync(userId, ct);
 
-        // Gọi summary TRƯỚC khi tạo thẻ path mới — reviewLimitRemaining/newAvailableToday không
-        // đổi khi một từ lộ trình "chưa có thẻ" chuyển thành thẻ new (chỉ dịch chuyển GIỮA hai vế
-        // của availableNewCount, không đổi tổng — xem SrsSummaryService.CountAvailableNewCardsAsync)
-        // nên dùng LẠI được nguyên object này cho cả việc chọn nhóm 3 lẫn phản hồi cuối cùng.
-        var summary = await summaryService.GetAsync(userId, ct);
+        // ĐUA (review F8 17/09/2026, bắt bởi SrsQueueTests.NguoiMoi_GoiSongSongHaiLanGetQueue...):
+        // hai lượt GetQueueAsync gần như đồng thời của CÙNG người dùng (2 tab mới) đều đọc
+        // summary.NewAvailableToday TRƯỚC khi cái kia tạo xong thẻ mới lazy (EnsureCardsAsync tự ghi
+        // NGAY qua SQL, không có transaction bao ngoài trước đây) ⇒ cả hai cùng thấy "còn 10 chỗ
+        // trống" và cùng tạo thẻ ⇒ tổng thẻ 'new' tạo ra VƯỢT dailyNewCards (không phải do trùng ID —
+        // EnsureCardsAsync đã tự chống trùng CÙNG một từ qua ON CONFLICT — mà do hai lượt chọn HAI TẬP
+        // TỪ khác nhau theo path_order vì đọc existingWordIds ở hai thời điểm lệch nhau). Bọc từ đây
+        // tới hết SelectNewCardsAsync trong MỘT transaction, khoá NGAY sau khi mở bằng advisory lock
+        // theo NGƯỜI DÙNG (tự nhả khi transaction COMMIT/ROLLBACK, không cần unlock tay — cùng kỹ
+        // thuật SrsReviewService.ReviewNewAsync) để serialize đúng đoạn "đếm rồi tạo thẻ mới" giữa hai
+        // lượt gọi. KHÔNG dùng `SELECT ... FOR UPDATE` trên access.users (mọi INSERT có FK trỏ users,
+        // vd ghi study_events/srs_cards đồng thời, giữ khoá KEY SHARE trên dòng user ⇒ đụng độ giả với
+        // FOR UPDATE dù không liên quan tới hạn mức thẻ mới).
+        //
+        // Namespace khoá KHÁC với SrsReviewService.ReviewNewAsync (`hashtext(userId)` ở đó so với
+        // `hashtextextended('srs-new:'+userId, 0)` ở đây) — CỐ Ý, đã soát kỹ: hai nơi bảo vệ HAI bộ
+        // đếm khác nhau. Ở đây chỉ giới hạn số thẻ trạng thái 'new' được TẠO trong một lượt gọi hàng
+        // đợi (ảnh hưởng `availableNewCount`, một upper bound "mềm" cho UI); SrsReviewService giới hạn
+        // số thẻ THỰC SỰ được giới thiệu (`newIntroducedToday`, đặt khi `first_reviewed_at` ghi lần
+        // đầu) — hạn mức "cứng" duy nhất có ý nghĩa nghiệp vụ (R7-10, chặn bằng `NEW_CARD_LIMIT_REACHED`).
+        // Tạo dư vài thẻ 'new' chưa từng được ôn không vi phạm hạn mức thật; không cần hai thao tác
+        // chờ nhau qua CÙNG một khoá.
+        SrsSummaryDto summary;
+        List<SrsCard> dueLearning;
+        List<SrsCard> dueReview;
+        List<SrsCard> newCards;
+        await using (var transaction = await db.BeginTransactionAsync(ct))
+        {
+            await db.ExecuteSqlAsync($"SELECT pg_advisory_xact_lock(hashtextextended('srs-new:' || {userId.ToString()}, 0))", ct);
 
-        var dueLearning = await db.SrsCards
-            .Where(c => c.UserId == userId && !c.IsSuspended &&
-                        (c.State == SrsState.Learning || c.State == SrsState.Relearning) && c.DueAt <= day.NowUtc)
-            .OrderBy(c => c.DueAt)
-            .Take(limit)
-            .ToListAsync(ct);
+            // Gọi summary TRƯỚC khi tạo thẻ path mới — reviewLimitRemaining/newAvailableToday không
+            // đổi khi một từ lộ trình "chưa có thẻ" chuyển thành thẻ new (chỉ dịch chuyển GIỮA hai vế
+            // của availableNewCount, không đổi tổng — xem SrsSummaryService.CountAvailableNewCardsAsync)
+            // nên dùng LẠI được nguyên object này cho cả việc chọn nhóm 3 lẫn phản hồi cuối cùng.
+            summary = await summaryService.GetAsync(userId, ct);
 
-        var remaining = limit - dueLearning.Count;
-
-        List<SrsCard> dueReview = remaining <= 0
-            ? []
-            : await db.SrsCards
-                .Where(c => c.UserId == userId && !c.IsSuspended && c.State == SrsState.Review && c.DueAt < day.EndUtc)
+            dueLearning = await db.SrsCards
+                .Where(c => c.UserId == userId && !c.IsSuspended &&
+                            (c.State == SrsState.Learning || c.State == SrsState.Relearning) && c.DueAt <= day.NowUtc)
                 .OrderBy(c => c.DueAt)
-                .Take(Math.Min(remaining, summary.ReviewLimitRemaining))
+                .Take(limit)
                 .ToListAsync(ct);
 
-        remaining = limit - dueLearning.Count - dueReview.Count;
+            var remainingInTx = limit - dueLearning.Count;
 
-        List<SrsCard> newCards = remaining > 0
-            ? await SelectNewCardsAsync(userId, Math.Min(remaining, summary.NewAvailableToday), ct)
-            : [];
+            dueReview = remainingInTx <= 0
+                ? []
+                : await db.SrsCards
+                    .Where(c => c.UserId == userId && !c.IsSuspended && c.State == SrsState.Review && c.DueAt < day.EndUtc)
+                    .OrderBy(c => c.DueAt)
+                    .Take(Math.Min(remainingInTx, summary.ReviewLimitRemaining))
+                    .ToListAsync(ct);
 
-        remaining = limit - dueLearning.Count - dueReview.Count - newCards.Count;
+            remainingInTx = limit - dueLearning.Count - dueReview.Count;
+
+            newCards = remainingInTx > 0
+                ? await SelectNewCardsAsync(userId, Math.Min(remainingInTx, summary.NewAvailableToday), ct)
+                : [];
+
+            await transaction.CommitAsync(ct);
+        }
+
+        var remaining = limit - dueLearning.Count - dueReview.Count - newCards.Count;
 
         var dueLearningIds = dueLearning.Select(c => c.Id).ToHashSet();
         var aheadCutoff = day.NowUtc + AheadWindow;
