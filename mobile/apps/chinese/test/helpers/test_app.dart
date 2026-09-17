@@ -120,17 +120,48 @@ String defaultOverviewBody() => File('test/fixtures/progress_overview_new_user.j
 /// Thân JSON `/progress/overview` từ fixture (`progress_overview_full.json`, `_minimal.json`, `_new_user.json`).
 String overviewFixture(String name) => File('test/fixtures/$name').readAsStringSync();
 
+/// Thân JSON `/srs/summary` suy từ khối `srs` + `localDate`/`timeZone` của một thân `/progress/overview` — để huy hiệu
+/// "Ôn tập" trong test (nguồn: tóm tắt SRS từ M6) khớp số của fixture tổng quan như trước. Các trường còn lại mặc định.
+String summaryFromOverview(String overviewBody) {
+  final o = asJsonMap(jsonDecode(overviewBody)) ?? const {};
+  final srs = readMap(o, 'srs') ?? const {};
+  return jsonEncode({
+    'localDate': readStringOr(o, 'localDate', '2026-09-17'),
+    'timeZone': readStringOr(o, 'timeZone', 'Asia/Ho_Chi_Minh'),
+    'dueToday': readIntOr(srs, 'dueToday'),
+    'dueNow': readIntOr(srs, 'dueNow'),
+    'reviewedToday': readIntOr(srs, 'reviewedToday'),
+    'reviewsDoneToday': 0,
+    'reviewLimitRemaining': 200,
+    'dailyReviewLimit': 200,
+    'newIntroducedToday': readIntOr(srs, 'newIntroducedToday'),
+    'newAvailableToday': readIntOr(srs, 'newAvailableToday'),
+    'dailyNewCards': 10,
+    'totalCards': 0,
+    'matureCards': 0,
+  });
+}
+
 /// Adapter chinese: `/me` trả hồ sơ với [permissions]; `/progress/overview` trả theo [overview] (null ⇒ giao cho
-/// [rest] — test lỗi tự trả 503/502); còn lại giao cho [rest].
+/// [rest] — test lỗi tự trả 503/502); `/srs/*` trả theo [srs] (null ⇒ `/srs/summary` suy từ [overview] nếu có, còn lại
+/// giao cho [rest]); còn lại giao cho [rest].
 FakeAdapter chineseStub({
   required FakeAdapter rest,
   Set<String> permissions = const {'study.use'},
   List<RequestOptions>? log,
   String Function()? meId,
   Future<(int, String)> Function(RequestOptions req)? overview,
-}) => FakeAdapter((req) {
+  Future<(int, String)> Function(RequestOptions req)? srs,
+}) => FakeAdapter((req) async {
   log?.add(req);
   if (req.uri.path.endsWith('/progress/overview') && overview != null) return overview(req);
+  if (req.uri.path.contains('/srs/')) {
+    if (srs != null) return srs(req);
+    if (req.uri.path.endsWith('/srs/summary') && overview != null) {
+      final (status, body) = await overview(req);
+      return status == 200 ? (200, summaryFromOverview(body)) : (status, body);
+    }
+  }
   if (req.uri.path.endsWith('/me')) {
     return Future.value((
       200,
@@ -181,7 +212,9 @@ FakeAdapter chineseWithSettings({
 ///
 /// Trang chủ M5 gọi `/progress/overview`: mặc định trả fixture người mới ([defaultOverviewBody]); [overviewBody] để
 /// đổi số liệu (vd `overviewFixture('progress_overview_full.json')`); [overview] để trả theo từng lời gọi (lỗi rồi
-/// thành công, đổi người). Cả hai null ⇒ giao cho [chineseAdapter] (test lỗi tải).
+/// thành công, đổi người). Cả hai null ⇒ giao cho [chineseAdapter] (test lỗi tải). Huy hiệu/trang Ôn tập (M6) gọi
+/// `/srs/summary`: mặc định suy từ thân tổng quan ([summaryFromOverview]); [srs] để trả `/srs/*` tuỳ ý (hàng đợi,
+/// chấm thẻ).
 Widget buildTestApp({
   required FakeAdapter chineseAdapter,
   required FakeAdapter identityAdapter,
@@ -197,6 +230,7 @@ Widget buildTestApp({
   String? overviewBody,
   Future<(int, String)> Function(RequestOptions req)? overview,
   bool useDefaultOverview = true,
+  Future<(int, String)> Function(RequestOptions req)? srs,
 }) {
   final tokens = tokenStore ?? InMemoryTokenStore();
   if (signedIn && tokens.session == null) tokens.session = testStoredSession();
@@ -219,6 +253,7 @@ Widget buildTestApp({
           log: requestLog,
           meId: meId,
           overview: overviewHandler,
+          srs: srs,
         ),
       ),
       identityAdapterProvider.overrideWithValue(

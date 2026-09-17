@@ -39,6 +39,22 @@ class _ActivityHeatmapState extends State<ActivityHeatmap> {
   HeatmapCell? _pinned;
   Timer? _pinTimer;
 
+  /// Cuộn ngang: sau khung hình đầu, nếu lưới rộng hơn màn (thật sự cuộn được) thì nhảy tới tuần hiện tại (bên phải).
+  /// Không dùng `reverse: true` — nó đảo hướng cuộn/vị trí bắt đầu ở mọi bề rộng, kể cả khi không cần cuộn (review M5).
+  final ScrollController _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _jumpToCurrentWeek());
+  }
+
+  void _jumpToCurrentWeek() {
+    if (!mounted || !_scroll.hasClients) return;
+    final max = _scroll.position.maxScrollExtent;
+    if (max > 0) _scroll.jumpTo(max);
+  }
+
   @override
   void didUpdateWidget(ActivityHeatmap oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -51,6 +67,7 @@ class _ActivityHeatmapState extends State<ActivityHeatmap> {
   @override
   void dispose() {
     _pinTimer?.cancel();
+    _scroll.dispose();
     super.dispose();
   }
 
@@ -101,10 +118,10 @@ class _ActivityHeatmapState extends State<ActivityHeatmap> {
       icon: Icons.calendar_month_outlined,
       aside: MutedText('${grid.activeDays} ngày có học · ${grid.total} lượt', small: true),
       children: [
-        // `reverse: true` ⇒ khi phải cuộn (chỉ dưới ~290 px), mở sẵn ở tuần hiện tại (bên phải).
+        // Khi phải cuộn (chỉ dưới ~290 px) mở sẵn ở tuần hiện tại — xem `_jumpToCurrentWeek`.
         SingleChildScrollView(
+          controller: _scroll,
           scrollDirection: Axis.horizontal,
-          reverse: true,
           padding: const EdgeInsets.only(bottom: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +148,7 @@ class _ActivityHeatmapState extends State<ActivityHeatmap> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Cột nhãn thứ — chỉ T2/T4/T6 cho thoáng.
+                  // Cột nhãn thứ — chỉ hàng chẵn (T2/T4/T6/CN) cho thoáng.
                   SizedBox(
                     width: kHeatmapLabelCol - kHeatmapGap,
                     child: Column(

@@ -50,4 +50,40 @@ void main() {
     expect(body.containsKey('isDefault'), isFalse);
     expect(body['dailyReviewLimit'], 200);
   });
+
+  test('SrsQueueResponse.fromJson: enum snake_case, intervals theo mức, thẻ thiếu id/chữ bị bỏ, nextDueAt UTC', () {
+    final q = SrsQueueResponse.fromJson(loadFixture('srs_queue.json'));
+    expect(q.cards.map((c) => c.cardId), ['c1', 'c2', 'c3']);
+    expect(q.cards[0].state, SrsCardState.fresh);
+    expect(q.cards[2].state, SrsCardState.relearning);
+    expect(q.cards[0].intervals[SrsRating.hard], 'PT5M30S');
+    expect(q.cards[0].word.meaningsVi, ['yêu', 'thích']);
+    expect(q.cards[2].word.hanViet, isNull);
+    expect(q.summary.toStart, 3);
+    expect(q.summary.nextDueAt, DateTime.utc(2026, 9, 18, 1, 30));
+    expect(q.summary.reviewLimitReached, isFalse);
+    expect(SrsCardState.fromApi('lạ'), SrsCardState.review);
+    expect(SrsRating.fromApi('lạ'), isNull);
+  });
+
+  test('ReviewResponse/AddCardsResponse parse dễ tính', () {
+    final r = ReviewResponse.fromJson({
+      'reviewId': 'r1',
+      'duplicate': true,
+      'card': {'cardId': 'c1', 'state': 'learning', 'isSuspended': false, 'reps': 1},
+      'summary': {'dueNow': 1, 'newAvailableToday': 0},
+    });
+    expect(r.duplicate, isTrue);
+    expect(r.card.state, SrsCardState.learning);
+    expect(r.summary.toStart, 1);
+    final a = AddCardsResponse.fromJson({
+      'added': 1,
+      'skipped': 0,
+      'cards': [
+        {'wordId': 'w1', 'cardId': 'c9', 'created': true},
+      ],
+    });
+    expect(a.createdFor('w1'), isTrue);
+    expect(AddCardsResponse.fromJson({'added': 0, 'skipped': 1}).createdFor('w1'), isFalse);
+  });
 }

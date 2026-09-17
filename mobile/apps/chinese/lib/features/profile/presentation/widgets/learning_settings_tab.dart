@@ -126,9 +126,10 @@ class _SettingsFormState extends ConsumerState<_SettingsForm> {
             ),
           );
       if (!mounted) return;
-      // Hạn mức thẻ mới/lượt ôn đổi ⇒ mục tiêu ngày, thẻ mới hôm nay, huy hiệu "Ôn tập" đổi ⇒ làm mới tổng quan (M5);
-      // M6: thêm ref.invalidate(srsSummaryProvider).
+      // Hạn mức thẻ mới/lượt ôn đổi ⇒ mục tiêu ngày, thẻ mới hôm nay, huy hiệu "Ôn tập" đổi ⇒ làm mới tổng quan (M5)
+      // + tóm tắt SRS (M6 — nguồn của huy hiệu và trang Ôn tập).
       ref.invalidateProgressOverview();
+      ref.invalidateSrsSummary();
       showAfToast(context, 'Đã lưu cài đặt học tập', kind: AfToastKind.success);
     } on Object catch (err) {
       final e = ApiError.from(err);

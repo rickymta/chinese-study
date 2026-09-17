@@ -34,8 +34,9 @@ flutter doctor                          # mục Android + Xcode phải xanh
 | 9 | Chế độ tối | Thêm → Hồ sơ → tab Giao diện → Tối; tắt app mở lại | Vẫn tối (lưu `af.themeMode`) | ☐ |
 | 10 | Chữ Hán đúng glyph giản thể (RK-M7) | Máy đặt ngôn ngữ tiếng Việt, xem chữ 直 骨 角 (từ M3) | Giống web (không ra glyph Nhật/phồn thể) | ☐ |
 | 11 | Bố cục 360×740, chữ hệ thống lớn, xoay ngang | Cài đặt hiển thị → cỡ chữ lớn nhất | Không overflow, bottom nav còn 5 nhãn | ☐ |
-| 12 | Tắt app khi còn outbox ôn thẻ (M6) | Ôn 3 thẻ khi tắt mạng → tắt app → bật mạng → mở lại | Đánh giá tự gửi, DB không trùng | ☐ |
+| 12 | Tắt app khi còn outbox ôn thẻ (M6) | Ôn 3 thẻ khi tắt mạng → tắt app → bật mạng → mở lại (không cần mở phiên) | Banner "Đang chờ gửi 3" lúc offline; mở lại app tự gửi với cùng `client_review_id`, `learning.srs_review_logs` không trùng; huy hiệu "Ôn tập" cập nhật. Đã kiểm trên web-dev (Chrome, CDP offline) 17/09/2026 — máy thật chưa | ☐ |
 | 13 | Gỡ app iOS rồi cài lại (RM-S4, M2) | Xoá app → cài lại | Phải đăng nhập lại (Keychain cũ bị xoá) | ☐ |
+| 12b | Tự đọc thẻ + nghe trong phiên ôn (M6) | Bật "Tự đọc khi hiện thẻ" → mở phiên → chấm | Thẻ đầu đọc khi hiện; sau mỗi lần chấm đọc thẻ kế (iOS: phát được vì nằm trong thao tác chạm); rời phiên giữa lúc đọc ⇒ im | ☐ |
 | 14 | TTS (M3/M4) | Thêm → Hồ sơ → tab Giao diện: danh sách giọng `zh` (không có `zh-HK`), Nghe thử 你好 ở tốc độ 0,8 rồi 1,2; Android có giọng Google tiếng Trung; iOS gạt im lặng vẫn nghe; máy chưa có giọng ⇒ hướng dẫn cài + "Dò lại giọng" sau khi cài | Nghe được, 0,8 hơi chậm hơn tự nhiên (không nhanh gấp đôi). Hệ số quy đổi hiện tại: Android và iOS ×0,5, web ×1 (`AfTts.platformRate`, đọc từ mã plugin) — nếu Android đọc quá chậm thì sửa hệ số Android về ×1 và ghi lại đây | ☐ |
 | 15 | Viết chữ bằng ngón tay (M10) | Vẽ 爱 đúng thứ tự | Không cuộn trang khi vẽ; không báo sai oan | ☐ |
 | 16 | Release với `config/prod.json` (khi F12 lên server) | `flutter build apk --release --dart-define-from-file=config/prod.json` | Đăng nhập `https://id.antfarms.xyz/api/auth/mobile/login` OK; `identity.refresh_tokens.client_app` = `chinese-mobile/… (android|ios)` | ☐ |

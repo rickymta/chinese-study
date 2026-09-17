@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../api/clients.dart';
+import '../../srs/application/outbox_controller.dart';
 import '../data/me_api.dart';
 
 /// Kho phiên bền (secure storage). Test ghi đè bằng `InMemoryTokenStore`.
@@ -35,8 +36,16 @@ String deviceNameForPlatform() {
   };
 }
 
-/// Số đánh giá ôn thẻ CHƯA GỬI của người dùng hiện tại — M6 thay bằng outbox thật (RM-S7). M2: luôn 0.
-final pendingOutboxCountProvider = Provider<int>((ref) => 0);
+/// Số đánh giá ôn thẻ CHƯA GỬI (còn trong outbox, kể cả đang gửi lần đầu) của người dùng hiện tại — hộp xác nhận
+/// đăng xuất (RM-S7). CHỜ đọc xong kho bền (`whenRestored`) rồi mới đếm: bấm Đăng xuất ngay khi app vừa mở vẫn
+/// không bỏ qua hộp xác nhận (review M6). Nguồn: `reviewOutboxProvider`.
+///
+/// `autoDispose` + KHÔNG watch state: mỗi lần `ref.read(.future)` tính mới; watch state sẽ làm provider bị vô hiệu
+/// đúng lúc `restored` đổi và future đang chờ không bao giờ hoàn tất khi không có listener (signOutFlow treo).
+final pendingOutboxCountProvider = FutureProvider.autoDispose<int>(
+  // Không dùng `ref` sau khoảng chờ (provider autoDispose có thể đã bị huỷ) — controller tự chờ rồi đếm.
+  (ref) => ref.read(reviewOutboxProvider.notifier).pendingCountWhenRestored(),
+);
 
 /// Phụ thuộc cho `AuthController` của app tiếng Trung — `main.dart`/test: `authDepsProvider.overrideWith(buildChineseAuthDeps)`.
 AuthDeps buildChineseAuthDeps(Ref ref) {
@@ -46,7 +55,9 @@ AuthDeps buildChineseAuthDeps(Ref ref) {
     loadMe: () => loadMe(ref.read(chineseDioProvider)),
     installGuard: InstallGuard(prefs: ref.watch(keyValueStoreProvider), tokenStore: ref.watch(tokenStoreProvider)),
     deviceName: deviceNameForPlatform(),
-    // Sau đăng xuất/mất phiên: provider theo người dùng tự huỷ qua `userScopeProvider`; M6 thêm xoá outbox của userId.
+    // Sau đăng xuất/mất phiên: provider theo người dùng tự huỷ qua `userScopeProvider`; outbox ôn thẻ KHÔNG xoá ở
+    // đây (mất phiên/đổi mật khẩu ⇒ giữ kho theo userId, cùng người đăng nhập lại sẽ gửi tiếp — RK-M1). Xoá chỉ khi
+    // chủ động đăng xuất có xác nhận: `signOutFlow`. Tóm tắt SRS tự chặn khi user đổi (không gọi API không token).
     onSignedOut: (userId) async {},
   );
 }

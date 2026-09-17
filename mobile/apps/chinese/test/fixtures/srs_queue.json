@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-09-17T08:00:00Z",
+  "cards": [
+    {
+      "cardId": "c1",
+      "state": "new",
+      "queue": "new",
+      "dueAt": "2026-09-17T00:00:00Z",
+      "word": {
+        "id": "w1",
+        "simplified": "爱",
+        "traditional": "愛",
+        "pinyin": "ai4",
+        "hanViet": "ái",
+        "meaningsVi": ["yêu", "thích"],
+        "meaningViStatus": "machine"
+      },
+      "intervals": { "again": "PT1M", "hard": "PT5M30S", "good": "PT10M", "easy": "P8D" }
+    },
+    {
+      "cardId": "c2",
+      "state": "review",
+      "queue": "review",
+      "dueAt": "2026-09-17T00:00:00Z",
+      "word": {
+        "id": "w2",
+        "simplified": "你好",
+        "pinyin": "ni3 hao3",
+        "hanViet": "nhĩ hảo",
+        "meaningsVi": ["xin chào"],
+        "meaningViStatus": "reviewed"
+      },
+      "intervals": { "again": "PT1M", "hard": "P1D", "good": "P8D", "easy": "P45D" }
+    },
+    {
+      "cardId": "c3",
+      "state": "relearning",
+      "queue": "learning",
+      "dueAt": "2026-09-17T00:00:00Z",
+      "word": {
+        "id": "w3",
+        "simplified": "谢谢",
+        "pinyin": "xie4 xie5",
+        "meaningsVi": [],
+        "meaningViStatus": "machine"
+      },
+      "intervals": { "again": "PT1M", "hard": "PT10M", "good": "P1D", "easy": "P4D" }
+    },
+    { "cardId": "", "state": "new", "queue": "new", "word": { "id": "bad", "simplified": "" }, "intervals": {} }
+  ],
+  "summary": {
+    "localDate": "2026-09-17",
+    "timeZone": "Asia/Ho_Chi_Minh",
+    "dueToday": 2,
+    "dueNow": 2,
+    "reviewedToday": 0,
+    "reviewsDoneToday": 0,
+    "reviewLimitRemaining": 200,
+    "dailyReviewLimit": 200,
+    "newIntroducedToday": 0,
+    "newAvailableToday": 1,
+    "dailyNewCards": 10,
+    "totalCards": 5,
+    "matureCards": 1,
+    "nextDueAt": "2026-09-18T01:30:00Z"
+  }
+}

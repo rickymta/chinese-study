@@ -1,4 +1,3 @@
-import 'package:af_auth/af_auth.dart';
 import 'package:af_core/af_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,14 +23,6 @@ final progressOverviewByUserProvider = FutureProvider.autoDispose.family<Progres
 final progressOverviewProvider = Provider.autoDispose<FutureProvider<ProgressOverview>>(
   (ref) => progressOverviewByUserProvider(ref.watch(userScopeProvider)),
 );
-
-/// Số trên huy hiệu nhánh "Ôn tập" = `dueNow + newAvailableToday` (hợp đồng §5.3.8; `AfShellScaffold` cắt "99+").
-/// Chưa tải/không có quyền học/khối `srs` vắng ⇒ 0. M6 có thể chuyển nguồn sang `srsSummaryProvider`.
-final reviewBadgeProvider = Provider.autoDispose<int>((ref) {
-  if (!ref.watch(permissionsProvider).contains(kStudyUsePermission)) return 0;
-  final srs = ref.watch(ref.watch(progressOverviewProvider)).value?.srs;
-  return srs?.reviewBadge ?? 0;
-});
 
 /// Làm mới tổng quan (mọi người dùng — chỉ instance đang được giữ mới tải lại): sau khi lưu hồ sơ (múi giờ đổi ⇒
 /// "hôm nay" đổi), lưu cài đặt học tập (hạn mức thẻ mới đổi), app resumed, chọn lại tab Trang chủ; M6+ gọi sau khi

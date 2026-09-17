@@ -5,6 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/progress/application/providers.dart';
+import 'features/srs/application/outbox_controller.dart';
+import 'features/srs/application/providers.dart';
 import 'router/router.dart';
 
 /// Ngôn ngữ giao diện: tiếng Việt (chuỗi viết thẳng trong code — DB-M20); `en` để Material có bản dịch dự phòng.
@@ -33,12 +35,34 @@ class ChineseApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: router,
-      // Làm mới token khi app trở lại foreground (RM-S3) + làm mới tổng quan/huy hiệu (M5: người học có thể vừa ôn ở
-      // máy khác hoặc đã qua nửa đêm theo múi giờ hồ sơ); M6 nối thêm gửi outbox.
+      // Làm mới token khi app trở lại foreground (RM-S3) + làm mới tổng quan/tóm tắt SRS (M5/M6: người học có thể vừa
+      // ôn ở máy khác hoặc đã qua nửa đêm theo múi giờ hồ sơ) + gửi outbox còn dở (RM-L1).
       builder: (context, child) => AuthLifecycleObserver(
-        onResumed: () => ref.invalidateProgressOverview(),
-        child: child ?? const SizedBox.shrink(),
+        onResumed: () {
+          ref.read(reviewOutboxProvider.notifier).flushNow();
+          ref.invalidateProgressOverview();
+          ref.invalidateSrsSummary();
+        },
+        child: OutboxNotices(child: child ?? const SizedBox.shrink()),
       ),
     );
+  }
+}
+
+/// Giữ `reviewOutboxProvider` sống từ lúc mở app (đọc kho + gửi ngay khi có phiên, không chờ mở phiên ôn) và hiện
+/// toast khi một lượt chấm bị BỎ vì 4xx thật (409 trùng mã, 422 thẻ tạm dừng/đủ từ mới…) — thông điệp server.
+/// Đặt trong `MaterialApp.builder` để có `ScaffoldMessenger` phía trên ở mọi màn (kể cả phiên ôn toàn màn hình).
+class OutboxNotices extends ConsumerWidget {
+  const OutboxNotices({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<OutboxDrop?>(reviewOutboxProvider.select((s) => s.lastDrop), (prev, next) {
+      if (next == null || next == prev) return;
+      showAfToast(context, 'Không ghi được một lượt chấm: ${next.error.message}', kind: AfToastKind.error);
+    });
+    return child;
   }
 }

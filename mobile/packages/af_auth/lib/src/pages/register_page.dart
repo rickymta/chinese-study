@@ -12,9 +12,11 @@ import '../widgets/auth_gate.dart';
 import '../widgets/auth_scaffold.dart';
 import '../widgets/password_field.dart';
 
-/// Múi giờ máy — `FutureProvider` để trang đăng ký hiện dòng "Múi giờ: … (theo máy)"; plugin lỗi ⇒ `Asia/Ho_Chi_Minh`.
+/// Múi giờ máy cho dòng "Múi giờ: … (theo máy)" ở trang đăng ký (rơi về `Asia/Ho_Chi_Minh` khi null) và cho các
+/// chỗ so "máy ≠ hồ sơ" (trang chủ, Ôn tập, Hồ sơ). Trả múi giờ THẬT hoặc `null` khi không đọc được — không dùng
+/// mặc định để chỗ so sánh im lặng thay vì nhắc oan.
 /// Test override bằng `deviceTimeZoneProvider.overrideWith((_) async => 'Asia/Ho_Chi_Minh')`.
-final deviceTimeZoneProvider = FutureProvider<String>((ref) => deviceTimeZone());
+final deviceTimeZoneProvider = FutureProvider<String?>((ref) => tryDeviceTimeZone());
 
 /// Trang đăng ký DÙNG CHUNG (hợp đồng mobile §5.3.6): tên hiển thị, email, mật khẩu, nhập lại; `timeZone` =
 /// múi giờ máy (quy bí danh); 409 `EMAIL_TAKEN` gắn vào ô email; 403 `REGISTRATION_CLOSED` hiện banner.
@@ -56,7 +58,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     });
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _submitting = true);
-    final timeZone = await ref.read(deviceTimeZoneProvider.future).then((tz) => tz, onError: (_) => kDefaultTimeZone);
+    final timeZone = await ref
+        .read(deviceTimeZoneProvider.future)
+        .then((tz) => tz ?? kDefaultTimeZone, onError: (_) => kDefaultTimeZone);
     try {
       await ref
           .read(authControllerProvider.notifier)

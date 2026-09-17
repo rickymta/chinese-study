@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../auth/application/auth_providers.dart';
 import '../../../progress/application/providers.dart';
+import '../../../srs/application/providers.dart';
 import '../pages/profile_page.dart';
 
 /// Tab "Thông tin" (port `ProfileForm.tsx`): email chỉ đọc, tên hiển thị, múi giờ (`TimeZoneField`). Lưu ⇒
@@ -104,7 +105,9 @@ class _ProfileInfoTabState extends ConsumerState<ProfileInfoTab> {
       if (!mounted) return;
       if (!synced) {
         // Token đã xoay nhưng GET /account hoặc /me lỗi mạng ⇒ AuthGate đang hiện "Không kết nối được" — toast phải
-        // nói đúng: đã lưu, chưa tải lại được hồ sơ.
+        // nói đúng: đã lưu, chưa tải lại được hồ sơ. Múi giờ có thể đã đổi ⇒ vẫn làm mới tổng quan/tóm tắt (review M5).
+        ref.invalidateProgressOverview();
+        ref.invalidateSrsSummary();
         showAfToast(
           context,
           'Đã lưu hồ sơ, nhưng chưa tải lại được hồ sơ học tập — bấm Thử lại hoặc mở lại ứng dụng.',
@@ -113,8 +116,9 @@ class _ProfileInfoTabState extends ConsumerState<ProfileInfoTab> {
         return;
       }
       // Múi giờ mới chỉ tới service tiếng Trung qua token mới ⇒ "hôm nay"/chuỗi ngày/thẻ đến hạn đổi: làm mới tổng
-      // quan + huy hiệu (M5); M6 thêm `ref.invalidate(srsSummaryProvider)`.
+      // quan (M5) + tóm tắt SRS/huy hiệu (M6).
       ref.invalidateProgressOverview();
+      ref.invalidateSrsSummary();
       showAfToast(context, 'Đã lưu hồ sơ', kind: AfToastKind.success);
     } on Object catch (err) {
       final view = describeAuthError(err, context: AuthErrorContext.session);

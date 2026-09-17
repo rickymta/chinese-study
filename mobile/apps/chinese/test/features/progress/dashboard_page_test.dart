@@ -203,6 +203,8 @@ void main() {
         chineseAdapter: okSystemInfo('chinese-backend'),
         identityAdapter: okSystemInfo('identity-service'),
         requestLog: log,
+        // Huy hiệu (M6) gọi /srs/summary — stub riêng để không tiêu tốn chuỗi "lần 1 lỗi, lần 2 OK" của overview.
+        srs: (_) async => (200, summaryFromOverview(defaultOverviewBody())),
         overview: (_) async {
           calls++;
           if (calls == 1) {

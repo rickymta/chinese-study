@@ -8,6 +8,8 @@ import '../features/auth/presentation/pages/error_pages.dart';
 import '../features/licenses/presentation/pages/licenses_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/progress/presentation/pages/dashboard_page.dart';
+import '../features/srs/presentation/pages/review_home_page.dart';
+import '../features/srs/presentation/pages/review_session_page.dart';
 import '../shell/app_shell.dart';
 import '../shell/coming_soon_page.dart';
 import '../shell/more_page.dart';
@@ -52,12 +54,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const DashboardPage())],
           ),
           StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.review,
-                builder: (_, _) => const ComingSoonPage(title: 'Ôn tập', icon: Icons.style_outlined),
-              ),
-            ],
+            routes: [GoRoute(path: AppRoutes.review, builder: (_, _) => const ReviewHomePage())],
           ),
           StatefulShellBranch(
             routes: [
@@ -100,6 +97,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+      // Phiên ôn (M6): toàn màn hình trên root navigator (ẩn bottom nav), bọc `AuthGate` vì nằm ngoài shell.
+      GoRoute(
+        path: AppRoutes.reviewSession,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const AuthGate(onLogout: signOutFlow, child: ReviewSessionPage()),
       ),
       // Trang lỗi thống nhất (toàn màn hình, ngoài shell).
       GoRoute(

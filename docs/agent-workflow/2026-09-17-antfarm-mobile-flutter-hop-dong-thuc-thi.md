@@ -467,7 +467,7 @@ lib/src/widgets/password_field.dart
 test/ auth_session_test.dart · identity_client_test.dart · auth_controller_test.dart · auth_redirect_test.dart · validators_test.dart · time_zones_test.dart · token_store_test.dart
 ```
 
-- `AuthController` nhận `loadMe: Future<MeInfo> Function()` do **app** cung cấp (app tiếng Trung gọi `GET /me`, fail-closed như `loadMe.ts`), `onSignedOut` hook (app xoá outbox, huỷ provider theo user).
+- `AuthController` nhận `loadMe: Future<MeInfo> Function()` do **app** cung cấp (app tiếng Trung gọi `GET /me`, fail-closed như `loadMe.ts`), `onSignedOut` hook (huỷ provider theo user). **Sửa 18/09/2026 (M6, RK-M1 "không mất dữ liệu học"):** outbox ôn thẻ CHỈ bị xoá khi người dùng CHỦ ĐỘNG đăng xuất (`signOutFlow`, có xác nhận khi còn lượt chưa gửi); hết phiên / `signOutLocally` / mất phiên ⇒ GIỮ kho (khoá theo `userId`, cùng người đăng nhập lại thì gửi tiếp); lượt đang gửi nhận 401 ⇒ dừng, giữ lại.
 - Khởi động: `install_guard` → đọc kho → không có ⇒ `AuthAnonymous`; có ⇒ `refresh` ⇒ `loadMe` ⇒ `AuthAuthenticated`. Refresh/`loadMe` lỗi mạng ⇒ `AuthUnreachable` (màn "Không kết nối được máy chủ" + Thử lại + Đăng xuất). `loadMe` 403 ⇒ vẫn `AuthAuthenticated` với `permissions` rỗng (router đưa `/403`).
 - `login/register` ⇒ lưu kho (write-before-use) ⇒ `loadMe` ⇒ authenticated. Lỗi hiển thị tại chỗ: 401 "Email hoặc mật khẩu không đúng." · 423 kèm `lockedUntil` (giờ địa phương) · 403 `ACCOUNT_DISABLED`/`REGISTRATION_CLOSED` · 409 `EMAIL_TAKEN` (dưới ô email) · 422 `INVALID_TIME_ZONE` · 429 · lỗi mạng.
 - `refreshSession()`: refresh ⇒ cập nhật `account` từ claim JWT (`sub`, `email`, `name`, `zoneinfo` — port `accountFromToken`, không kiểm chữ ký) ⇒ `reloadMe()` (R4-4).

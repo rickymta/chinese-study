@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/progress/application/providers.dart';
+import '../features/srs/application/providers.dart';
 
 /// Nhãn 5 nhánh — thứ tự giống web (Trang chủ, Ôn tập, Bài học, Luyện viết, còn lại vào "Thêm").
 const kShellDestinations = <AfNavDestination>[
@@ -21,8 +22,8 @@ const kReviewBranch = 1;
 /// Khung 5 nhánh của `StatefulShellRoute.indexedStack`. Mỗi trang tự dựng `AppBar` riêng (shell không có tiêu đề)
 /// để nút hành động của từng trang (làm mới, lọc...) nằm đúng chỗ.
 ///
-/// Huy hiệu "Ôn tập" = `dueNow + newAvailableToday` từ tổng quan (`reviewBadgeProvider`, M5; `AfShellScaffold` cắt
-/// "99+"); [reviewBadge] truyền tường minh để test/ghi đè, null ⇒ đọc provider. Chọn lại tab Trang chủ đang mở ⇒ về
+/// Huy hiệu "Ôn tập" = `dueNow + newAvailableToday` từ tóm tắt SRS (`reviewBadgeProvider` ở `features/srs`, M6 chốt một
+/// nguồn; `AfShellScaffold` cắt "99+"); [reviewBadge] truyền tường minh để test/ghi đè, null ⇒ đọc provider. Chọn lại tab Trang chủ đang mở ⇒ về
 /// gốc nhánh + làm mới tổng quan (hợp đồng §5.3.8).
 class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.navigationShell, this.reviewBadge});
@@ -51,6 +52,7 @@ class AppShell extends ConsumerWidget {
       onDestinationSelected: (i) {
         final reselect = i == navigationShell.currentIndex;
         if (reselect && i == kHomeBranch) ref.invalidateProgressOverview();
+        if (reselect && i == kReviewBranch) ref.invalidateSrsSummary();
         // Chọn lại nhánh đang mở ⇒ về trang gốc của nhánh (initialLocation) — giống bấm lại tab trên web.
         navigationShell.goBranch(i, initialLocation: reselect);
       },

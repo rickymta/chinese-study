@@ -70,14 +70,20 @@ bool looksLikeTimeZone(String id) {
 
 /// Múi giờ của thiết bị qua `flutter_timezone` (đã quy bí danh). Plugin lỗi/không có (test, nền tảng lạ) hoặc
 /// giá trị không hợp lệ ⇒ [fallback] (mặc định `Asia/Ho_Chi_Minh`).
-Future<String> deviceTimeZone({String fallback = kDefaultTimeZone}) async {
+Future<String> deviceTimeZone({String fallback = kDefaultTimeZone}) async => (await tryDeviceTimeZone()) ?? fallback;
+
+/// Múi giờ máy THẬT (đã quy bí danh) hoặc `null` khi plugin lỗi/giá trị không giống múi giờ — KHÔNG dùng mặc định,
+/// để chỗ so "máy ≠ hồ sơ" (trang chủ, Ôn tập, Hồ sơ) không nhắc oan khi không đọc được (review M5).
+Future<String?> tryDeviceTimeZone() async {
   try {
     final info = await FlutterTimezone.getLocalTimezone();
     final tz = normalizeTimeZone(info.identifier);
-    return looksLikeTimeZone(tz) ? tz : fallback;
+    if (looksLikeTimeZone(tz)) return tz;
+    afLog('deviceTimeZone: giá trị máy trả về không giống múi giờ ("${info.identifier}")');
+    return null;
   } on Object catch (e) {
-    afLog('deviceTimeZone: không đọc được múi giờ máy (${e.runtimeType}) — dùng $fallback');
-    return fallback;
+    afLog('deviceTimeZone: không đọc được múi giờ máy (${e.runtimeType})');
+    return null;
   }
 }
 

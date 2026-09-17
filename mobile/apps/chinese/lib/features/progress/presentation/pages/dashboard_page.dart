@@ -86,7 +86,8 @@ class DashboardPage extends ConsumerWidget {
   }
 }
 
-/// Múi giờ máy ≠ múi giờ hồ sơ ⇒ dòng nhỏ dẫn tới Hồ sơ (§5.3.4). Múi giờ máy đọc bất đồng bộ; chưa có ⇒ không nhắc.
+/// Múi giờ máy ≠ múi giờ hồ sơ ⇒ dòng nhỏ dẫn tới Hồ sơ (§5.3.4). Múi giờ máy đọc bất đồng bộ; chưa có hoặc KHÔNG đọc
+/// được (`deviceTimeZoneProvider` trả null — không dùng mặc định, review M5) ⇒ không nhắc.
 class _TimeZoneHint extends ConsumerWidget {
   const _TimeZoneHint({required this.overview});
 

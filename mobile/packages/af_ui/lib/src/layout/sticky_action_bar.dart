@@ -23,7 +23,10 @@ class StickyActionBar extends StatelessWidget {
         ),
         child: SafeArea(
           top: false,
-          child: Center(
+          // `heightFactor: 1`: cao ĐÚNG bằng nội dung. `Center` trần trong `Scaffold.bottomNavigationBar` (ràng buộc
+          // lỏng) sẽ phình ra toàn màn hình và đè lên thân trang (phát hiện ở M6 — chạm vào thẻ không ăn).
+          child: Align(
+            heightFactor: 1,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: afMaxContentWidth),
               child: Padding(
