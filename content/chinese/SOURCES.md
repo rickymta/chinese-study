@@ -203,3 +203,11 @@ trong APK/IPA còn ước tính ~350 KB (không đo được trên máy dev, ch�
 `content/node_modules/hanzi-writer-data` (WARN, không FAIL, nếu thiếu — thường do chưa `yarn --cwd content
 install`); mục "MỞ RỘNG M10.1" so khớp toàn bộ bản mobile với bản web (FAIL nếu thiếu/thừa/lệch byte, bất kể
 có `node_modules` hay không), và kiểm `assets/licenses/hanzi-writer.LICENSE.txt` tồn tại + khớp byte.
+
+**Giấy phép chép sang mobile (M4, 17/09/2026):** ngoài `hanzi-writer.LICENSE.txt` ở trên, M4 còn chép
+nguyên byte 5 file giấy phép khác từ `LICENSES/` sang `mobile/apps/chinese/assets/licenses/` (cùng tên
+file, dùng cho `LicenseRegistry` của app mobile): `CC-BY-SA-4.0.txt`, `Unicode-License-v3.txt`,
+`MIT-elkmovie-hsk30.txt`, `MIT-complete-hsk-vocabulary.txt`, `MIT-py-fsrs.txt`. `scripts/validate.mjs`
+(cuối mục "MỞ RỘNG M10.1") đối chiếu SHA-256 cả 5 file này với bản gốc ở `LICENSES/` mỗi lần chạy khi thư
+mục `assets/licenses/` đã tồn tại (FAIL nếu thiếu/lệch byte; thư mục chưa có ⇒ bỏ qua, không phải lỗi học
+liệu).

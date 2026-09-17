@@ -29,6 +29,15 @@ const HANZI_WRITER_DATA_NODE_MODULES = path.join(CONTENT_ROOT, 'node_modules', '
 const MOBILE_APP_ROOT = path.join(REPO_ROOT, 'mobile', 'apps', 'chinese');
 const MOBILE_HANZI_DATA_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'hanzi-data');
 const MOBILE_LICENSES_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'licenses');
+const CHINESE_LICENSES_DIR = path.join(CHINESE_ROOT, 'LICENSES');
+// 5 file giấy phép M4 đã chép nguyên byte từ content/chinese/LICENSES/ sang bản mobile, cùng tên file.
+const MOBILE_MIRRORED_LICENSES = [
+  'CC-BY-SA-4.0.txt',
+  'Unicode-License-v3.txt',
+  'MIT-elkmovie-hsk30.txt',
+  'MIT-complete-hsk-vocabulary.txt',
+  'MIT-py-fsrs.txt',
+];
 const HANZI_WRITER_LICENSE_SRC = path.join(
   REPO_ROOT,
   'frontend',
@@ -498,7 +507,7 @@ if (hskWordsOk && hskWords) {
   words.forEach((w, idx) => {
     const loc = `hsk-words.json › words[${idx}] (${w.simplified} ${w.pinyin})`;
 
-    const key = `${w.simplified} ${w.pinyin}`;
+    const key = `${w.simplified}\u0000${w.pinyin}`;
     if (keySet.has(key)) fail(`${loc} — trùng khoá (simplified, pinyin) với mục khác`);
     keySet.add(key);
 
@@ -1195,6 +1204,37 @@ if (!fs.existsSync(MOBILE_APP_ROOT)) {
       'Không có frontend/node_modules/hanzi-writer/LICENSE — bỏ qua so byte LICENSE hanzi-writer cho ' +
         'mobile (chạy `yarn install` trong frontend/ để kiểm đầy đủ)'
     );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 15. MỞ RỘNG M10.1 — 5 giấy phép ở content/chinese/LICENSES/ đã chép nguyên byte sang
+//     mobile/apps/chinese/assets/licenses/ (cùng tên file, M4). Chỉ kiểm khi thư mục đích đã tồn tại —
+//     trước đó không phải lỗi của học liệu.
+// ---------------------------------------------------------------------------
+if (fs.existsSync(MOBILE_LICENSES_DIR)) {
+  for (const name of MOBILE_MIRRORED_LICENSES) {
+    const srcPath = path.join(CHINESE_LICENSES_DIR, name);
+    const destPath = path.join(MOBILE_LICENSES_DIR, name);
+    if (!fs.existsSync(srcPath)) {
+      fail(`Thiếu nguồn LICENSES/${name} ở content/chinese — không so được với bản mobile (M10.1)`);
+      continue;
+    }
+    if (!fs.existsSync(destPath)) {
+      fail(
+        `Không tìm thấy mobile/apps/chinese/assets/licenses/${name} (M10.1) — chép nguyên byte từ ` +
+          `content/chinese/LICENSES/${name}`
+      );
+      continue;
+    }
+    const srcHash = createHash('sha256').update(fs.readFileSync(srcPath)).digest('hex');
+    const destHash = createHash('sha256').update(fs.readFileSync(destPath)).digest('hex');
+    if (srcHash !== destHash) {
+      fail(
+        `mobile/apps/chinese/assets/licenses/${name} lệch byte so với content/chinese/LICENSES/${name} ` +
+          '(M10.1) — chép lại nguyên byte'
+      );
+    }
   }
 }
 
