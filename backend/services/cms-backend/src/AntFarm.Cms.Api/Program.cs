@@ -33,8 +33,10 @@ builder.Services.AddAfHealthChecks(); // "self" [live]; Infrastructure thêm "po
 // AspNetCore.App) tiêm thẳng được, không cần IOptions<T>.
 var accessOptions = builder.Configuration.GetSection("CmsAccess").Get<CmsAccessOptions>() ?? new CmsAccessOptions();
 var adminOptions = builder.Configuration.GetSection("CmsAdmin").Get<CmsAdminOptions>() ?? new CmsAdminOptions();
+var seedOptions = builder.Configuration.GetSection("CmsSeed").Get<CmsSeedOptions>() ?? new CmsSeedOptions();
 builder.Services.AddSingleton(accessOptions);
 builder.Services.AddSingleton(adminOptions);
+builder.Services.AddSingleton(seedOptions);
 
 // Mỗi service kiểm token TRỰC TIẾP qua JWKS của identity-service (mạng nội bộ — Auth:JwksUrl trỏ
 // THẲNG cổng identity-service, không qua gateway). Phân quyền cục bộ — PermissionResolver
@@ -115,8 +117,12 @@ if (app.Configuration.GetValue<bool>("AutoMigrate"))
     // W1+: seeder chạy ở đây — bắt mọi exception, log Error, KHÔNG ném (CLAUDE.md mục "Seed").
     var seedAdminOptions = scope.ServiceProvider.GetRequiredService<CmsAdminOptions>();
     var seedTimeProvider = scope.ServiceProvider.GetRequiredService<TimeProvider>();
-    var seedLogger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("AccessSeeder");
-    await AccessSeeder.SeedAsync(db, seedAdminOptions, seedTimeProvider, seedLogger, CancellationToken.None);
+    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+    await AccessSeeder.SeedAsync(db, seedAdminOptions, seedTimeProvider, loggerFactory.CreateLogger("AccessSeeder"), CancellationToken.None);
+
+    // W3a: chèn bù cấu hình site/SEO + gieo danh mục ngôn ngữ (chỉ khi bảng trống) — SAU AccessSeeder.
+    var seedSiteOptions = scope.ServiceProvider.GetRequiredService<CmsSeedOptions>();
+    await SiteSeeder.SeedAsync(db, seedSiteOptions, seedTimeProvider, loggerFactory.CreateLogger("SiteSeeder"), CancellationToken.None);
 }
 
 Log.Information("Khởi động cms-backend ({Env})", app.Environment.EnvironmentName);

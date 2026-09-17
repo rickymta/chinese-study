@@ -1,5 +1,7 @@
 using AntFarm.Cms.Application.Common.Abstractions;
+using AntFarm.Cms.Application.Common.Revalidation;
 using AntFarm.Cms.Infrastructure.Persistence;
+using AntFarm.Cms.Infrastructure.Revalidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,9 @@ public static class DependencyInjection
             .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ICmsDbContext>(sp => sp.GetRequiredService<CmsDbContext>());
+
+        // W3a: no-op tới W7 (website chưa tồn tại) — HttpRevalidationNotifier thật đăng ký ở đây khi W7 làm.
+        services.AddSingleton<IRevalidationNotifier, NoopRevalidationNotifier>();
 
         services.AddHealthChecks().AddDbContextCheck<CmsDbContext>("postgres", tags: ["ready"]);
 

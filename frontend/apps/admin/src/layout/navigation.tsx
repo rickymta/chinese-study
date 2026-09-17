@@ -1,5 +1,7 @@
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
+import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined'
 import type { NavItem } from '@af/ui'
 import { CMS_PERMS, perm } from '@/auth/permissions'
 import { LANGUAGE_MODULES } from '@/modules/registry'
@@ -33,8 +35,21 @@ export function buildNavGroups(perms: ReadonlySet<string>): NavGroupDef[] {
       key: 'website',
       label: 'Website',
       permissions: [CMS_PERMS.SITE_MANAGE, CMS_PERMS.POSTS_MANAGE, CMS_PERMS.MEDIA_MANAGE],
-      items: [],
-      planned: 'Cấu hình site/SEO, ngôn ngữ, FAQ, trang tĩnh, banner, bài viết, thư viện ảnh (đợt W3–W6).',
+      items: [
+        {
+          label: 'Cấu hình website',
+          to: '/website/cau-hinh',
+          icon: <SettingsOutlinedIcon />,
+          requiredPermission: CMS_PERMS.SITE_MANAGE,
+        },
+        {
+          label: 'Ngôn ngữ',
+          to: '/website/ngon-ngu',
+          icon: <TranslateOutlinedIcon />,
+          requiredPermission: CMS_PERMS.SITE_MANAGE,
+        },
+      ],
+      planned: 'FAQ (đợt W3b), thư viện ảnh (W4), trang tĩnh + banner (W5), bài viết (W6).',
     },
     {
       key: 'hop-thu',
@@ -64,12 +79,12 @@ export function buildNavGroups(perms: ReadonlySet<string>): NavGroupDef[] {
       items: [
         {
           label: 'Người dùng CMS',
-          to: '/nguoi-dung-cms',
+          to: '/he-thong/nguoi-dung-cms',
           icon: <ManageAccountsOutlinedIcon />,
           requiredPermission: CMS_PERMS.USERS_MANAGE,
         },
       ],
-      planned: 'Nhật ký thao tác (đợt W3).',
+      planned: 'Nhật ký thao tác (đợt W3b).',
     },
   ]
 }

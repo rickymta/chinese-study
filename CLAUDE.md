@@ -135,9 +135,9 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
 
 **Đợt W1–W15 (từ 17/09/2026):** thêm `cms-backend` (nền tảng quản trị chung) + `apps/admin` +
 `apps/website` (Next.js, `antfarms.xyz`) — hợp đồng
-`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1, W2, W12 xong**
+`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1, W2, W12, W3a xong**
 (cms-backend khung + phân quyền cục bộ fail-closed + `/api/me` + audience `af-cms` + route
-gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/chinese-kit`); W3–W11, W13–W15 chưa làm.
+gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/chinese-kit`); W3b–W11, W13–W15 chưa làm.
 
 ### Backend — `backend/` (.NET 10, `backend.slnx`, Central Package Management)
 
@@ -146,7 +146,7 @@ gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/ch
 - `services/gateway/` — `AntFarm.Gateway` (YARP): `/identity/**` → identity-service, `/chinese/**` → chinese-backend, `/cms/**` → cms-backend (W1).
 - `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker). `Jwt:Audiences` = `["af-identity","af-chinese","af-cms"]` (mảng tĩnh, một token dùng cho mọi audience — R-W6 hợp đồng W1–W15).
 - `services/chinese-backend/` — `AntFarm.Chinese.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Chinese.{UnitTests,ApiTests}`. Schema DB: `access` (người dùng/quyền cục bộ), `content`, `learning`.
-- `services/cms-backend/` — **(W1, 17/09/2026)** `AntFarm.Cms.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Cms.{UnitTests,ApiTests}` — nền tảng quản trị/website dùng chung (không riêng ngôn ngữ nào), DB `af_cms`, schema `access` (chép khuôn chinese-backend, thêm cột `user_roles.assigned_by`) + `site` (nội dung website, ảnh, hộp thư — từ W3+), audience `af-cms`. Phân quyền **fail-closed**: `CmsAccess:DefaultRoles` mặc định RỖNG (khác chinese `["learner"]`) — người mới vào admin KHÔNG có quyền nào cho tới khi admin gán tay. 3 vai trò `admin`/`editor`/`support`, nguồn duy nhất `AntFarm.Cms.Application.Access.RoleCatalog`.
+- `services/cms-backend/` — **(W1, 17/09/2026)** `AntFarm.Cms.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Cms.{UnitTests,ApiTests}` — nền tảng quản trị/website dùng chung (không riêng ngôn ngữ nào), DB `af_cms`, schema `access` (chép khuôn chinese-backend, thêm cột `user_roles.assigned_by`) + `site` (nội dung website, ảnh, hộp thư — từ W3+), audience `af-cms`. Phân quyền **fail-closed**: `CmsAccess:DefaultRoles` mặc định RỖNG (khác chinese `["learner"]`) — người mới vào admin KHÔNG có quyền nào cho tới khi admin gán tay. 3 vai trò `admin`/`editor`/`support`, nguồn duy nhất `AntFarm.Cms.Application.Access.RoleCatalog`. **W3a:** schema `site` = `settings` (11 khoá whitelist ở `SiteSettingKeys`), `languages` (`xmin` làm version, 409 `CONCURRENCY_CONFLICT`), `audit_logs` (chỉ ghi tên khoá/mã, không chép giá trị); `GET /api/public/site` ẩn danh, `Cache-Control: public, max-age=60`, không trả ngôn ngữ `hidden`; `IAuditLogger` + `IRevalidationNotifier` (no-op tới W7).
 - PostgreSQL 18 local, mỗi service một DB (`af_identity`, `af_chinese`, `af_cms`); test tích hợp dùng `af_<service>_test` qua biến `AF_TEST_PG` (chuỗi kết nối không có `Database=`) — thiếu biến thì `[DbFact]` tự skip. snake_case; một migration mỗi feature mỗi service, tên `F<n>_<Ten>` (đợt W1–W15 đổi tiền tố thành `W<n>_<Ten>`, ngoại lệ có chủ đích).
 - Cấu hình dev: copy `appsettings.Development.json.example` → `appsettings.Development.json` (gitignore) cho từng service.
 - **Migration không cần kết nối Postgres thật lúc sinh** (`dotnet ef migrations add`) — chỉ cần `ConnectionStrings:Default` ĐÚNG ĐỊNH DẠNG (không cần đúng mật khẩu, Npgsql không mở kết nối ở bước design-time); hữu ích trên máy chưa có Docker/mật khẩu Postgres local chưa biết.

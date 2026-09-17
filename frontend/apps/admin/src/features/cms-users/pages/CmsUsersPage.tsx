@@ -13,7 +13,8 @@ import { EditRolesDialog } from '../components/EditRolesDialog'
 const SEARCH_DEBOUNCE_MS = 300
 
 /**
- * `/nguoi-dung-cms?q=&page=` (hợp đồng W2 §5.3.1, cần `cms:users.manage`): tìm (debounce 300 ms, `replace` lên URL),
+ * `/he-thong/nguoi-dung-cms?q=&page=` (hợp đồng W2 §5.3.1, W3a dời dưới `/he-thong`; đường cũ `/nguoi-dung-cms`
+ * chuyển hướng — cần `cms:users.manage`): tìm (debounce 300 ms, `replace` lên URL),
  * phân trang lên URL, sửa vai trò qua `EditRolesDialog`. Không có nút nào ẩn theo quyền trong trang — chỉ mục menu.
  */
 export function CmsUsersPage() {

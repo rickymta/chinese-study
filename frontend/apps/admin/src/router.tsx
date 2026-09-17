@@ -7,6 +7,8 @@ import { DashboardPage } from './pages/DashboardPage'
 import { ForbiddenPage } from './pages/ForbiddenPage'
 import { UnauthorizedPage } from './pages/UnauthorizedPage'
 import { CmsUsersPage } from './features/cms-users/pages/CmsUsersPage'
+import { SiteSettingsPage } from './features/site-settings/pages/SiteSettingsPage'
+import { LanguagesPage } from './features/site-languages/pages/LanguagesPage'
 import { CMS_PERMS } from './auth/permissions'
 import { hasUnavailableService } from './auth/mergeMe'
 import { LANGUAGE_MODULES } from './modules/registry'
@@ -35,14 +37,33 @@ export const router = createBrowserRouter([
         children: [
           // Tổng quan: mọi người đăng nhập có ≥1 quyền (hoặc có service chết) — tự giải thích quyền còn thiếu.
           { index: true, element: <DashboardPage /> },
+          // Website (W3a): cấu hình site/SEO + ngôn ngữ — cần `cms:site.manage`.
           {
-            path: 'nguoi-dung-cms',
+            path: 'website/cau-hinh',
+            element: (
+              <RequirePermission permission={CMS_PERMS.SITE_MANAGE}>
+                <SiteSettingsPage />
+              </RequirePermission>
+            ),
+          },
+          {
+            path: 'website/ngon-ngu',
+            element: (
+              <RequirePermission permission={CMS_PERMS.SITE_MANAGE}>
+                <LanguagesPage />
+              </RequirePermission>
+            ),
+          },
+          // Hệ thống: Người dùng CMS chuyển sang `/he-thong/...` (W3a); đường cũ W2 tự chuyển hướng.
+          {
+            path: 'he-thong/nguoi-dung-cms',
             element: (
               <RequirePermission permission={CMS_PERMS.USERS_MANAGE}>
                 <CmsUsersPage />
               </RequirePermission>
             ),
           },
+          { path: 'nguoi-dung-cms', element: <Navigate to="/he-thong/nguoi-dung-cms" replace /> },
           ...languageRoutes,
         ],
       },

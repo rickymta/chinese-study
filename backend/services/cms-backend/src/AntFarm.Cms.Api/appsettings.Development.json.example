@@ -13,5 +13,16 @@
   // R-W10: email của CHÍNH BẠN được gán vai trò admin lúc provision lần đầu (đăng nhập lần đầu ở
   // apps/admin) — không điền thì tài khoản mới KHÔNG NHẬN vai trò nào (R-W2, fail-closed), vào
   // /api/admin/* sẽ bị 403.
-  "CmsAdmin": { "BootstrapEmails": ["<email-cua-ban>"] }
+  "CmsAdmin": { "BootstrapEmails": ["<email-cua-ban>"] },
+
+  // W3a: tuỳ chọn — CHỈ gieo khi site.languages RỖNG (R-W25). Không khai mục này thì SiteSeeder
+  // dùng bộ mặc định trong code (chinese/english/japanese); ở đây chỉ ghi đè appUrl của chinese
+  // sang app dev local (Docker: http://chinese-frontend, dev không Docker: cổng Vite 3280).
+  "CmsSeed": {
+    "Languages": [
+      { "code": "chinese", "name": "Tiếng Trung", "nativeName": "中文", "status": "open", "appUrl": "http://localhost:3280", "sortOrder": 1 },
+      { "code": "english", "name": "Tiếng Anh", "nativeName": "English", "status": "coming_soon", "sortOrder": 2 },
+      { "code": "japanese", "name": "Tiếng Nhật", "nativeName": "日本語", "status": "coming_soon", "sortOrder": 3 }
+    ]
+  }
 }
