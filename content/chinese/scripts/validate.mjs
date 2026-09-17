@@ -18,10 +18,14 @@ import { loadCedictSingleCharReadings } from './lib/cedict.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CHINESE_ROOT = path.resolve(__dirname, '..'); // content/chinese
+const CONTENT_ROOT = path.resolve(CHINESE_ROOT, '..'); // content/
+const REPO_ROOT = path.resolve(CONTENT_ROOT, '..'); // gốc repo
 const DATA_DIR = path.join(CHINESE_ROOT, 'data', 'pinyin');
 const SCHEMA_DIR = path.join(CHINESE_ROOT, 'schemas');
 const SOURCES_PATH = path.join(CHINESE_ROOT, 'SOURCES.md');
 const CEDICT_PATH = path.join(CHINESE_ROOT, '.raw', 'cedict_ts.u8');
+const HANZI_DATA_DIR = path.join(REPO_ROOT, 'frontend', 'apps', 'chinese', 'public', 'hanzi-data');
+const HANZI_WRITER_DATA_NODE_MODULES = path.join(CONTENT_ROOT, 'node_modules', 'hanzi-writer-data');
 
 let failCount = 0;
 let warnCount = 0;
@@ -989,6 +993,127 @@ for (const { fileName, doc } of lessons) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// 13. MỞ RỘNG F8 — frontend/apps/chinese/public/hanzi-data/ (tập con hanzi-writer-data@2.0.1)
+//     Xem §5.4.5 của docs/agent-workflow/2026-09-17-antfarm-f8-f11-chi-tiet.md (R-W1).
+// ---------------------------------------------------------------------------
+let hanziDataCharCount = 0;
+let hanziDataMissingCount = 0;
+let hanziDataTotalBytes = 0;
+
+if (!fs.existsSync(HANZI_DATA_DIR)) {
+  fail(
+    `Không tìm thấy thư mục ${path.relative(REPO_ROOT, HANZI_DATA_DIR)} (F8) — chạy ` +
+      `\`yarn --cwd content build:hanzi-data:chinese\``
+  );
+} else {
+  const indexPath = path.join(HANZI_DATA_DIR, 'index.json');
+  let hanziIndex = null;
+  if (!fs.existsSync(indexPath)) {
+    fail(`hanzi-data/index.json không tồn tại (F8) — chạy \`yarn --cwd content build:hanzi-data:chinese\``);
+  } else {
+    try {
+      hanziIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+    } catch (err) {
+      fail(`hanzi-data/index.json không phải JSON hợp lệ: ${err.message}`);
+    }
+  }
+
+  if (hanziIndex) {
+    if (hanziIndex.version !== '2.0.1') {
+      fail(`hanzi-data/index.json › version "${hanziIndex.version}" khác kỳ vọng "2.0.1"`);
+    }
+
+    const charactersAllHanzi = charactersOk && characters ? characters.characters.map((c) => c.hanzi) : [];
+    const indexedChars = new Set(hanziIndex.characters ?? []);
+    const missingChars = new Set(hanziIndex.missing ?? []);
+
+    for (const ch of charactersAllHanzi) {
+      if (!indexedChars.has(ch) && !missingChars.has(ch)) {
+        fail(
+          `hanzi-data/index.json — chữ "${ch}" (có trong characters.json) không nằm ở "characters" lẫn ` +
+            `"missing" — chạy lại build:hanzi-data:chinese`
+        );
+      }
+    }
+    if (missingChars.size > 0) {
+      warn(`hanzi-data — ${missingChars.size} chữ không có dữ liệu nét: ${[...missingChars].join(', ')}`);
+    }
+
+    // Mỗi chữ trong "characters" phải có file <hex>.json hợp lệ với strokes + medians cùng độ dài > 0
+    const expectedFileNames = new Set(['index.json', 'ARPHICPL.TXT', 'NOTICE.md']);
+    for (const ch of indexedChars) {
+      const hex = ch.codePointAt(0).toString(16);
+      const fileName = `${hex}.json`;
+      expectedFileNames.add(fileName);
+      const filePath = path.join(HANZI_DATA_DIR, fileName);
+      if (!fs.existsSync(filePath)) {
+        fail(`hanzi-data/${fileName} — không tồn tại dù "${ch}" nằm trong index.json › characters`);
+        continue;
+      }
+      let charData;
+      try {
+        charData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      } catch (err) {
+        fail(`hanzi-data/${fileName} (chữ "${ch}") không phải JSON hợp lệ: ${err.message}`);
+        continue;
+      }
+      const strokesLen = Array.isArray(charData.strokes) ? charData.strokes.length : 0;
+      const mediansLen = Array.isArray(charData.medians) ? charData.medians.length : 0;
+      if (strokesLen === 0 || mediansLen === 0 || strokesLen !== mediansLen) {
+        fail(
+          `hanzi-data/${fileName} (chữ "${ch}") — strokes (${strokesLen}) và medians (${mediansLen}) phải ` +
+            `là mảng cùng độ dài > 0`
+        );
+      } else {
+        hanziDataCharCount++;
+      }
+    }
+    hanziDataMissingCount = missingChars.size;
+
+    // Không có file .json thừa ngoài index.json + các chữ trong danh sách
+    for (const entry of fs.readdirSync(HANZI_DATA_DIR)) {
+      if (entry.endsWith('.json') && !expectedFileNames.has(entry)) {
+        fail(`hanzi-data/${entry} — file .json thừa, không khớp chữ nào trong index.json`);
+      }
+      hanziDataTotalBytes += fs.statSync(path.join(HANZI_DATA_DIR, entry)).size;
+    }
+  }
+
+  const arphicPath = path.join(HANZI_DATA_DIR, 'ARPHICPL.TXT');
+  const noticePath = path.join(HANZI_DATA_DIR, 'NOTICE.md');
+  if (!fs.existsSync(arphicPath)) fail('hanzi-data/ARPHICPL.TXT không tồn tại (F8)');
+  if (!fs.existsSync(noticePath)) fail('hanzi-data/NOTICE.md không tồn tại (F8)');
+
+  // Nếu có node_modules/hanzi-writer-data cục bộ ⇒ so byte ARPHICPL.TXT + 5 file ngẫu nhiên
+  if (fs.existsSync(HANZI_WRITER_DATA_NODE_MODULES)) {
+    const srcArphic = path.join(HANZI_WRITER_DATA_NODE_MODULES, 'ARPHICPL.TXT');
+    if (fs.existsSync(srcArphic) && fs.existsSync(arphicPath)) {
+      const a = createHash('sha256').update(fs.readFileSync(srcArphic)).digest('hex');
+      const b = createHash('sha256').update(fs.readFileSync(arphicPath)).digest('hex');
+      if (a !== b) fail('hanzi-data/ARPHICPL.TXT lệch byte so với node_modules/hanzi-writer-data/ARPHICPL.TXT');
+    }
+    if (hanziIndex?.characters?.length > 0) {
+      const sampleChars = [...hanziIndex.characters].sort(() => Math.random() - 0.5).slice(0, 5);
+      for (const ch of sampleChars) {
+        const hex = ch.codePointAt(0).toString(16);
+        const srcPath = path.join(HANZI_WRITER_DATA_NODE_MODULES, `${ch}.json`);
+        const destPath = path.join(HANZI_DATA_DIR, `${hex}.json`);
+        if (fs.existsSync(srcPath) && fs.existsSync(destPath)) {
+          const a = createHash('sha256').update(fs.readFileSync(srcPath)).digest('hex');
+          const b = createHash('sha256').update(fs.readFileSync(destPath)).digest('hex');
+          if (a !== b) fail(`hanzi-data/${hex}.json (chữ "${ch}") lệch byte so với hanzi-writer-data nguồn`);
+        }
+      }
+    }
+  } else {
+    warn(
+      'Không có content/node_modules/hanzi-writer-data — bỏ qua so byte ARPHICPL.TXT/mẫu 5 file ' +
+        '(chạy `yarn --cwd content install` để kiểm đầy đủ)'
+    );
+  }
+}
+
 console.log('\n--- Thống kê học liệu bài học (F9) ---');
 console.log('slug            | từ | khối | câu quiz | % nghe');
 for (const s of lessonStats) {
@@ -1012,6 +1137,11 @@ console.log(`Từ (hsk-words.json):    ${hskWords?.words?.length ?? '(lỗi)'}`)
 console.log(`Chữ (characters.json):  ${characters?.characters?.length ?? '(lỗi)'}`);
 console.log(`Nghĩa Việt: cvdict=${cvdictSourceCount}, machine=${machineSourceCount}, manual=${manualSourceCount}`);
 console.log(`Có Hán Việt cấp từ: ${hanVietPresentCount}/${hskWords?.words?.length ?? 0}`);
+
+console.log('\n--- Thống kê dữ liệu nét chữ (F8, hanzi-data) ---');
+console.log(`Chữ có dữ liệu nét:     ${hanziDataCharCount}/${characters?.characters?.length ?? 0}`);
+console.log(`Chữ thiếu dữ liệu nét:  ${hanziDataMissingCount}`);
+console.log(`Tổng dung lượng (chưa nén): ${(hanziDataTotalBytes / 1024).toFixed(1)} KB`);
 
 console.log(`\n${failCount} lỗi, ${warnCount} cảnh báo.`);
 if (failCount > 0) {

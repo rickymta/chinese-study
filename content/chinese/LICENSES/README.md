@@ -17,7 +17,13 @@ dùng ở `../SOURCES.md` mục "F6.1"):
 - `Unicode-License-v3.txt` — toàn văn giấy phép dữ liệu Unicode Unihan/CJKRadicals (số nét, bộ thủ, phồn
   thể ứng viên, tư liệu đối chiếu Hán Việt).
 - `MIT-py-fsrs.txt` — toàn văn giấy phép `github.com/open-spaced-repetition/py-fsrs` (© 2022 Open Spaced
-  Repetition). **Chưa dùng ở F6.1** — chuẩn bị sẵn cho F7.1 (`FsrsScheduler` chép thuật toán từ mã nguồn
-  này, xem hợp đồng F6/F7 §5.2.6); đội F7 tham chiếu lại khi cần, không cần tải lại.
+  Repetition). Dùng ở F7.1 (`FsrsScheduler` chép thuật toán từ mã nguồn này).
+- `ARPHICPL.TXT` — toàn văn Arphic Public License, chép nguyên văn từ gói npm `hanzi-writer-data@2.0.1`
+  bằng `scripts/build-hanzi-data.mjs` (F8). Áp dụng cho dữ liệu nét chữ (tập con) ở
+  `frontend/apps/chinese/public/hanzi-data/` — xem `NOTICE.md` cạnh thư mục đó và mục "F8" trong
+  `../SOURCES.md`.
+- `hanzi-writer-MIT.txt` — toàn văn giấy phép MIT của `hanzi-writer@3.7.3` (© 2014 David Chanin), thư viện
+  hoạt hình/chấm nét dùng ở `frontend/apps/chinese` (F8). Bản sao thứ hai ở
+  `frontend/apps/chinese/public/licenses/hanzi-writer.LICENSE.txt` để hiển thị trực tiếp cho người dùng.
 
 Ghi rõ trong `../SOURCES.md` file dữ liệu nào áp dụng giấy phép nào.

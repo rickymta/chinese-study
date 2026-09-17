@@ -154,3 +154,36 @@ năm theo từng chữ số (`二零二六年` = năm 2026).
 dùng nó — không có từ nào bị khai lặp ở nhiều bài, xem kiểm tra ở trên) đều nằm trong
 `data/vocabulary/hsk-words.json` (`hsk3Level=1`) và mọi chữ Hán rời đều có trong
 `data/characters/characters.json` — không có ngoại lệ cần ghi chú.
+
+---
+
+## F8 — Dữ liệu nét chữ (luyện viết) + thư viện hiển thị
+
+`frontend/apps/chinese/public/hanzi-data/` là **tập con** của gói npm `hanzi-writer-data@2.0.1`, chỉ gồm
+300 chữ có trong `data/characters/characters.json`, sinh bằng `scripts/build-hanzi-data.mjs` (§5.4.4 hợp
+đồng F8–F11), chép **nguyên từng byte** từ `content/node_modules/hanzi-writer-data/<chữ>.json`, chỉ đổi tên
+file theo mã Unicode hex thường (vd `爱` → `7231.json`) — xem `NOTICE.md` cạnh thư mục đích và cảnh báo R-W1
++ D3 (BA-mặc định) trong hợp đồng. `hanzi-writer@3.7.3` (thư viện hoạt hình/chấm nét dùng ở frontend) không
+được chép vào `content/`, chỉ lấy LICENSE để đối chiếu.
+
+| Khoá | Tên | URL | Giấy phép | Ngày lấy | Phiên bản | Phần đã dùng | Nghĩa vụ | File |
+|---|---|---|---|---|---|---|---|---|
+| `hanzi-writer` | Hanzi Writer | https://github.com/chanind/hanzi-writer | MIT | 2026-09-17 | npm 3.7.3 | Thư viện hoạt hình + chấm nét (frontend) | Kèm LICENSE | `LICENSES/hanzi-writer-MIT.txt`, `frontend/apps/chinese/public/licenses/hanzi-writer.LICENSE.txt` |
+| `hanzi-writer-data` | Hanzi Writer Data (từ Make Me a Hanzi, phông Arphic) | https://github.com/chanind/hanzi-writer-data | Arphic Public License | 2026-09-17 | npm 2.0.1 | Dữ liệu nét của 300 chữ trong `characters.json` (tập con, nội dung nguyên vẹn, đổi tên file) | Giữ nguyên `ARPHICPL.TXT` trong mọi bản sao; ghi chú thay đổi (`NOTICE.md`) | `LICENSES/ARPHICPL.TXT`, `frontend/apps/chinese/public/hanzi-data/*` |
+
+**Xác minh giấy phép (17/09/2026):** gói npm `hanzi-writer-data@2.0.1` khai `"license": "SEE LICENSE IN
+ARPHICPL.TXT"`; README nêu rõ dữ liệu lấy từ dự án Make Me a Hanzi, trích từ phông Arphic, phân phối lại
+theo Arphic Public License. `ARPHICPL.TXT` §1 cho phép sao chép nguyên văn với điều kiện giữ nguyên file
+`ARPHICPL.TXT` trong mọi bản sao; §2 yêu cầu ghi chú nổi bật nếu sửa file — dự án **không sửa nội dung**
+bất kỳ file dữ liệu nào, chỉ chọn tập con + đổi tên file, và việc này được ghi rõ trong
+`frontend/apps/chinese/public/hanzi-data/NOTICE.md` (song ngữ Việt/Anh) để thoả nghĩa vụ này (xem RK45).
+`hanzi-writer@3.7.3` giấy phép MIT (Copyright 2014 David Chanin), LICENSE lấy qua `npm pack
+hanzi-writer@3.7.3` trong thư mục tạm (không thêm `hanzi-writer` vào `content/package.json` vì đây là
+dependency của frontend, không phải công cụ dựng học liệu).
+
+**Kết quả build (17/09/2026):** 300/300 chữ trong `characters.json` có dữ liệu nét (0 chữ thiếu — gói
+`hanzi-writer-data@2.0.1` phủ đủ toàn bộ HSK 3.0 cấp 1); tổng dung lượng thư mục đích ≈ 650,8 KB chưa nén.
+Đã đối chiếu SHA-256 nguồn/đích cho mẫu 5 chữ (`一 爱 你 好 中`) và `ARPHICPL.TXT` — khớp tuyệt đối.
+`scripts/validate.mjs` (mục "MỞ RỘNG F8") kiểm lại điều này mỗi lần chạy khi có
+`content/node_modules/hanzi-writer-data` (WARN, không FAIL, nếu thiếu — thường do chưa `yarn --cwd content
+install`).

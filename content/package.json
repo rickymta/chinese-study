@@ -10,11 +10,13 @@
     "fetch:chinese": "node chinese/scripts/fetch-sources.mjs",
     "hanviet:chinese": "node chinese/scripts/fetch-wiktionary-hanviet.mjs",
     "build:chinese": "node chinese/scripts/build-hsk.mjs",
+    "build:hanzi-data:chinese": "node chinese/scripts/build-hanzi-data.mjs",
     "validate:chinese": "node chinese/scripts/validate.mjs"
   },
   "devDependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "fflate": "^0.8.3"
+    "fflate": "^0.8.3",
+    "hanzi-writer-data": "2.0.1"
   }
 }
