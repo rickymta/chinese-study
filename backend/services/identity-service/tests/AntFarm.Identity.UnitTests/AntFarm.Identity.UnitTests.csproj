@@ -21,6 +21,8 @@
     <ProjectReference Include="..\..\src\AntFarm.Identity.Domain\AntFarm.Identity.Domain.csproj" />
     <ProjectReference Include="..\..\src\AntFarm.Identity.Application\AntFarm.Identity.Application.csproj" />
     <ProjectReference Include="..\..\src\AntFarm.Identity.Infrastructure\AntFarm.Identity.Infrastructure.csproj" />
+    <!-- W10 (§5.2.9): InternalAccessPolicy (hàm thuần) sống ở Api/Internal — cần tham chiếu để unit test không phải dựng TestServer. -->
+    <ProjectReference Include="..\..\src\AntFarm.Identity.Api\AntFarm.Identity.Api.csproj" />
     <ProjectReference Include="..\..\..\..\shared\AntFarm.Core\AntFarm.Core.csproj" />
   </ItemGroup>
 

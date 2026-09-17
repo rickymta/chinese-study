@@ -166,3 +166,10 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] `curl -I https://admin.antfarms.xyz/` ⇒ 200 và có `X-Robots-Tag: noindex, nofollow`; file `.mjs` trả `application/javascript`; `/abc` ⇒ 200 `index.html` (SPA fallback).
 - [ ] Identity có `Auth__AllowedOrigins__1=https://admin.antfarms.xyz` — đăng nhập tại admin không bị 403 `ORIGIN_NOT_ALLOWED`.
 - [ ] Chứng chỉ SAN có `admin.antfarms.xyz` (`get-cert.sh` truyền ĐỦ `id. chinese. admin.`), bản ghi DNS Cloudflare `admin` đã tạo.
+
+## 10. identity-service API nội bộ (W10) — CHƯA VERIFY bằng Docker
+
+- [ ] (a) `curl -sk -o /dev/null -w "%{http_code}" https://id.antfarms.xyz/internal/ping` ⇒ `404` (không lộ ra Internet).
+- [ ] (b) Từ một container trong `af-net` (gateway; từ W11 là cms-backend): `wget -qO- --header "X-Service-Key: $IDENTITY_INTERNAL_KEY" http://identity-service:8081/internal/ping` ⇒ `{"ok":true}`.
+- [ ] (c) `docker compose port identity-service 8081` ⇒ không có ánh xạ cổng.
+- [ ] (d) `wget -qO- http://identity-service:8081/.well-known/jwks.json` ⇒ 404 (route công khai không phục vụ trên cổng nội bộ).

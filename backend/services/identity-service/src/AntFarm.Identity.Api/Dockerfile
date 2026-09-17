@@ -32,8 +32,10 @@ RUN apt-get update -qq \
  && mkdir -p /keys && chown app:app /keys
 COPY --from=build --chown=app:app /app/publish .
 USER app
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+# W10 (§5.2.9, CHƯA VERIFY bằng Docker): cổng 8081 phục vụ RIÊNG /internal/* (khoá dịch vụ
+# X-Service-Key, không JWT/CORS) — compose KHÔNG publish cổng này ra ngoài (không "ports:").
+ENV ASPNETCORE_URLS=http://+:8080;http://+:8081
+EXPOSE 8080 8081
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
     CMD wget -qO- http://localhost:8080/health/live || exit 1
 ENTRYPOINT ["dotnet", "AntFarm.Identity.Api.dll"]

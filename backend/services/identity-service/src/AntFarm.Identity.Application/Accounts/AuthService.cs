@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using AntFarm.Core.Errors;
+using AntFarm.Identity.Application.Admin;
 using AntFarm.Identity.Application.Common;
 using AntFarm.Identity.Application.Common.Abstractions;
 using AntFarm.Identity.Application.Common.Options;
@@ -22,11 +23,15 @@ public sealed class AuthService(
     TimeProvider timeProvider,
     AuthOptions authOptions,
     JwtOptions jwtOptions,
+    IRegistrationGate registrationGate,
     ILogger<AuthService> logger)
 {
     public async Task<AuthResult> RegisterAsync(RegisterRequest request, string? userAgent, string? ip, CancellationToken ct)
     {
-        if (!authOptions.AllowRegistration)
+        // D-W4/W10: "đăng ký mở" là cài đặt RUNTIME (bảng identity.settings) — authOptions.AllowRegistration
+        // giờ chỉ còn là giá trị KHỞI TẠO dùng khi chưa có dòng nào trong DB (đọc bên trong gate).
+        var registrationState = await registrationGate.GetAsync(ct);
+        if (!registrationState.Enabled)
             throw new ForbiddenException("Đăng ký hiện đang đóng.", "REGISTRATION_CLOSED");
 
         ValidateTimeZoneOrThrow(request.TimeZone);

@@ -90,7 +90,11 @@ services:
       Auth__RefreshCookieDomain: .${APP_DOMAIN}
       Auth__RefreshCookiePath: /api/auth
       Auth__RefreshCookieSecure: "true"
-      Auth__AllowRegistration: ${AUTH_ALLOW_REGISTRATION:-false}
+      Auth__AllowRegistration: ${AUTH_ALLOW_REGISTRATION:-false}   # chỉ là giá trị khởi tạo — công tắc lưu DB (W10) thắng
+      # W10 — API nội bộ /internal/* CHỈ trên cổng 8081 trong af-net: KHÔNG ports:, KHÔNG cluster gateway,
+      # KHÔNG location nginx. Khoá rỗng hoặc < 32 ký tự ⇒ API nội bộ tự tắt.
+      Internal__Port: "8081"
+      Internal__ServiceKey: ${IDENTITY_INTERNAL_KEY:-}
       Auth__AllowedOrigins__0: https://chinese.${APP_DOMAIN}
       Auth__AllowedOrigins__1: https://admin.${APP_DOMAIN}   # W2 — app admin/CMS
       # Auth__AllowedOrigins__2: https://${APP_DOMAIN}   # website antfarms.xyz nếu cần gọi identity (W7+) — giữ chỉ số liền nhau

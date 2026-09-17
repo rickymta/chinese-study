@@ -1,4 +1,5 @@
 using AntFarm.Identity.Domain.Accounts;
+using AntFarm.Identity.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -13,6 +14,9 @@ public interface IIdentityDbContext
 {
     DbSet<Account> Accounts { get; }
     DbSet<RefreshToken> RefreshTokens { get; }
+
+    /// <summary>W10 — cài đặt nền tảng runtime (§5.1.7).</summary>
+    DbSet<PlatformSetting> Settings { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

@@ -84,6 +84,8 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 
 **XÁC THỰC TẬP TRUNG, PHÂN QUYỀN CỤC BỘ:** `identity-service` **chỉ xác thực** (tài khoản, mật khẩu, refresh token, ký JWT RS256, công bố JWKS) — không chứa vai trò/quyền của ngôn ngữ nào. **Mỗi service ngôn ngữ** kiểm JWT qua `AntFarm.Auth` (JWKS + issuer + audience riêng `af-<ngôn-ngữ>`) và tự phân quyền trên DB riêng: `users → user_roles → role_permissions → permissions`. JWT chỉ để nhận diện (`sub`, `email`, `name`, `zoneinfo`) — **không** có/không suy quyền từ claim `role`. Người dùng được provision danh tính lần đầu gọi service; vai trò mặc định theo `<Service>Access:DefaultRoles` (tiếng Trung: `learner`); admin bootstrap theo `<Service>Admin:BootstrapEmails` (vd `ChineseAdmin:BootstrapEmails`). Frontend đọc quyền từ `GET /<ngôn-ngữ>/api/me` của chính service đó, không tự derive.
 
+**API NỘI BỘ identity-service (W10):** `/internal/*` chỉ trên cổng nội bộ (8081 Docker / 5291 dev), kiểm `Connection.LocalPort` + `X-Service-Key` (≥ 32 ký tự, rỗng ⇒ tắt); KHÔNG thêm cluster gateway, location nginx hay `ports:` nào tới cổng này; không kiểm bằng header `Host` (giả được). Trình duyệt không bao giờ gọi — đi qua cms-backend (quyền `accounts.manage`, W11).
+
 **MỖI SERVICE MỘT DATABASE** (`af_identity`, `af_chinese`, ...) — không đọc/ghi chéo DB service khác; cần dữ liệu thì qua token hoặc HTTP API.
 
 **`RequirePermissionAttribute` gán `Policy` của lớp cơ sở trong constructor**, KHÔNG khai `public new string Policy` — `new` chỉ che thuộc tính kiểu tĩnh, ASP.NET Core đọc `.Policy` qua `IAuthorizeData` nên nhận `null` ⇒ mọi `[RequirePermission]` thoái hoá thành `[Authorize]` trơn, không log, không lỗi. Mẫu đúng: `public RequirePermissionAttribute(string p) => Policy = $"Permission:{p}";`.
@@ -135,16 +137,16 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
 
 **Đợt W1–W15 (từ 17/09/2026):** thêm `cms-backend` (nền tảng quản trị chung) + `apps/admin` +
 `apps/website` (Next.js, `antfarms.xyz`) — hợp đồng
-`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1, W2, W12, W3a xong**
+`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1, W2, W12, W3a, W10 xong**
 (cms-backend khung + phân quyền cục bộ fail-closed + `/api/me` + audience `af-cms` + route
-gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/chinese-kit`); W3b–W11, W13–W15 chưa làm.
+gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/chinese-kit`); W3b–W9, W11, W13–W15 chưa làm.
 
 ### Backend — `backend/` (.NET 10, `backend.slnx`, Central Package Management)
 
 - `global.json` · `Directory.Build.props` · `Directory.Packages.props` · `.dockerignore`.
 - `shared/AntFarm.{Core,Logging,Security,HealthChecks,Auth,Testing}` — extension tiền tố `AddAf*`/`UseAf*`/`MapAf*`. `AntFarm.Testing` là thư viện tiện ích test (`[DbFact]`, `TestTokenFactory`). `tests/AntFarm.Shared.UnitTests` test cho shared.
 - `services/gateway/` — `AntFarm.Gateway` (YARP): `/identity/**` → identity-service, `/chinese/**` → chinese-backend, `/cms/**` → cms-backend (W1).
-- `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker). `Jwt:Audiences` = `["af-identity","af-chinese","af-cms"]` (mảng tĩnh, một token dùng cho mọi audience — R-W6 hợp đồng W1–W15).
+- `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker). `Jwt:Audiences` = `["af-identity","af-chinese","af-cms"]` (mảng tĩnh, một token dùng cho mọi audience — R-W6 hợp đồng W1–W15). `/internal/*` (W10): quản trị tài khoản (khoá/mở, mật khẩu tạm, thu hồi phiên, gỡ khoá đăng nhập) + `identity.settings` (`registration.enabled`, cache 30 giây, `Auth:AllowRegistration` chỉ là giá trị khởi tạo) + thống kê đăng ký theo ngày giờ VN — chỉ cms-backend gọi.
 - `services/chinese-backend/` — `AntFarm.Chinese.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Chinese.{UnitTests,ApiTests}`. Schema DB: `access` (người dùng/quyền cục bộ), `content`, `learning`.
 - `services/cms-backend/` — **(W1, 17/09/2026)** `AntFarm.Cms.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Cms.{UnitTests,ApiTests}` — nền tảng quản trị/website dùng chung (không riêng ngôn ngữ nào), DB `af_cms`, schema `access` (chép khuôn chinese-backend, thêm cột `user_roles.assigned_by`) + `site` (nội dung website, ảnh, hộp thư — từ W3+), audience `af-cms`. Phân quyền **fail-closed**: `CmsAccess:DefaultRoles` mặc định RỖNG (khác chinese `["learner"]`) — người mới vào admin KHÔNG có quyền nào cho tới khi admin gán tay. 3 vai trò `admin`/`editor`/`support`, nguồn duy nhất `AntFarm.Cms.Application.Access.RoleCatalog`. **W3a:** schema `site` = `settings` (11 khoá whitelist ở `SiteSettingKeys`), `languages` (`xmin` làm version, 409 `CONCURRENCY_CONFLICT`), `audit_logs` (chỉ ghi tên khoá/mã, không chép giá trị); `GET /api/public/site` ẩn danh, `Cache-Control: public, max-age=60`, không trả ngôn ngữ `hidden`; `IAuditLogger` + `IRevalidationNotifier` (no-op tới W7).
 - PostgreSQL 18 local, mỗi service một DB (`af_identity`, `af_chinese`, `af_cms`); test tích hợp dùng `af_<service>_test` qua biến `AF_TEST_PG` (chuỗi kết nối không có `Database=`) — thiếu biến thì `[DbFact]` tự skip. snake_case; một migration mỗi feature mỗi service, tên `F<n>_<Ten>` (đợt W1–W15 đổi tiền tố thành `W<n>_<Ten>`, ngoại lệ có chủ đích).
@@ -156,6 +158,7 @@ gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/ch
 | gateway | http://localhost:5280 | `gateway:8080` |
 | identity-service | http://localhost:5281 | `identity-service:8080` |
 | chinese-backend | http://localhost:5282 (Scalar `/scalar/v1`) | `chinese-backend:8080` |
+| identity-service nội bộ (W10) | http://localhost:5291 (chỉ `/internal/*`, không qua gateway) | `identity-service:8081` (không publish) |
 | cms-backend (W1) | http://localhost:5290 (Scalar `/scalar/v1`) | `cms-backend:8080` |
 | apps/chinese | http://localhost:3280 (Vite proxy `/identity`, `/chinese` → 5280) | `chinese-frontend:80` |
 | apps/admin (W2) | http://localhost:3290 (Vite proxy `/identity`, `/cms`, `/chinese` → 5280) | `admin-frontend:80` |
@@ -210,4 +213,4 @@ docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f 
 ```
 
 > Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal — **F13 đã bị thay thế bởi đợt W1–W15**): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.
-> Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1, W2, W12 xong**): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.
+> Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1, W2, W12, W3a, W10 xong**): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.
