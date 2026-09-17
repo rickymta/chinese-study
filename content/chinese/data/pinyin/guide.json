@@ -142,7 +142,7 @@
       "title": "Biến điệu (tone sandhi): 3-3, 不, 一",
       "order": 7,
       "blocks": [
-        { "type": "paragraph", "text": "Biến điệu là hiện tượng thanh điệu THAY ĐỔI CÁCH ĐỌC khi hai âm tiết đứng cạnh nhau, nhưng CHÁCH VIẾT PINYIN VÀ DỮ LIỆU TRONG APP VẪN GIỮ THANH GỐC — app chỉ hiện GỢI Ý cách đọc bên cạnh, không đổi thanh đã lưu. Khi làm bài luyện nghe-chọn thanh, luôn chọn theo THANH GỐC, không phải thanh đã biến điệu." },
+        { "type": "paragraph", "text": "Biến điệu là hiện tượng thanh điệu THAY ĐỔI CÁCH ĐỌC khi hai âm tiết đứng cạnh nhau, nhưng CÁCH VIẾT PINYIN VÀ DỮ LIỆU TRONG APP VẪN GIỮ THANH GỐC — app chỉ hiện GỢI Ý cách đọc bên cạnh, không đổi thanh đã lưu. Khi làm bài luyện nghe-chọn thanh, luôn chọn theo THANH GỐC, không phải thanh đã biến điệu." },
         { "type": "paragraph", "text": "Quy tắc 3-3: khi một âm tiết thanh 3 đứng NGAY TRƯỚC một âm tiết thanh 3 khác, âm tiết đứng trước đọc gần THANH 2 (không đọc thanh 3 đầy đủ). Đây là lý do câu chào kinh điển 你好 (ni3 hao3) nghe như 'ní hǎo' chứ không phải 'nǐ hǎo'." },
         { "type": "examples", "items": [
           { "pinyin": "ni3 hao3", "hanzi": "你好", "meaningVi": "chào (bạn khoẻ không)" },
