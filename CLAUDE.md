@@ -9,7 +9,7 @@
 - [Quy tắc bắt buộc](#quy-tắc-bắt-buộc)
 - [Tổng quan kiến trúc](#tổng-quan-kiến-trúc)
 - Hợp đồng thực thi các đợt: `docs/agent-workflow/`
-- **Bàn giao mới nhất:** [`docs/HANDOFF-2026-09-17-F2-F9.md`](docs/HANDOFF-2026-09-17-F2-F9.md) — đọc trước khi làm tiếp (bản trước: `docs/HANDOFF-2026-09-16-F0-F1.md`)
+- **Bàn giao mới nhất:** [`docs/HANDOFF-2026-09-17-MVP.md`](docs/HANDOFF-2026-09-17-MVP.md) — đọc trước khi làm tiếp (bản trước: `docs/HANDOFF-2026-09-16-F0-F1.md`)
 
 ---
 

@@ -1,4 +1,4 @@
-# HANDOFF 17/09/2026 — F2 → F9 xong, tạm dừng trước F8
+# HANDOFF 17/09/2026 — MVP F0 → F11 xong
 
 > Đọc file này trước khi làm tiếp. Nguồn sự thật: `CLAUDE.md`, `docs/agents/AGENT-WORKFLOW.md`, hợp đồng gốc
 > `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md` và 3 hợp đồng chi tiết
@@ -19,13 +19,18 @@
 | `13332d8` | Bundle triển khai theo khuôn MedDental (runbook `deploy/README.md`, preflight, backup) |
 | `c36af9c`, `d213e82` | **F7** — SRS FSRS-6 + màn ôn tập |
 | `1535128`, `061569a` | **F9** — 5 bài học + quiz |
-| `660f36a` | **F8.1** — dữ liệu nét chữ (chỉ học liệu; backend/frontend F8 CHƯA làm) |
+| `660f36a` | **F8.1** — dữ liệu nét chữ |
+| `8b27ad9` | Bàn giao tạm dừng ở F9 (người dùng cho làm tiếp sau đó) |
+| `aefed44` | Sửa F7: hai lượt mở hàng đợi song song không còn tạo dư thẻ mới |
+| `36245e2`, `bbe8b55` | **F8** — luyện viết chữ Hán 3 bước (Xem nét → Tô → Tự viết) |
+| `aac43a8`, `9b0d7d5` | **F10** — quản trị bài học & duyệt nghĩa |
+| `531474d`, `c3304fe` | **F11** — trang chủ tổng quan tiến độ & chuỗi ngày học |
 
-Cổng lúc dừng: `dotnet test` 462 đạt (có `AF_TEST_PG`), vitest 182 đạt, `tsc -b` / `build` / `lint:ui` / `validate:chinese` sạch.
+Cổng cuối: `dotnet test` 561 đạt (có `AF_TEST_PG`; không có thì 0 Failed), vitest 311 đạt, `tsc -b` / `build` / `lint:ui` / `validate:chinese` sạch. Nghiệm thu end-to-end MVP (§9.3) đạt ở 1366px và 375px: đăng ký → pinyin → tra từ → ôn thẻ → bài học + quiz → luyện viết → trang chủ phản ánh đủ.
 
 ## 2. Việc tiếp theo
 
-Thứ tự: **F8** (luyện viết — học liệu đã có, còn backend `F8_Writing` + frontend `/luyen-viet`) → **F10** (quản trị nội dung, duyệt nghĩa) → **F11** (tổng quan, streak). F12 (lên server) theo `deploy/README.md` + `deploy/VERIFY-DOCKER.md`. F13 để sau cùng.
+MVP (F0–F11) đã xong. Còn: **F12** — đưa lên server (theo `deploy/README.md` + `deploy/VERIFY-DOCKER.md`: DNS Cloudflare, chứng chỉ SAN, khoá ký identity, tài khoản admin đầu tiên, `AUTH_ALLOW_REGISTRATION`, sao lưu). **F13** — portal `antfarms.xyz` (sau cùng, ngoài MVP). Song song: duyệt học liệu (mục 4).
 
 ## 3. Quyết định dùng mặc định BA — CẦN NGƯỜI DÙNG DUYỆT
 
@@ -45,6 +50,9 @@ Lệch có chủ đích đã được review chấp nhận: mục "Người dùn
 - Docker: đã build được từng ảnh; `compose up` đầy đủ + HTTPS chưa verify (cần server).
 - Học liệu cần duyệt sớm: ~40 âm Hán Việt có ghi chú "cần duyệt", 什么 hiện "thập", 13 mục dịch máy, 吗 chưa có Hán Việt.
 - Ví dụ tìm `nǐhǎo` trong hợp đồng F6 không kiểm được vì 你好 không thuộc danh sách 500 từ.
+- Chưa có vai trò thật nào thiếu `study.use` (chỉ admin/learner) — Alert "chỉ xem" ở trang chủ mới kiểm bằng cách sửa quyền tạm; cân nhắc vai trò "biên tập nội dung".
+- Học viên đang mở `/bai-hoc` thấy bài vừa xuất bản sau tối đa 1 phút (cache).
+- Nên thử chạm lịch hoạt động trên điện thoại thật.
 - DB dev còn dữ liệu thử của `f3-admin@vidu.test` / `f3-learner@vidu.test` (mật khẩu `MatKhau-F3-2026`).
 - MacBook: nếu `docker pull` treo, dùng `DOCKER_CONFIG` riêng không có `credsStore` (xem `deploy/VERIFY-DOCKER.md` mục 0).
 - Áp migration thủ công phải dùng role `af_chinese`, không dùng `postgres` (bảng sẽ sai chủ sở hữu).
