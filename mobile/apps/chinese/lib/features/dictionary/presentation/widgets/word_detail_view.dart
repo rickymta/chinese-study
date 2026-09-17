@@ -18,12 +18,16 @@ import '../../domain/source_labels.dart';
 
 /// Thân chi tiết từ (port `WordDetailBody.tsx`, hợp đồng M8 — M6 tạo để tái dùng ở sheet "Xem chi tiết" của phiên
 /// ôn): chữ 56 + nghe, pinyin 20, Hán Việt (+ chip "Hán Việt suy ra"), phồn thể/dạng khác/ví dụ dùng, chip HSK + từ
-/// loại, nghĩa Việt đánh số + nguồn + `MeaningStatusChip`, nghĩa Anh (`ExpansionTile` đóng), lưới "Chữ trong từ",
-/// [AddToSrsButton], dòng nguồn (chạm ⇒ `/giay-phep`). Ô chữ chưa dẫn tới `/tu-dien/chu/:hanzi` — route đó thuộc M8.
+/// loại, nghĩa Việt đánh số + nguồn + `MeaningStatusChip`, nghĩa Anh (`ExpansionTile` đóng), lưới "Chữ trong từ"
+/// (chạm ⇒ `/tu-dien/chu/:hanzi` khi [linkCharacters]), [AddToSrsButton], dòng nguồn (chạm ⇒ `/giay-phep`).
 class WordDetailView extends StatelessWidget {
-  const WordDetailView({super.key, required this.word});
+  const WordDetailView({super.key, required this.word, this.linkCharacters = true});
 
   final WordDetail word;
+
+  /// Ô "Chữ trong từ" dẫn tới trang chữ. Sheet trong phiên ôn (root navigator, ngoài shell) truyền `false`: sheet chỉ
+  /// để đọc nhanh rồi quay lại thẻ, không rời phiên (như `openCharacterInNewTab` của ngăn kéo web).
+  final bool linkCharacters;
 
   @override
   Widget build(BuildContext context) {
@@ -160,6 +164,7 @@ class WordDetailView extends StatelessWidget {
                 _CharacterTile(
                   character: word.characters[i],
                   reading: readingAt(word.pinyin, i, word.characters[i].pinyinReadings),
+                  onTap: linkCharacters ? () => context.push(AppRoutes.character(word.characters[i].hanzi)) : null,
                 ),
             ],
           ),
@@ -219,42 +224,52 @@ class _LabeledHanzi extends StatelessWidget {
   }
 }
 
-/// Ô 72×88: chữ 32, Hán Việt in hoa, cách đọc dạng dấu. M8 nối chạm ⇒ `/tu-dien/chu/:hanzi`.
+/// Key ô chữ trong lưới "Chữ trong từ" (test).
+Key characterTileKey(String hanzi) => ValueKey('character-tile-$hanzi');
+
+/// Ô 72×(≥88): chữ 32, Hán Việt in hoa, cách đọc dạng dấu. [onTap] ⇒ `/tu-dien/chu/:hanzi` (M8); null ⇒ chỉ hiển thị.
+/// Chiều cao tối thiểu 88 (không cố định) để chữ hệ thống 1.3× không tràn.
 class _CharacterTile extends StatelessWidget {
-  const _CharacterTile({required this.character, required this.reading});
+  const _CharacterTile({required this.character, required this.reading, this.onTap});
 
   final WordCharacter character;
   final String? reading;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final hanViet = character.hanViet.isEmpty ? null : character.hanViet.first;
     return Card(
-      child: SizedBox(
-        width: 72,
-        height: 88,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              HanziBig(character.hanzi, size: HanziSize.lg, style: const TextStyle(fontSize: 32)),
-              if (hanViet != null)
-                Text(
-                  hanViet.toUpperCase(),
-                  style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              if (reading != null)
-                Text(
-                  numberedToMarked(reading!),
-                  style: theme.textTheme.labelSmall,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-            ],
+      key: characterTileKey(character.hanzi),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 72, maxWidth: 72, minHeight: 88),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HanziBig(character.hanzi, size: HanziSize.lg, style: const TextStyle(fontSize: 32)),
+                if (hanViet != null)
+                  Text(
+                    hanViet.toUpperCase(),
+                    style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                if (reading != null)
+                  Text(
+                    numberedToMarked(reading!),
+                    style: theme.textTheme.labelSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -307,7 +322,8 @@ class _WordDetailSheet extends ConsumerWidget {
               child: AsyncValueView<WordDetail>(
                 value: value,
                 onRetry: () => ref.invalidate(wordDetailProvider(wordId)),
-                data: (word) => WordDetailView(word: word),
+                // Sheet ngoài shell (root navigator) ⇒ không dẫn sang trang chữ (xem `linkCharacters`).
+                data: (word) => WordDetailView(word: word, linkCharacters: false),
               ),
             ),
           ),

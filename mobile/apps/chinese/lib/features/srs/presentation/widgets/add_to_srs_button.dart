@@ -37,7 +37,9 @@ class _AddToSrsButtonState extends ConsumerState<AddToSrsButton> {
   void _afterChange() {
     ref.invalidateSrsSummary();
     ref.invalidateProgressOverview();
+    // Cả hai provider chi tiết từ (sheet phiên ôn / trang `/tu-dien/:id`) — bên nào đang mở thì tải lại.
     ref.invalidate(wordDetailProvider(widget.word.id));
+    ref.invalidate(wordPageProvider(widget.word.id));
   }
 
   Future<void> _add() async {

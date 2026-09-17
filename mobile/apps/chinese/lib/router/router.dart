@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/application/sign_out.dart';
 import '../features/auth/presentation/pages/error_pages.dart';
+import '../features/dictionary/presentation/pages/character_detail_page.dart';
+import '../features/dictionary/presentation/pages/dictionary_search_page.dart';
+import '../features/dictionary/presentation/pages/word_detail_page.dart';
 import '../features/licenses/presentation/pages/licenses_page.dart';
 import '../features/pinyin/presentation/pages/pinyin_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
@@ -87,9 +90,16 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(path: AppRoutes.more, builder: (_, _) => const MorePage()),
               // `/pinyin?tab=huong-dan|bang|luyen&che-do=mot|cap` (M7) — đích của "Việc hôm nay"/thẻ Thanh điệu.
               GoRoute(path: AppRoutes.pinyin, builder: (_, _) => const PinyinPage()),
+              // Tra từ (M8): ba route phẳng trong nhánh "Thêm", `push` để giữ bottom nav và trang tìm trong ngăn xếp
+              // (quay lại giữ kết quả + vị trí cuộn). `chu/:hanzi` khai trước `:id`.
+              GoRoute(path: AppRoutes.dictionary, builder: (_, _) => const DictionarySearchPage()),
               GoRoute(
-                path: AppRoutes.dictionary,
-                builder: (_, _) => const ComingSoonPage(title: 'Tra từ', icon: Icons.search),
+                path: AppRoutes.characterPattern,
+                builder: (_, state) => CharacterDetailPage(hanzi: state.pathParameters['hanzi'] ?? ''),
+              ),
+              GoRoute(
+                path: AppRoutes.wordPattern,
+                builder: (_, state) => WordDetailPage(id: state.pathParameters['id'] ?? ''),
               ),
               GoRoute(path: AppRoutes.profile, builder: (_, _) => const ProfilePage()),
               GoRoute(path: AppRoutes.licenses, builder: (_, _) => const LicensesPage()),

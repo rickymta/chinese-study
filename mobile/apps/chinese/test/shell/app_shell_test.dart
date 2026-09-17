@@ -29,10 +29,11 @@ void main() {
     expect(find.text('Pinyin & luyện thanh'), findsOneWidget);
     expect(find.text('Giấy phép & nguồn'), findsOneWidget);
 
-    // Push trang con trong nhánh "Thêm" ⇒ bottom nav vẫn còn.
+    // Push trang con trong nhánh "Thêm" ⇒ bottom nav vẫn còn (Tra từ là trang thật từ M8 — adapter giả trả thân
+    // `system/info` 200 cho mọi đường dẫn ⇒ parse thành trang kết quả rỗng, không điều hướng).
     await tester.tap(find.text('Tra từ'));
     await tester.pumpAndSettle();
-    expect(find.text('Tính năng này sắp có trên ứng dụng'), findsOneWidget);
+    expect(find.text('Từ điển'), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 

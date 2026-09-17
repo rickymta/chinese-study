@@ -44,6 +44,10 @@ class DrillTabState extends ConsumerState<DrillTab> with AutomaticKeepAliveClien
   late DrillMode _mode = widget.initialMode;
   _Phase _phase = _Phase.setup;
   DrillSession? _session;
+
+  /// Bảng pinyin đã dùng để sinh bài — giữ riêng để `running` không phụ thuộc `chart.value` của provider (có thể mất
+  /// khi provider bị làm mới/lỗi giữa chừng — review M7).
+  PinyinChart? _chart;
   DrillOutcome? _outcome;
   SubmitToneDrillRequest? _request;
   bool _submitting = false;
@@ -65,6 +69,7 @@ class DrillTabState extends ConsumerState<DrillTab> with AutomaticKeepAliveClien
     final items = generateDrill(mode: _mode, chart: chart, focus: focus, count: kDrillCount);
     if (items.isEmpty) return;
     _session = DrillSession(clientSessionId: uuidV4(), mode: _mode, items: items, startedAt: DateTime.now().toUtc());
+    _chart = chart;
     _outcome = null;
     _request = null;
     _serverResult = null;
@@ -109,11 +114,20 @@ class DrillTabState extends ConsumerState<DrillTab> with AutomaticKeepAliveClien
   void abandon() {
     if (!running) return;
     _session = null;
+    _chart = null;
     _setPhase(_Phase.setup);
+  }
+
+  /// Phòng hờ: đang làm mà mất bảng (không xảy ra vì `_chart` giữ từ lúc bắt đầu) ⇒ về thiết lập + báo, không crash.
+  void _abortMissingChart() {
+    if (!mounted || !running) return;
+    _backToSetup();
+    showAfToast(context, 'Mất dữ liệu bảng pinyin — bài luyện đã dừng, hãy bắt đầu lại.', kind: AfToastKind.error);
   }
 
   void _backToSetup() {
     _session = null;
+    _chart = null;
     _outcome = null;
     _request = null;
     _serverResult = null;
@@ -164,11 +178,16 @@ class DrillTabState extends ConsumerState<DrillTab> with AutomaticKeepAliveClien
           ),
         );
       case _Phase.running:
-        final session = _session!;
+        final session = _session;
+        final usedChart = _chart;
+        if (session == null || usedChart == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => _abortMissingChart());
+          return const AfPageBody(child: PinyinSkeleton(rows: 1, height: 220));
+        }
         return DrillRunner(
           key: ValueKey(session.clientSessionId),
           session: session,
-          chart: chart.value!,
+          chart: usedChart,
           onFinish: _finish,
         );
       case _Phase.result:

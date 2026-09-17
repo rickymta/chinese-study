@@ -1,0 +1,33 @@
+{
+  "hanzi": "爱",
+  "traditionalVariants": ["愛"],
+  "pinyinReadings": ["ai4"],
+  "hanViet": ["ái"],
+  "hanVietByPinyin": { "ai4": "ái" },
+  "hanVietStatus": "reviewed",
+  "strokeCount": 10,
+  "radical": "爪",
+  "radicalNumber": 87,
+  "words": [
+    {
+      "id": "w1",
+      "simplified": "爱",
+      "pinyin": "ai4",
+      "hsk3Level": 1,
+      "hanViet": "ái",
+      "meaningsVi": ["yêu"],
+      "meaningViStatus": "machine",
+      "matchKind": "hanzi"
+    },
+    {
+      "id": "w2",
+      "simplified": "爱好",
+      "pinyin": "ai4 hao4",
+      "hsk3Level": 1,
+      "hanViet": "ái hiếu",
+      "meaningsVi": ["sở thích"],
+      "meaningViStatus": "reviewed",
+      "matchKind": "hanzi"
+    }
+  ]
+}

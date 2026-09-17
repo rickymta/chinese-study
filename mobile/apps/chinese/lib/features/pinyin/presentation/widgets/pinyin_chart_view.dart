@@ -68,13 +68,17 @@ class _PinyinChartViewState extends ConsumerState<PinyinChartView> with Automati
   @override
   void initState() {
     super.initState();
-    // Thân bảng cuộn ⇒ hàng tiêu đề/cột đầu chạy theo (chỉ một chiều mỗi cặp, tránh vòng lặp).
-    _bodyH.addListener(() {
-      if (_headerH.hasClients && _headerH.offset != _bodyH.offset) _headerH.jumpTo(_bodyH.offset);
-    });
-    _bodyV.addListener(() {
-      if (_firstColV.hasClients && _firstColV.offset != _bodyV.offset) _firstColV.jumpTo(_bodyV.offset);
-    });
+    // Thân bảng cuộn ⇒ hàng tiêu đề/cột đầu chạy theo (chỉ một chiều mỗi cặp, tránh vòng lặp). Kẹp vào biên của
+    // bên nhận: thân có thể vượt biên (bounce/overscroll) hoặc hai bên chưa cùng kích thước trong một khung hình.
+    _bodyH.addListener(() => _follow(_bodyH, _headerH));
+    _bodyV.addListener(() => _follow(_bodyV, _firstColV));
+  }
+
+  static void _follow(ScrollController source, ScrollController target) {
+    if (!source.hasClients || !target.hasClients) return;
+    final max = target.position.maxScrollExtent;
+    final offset = source.offset.clamp(0.0, max < 0 ? 0.0 : max);
+    if (target.offset != offset) target.jumpTo(offset);
   }
 
   @override

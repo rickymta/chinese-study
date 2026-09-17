@@ -6,9 +6,13 @@ import '../../../data/models.dart';
 /// Key nút "Bắt đầu (20 câu)" (test).
 const kStartDrillKey = ValueKey('start-drill');
 
+/// Key dòng "Đang kiểm tra giọng đọc…" (test).
+const kProbingVoiceNoticeKey = ValueKey('probing-voice-notice');
+
 /// Màn thiết lập bài luyện (port `DrillSetup.tsx`): chọn chế độ (`SegmentedButton` Một âm tiết / Cặp thanh — khởi đầu
 /// từ `?che-do=mot|cap`), dòng "tập trung thanh …", nút "Bắt đầu (20 câu)". Không có giọng ⇒ khoá nút kèm lời giải
-/// thích (không nghe được thì không luyện được).
+/// thích (không nghe được thì không luyện được); đang dò giọng ⇒ khoá kèm "Đang kiểm tra giọng đọc…" (không khoá im
+/// lặng — review M7).
 class DrillSetup extends StatelessWidget {
   const DrillSetup({
     super.key,
@@ -38,6 +42,7 @@ class DrillSetup extends StatelessWidget {
     final muted = theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant);
     final canSpeak = speechStatus == SpeechStatus.ready;
     final noVoice = speechStatus == SpeechStatus.noVoice || speechStatus == SpeechStatus.unsupported;
+    final probing = speechStatus == SpeechStatus.loading;
 
     return SectionCard(
       title: 'Luyện nghe – chọn thanh',
@@ -75,6 +80,16 @@ class DrillSetup extends StatelessWidget {
                   'nhầm.',
               background: scheme.secondaryContainer,
               foreground: scheme.onSecondaryContainer,
+            ),
+          ],
+          if (probing) ...[
+            const SizedBox(height: 12),
+            _Notice(
+              key: kProbingVoiceNoticeKey,
+              icon: Icons.hourglass_top_outlined,
+              text: 'Đang kiểm tra giọng đọc tiếng Trung trên máy… nút "Bắt đầu" sẽ mở khi xong.',
+              background: scheme.surfaceContainerHighest,
+              foreground: scheme.onSurfaceVariant,
             ),
           ],
           if (noVoice) ...[
@@ -115,7 +130,13 @@ class DrillSetup extends StatelessWidget {
 }
 
 class _Notice extends StatelessWidget {
-  const _Notice({required this.icon, required this.text, required this.background, required this.foreground});
+  const _Notice({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.background,
+    required this.foreground,
+  });
 
   final IconData icon;
   final String text;

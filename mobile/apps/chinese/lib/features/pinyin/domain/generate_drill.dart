@@ -79,11 +79,11 @@ Map<int, List<DrillPart>> buildTonePools(PinyinChart chart) {
 }
 
 /// 15 tổ hợp thanh cho `tone_pair` — loại 3-3 (TTS sẽ biến điệu thành 2-3, chấm sai oan — RK35).
-final List<(int, int)> kTonePairCombos = [
+final List<(int, int)> kTonePairCombos = List<(int, int)>.unmodifiable([
   for (final a in kDrillTones)
     for (final b in kDrillTones)
       if (!(a == 3 && b == 3)) (a, b),
-];
+]);
 
 /// Dãy thanh cho `listen_tone`: có focus ⇒ nửa đầu lấy từ focus (xoay vòng), nửa sau ngẫu nhiên đều; không focus ⇒
 /// mỗi thanh `count/4` câu (dư chia ngẫu nhiên). Kết quả được xáo.

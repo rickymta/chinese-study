@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:af_auth/af_auth.dart';
@@ -22,10 +23,12 @@ import '../../helpers/speech_helpers.dart';
 import '../../helpers/test_app.dart';
 
 /// Máy chủ pinyin giả: chart/guide từ fixture; tone-stats người mới rồi tăng `sessionsCount` theo số phiên đã nhận;
-/// nộp bài: lần đầu 201, cùng `clientSessionId` lần sau 200 (idempotent); [offline] ⇒ lỗi kết nối; [reject422] ⇒ 422.
+/// nộp bài: lần đầu 201, cùng `clientSessionId` lần sau 200 (idempotent); [offline] ⇒ lỗi kết nối; [reject422] ⇒ 422;
+/// [fail500Once] ⇒ lời nộp kế tiếp trả 500 một lần (không ghi nhận) rồi bình thường.
 class FakePinyinServer {
   bool offline = false;
   bool reject422 = false;
+  bool fail500Once = false;
   int chartCalls = 0;
   int statsCalls = 0;
   final List<Map<String, Object?>> bodies = [];
@@ -47,6 +50,10 @@ class FakePinyinServer {
     }
     if (path.endsWith('/pinyin/tone-drills') && req.method == 'POST') {
       if (offline) throw DioException.connectionError(requestOptions: req, reason: 'offline');
+      if (fail500Once) {
+        fail500Once = false;
+        return (500, jsonEncode({'error': 'Lỗi máy chủ.'}));
+      }
       if (reject422) {
         return (
           422,
@@ -355,13 +362,12 @@ void main() {
       await answerAndNext(tester, tone: 4);
     }
     await tester.pumpAndSettle();
-    // Lần đầu offline: kết quả tạm tính ở client vẫn hiện, kèm banner + "Gửi lại".
-    // (Đặt offline trước khi nộp: server nhận request đầu tiên khi đã offline.)
+    // Bài thứ nhất nộp bình thường (có mạng) ⇒ server nhận 1 phiên; giữ id để so với bài thứ hai.
     expect(find.byType(DrillResult), findsOneWidget);
     expect(server.bodies, hasLength(1));
     final firstId = server.bodies.single['clientSessionId'];
 
-    // Làm lại kịch bản với offline THẬT: bài mới, tắt mạng trước khi trả lời câu cuối.
+    // Bài thứ hai: tắt mạng trước khi trả lời câu cuối ⇒ lời nộp không tới server.
     await tester.ensureVisible(find.byKey(kNewDrillKey));
     await tester.tap(find.byKey(kNewDrillKey));
     await tester.pumpAndSettle();
@@ -395,6 +401,70 @@ void main() {
     expect(find.byType(DrillSetup), findsOneWidget);
     expect(server.received.length, 2);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('server 500 một lần ⇒ "Gửi lại" cùng clientSessionId ⇒ 201, server thấy đúng 1 phiên', (tester) async {
+    useSmallPhone(tester);
+    final server = await openPinyin(tester, query: '?tab=luyen');
+    server.fail500Once = true;
+    await tester.tap(find.byKey(kStartDrillKey));
+    await tester.pumpAndSettle();
+    for (var i = 1; i <= 20; i++) {
+      await answerAndNext(tester, tone: 3);
+    }
+    await tester.pumpAndSettle();
+    // Lần đầu 500 (server không ghi nhận) ⇒ banner + "Gửi lại"; request đã tới server nhưng không được ghi vào `bodies`.
+    expect(find.byType(DrillResult), findsOneWidget);
+    expect(find.textContaining('Chưa lưu được kết quả'), findsOneWidget);
+    expect(find.byKey(kRetrySubmitKey), findsOneWidget);
+    expect(server.bodies, isEmpty);
+
+    await tester.ensureVisible(find.byKey(kRetrySubmitKey));
+    await tester.tap(find.byKey(kRetrySubmitKey));
+    await tester.pumpAndSettle();
+    expect(find.text('Đã lưu · ngày học 2026-09-18'), findsOneWidget);
+    expect(find.byKey(kRetrySubmitKey), findsNothing);
+    expect(server.bodies, hasLength(1));
+    expect(server.received.length, 1);
+    expect(isUuidV4(server.bodies.single['clientSessionId'] as String), isTrue);
+
+    // Gửi lại lần nữa (giả lập bấm đúp/ mạng chập chờn) ⇒ cùng id ⇒ 200, vẫn 1 phiên.
+    server.fail500Once = true;
+    await tester.ensureVisible(find.byKey(kNewDrillKey));
+    await tester.tap(find.byKey(kNewDrillKey));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(kStartDrillKey));
+    await tester.pumpAndSettle();
+    for (var i = 1; i <= 20; i++) {
+      await answerAndNext(tester, tone: 3);
+    }
+    await tester.pumpAndSettle();
+    server.offline = true; // Gửi lại lần 1 rớt mạng, lần 2 tới nơi — vẫn cùng clientSessionId
+    await tester.ensureVisible(find.byKey(kRetrySubmitKey));
+    await tester.tap(find.byKey(kRetrySubmitKey));
+    await tester.pumpAndSettle();
+    expect(find.byKey(kRetrySubmitKey), findsOneWidget);
+    server.offline = false;
+    await tester.tap(find.byKey(kRetrySubmitKey));
+    await tester.pumpAndSettle();
+    expect(find.text('Đã lưu · ngày học 2026-09-18'), findsOneWidget);
+    expect(server.bodies, hasLength(2));
+    expect(server.received.length, 2);
+    // Lời nộp trong cùng một bài dùng cùng id: ghi nhận ở server của bài 2 chỉ có một phiên.
+    expect(server.received[server.bodies.last['clientSessionId']], 1);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('trạng thái dò giọng: nút Bắt đầu khoá kèm "Đang kiểm tra giọng đọc…"; dò xong ⇒ mở', (tester) async {
+    useSmallPhone(tester);
+    final tts = FakeAfTts(voices: zhVoices)..initGate = Completer<void>();
+    await openPinyin(tester, tts: tts, query: '?tab=luyen');
+    expect(find.byKey(kProbingVoiceNoticeKey), findsOneWidget);
+    expect(tester.widget<FilledButton>(find.byKey(kStartDrillKey)).onPressed, isNull);
+    tts.initGate!.complete();
+    await tester.pumpAndSettle();
+    expect(find.byKey(kProbingVoiceNoticeKey), findsNothing);
+    expect(tester.widget<FilledButton>(find.byKey(kStartDrillKey)).onPressed, isNotNull);
   });
 
   testWidgets('422 khi nộp ⇒ "Máy chủ từ chối kết quả" + chỉ "Làm bài mới" (không Gửi lại)', (tester) async {
