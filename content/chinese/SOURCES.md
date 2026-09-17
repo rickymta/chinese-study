@@ -166,24 +166,40 @@ file theo mã Unicode hex thường (vd `爱` → `7231.json`) — xem `NOTICE.m
 + D3 (BA-mặc định) trong hợp đồng. `hanzi-writer@3.7.3` (thư viện hoạt hình/chấm nét dùng ở frontend) không
 được chép vào `content/`, chỉ lấy LICENSE để đối chiếu.
 
+**M10.1 (17/09/2026, mobile Flutter):** cùng script `build-hanzi-data.mjs` **mirror TỪNG BYTE** toàn bộ nội
+dung của `frontend/apps/chinese/public/hanzi-data/` (mọi `<hex>.json`, `index.json`, `ARPHICPL.TXT`,
+`NOTICE.md`) sang `mobile/apps/chinese/assets/hanzi-data/` (commit, đóng gói offline vào app — xem §5.4.1
+của `docs/agent-workflow/2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md`); bỏ qua kèm WARN nếu chưa
+có thư mục `mobile/apps/chinese` (trước Feature M0). LICENSE MIT của `hanzi-writer@3.7.3` cũng được chép vào
+`mobile/apps/chinese/assets/licenses/hanzi-writer.LICENSE.txt` — dùng cho `LicenseRegistry` của app (M10.2)
+vì thuật toán chấm nét (`stroke_matcher.dart`) sẽ được **port sang Dart** từ `hanzi-writer@3.7.3` (MIT, ghi
+nguồn ở đầu file port).
+
 | Khoá | Tên | URL | Giấy phép | Ngày lấy | Phiên bản | Phần đã dùng | Nghĩa vụ | File |
 |---|---|---|---|---|---|---|---|---|
 | `hanzi-writer` | Hanzi Writer | https://github.com/chanind/hanzi-writer | MIT | 2026-09-17 | npm 3.7.3 | Thư viện hoạt hình + chấm nét (frontend) | Kèm LICENSE | `LICENSES/hanzi-writer-MIT.txt`, `frontend/apps/chinese/public/licenses/hanzi-writer.LICENSE.txt` |
-| `hanzi-writer-data` | Hanzi Writer Data (từ Make Me a Hanzi, phông Arphic) | https://github.com/chanind/hanzi-writer-data | Arphic Public License | 2026-09-17 | npm 2.0.1 | Dữ liệu nét của 300 chữ trong `characters.json` (tập con, nội dung nguyên vẹn, đổi tên file) | Giữ nguyên `ARPHICPL.TXT` trong mọi bản sao; ghi chú thay đổi (`NOTICE.md`) | `LICENSES/ARPHICPL.TXT`, `frontend/apps/chinese/public/hanzi-data/*` |
+| `hanzi-writer-data` | Hanzi Writer Data (từ Make Me a Hanzi, phông Arphic) | https://github.com/chanind/hanzi-writer-data | Arphic Public License | 2026-09-17 | npm 2.0.1 | Dữ liệu nét của 300 chữ trong `characters.json` (tập con, nội dung nguyên vẹn, đổi tên file) | Giữ nguyên `ARPHICPL.TXT` trong mọi bản sao; ghi chú thay đổi (`NOTICE.md`) | `LICENSES/ARPHICPL.TXT`, `frontend/apps/chinese/public/hanzi-data/*`, `mobile/apps/chinese/assets/hanzi-data/*` |
+| `hanzi-writer` (thuật toán chấm nét — port sang Dart) | Hanzi Writer | https://github.com/chanind/hanzi-writer | MIT | 2026-09-17 | npm 3.7.3 | Thuật toán chấm nét (`geometry`/`strokeMatches` trong `dist/hanzi-writer.js`) port nguyên logic sang Dart cho app mobile (M10.2, chưa thực hiện tại M10.1) | Kèm LICENSE + ghi nguồn ở đầu file port | `mobile/apps/chinese/lib/features/writing/board/stroke_matcher.dart` (sẽ tạo ở M10.2), `mobile/apps/chinese/assets/licenses/hanzi-writer.LICENSE.txt` |
 
 **Xác minh giấy phép (17/09/2026):** gói npm `hanzi-writer-data@2.0.1` khai `"license": "SEE LICENSE IN
 ARPHICPL.TXT"`; README nêu rõ dữ liệu lấy từ dự án Make Me a Hanzi, trích từ phông Arphic, phân phối lại
 theo Arphic Public License. `ARPHICPL.TXT` §1 cho phép sao chép nguyên văn với điều kiện giữ nguyên file
 `ARPHICPL.TXT` trong mọi bản sao; §2 yêu cầu ghi chú nổi bật nếu sửa file — dự án **không sửa nội dung**
 bất kỳ file dữ liệu nào, chỉ chọn tập con + đổi tên file, và việc này được ghi rõ trong
-`frontend/apps/chinese/public/hanzi-data/NOTICE.md` (song ngữ Việt/Anh) để thoả nghĩa vụ này (xem RK45).
-`hanzi-writer@3.7.3` giấy phép MIT (Copyright 2014 David Chanin), LICENSE lấy qua `npm pack
-hanzi-writer@3.7.3` trong thư mục tạm (không thêm `hanzi-writer` vào `content/package.json` vì đây là
-dependency của frontend, không phải công cụ dựng học liệu).
+`frontend/apps/chinese/public/hanzi-data/NOTICE.md` (song ngữ Việt/Anh, mirror nguyên byte sang bản mobile)
+để thoả nghĩa vụ này (xem RK45). `hanzi-writer@3.7.3` giấy phép MIT (Copyright 2014 David Chanin), LICENSE
+lấy qua `npm pack hanzi-writer@3.7.3` trong thư mục tạm (không thêm `hanzi-writer` vào `content/package.json`
+vì đây là dependency của frontend, không phải công cụ dựng học liệu) — bản mobile lấy trực tiếp từ
+`frontend/node_modules/hanzi-writer/LICENSE` (đã xác minh khớp byte với bản `npm pack`).
 
 **Kết quả build (17/09/2026):** 300/300 chữ trong `characters.json` có dữ liệu nét (0 chữ thiếu — gói
-`hanzi-writer-data@2.0.1` phủ đủ toàn bộ HSK 3.0 cấp 1); tổng dung lượng thư mục đích ≈ 650,8 KB chưa nén.
-Đã đối chiếu SHA-256 nguồn/đích cho mẫu 5 chữ (`一 爱 你 好 中`) và `ARPHICPL.TXT` — khớp tuyệt đối.
+`hanzi-writer-data@2.0.1` phủ đủ toàn bộ HSK 3.0 cấp 1); tổng dung lượng thư mục đích ≈ 650,8 KB chưa nén
+(303 file kể cả `index.json`/`ARPHICPL.TXT`/`NOTICE.md`). Đã đối chiếu SHA-256 nguồn/đích cho mẫu 5 chữ
+(`一 爱 你 好 中`) và `ARPHICPL.TXT` — khớp tuyệt đối. Bản mobile (`mobile/apps/chinese/assets/hanzi-data/`,
+303 file, cùng ≈ 650,8 KB) đã đối chiếu SHA-256 **toàn bộ 303/303 file** với bản web — khớp tuyệt đối; nén
+trong APK/IPA còn ước tính ~350 KB (không đo được trên máy dev, chưa có Android SDK/Xcode — xem
+`mobile/VERIFY-DEVICE.md`).
 `scripts/validate.mjs` (mục "MỞ RỘNG F8") kiểm lại điều này mỗi lần chạy khi có
 `content/node_modules/hanzi-writer-data` (WARN, không FAIL, nếu thiếu — thường do chưa `yarn --cwd content
-install`).
+install`); mục "MỞ RỘNG M10.1" so khớp toàn bộ bản mobile với bản web (FAIL nếu thiếu/thừa/lệch byte, bất kể
+có `node_modules` hay không), và kiểm `assets/licenses/hanzi-writer.LICENSE.txt` tồn tại + khớp byte.
