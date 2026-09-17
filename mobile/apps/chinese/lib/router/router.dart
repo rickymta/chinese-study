@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/application/sign_out.dart';
 import '../features/auth/presentation/pages/error_pages.dart';
+import '../features/speech/presentation/pages/voice_settings_page.dart';
 import '../features/system/presentation/pages/home_page.dart';
 import '../shell/app_shell.dart';
 import '../shell/coming_soon_page.dart';
@@ -95,6 +96,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: AppRoutes.licenses,
                 builder: (_, _) => const ComingSoonPage(title: 'Giấy phép & nguồn', icon: Icons.gavel_outlined),
               ),
+              GoRoute(path: AppRoutes.voice, builder: (_, _) => const VoiceSettingsPage()),
             ],
           ),
         ],

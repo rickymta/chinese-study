@@ -512,7 +512,7 @@ Nút cao tối thiểu 48; `CardTheme` viền mảnh (outlined), không đổ b�
 
 **TTS (`AfTts`)**:
 - `init()`: `awaitSpeakCompletion(true)`; iOS `setSharedInstance(true)` + `setIosAudioCategory(IosTextToSpeechAudioCategory.playback, [mixWithOthers], IosTextToSpeechAudioMode.defaultMode)` (phát cả khi gạt im lặng — [BA-mặc định]); lấy `getVoices` (list map `name`, `locale`), lọc `locale` chuẩn hoá (`_`→`-`, lower) bắt đầu bằng `zh`; sắp: khớp đúng `zh-cn` trước, rồi tên chứa `Enhanced|Premium|Natural`, rồi còn lại. Rỗng ⇒ thử `isLanguageAvailable('zh-CN')` ⇒ `true` thì `ready` với giọng mặc định engine, ngược lại `noVoice`. Plugin ném `MissingPluginException` ⇒ `unsupported`.
-- `speak(text, {double rate = 0.8})`: `stop()` trước; `setLanguage('zh-CN')`, `setVoice` nếu có; **quy đổi tốc độ** theo nền tảng: Android/web `rate` giữ nguyên (1.0 = bình thường); iOS `clamp(0.5 × rate, 0.1, 1.0)` (AVSpeech 0.5 = bình thường) [BA-mặc định, kiểm trên máy thật — VERIFY-DEVICE]. Lỗi phát ⇒ nuốt, trả về (không ném lên UI).
+- `speak(text, {double rate = 0.8})`: `stop()` trước; `setLanguage('zh-CN')`, `setVoice` nếu có; **quy đổi tốc độ** theo nền tảng: web `rate` giữ nguyên (1.0 = bình thường); **Android và iOS** `clamp(0.5 × rate, 0.1, 1.0)` — iOS vì AVSpeech 0.5 = bình thường, Android vì flutter_tts 4.2.5 tự nhân 2 (`FlutterTtsPlugin.kt` `setSpeechRate(rate * 2.0f)`) — sửa 17/09/2026 theo M3, đã đối chiếu mã plugin [BA-mặc định, kiểm trên máy thật — VERIFY-DEVICE]. Lỗi phát ⇒ nuốt, trả về (không ném lên UI).
 - Giọng đã chọn lưu `af.speech.voice.zh`. `ttsRate` lấy từ `learning-settings` (app truyền vào).
 - `VoiceMissingNotice`: Android "Cài đặt → Hệ thống → Ngôn ngữ → Đầu ra chuyển văn bản sang lời nói → Dịch vụ của Google → Cài dữ liệu giọng nói → Tiếng Trung"; iOS "Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Trung"; web dev "Dùng Chrome/Edge có giọng tiếng Trung".
 
@@ -1070,7 +1070,7 @@ Kèm: `git status` không có file sinh (§10.4 `.gitignore`), không bí mật.
 | DB-M22 | Tra từ cuộn vô hạn thay phân trang | Hợp điện thoại |
 | DB-M23 | Thiếu `study.use` ⇒ `/403` (không vào trang chủ như web) | Không có màn nào dùng được |
 | DB-M24 | Phiên ôn và bảng viết là màn toàn màn hình (ẩn bottom nav) | Tập trung, tránh chạm nhầm |
-| DB-M25 | iOS TTS: category playback (phát cả khi gạt im lặng), tốc độ ×0,5 | Học viên cần nghe; thang AVSpeech khác |
+| DB-M25 | iOS TTS: category playback (phát cả khi gạt im lặng); tốc độ ×0,5 trên iOS **và Android** (plugin Android nhân 2) | Học viên cần nghe; thang AVSpeech khác |
 | DB-M26 | Tên hiển thị "AntFarm Trung", bundle `xyz.antfarms.chinese`, cổng web-dev 3291 | Quy ước theo domain |
 | DB-M27 | Engine viết đặt trong app, không tạo package chung | Đặc thù chữ Hán (quy tắc tiện ích đặc thù ngôn ngữ ở app) |
 | DB-M28 | `deviceName` = "Android app" / "iOS app" / "Web dev" | Không thêm plugin thông tin thiết bị |

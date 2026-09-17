@@ -8,7 +8,7 @@
 // | token-in-prefs | FAIL | file vừa chứa SharedPreferences/KeyValueStore/keyValueStoreProvider vừa chứa refreshToken/accessToken |
 // | hardcoded-url | FAIL | http:// hoặc https:// trong lib/ ngoài lib/**/config/** và sources.dart/licenses.dart |
 // | print-call | FAIL | print( / debugPrint( ngoài af_core/lib/src/log/ |
-// | cjk-without-hanzitext | WARN | chuỗi literal có ký tự CJK trong file không import HanziText/LangText |
+// | cjk-without-hanzitext | WARN | chuỗi literal có ký tự CJK trong file có import Flutter mà không dùng HanziText/LangText/HanziBig (file thuần Dart không vẽ chữ ⇒ bỏ qua) |
 import 'dart:io';
 
 class Finding {
@@ -32,7 +32,9 @@ final _tokenWord = RegExp(r'\b(refreshToken|accessToken)\b');
 final _url = RegExp(r'''https?://''');
 final _printCall = RegExp(r'\b(print|debugPrint)\s*\(');
 final _cjk = RegExp(r'[一-鿿]');
-final _hanziImport = RegExp(r'\b(HanziText|LangText)\b');
+final _hanziImport = RegExp(r'\b(HanziText|LangText|HanziBig)\b');
+// File không import Flutter (logic thuần như pinyin.dart) không vẽ được chữ ⇒ không áp luật CJK.
+final _flutterImport = RegExp(r'''package:flutter/''');
 // Dòng chỉ có bình luận — bỏ qua cho luật URL/CJK/print (bình luận được phép nhắc URL, ví dụ chữ Hán).
 final _commentLine = RegExp(r'^\s*//');
 
@@ -82,7 +84,7 @@ List<Finding> _check(File file, String root) {
   final isLogModule = unix.startsWith('packages/af_core/lib/src/log/');
   final isConfig = RegExp(r'(^|/)lib/(.*/)?config/').hasMatch(unix);
   final isSourcesOrLicenses = unix.endsWith('/sources.dart') || unix.endsWith('/licenses.dart');
-  final importsHanzi = _hanziImport.hasMatch(content);
+  final importsHanzi = _hanziImport.hasMatch(content) || !_flutterImport.hasMatch(content);
   final hasPrefs = _sharedPrefs.hasMatch(content);
 
   for (var i = 0; i < lines.length; i++) {

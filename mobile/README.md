@@ -104,8 +104,9 @@ Quy ước: `apps/<ngon-ngu>` = `af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>
 | mocktail | 1.0.5 | MIT | dev |
 | shared_preferences_platform_interface | 2.4.2 | BSD-3-Clause | dev af_core (kho giả cho test) |
 | flutter_localizations / intl | SDK / `any` | BSD | app (`vi`, `en`) |
+| flutter_tts | 4.2.5 | MIT | af_ui (`AfTts`, `SpeechController`, `VoiceMissingNotice`) — M3 |
 
-Bổ sung ở feature sau (theo hợp đồng §5.3.2): `flutter_tts` 4.2.5 (M3), `path_parsing` 1.1.0 (M10.2).
+Bổ sung ở feature sau (theo hợp đồng §5.3.2): `path_parsing` 1.1.0 (M10.2).
 Ghi chú: `uuid` 4.6.0 xuất hiện trong `pubspec.lock` là phụ thuộc **bắc cầu** của `riverpod` — app không import (`uuid-import` FAIL nếu vi phạm).
 
 ## Phiên đăng nhập (M2)
@@ -114,8 +115,17 @@ Ghi chú: `uuid` 4.6.0 xuất hiện trong `pubspec.lock` là phụ thuộc **b�
 - Làm mới: single-flight theo thế hệ phiên (`_epoch` tăng khi đăng xuất/đăng nhập — refresh đang bay của phiên cũ bị bỏ, không ghi đè, không xoá phiên mới); lời gọi refresh không gắn Bearer (`skipAuthHeader`); request 401 mang token cũ được gửi lại bằng token hiện tại không xoay thêm; **ghi kho trước rồi mới phát token** (RM-S2); lỗi mạng/5xx thử lại 1 s, 3 s rồi giữ phiên (màn "Không kết nối được máy chủ" có Thử lại/Đăng xuất); chỉ 401/403 mới mất phiên ⇒ `/dang-nhap?reason=expired`. Hẹn giờ 60 s trước hạn + khi app resumed.
 - Quyền chỉ từ `GET /chinese/api/me` (fail-closed); thiếu `study.use` ⇒ `/403` có nút Đăng xuất. Người có `content.manage`/`users.manage` thấy dòng "Quản trị … dùng bản web" ở "Thêm" (không có màn quản trị).
 - Lần chạy đầu sau khi cài (thiếu cờ `af.install.v1` trong shared_preferences) xoá sạch `af.auth.*` trong secure storage (RM-S4 — Keychain iOS sống sót sau gỡ app).
-- **Bản web dev:** `flutter_secure_storage_web` mã hoá bằng WebCrypto và lưu `localStorage`, chỉ chạy trên HTTPS/localhost — đủ để dev ở `http://localhost:3290`, KHÔNG dùng cho người dùng thật (RK-M19).
+- **Bản web dev:** `flutter_secure_storage_web` mã hoá bằng WebCrypto và lưu `localStorage`, chỉ chạy trên HTTPS/localhost — đủ để dev ở `http://localhost:3291`, KHÔNG dùng cho người dùng thật (RK-M19).
 - Luồng đăng xuất duy nhất: `signOutFlow` (`features/auth/application/sign_out.dart`) — M6 nối số đánh giá chưa gửi (`pendingOutboxCountProvider`) để hỏi xác nhận.
+
+## Nền tiếng Trung — pinyin, chữ Hán, giọng đọc (M3)
+
+- `apps/chinese/lib/core/pinyin/pinyin.dart`: port toàn bộ `frontend/apps/chinese/src/lib/pinyin.ts` (số thanh ⇒ dấu, dấu ⇒ số, dấu câu hai đầu âm tiết, `r5` nhi hoá, `Xī'ān`, gợi ý biến điệu 3-3/不/一). Dart không có `normalize('NFC')` ⇒ tự ghép dấu tổ hợp cho 6 nguyên âm pinyin. Test `test/core/pinyin_test.dart` chép đủ ca của `pinyin.test.ts`.
+- Widget dùng chung `lib/core/widgets/`: `PinyinText` (số ⇒ dấu, chú thích biến điệu), `HanziBig` (cỡ đặt tên, luôn qua `HanziText` — RK-M7), `SpeakButton` (vô hiệu + tooltip khi chưa có giọng; huỷ đọc khi rời màn), `MeaningStatusChip` ("Chưa duyệt").
+- `af_ui` speech: `AfTts` bọc `flutter_tts` (lọc giọng `zh`, loại Quảng Đông `zh-HK`/`yue`, ưu tiên `zh-CN` rồi Enhanced/Premium), `SpeechController` (`loading|ready|noVoice|unsupported`, nhớ giọng `af.speech.voice.zh`), `VoiceMissingNotice` (hướng dẫn cài giọng theo nền tảng). App ngôn ngữ khác override `speechLangPrefixProvider`/`speechLanguageProvider`.
+- **Tốc độ đọc**: người dùng chọn 0,5–1,2 (mặc định 0,8), tạm lưu `af.chinese.ttsRate` trong shared_preferences (M4 chuyển nguồn sự thật sang `learning-settings`). Quy đổi sang plugin theo mã flutter_tts 4.2.5: web giữ nguyên; **Android và iOS nhân 0,5** (Android plugin gọi `setSpeechRate(rate × 2)`, iOS gán thẳng `AVSpeechUtterance.rate` với 0,5 = bình thường) — khác BA-mặc định §5.3.7 (Android giữ nguyên); cần kiểm máy thật (VERIFY-DEVICE #14).
+- Màn thử: Thêm → "Giọng đọc" (`/giong-doc`, tạm tới M4): chọn giọng, thanh tốc độ, nghe thử 你好; không giọng ⇒ hướng dẫn cài + nút "Dò lại giọng".
+- iOS: `setSharedInstance(true)` + audio category `playback` + `mixWithOthers` để phát cả khi gạt im lặng (chưa verify).
 
 ## Chưa verify
 

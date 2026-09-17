@@ -66,6 +66,13 @@ class MorePage extends ConsumerWidget {
               subtitle: 'Tên, múi giờ, mật khẩu, cài đặt học tập',
               onTap: () => context.push(AppRoutes.profile),
             ),
+            // Giọng đọc tạm đặt ở đây (M3); M4 chuyển vào Hồ sơ → tab Giao diện.
+            _NavTile(
+              icon: Icons.volume_up_outlined,
+              title: 'Giọng đọc',
+              subtitle: 'Chọn giọng tiếng Trung, tốc độ, nghe thử',
+              onTap: () => context.push(AppRoutes.voice),
+            ),
             _NavTile(
               icon: Icons.gavel_outlined,
               title: 'Giấy phép & nguồn',
