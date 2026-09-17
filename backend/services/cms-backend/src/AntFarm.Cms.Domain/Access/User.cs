@@ -1,0 +1,50 @@
+namespace AntFarm.Cms.Domain.Access;
+
+/// <summary>
+/// Người dùng cục bộ của cms-backend (schema `access`, §5.1.1 W1). <see cref="Id"/> = claim
+/// "sub" của access token (cùng giá trị với identity.accounts.id) — R-N3 (gốc)/R-W3: KHÔNG lưu
+/// mật khẩu/refresh token ở đây, identity-service sở hữu xác thực. Bảng này chỉ phục vụ PHÂN
+/// QUYỀN cục bộ + hiển thị (email/tên/múi giờ là BẢN SAO đồng bộ từ token, không phải nguồn sự thật).
+/// Chép khuôn <c>AntFarm.Chinese.Domain.Access.User</c> (§4.2 hợp đồng W1–W15).
+/// </summary>
+public sealed class User
+{
+    public Guid Id { get; private set; }
+    public string Email { get; private set; } = null!;
+    public string DisplayName { get; private set; } = null!;
+    public string TimeZone { get; private set; } = null!;
+    public DateTime FirstSeenAt { get; private set; }
+    public DateTime LastSeenAt { get; private set; }
+
+    // EF Core cần constructor không tham số — không lộ ra ngoài assembly để buộc luôn tạo qua Provision().
+    private User()
+    {
+    }
+
+    /// <summary>R-W3 (mượn R-P4 gốc): tạo dòng user lần đầu request có token hợp lệ mà "sub" chưa có trong access.users.</summary>
+    public static User Provision(Guid id, string email, string displayName, string timeZone, DateTime now) => new()
+    {
+        Id = id,
+        Email = email,
+        DisplayName = displayName,
+        TimeZone = timeZone,
+        FirstSeenAt = now,
+        LastSeenAt = now
+    };
+
+    /// <summary>So khớp claim hiện tại với bản ghi đã lưu — dùng để quyết định có cần <see cref="SyncProfile"/> hay chỉ <see cref="Touch"/>.</summary>
+    public bool NeedsProfileSync(string email, string displayName, string timeZone) =>
+        Email != email || DisplayName != displayName || TimeZone != timeZone;
+
+    /// <summary>Đồng bộ email/tên/múi giờ khi claim token khác bản ghi (đổi hồ sơ ở identity-service).</summary>
+    public void SyncProfile(string email, string displayName, string timeZone, DateTime now)
+    {
+        Email = email;
+        DisplayName = displayName;
+        TimeZone = timeZone;
+        LastSeenAt = now;
+    }
+
+    /// <summary>Không có gì đổi — chỉ cập nhật mốc truy cập gần nhất.</summary>
+    public void Touch(DateTime now) => LastSeenAt = now;
+}

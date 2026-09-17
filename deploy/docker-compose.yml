@@ -2,7 +2,8 @@
 # AntFarm — bundle triển khai production (một server, mạng nội bộ af-net)
 #
 # F0: postgres, identity-service, chinese-backend, gateway, nginx, certbot.
-# chinese-frontend thêm ở F1.
+# chinese-frontend thêm ở F1. cms-backend thêm ở W1 (nền tảng admin/website chung —
+# hợp đồng 2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md).
 #
 # ⚠️ CHƯA VERIFY BẰNG DOCKER (máy dev không có Docker) — xem deploy/VERIFY-DOCKER.md.
 #
@@ -61,6 +62,7 @@ services:
       # Đọc bởi deploy/postgres/init/01-create-databases.sh (chỉ chạy khi volume trống).
       AF_IDENTITY_DB_PASSWORD: ${AF_IDENTITY_DB_PASSWORD}
       AF_CHINESE_DB_PASSWORD: ${AF_CHINESE_DB_PASSWORD}
+      AF_CMS_DB_PASSWORD: ${AF_CMS_DB_PASSWORD}
     volumes:
       - pg-data:/var/lib/postgresql
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
@@ -130,6 +132,30 @@ services:
     # Gợi ý (không ép mặc định — đo RAM thật trước khi bật): "mem_limit: 384m" đủ cho MVP.
     # mem_limit: 384m
 
+  cms-backend: # W1 — nền tảng quản trị + website chung (admin.antfarms.xyz / antfarms.xyz)
+    image: ${REGISTRY:-localhost/antfarm}/cms-backend:${CMS_BACKEND_TAG:-latest}
+    build:
+      context: ../backend
+      dockerfile: services/cms-backend/src/AntFarm.Cms.Api/Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=af_cms;Username=af_cms;Password=${AF_CMS_DB_PASSWORD}
+      Auth__Issuer: https://id.${APP_DOMAIN}
+      Auth__Audience: af-cms
+      Auth__JwksUrl: http://identity-service:8080/.well-known/jwks.json
+      # JwksUrl ở TRÊN là http NỘI BỘ (mạng af-net, không ra Internet) — xem giải thích ở
+      # chinese-backend cùng file: RequireHttpsMetadata=true mặc định sẽ khiến cms-backend
+      # không xác thực được BẤT KỲ token nào (401 toàn bộ).
+      Auth__RequireHttpsMetadata: "false"
+      CmsAdmin__BootstrapEmails__0: ${CMS_BOOTSTRAP_ADMIN_EMAIL}
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [af-net]
+    logging: *default-logging
+    # Gợi ý (không ép mặc định — đo RAM thật trước khi bật): "mem_limit: 256m" đủ cho W1.
+    # mem_limit: 256m
+
   gateway:
     image: ${REGISTRY:-localhost/antfarm}/gateway:${GATEWAY_TAG:-latest}
     build:
@@ -140,6 +166,7 @@ services:
       <<: *dotnet-env
       ReverseProxy__Clusters__identity__Destinations__primary__Address: http://identity-service:8080
       ReverseProxy__Clusters__chinese__Destinations__primary__Address: http://chinese-backend:8080
+      ReverseProxy__Clusters__cms__Destinations__primary__Address: http://cms-backend:8080
     networks: [af-net]
     logging: *default-logging
 

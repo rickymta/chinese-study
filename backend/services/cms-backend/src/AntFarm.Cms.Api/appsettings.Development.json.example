@@ -1,0 +1,17 @@
+// Giá trị mặc định khớp deploy/dev/.env.example (Docker dev: postgres) — copy là chạy được ngay
+// sau: docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d
+// Nếu dùng PostgreSQL cài thẳng trên máy (không Docker, vd Windows) thì đổi thành
+// Username=postgres;Password=<mật khẩu superuser của bạn> — xem README mục "Chạy không Docker".
+// ⚠️ Máy dev KHÔNG có Docker + mật khẩu PostgreSQL local không biết trước: DB af_cms phải được
+// TẠO TAY (xem lệnh SQL trong hợp đồng W1 §5.1.1) — không tự đoán mật khẩu, không tự tạo DB.
+{
+  "ConnectionStrings": {
+    "Default": "Host=localhost;Port=5432;Database=af_cms;Username=af_cms;Password=af_cms_dev"
+  },
+  "Serilog": { "MinimumLevel": { "Default": "Debug" } },
+
+  // R-W10: email của CHÍNH BẠN được gán vai trò admin lúc provision lần đầu (đăng nhập lần đầu ở
+  // apps/admin) — không điền thì tài khoản mới KHÔNG NHẬN vai trò nào (R-W2, fail-closed), vào
+  // /api/admin/* sẽ bị 403.
+  "CmsAdmin": { "BootstrapEmails": ["<email-cua-ban>"] }
+}

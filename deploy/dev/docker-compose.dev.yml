@@ -29,6 +29,7 @@ services:
       # production (deploy/postgres/init/), chỉ khác .env. Script chỉ chạy khi volume trống.
       AF_IDENTITY_DB_PASSWORD: ${AF_IDENTITY_DB_PASSWORD:-af_identity_dev}
       AF_CHINESE_DB_PASSWORD: ${AF_CHINESE_DB_PASSWORD:-af_chinese_dev}
+      AF_CMS_DB_PASSWORD: ${AF_CMS_DB_PASSWORD:-af_cms_dev} # W1: cms-backend
     volumes:
       # PG 18+: mount tại /var/lib/postgresql (PGDATA = /var/lib/postgresql/18/docker).
       # Mount vào .../data như PG ≤ 17 ⇒ container thoát ngay khi khởi động.
@@ -80,4 +81,4 @@ volumes:
 # ── Kiểm chứng sau khi up (xem thêm deploy/VERIFY-DOCKER.md mục 0) ─────────────
 #   docker compose -f deploy/dev/docker-compose.dev.yml ps                        # postgres + minio "healthy"
 #   docker compose -f deploy/dev/docker-compose.dev.yml logs minio-init           # thấy bucket af-chinese
-#   psql -h localhost -p 5432 -U postgres -l                                      # liệt kê af_identity, af_chinese
+#   psql -h localhost -p 5432 -U postgres -l                                      # liệt kê af_identity, af_chinese, af_cms

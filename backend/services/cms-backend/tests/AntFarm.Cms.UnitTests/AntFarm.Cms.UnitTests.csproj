@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Moq" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AntFarm.Cms.Domain\AntFarm.Cms.Domain.csproj" />
+    <ProjectReference Include="..\..\src\AntFarm.Cms.Application\AntFarm.Cms.Application.csproj" />
+    <ProjectReference Include="..\..\src\AntFarm.Cms.Infrastructure\AntFarm.Cms.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Core\AntFarm.Core.csproj" />
+  </ItemGroup>
+
+</Project>

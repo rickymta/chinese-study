@@ -128,26 +128,37 @@ Monorepo đa service theo mẫu MedDental: **một gateway + một identity-serv
 ```
 Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
              ─► gateway YARP ─┬─► identity-service ─► af_identity
-                              └─► chinese-backend  ─► af_chinese   (JWKS nội bộ từ identity-service)
+                              ├─► chinese-backend  ─► af_chinese   (JWKS nội bộ từ identity-service)
+                              └─► cms-backend      ─► af_cms       (W1 — nền tảng admin/website chung, JWKS nội bộ)
 ```
+
+**Đợt W1–W15 (từ 17/09/2026):** thêm `cms-backend` (nền tảng quản trị chung) + `apps/admin` +
+`apps/website` (Next.js, `antfarms.xyz`) — hợp đồng
+`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1 xong**
+(cms-backend khung + phân quyền cục bộ fail-closed + `/api/me` + audience `af-cms` + route
+gateway `/cms/**`); W2+ chưa làm.
 
 ### Backend — `backend/` (.NET 10, `backend.slnx`, Central Package Management)
 
 - `global.json` · `Directory.Build.props` · `Directory.Packages.props` · `.dockerignore`.
 - `shared/AntFarm.{Core,Logging,Security,HealthChecks,Auth,Testing}` — extension tiền tố `AddAf*`/`UseAf*`/`MapAf*`. `AntFarm.Testing` là thư viện tiện ích test (`[DbFact]`, `TestTokenFactory`). `tests/AntFarm.Shared.UnitTests` test cho shared.
-- `services/gateway/` — `AntFarm.Gateway` (YARP): `/identity/**` → identity-service, `/chinese/**` → chinese-backend.
-- `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker).
+- `services/gateway/` — `AntFarm.Gateway` (YARP): `/identity/**` → identity-service, `/chinese/**` → chinese-backend, `/cms/**` → cms-backend (W1).
+- `services/identity-service/` — `AntFarm.Identity.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Identity.{UnitTests,ApiTests}`. Khoá ký RSA: file PEM trong `.secrets/identity/keys/` (dev, gitignore, tự sinh) / volume `/keys` (Docker). `Jwt:Audiences` = `["af-identity","af-chinese","af-cms"]` (mảng tĩnh, một token dùng cho mọi audience — R-W6 hợp đồng W1–W15).
 - `services/chinese-backend/` — `AntFarm.Chinese.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Chinese.{UnitTests,ApiTests}`. Schema DB: `access` (người dùng/quyền cục bộ), `content`, `learning`.
-- PostgreSQL 18 local, mỗi service một DB (`af_identity`, `af_chinese`); test tích hợp dùng `af_<service>_test` qua biến `AF_TEST_PG` (chuỗi kết nối không có `Database=`) — thiếu biến thì `[DbFact]` tự skip. snake_case; một migration mỗi feature mỗi service, tên `F<n>_<Ten>`.
+- `services/cms-backend/` — **(W1, 17/09/2026)** `AntFarm.Cms.{Domain,Application,Infrastructure,Api}` + `tests/AntFarm.Cms.{UnitTests,ApiTests}` — nền tảng quản trị/website dùng chung (không riêng ngôn ngữ nào), DB `af_cms`, schema `access` (chép khuôn chinese-backend, thêm cột `user_roles.assigned_by`) + `site` (nội dung website, ảnh, hộp thư — từ W3+), audience `af-cms`. Phân quyền **fail-closed**: `CmsAccess:DefaultRoles` mặc định RỖNG (khác chinese `["learner"]`) — người mới vào admin KHÔNG có quyền nào cho tới khi admin gán tay. 3 vai trò `admin`/`editor`/`support`, nguồn duy nhất `AntFarm.Cms.Application.Access.RoleCatalog`.
+- PostgreSQL 18 local, mỗi service một DB (`af_identity`, `af_chinese`, `af_cms`); test tích hợp dùng `af_<service>_test` qua biến `AF_TEST_PG` (chuỗi kết nối không có `Database=`) — thiếu biến thì `[DbFact]` tự skip. snake_case; một migration mỗi feature mỗi service, tên `F<n>_<Ten>` (đợt W1–W15 đổi tiền tố thành `W<n>_<Ten>`, ngoại lệ có chủ đích).
 - Cấu hình dev: copy `appsettings.Development.json.example` → `appsettings.Development.json` (gitignore) cho từng service.
+- **Migration không cần kết nối Postgres thật lúc sinh** (`dotnet ef migrations add`) — chỉ cần `ConnectionStrings:Default` ĐÚNG ĐỊNH DẠNG (không cần đúng mật khẩu, Npgsql không mở kết nối ở bước design-time); hữu ích trên máy chưa có Docker/mật khẩu Postgres local chưa biết.
 
 | Thành phần | Dev local | Docker |
 |---|---|---|
 | gateway | http://localhost:5280 | `gateway:8080` |
 | identity-service | http://localhost:5281 | `identity-service:8080` |
 | chinese-backend | http://localhost:5282 (Scalar `/scalar/v1`) | `chinese-backend:8080` |
+| cms-backend (W1) | http://localhost:5290 (Scalar `/scalar/v1`) | `cms-backend:8080` |
 | apps/chinese | http://localhost:3280 (Vite proxy `/identity`, `/chinese` → 5280) | `chinese-frontend:80` |
-| apps/portal (F13 — feature sau) | http://localhost:3281 (dành sẵn) | `portal-frontend:80` |
+| apps/admin (W2 — chưa làm) | http://localhost:3290 (dành sẵn) | `admin-frontend:80` |
+| apps/website (W7 — chưa làm, Next.js `antfarms.xyz`) | http://localhost:3281 (dành sẵn) | `website:3000` |
 | Ngôn ngữ kế tiếp | backend 5283, app 3282, ... | `<ngon-ngu>-backend:8080` |
 
 ### Frontend — `frontend/` (Turborepo + Yarn Classic Workspaces + React 19 + MUI v9 + TypeScript + Vite)
@@ -162,7 +173,7 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
 
 ### Triển khai — `deploy/`
 
-`docker-compose.yml` (postgres, identity-service, chinese-backend, gateway, chinese-frontend, nginx, certbot — chỉ nginx publish cổng), `.env.example`, `conf/nginx.conf.example` (khối 80 ACME + server `id.`/`chinese.` + mẫu ngôn ngữ/portal để comment), `conf/cloudflare-realip.conf.example`, `scripts/{self-signed,get-cert,renew-cert}.sh`, `certs/` (gitignore), `postgres/init/`, `VERIFY-DOCKER.md` (checklist verify Docker + HTTPS khi có server).
+`docker-compose.yml` (postgres, identity-service, chinese-backend, **cms-backend (W1)**, gateway, chinese-frontend, nginx, certbot — chỉ nginx publish cổng), `.env.example`, `conf/nginx.conf.example` (khối 80 ACME + server `id.`/`chinese.` + mẫu ngôn ngữ/portal để comment — khối `admin.`/`antfarms.xyz` thêm ở W2/W7), `conf/cloudflare-realip.conf.example`, `scripts/{self-signed,get-cert,renew-cert}.sh`, `certs/` (gitignore), `postgres/init/` (tạo role+DB `af_identity`/`af_chinese`/`af_cms`, chỉ chạy khi volume trống), `VERIFY-DOCKER.md` (checklist verify Docker + HTTPS khi có server).
 
 ### Thêm một ngôn ngữ mới (tóm tắt — checklist đầy đủ ở hợp đồng §5.5)
 
@@ -177,6 +188,7 @@ dotnet build backend/backend.slnx -v q
 dotnet test backend/backend.slnx                      # đặt AF_TEST_PG để chạy cả test tích hợp DB
 dotnet run --project backend/services/identity-service/src/AntFarm.Identity.Api --launch-profile http
 dotnet run --project backend/services/chinese-backend/src/AntFarm.Chinese.Api --launch-profile http
+dotnet run --project backend/services/cms-backend/src/AntFarm.Cms.Api --launch-profile http   # W1
 dotnet run --project backend/services/gateway --launch-profile http
 dotnet ef migrations add F<n>_<Ten> --project backend/services/<svc>/src/AntFarm.<Svc>.Infrastructure --startup-project backend/services/<svc>/src/AntFarm.<Svc>.Api --output-dir Persistence/Migrations
 
@@ -195,4 +207,5 @@ docker compose -f deploy/docker-compose.yml build <service>
 docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f deploy/docker-compose.yml up -d <service>
 ```
 
-> Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.
+> Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal — **F13 đã bị thay thế bởi đợt W1–W15**): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.
+> Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1 xong**, W2+ chưa làm): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.
