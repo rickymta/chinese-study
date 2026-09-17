@@ -49,6 +49,16 @@ describe('mergeServiceResults', () => {
     expect(hasUnavailableService(me)).toBe(true)
   })
 
+  it('403 là service đã trả lời và từ chối ⇒ ok với 0 quyền, KHÔNG làm hasUnavailableService thành true', () => {
+    const me = mergeServiceResults([
+      { ...CMS, outcome: fail(new ApiError('Không có quyền', { status: 403 })) },
+      { ...CHINESE, outcome: ok({ permissions: ['study.use'] }) },
+    ])
+    expect(me.services.cms?.status).toBe('ok')
+    expect(me.permissions).toEqual([])
+    expect(hasUnavailableService(me)).toBe(false)
+  })
+
   it('404 (service chưa có route) cũng chỉ là unavailable', () => {
     const me = mergeServiceResults([
       { ...CMS, outcome: fail(new ApiError('Không tìm thấy', { status: 404 })) },

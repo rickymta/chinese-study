@@ -8,6 +8,7 @@ import type { AdminMeInfo, ServiceMe, ServiceState } from './types'
  * - Mỗi service đóng góp quyền có TIỀN TỐ `<code>:<quyền>`; service ngôn ngữ chỉ giữ các quyền trong
  *   `adminPermissions` (vd `study.use` của học viên KHÔNG thành quyền admin — tiêu chí W2 #2).
  * - 401 ở bất kỳ service nào ⇒ NÉM LẠI nguyên lỗi (để `@af/api`/`@af/auth` làm mới hoặc đưa về đăng nhập).
+ * - 403 ⇒ service trả lời nhưng từ chối ⇒ `ok` với 0 quyền (fail-closed).
  * - Lỗi khác (mạng, 5xx, 404 khi service chưa chạy) ⇒ `services[code] = unavailable`, KHÔNG ném — chỉ ẩn phần đó.
  * - TẤT CẢ service đều unavailable ⇒ ném (AuthProvider ghi `meError`, `RequireAuth` hiện trang lỗi có "Thử lại").
  */
@@ -54,6 +55,12 @@ export function mergeServiceResults(results: readonly ServiceMeResult[]): AdminM
   for (const r of results) {
     if (r.outcome.status === 'rejected') {
       if (isUnauthorizedError(r.outcome.reason)) throw r.outcome.reason
+      // 403 = service ĐÃ trả lời và từ chối ⇒ coi là "ok, 0 quyền" (fail-closed), KHÔNG phải "không phản hồi" —
+      // nếu không, tài khoản 0 quyền được RequireAuth cho vào Dashboard nhờ allowNoPermissions (review W2).
+      if (isApiError(r.outcome.reason) && r.outcome.reason.status === 403) {
+        services[r.code] = { status: "ok", me: normalizeServiceMe(null) }
+        continue
+      }
       services[r.code] = { status: 'unavailable', error: r.outcome.reason }
       continue
     }
