@@ -128,5 +128,6 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] `docker compose build chinese-frontend` (trên server) ⇒ `docker run --rm --entrypoint sh <ảnh> -c 'ls /usr/share/nginx/html/hanzi-data | wc -l'` ≈ số chữ + 3 (`index.json`, `ARPHICPL.TXT`, `NOTICE.md`); có `/usr/share/nginx/html/licenses/hanzi-writer.LICENSE.txt`.
 - [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/7231.json` ⇒ `200`, `Content-Type: application/json`, `Cache-Control: public, max-age=604800` (không `immutable`), có `X-Content-Type-Options: nosniff`.
 - [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/ffff.json` ⇒ `404` (KHÔNG phải 200 `text/html` của `index.html`).
+- [ ] (F10 bổ sung, mới kiểm `nginx -t` 17/09/2026) `curl -I https://chinese.antfarms.xyz/hanzi-data/index.json` ⇒ `200`, đúng MỘT dòng `Cache-Control: no-cache` (khối `location =` riêng — danh mục chữ đổi khi thêm chữ, không được cache 7 ngày), vẫn có `nosniff`/`X-Frame-Options`/`Referrer-Policy`; các file nét `/hanzi-data/<mã>.json` vẫn `max-age=604800`.
 - [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/ARPHICPL.TXT` ⇒ 200 `text/plain`; `/licenses/hanzi-writer.LICENSE.txt` ⇒ 200.
 - [ ] Mở `/luyen-viet/爱` trên trình duyệt, DevTools Network suốt phiên luyện: KHÔNG có request tới `cdn.jsdelivr.net` (R-W1); `/hanzi-data/7231.json` 200 và lần tải trang sau lấy từ cache.

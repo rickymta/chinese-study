@@ -25,7 +25,10 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import { useAuth } from '@af/auth'
 import { PageContainer, useBackTo, useTabParam } from '@af/ui'
+import { PERMISSIONS } from '@/features/auth/permissions'
 import { ChineseSpeechProvider, useChineseSpeech } from '@/components/speech/ChineseSpeech'
 import { QueryErrorAlert } from '@/features/dictionary/components/QueryErrorAlert'
 import { VoiceMissingAlert } from '@/features/pinyin/components/VoiceMissingAlert'
@@ -74,6 +77,9 @@ function ToneStatsHint() {
 
 function LessonHeader({ lesson, onBack }: { lesson: LessonDetail; onBack: () => void }) {
   const objectives = lesson.objectives ?? []
+  // F10: người có `content.manage` thấy nút "Sửa bài" ⇒ trang soạn (quyền đọc từ /api/me, không suy từ vai trò).
+  const { can } = useAuth()
+  const canManage = can(PERMISSIONS.CONTENT_MANAGE)
   return (
     <Stack sx={{ gap: 1.5 }}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
@@ -99,6 +105,20 @@ function LessonHeader({ lesson, onBack }: { lesson: LessonDetail; onBack: () => 
             )}
           </Box>
         </Box>
+        {canManage && (
+          <Tooltip title="Mở trình soạn bài (quản trị nội dung)">
+            <Button
+              component={RouterLink}
+              to={`/quan-tri/bai-hoc/${lesson.id}`}
+              size="small"
+              variant="outlined"
+              startIcon={<EditOutlinedIcon />}
+              sx={{ flexShrink: 0, minHeight: 36 }}
+            >
+              Sửa bài
+            </Button>
+          </Tooltip>
+        )}
       </Box>
       {lesson.summary && <Typography color="text.secondary">{lesson.summary}</Typography>}
       {objectives.length > 0 && (

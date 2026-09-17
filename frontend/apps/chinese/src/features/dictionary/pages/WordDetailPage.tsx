@@ -14,8 +14,11 @@ import {
   Typography,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useAuth } from '@af/auth'
 import { LangText, PageContainer, linkState, useBackTo } from '@af/ui'
+import { PERMISSIONS } from '@/features/auth/permissions'
 import { Hanzi } from '@/components/Hanzi'
 import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeech'
 import { SpeakButton } from '@/components/speech/SpeakButton'
@@ -223,16 +226,32 @@ function WordDetailInner() {
   const { id } = useParams<{ id: string }>()
   const goBack = useBackTo('/tu-dien')
   const query = useWord(id)
+  // F10: người có `content.manage` thấy nút "Sửa nghĩa" ⇒ trang duyệt từ, mở sẵn drawer (`?sua=<id>`); bộ lọc trạng
+  // thái mở rộng (`tat-ca`) + `hsk` theo cấp của từ để từ đã duyệt / không thuộc HSK 1 vẫn hiện trong danh sách phía sau.
+  const { can } = useAuth()
+  const canManage = can(PERMISSIONS.CONTENT_MANAGE)
   // Mở chi tiết (kể cả từ → chữ → từ khác) luôn từ đầu trang — trình duyệt giữ scrollY của trang danh sách trước đó.
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, [id])
 
+  const word = query.data
+  const editHref = word
+    ? `/quan-tri/tu-vung?q=${encodeURIComponent(word.simplified)}&trang-thai=tat-ca&hsk=${word.hsk3Level ?? 1}&sua=${encodeURIComponent(word.id)}`
+    : null
+
   return (
     <PageContainer maxWidth={800}>
-      <Button startIcon={<ArrowBackIcon />} onClick={goBack} sx={{ mb: 1, ml: -1 }}>
-        Từ điển
-      </Button>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+        <Button startIcon={<ArrowBackIcon />} onClick={goBack} sx={{ ml: -1 }}>
+          Từ điển
+        </Button>
+        {canManage && editHref && (
+          <Button component={Link} to={editHref} size="small" variant="outlined" startIcon={<EditOutlinedIcon />} sx={{ minHeight: 36 }}>
+            Sửa nghĩa
+          </Button>
+        )}
+      </Box>
       {query.isError ? (
         <QueryErrorAlert error={query.error} onRetry={() => void query.refetch()} />
       ) : query.isLoading || !query.data ? (

@@ -3,6 +3,8 @@ import { Link as RouterLink } from 'react-router-dom'
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined'
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
+import SpellcheckOutlinedIcon from '@mui/icons-material/SpellcheckOutlined'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { useAuth } from '@af/auth'
 import { PageContainer } from '@af/ui'
@@ -68,17 +70,48 @@ export function AdminHomePage() {
 
         <MeCard />
 
-        {/* Khối chức năng soạn nội dung (F10) ẩn theo quyền — báo rõ để người dùng không tưởng thiếu tính năng. */}
-        {!can(PERMISSIONS.CONTENT_MANAGE) && (
+        {/* F10: lối vào soạn bài / duyệt nghĩa — ẩn theo quyền `content.manage`, kèm dải giải thích khi thiếu quyền. */}
+        {can(PERMISSIONS.CONTENT_MANAGE) ? (
+          <>
+            <Card>
+              <CardActionArea component={RouterLink} to="/quan-tri/bai-hoc">
+                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <AutoStoriesOutlinedIcon color="primary" sx={{ fontSize: 32 }} />
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      Bài học
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Soạn, sửa, xuất bản bài học và quiz; duyệt bài có sẵn.
+                    </Typography>
+                  </Box>
+                  <ChevronRightIcon color="action" />
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card>
+              <CardActionArea component={RouterLink} to="/quan-tri/tu-vung">
+                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <SpellcheckOutlinedIcon color="primary" sx={{ fontSize: 32 }} />
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      Từ vựng
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Duyệt nghĩa tiếng Việt dịch máy và Hán Việt theo thứ tự lộ trình học.
+                    </Typography>
+                  </Box>
+                  <ChevronRightIcon color="action" />
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </>
+        ) : (
           <Alert severity="info">
-            Bạn chưa có quyền “Soạn nội dung” nên các mục quản trị bài học/từ vựng sẽ không hiện ở đây — chế độ chỉ xem.
+            <AlertTitle>Chế độ chỉ xem</AlertTitle>
+            Bạn chưa có quyền “Soạn nội dung” nên các mục quản trị bài học/từ vựng không hiện ở đây.
           </Alert>
         )}
-
-        <Alert severity="info" variant="outlined">
-          <AlertTitle>Sắp có</AlertTitle>
-          Soạn bài học, duyệt nghĩa từ vựng (F10).
-        </Alert>
       </Stack>
     </PageContainer>
   )

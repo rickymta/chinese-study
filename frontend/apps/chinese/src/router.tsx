@@ -8,6 +8,9 @@ import { RegisterPage } from './features/auth/pages/RegisterPage'
 import { PERMISSIONS } from './features/auth/permissions'
 import { AdminHomePage } from './features/admin/pages/AdminHomePage'
 import { AdminUsersPage } from './features/admin-users/pages/AdminUsersPage'
+import { AdminLessonListPage } from './features/admin-content/pages/AdminLessonListPage'
+import { AdminLessonEditPage } from './features/admin-content/pages/AdminLessonEditPage'
+import { AdminWordReviewPage } from './features/admin-content/pages/AdminWordReviewPage'
 import { PinyinPage } from './features/pinyin/pages/PinyinPage'
 import { DictionarySearchPage } from './features/dictionary/pages/DictionarySearchPage'
 import { WordDetailPage } from './features/dictionary/pages/WordDetailPage'
@@ -106,6 +109,24 @@ export const router = createBrowserRouter([
                 element: (
                   <RequirePermission permission={PERMISSIONS.USERS_MANAGE}>
                     <AdminUsersPage />
+                  </RequirePermission>
+                ),
+              },
+              {
+                // F10: soạn/duyệt bài học (`?trang-thai=&q=&page=`; trang soạn `?tab=thong-tin|noi-dung|tu-vung|quiz|xem-truoc`).
+                path: 'bai-hoc',
+                element: <RequirePermission permission={PERMISSIONS.CONTENT_MANAGE} />,
+                children: [
+                  { index: true, element: <AdminLessonListPage /> },
+                  { path: ':id', element: <AdminLessonEditPage /> },
+                ],
+              },
+              {
+                // F10: duyệt nghĩa từ vựng (`?trang-thai=&han-viet=&hsk=&q=&page=&sua=<id>`).
+                path: 'tu-vung',
+                element: (
+                  <RequirePermission permission={PERMISSIONS.CONTENT_MANAGE}>
+                    <AdminWordReviewPage />
                   </RequirePermission>
                 ),
               },

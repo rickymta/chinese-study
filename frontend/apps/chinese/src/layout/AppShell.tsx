@@ -11,6 +11,7 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined'
 import { APP_BRAND } from '@/constants'
 import { UserMenu } from '@/features/auth/components/UserMenu'
 import { PERMISSIONS } from '@/features/auth/permissions'
@@ -50,6 +51,14 @@ const buildNavItems = (dueBadge: number): NavItem[] => [
     icon: <ManageAccountsOutlinedIcon />,
     requiredPermission: PERMISSIONS.USERS_MANAGE,
     hideOnMobile: true,
+  },
+  // F10: quản trị nội dung (bài học + từ vựng, cùng tab liên kết) — quyền `content.manage` độc lập với `users.manage`
+  // nên KHÔNG ẩn ở mobile: người chỉ có quyền soạn nội dung vẫn cần lối vào (bottom nav gom vào "Thêm").
+  {
+    label: 'Quản trị nội dung',
+    to: '/quan-tri/bai-hoc',
+    icon: <EditNoteOutlinedIcon />,
+    requiredPermission: PERMISSIONS.CONTENT_MANAGE,
   },
 ]
 
