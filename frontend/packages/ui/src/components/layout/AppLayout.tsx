@@ -56,6 +56,11 @@ export interface AppLayoutProps {
   hasPermission?: (permission: string) => boolean
   /** Bề rộng Drawer ở md+. */
   drawerWidth?: number
+  /**
+   * `true` ⇒ ẨN bottom nav ở xs–sm (F7: màn ôn thẻ `/on-tap/phien` cần trọn chiều cao cho 4 nút chấm; đóng phiên
+   * bằng nút X của trang). `--af-bottom-nav-offset` khi đó là `0px` để `StickyActionBar` dính sát đáy. md+ không đổi.
+   */
+  hideBottomNav?: boolean
 }
 
 const DRAWER_WIDTH = 240
@@ -73,7 +78,14 @@ const RouterListItemButton = ListItemButton as ComponentType<RouterListItemButto
  * - xs–sm (điện thoại ~375px): AppBar trên + BottomNavigation dưới (≤ 5 mục, thừa gom vào "Thêm").
  * Nội dung trang render qua `<Outlet />` (dùng làm layout route).
  */
-export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidth = DRAWER_WIDTH }: AppLayoutProps) {
+export function AppLayout({
+  title,
+  navItems,
+  userMenu,
+  hasPermission,
+  drawerWidth = DRAWER_WIDTH,
+  hideBottomNav = false,
+}: AppLayoutProps) {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'), { noSsr: true }) // noSsr: tránh lần render đầu luôn ra false làm giao diện mobile nháy trên desktop
   const { mode, toggleMode } = useThemeMode()
@@ -106,6 +118,8 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
 
   // ── Bottom nav (mobile): mục hiển thị + phần dồn vào "Thêm" ──
   const mobileItems = useMemo(() => visibleItems.filter((it) => !it.hideOnMobile), [visibleItems])
+  // Có vẽ bottom nav hay không (xs–sm): có mục VÀ trang không yêu cầu ẩn (F7 màn ôn thẻ).
+  const showBottomNav = mobileItems.length > 0 && !hideBottomNav
   const overflow = mobileItems.length > BOTTOM_NAV_MAX
   const bottomItems = overflow ? mobileItems.slice(0, BOTTOM_NAV_MAX - 1) : mobileItems
   const moreItems = overflow ? mobileItems.slice(BOTTOM_NAV_MAX - 1) : []
@@ -185,11 +199,12 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
           flex: 1,
           minWidth: 0,
           p: 2,
-          // Chừa chỗ cho bottom nav + vùng an toàn của iPhone.
-          pb: `calc(${MOBILE_BAR_HEIGHT}px + 16px + env(safe-area-inset-bottom))`,
+          // Chừa chỗ cho bottom nav + vùng an toàn của iPhone (không có bottom nav ⇒ chỉ vùng an toàn).
+          pb: showBottomNav
+            ? `calc(${MOBILE_BAR_HEIGHT}px + 16px + env(safe-area-inset-bottom))`
+            : 'calc(16px + env(safe-area-inset-bottom))',
           // Biến CSS cho `StickyActionBar` (@af/ui) — thanh hành động dính đáy phải nằm TRÊN bottom nav.
-          '--af-bottom-nav-offset':
-            mobileItems.length > 0 ? `calc(${MOBILE_BAR_HEIGHT}px + env(safe-area-inset-bottom))` : '0px',
+          '--af-bottom-nav-offset': showBottomNav ? `calc(${MOBILE_BAR_HEIGHT}px + env(safe-area-inset-bottom))` : '0px',
           // Biến CSS cho phần tử dính ĐẦU trang (ô tìm từ điển F6): AppBar trên là `sticky` cao MOBILE_BAR_HEIGHT.
           '--af-top-bar-offset': `${MOBILE_BAR_HEIGHT}px`,
         }}
@@ -197,7 +212,7 @@ export function AppLayout({ title, navItems, userMenu, hasPermission, drawerWidt
         <Outlet />
       </Box>
 
-      {mobileItems.length > 0 && (
+      {showBottomNav && (
         <Paper
           elevation={3}
           square

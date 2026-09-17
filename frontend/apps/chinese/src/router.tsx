@@ -12,6 +12,8 @@ import { PinyinPage } from './features/pinyin/pages/PinyinPage'
 import { DictionarySearchPage } from './features/dictionary/pages/DictionarySearchPage'
 import { WordDetailPage } from './features/dictionary/pages/WordDetailPage'
 import { CharacterDetailPage } from './features/dictionary/pages/CharacterDetailPage'
+import { ReviewHomePage } from './features/srs/pages/ReviewHomePage'
+import { ReviewSessionPage } from './features/srs/pages/ReviewSessionPage'
 import { ProfilePage } from './features/profile/pages/ProfilePage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
@@ -48,7 +50,16 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            // F4: hồ sơ (`?tab=thong-tin|mat-khau`; F7 thêm `hoc-tap`) — chỉ cần đăng nhập, không cần quyền riêng
+            // F7: ôn tập thẻ SRS — trang tổng quan + phiên ôn (AppShell ẩn bottom nav ở `phien`).
+            path: 'on-tap',
+            element: <RequirePermission permission={PERMISSIONS.STUDY_USE} />,
+            children: [
+              { index: true, element: <ReviewHomePage /> },
+              { path: 'phien', element: <ReviewSessionPage /> },
+            ],
+          },
+          {
+            // F4: hồ sơ (`?tab=thong-tin|mat-khau|hoc-tap` — F7 thêm `hoc-tap`) — chỉ cần đăng nhập, không cần quyền riêng
             // (người 0 quyền đã bị `RequireAuth` đưa tới /403 trước khi tới đây).
             path: 'ho-so',
             element: <ProfilePage />,

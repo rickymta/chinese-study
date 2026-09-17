@@ -2,7 +2,7 @@ import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Slider, 
 import { AppDialog } from '@af/ui'
 import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
 import { SpeakButton } from '@/components/speech/SpeakButton'
-import { TTS_RATE_DEFAULT, TTS_RATE_MAX, TTS_RATE_MIN } from '../useTtsRate'
+import { TTS_RATE_DEFAULT, TTS_RATE_MAX, TTS_RATE_MIN } from '@/components/speech/useTtsRate'
 
 const RATE_MARKS = [
   { value: 0.5, label: 'Chậm' },

@@ -20,6 +20,8 @@ export interface SpeakButtonProps {
   disabled?: boolean
   /** Gọi sau khi phát xong (hoặc bị ngắt). */
   onDone?: () => void
+  /** Tốc độ ghi đè (F7: nút "Nghe thử" ở tab Học tập đọc theo giá trị đang kéo). Bỏ trống ⇒ tốc độ đã lưu. */
+  rate?: number
   sx?: ButtonProps['sx']
 }
 
@@ -37,13 +39,14 @@ export function SpeakButton({
   buttonVariant = 'outlined',
   disabled,
   onDone,
+  rate,
   sx,
 }: SpeakButtonProps) {
   const { canSpeak, speakZh } = useChineseSpeech()
   const isDisabled = disabled || !canSpeak
   const a11y = ariaLabel ?? (typeof label === 'string' ? label : 'Nghe')
   const handleClick = () => {
-    void speakZh(text)
+    void speakZh(text, rate === undefined ? undefined : { rate })
       .catch(() => undefined) // lỗi phát (not-allowed...) không làm hỏng màn hình
       .finally(() => onDone?.())
   }

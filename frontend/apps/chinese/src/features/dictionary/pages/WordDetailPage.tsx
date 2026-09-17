@@ -27,6 +27,7 @@ import { readingAt } from '../lib/characterReading'
 import { MeaningStatusChip } from '../components/MeaningStatusChip'
 import { QueryErrorAlert } from '../components/QueryErrorAlert'
 import { SourceAttribution } from '../components/SourceAttribution'
+import { AddToSrsButton } from '@/features/srs/components/AddToSrsButton'
 import type { WordDetail } from '../types'
 
 /** Tiêu đề khối (h2) thống nhất cho trang chi tiết. */
@@ -50,7 +51,17 @@ function WordSkeleton() {
   )
 }
 
-function WordBody({ word }: { word: WordDetail }) {
+export interface WordDetailBodyProps {
+  word: WordDetail
+  /**
+   * `true` ⇒ liên kết sang chữ (`/tu-dien/chu/:hanzi`) mở tab mới — dùng khi thân trang nằm trong ngăn kéo của
+   * phiên ôn (F7.2): bấm vào chữ không được kéo người học rời phiên.
+   */
+  openLinksInNewTab?: boolean
+}
+
+/** Thân trang chi tiết từ — tách ra để F7.2 dùng lại trong `AppDrawer` "Xem chi tiết" của phiên ôn. */
+export function WordDetailBody({ word, openLinksInNewTab = false }: WordDetailBodyProps) {
   const location = useLocation()
   const marked = numberedToMarked(word.pinyin)
   const pos = posLabels(word.pos)
@@ -114,7 +125,8 @@ function WordBody({ word }: { word: WordDetail }) {
         ))}
       </Box>
 
-      {/* F7.2 chèn `AddToSrsButton` (thêm vào ôn tập) tại đây — `word.srs` trước F7 luôn null. */}
+      {/* F7.2: thêm vào ôn tập / trạng thái thẻ (`word.srs`). */}
+      <AddToSrsButton word={word} />
 
       {/* ── Nghĩa tiếng Việt ── */}
       <Box>
@@ -178,6 +190,8 @@ function WordBody({ word }: { word: WordDetail }) {
                     component={Link}
                     to={`/tu-dien/chu/${encodeURIComponent(c.hanzi)}`}
                     state={linkState(location)}
+                    target={openLinksInNewTab ? '_blank' : undefined}
+                    rel={openLinksInNewTab ? 'noopener' : undefined}
                     aria-label={`Chữ ${c.hanzi}`}
                     sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.25, px: 0.5 }}
                   >
@@ -224,7 +238,7 @@ function WordDetailInner() {
       ) : query.isLoading || !query.data ? (
         <WordSkeleton />
       ) : (
-        <WordBody word={query.data} />
+        <WordDetailBody word={query.data} />
       )}
       <SourceAttribution />
     </PageContainer>
