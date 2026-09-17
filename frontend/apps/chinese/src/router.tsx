@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { RequireAuth, RequirePermission } from '@af/auth'
 import { NotFoundPage } from '@af/ui'
 import { AppShell } from './layout/AppShell'
-import { HomePage } from './pages/HomePage'
 import { LoginPage } from './features/auth/pages/LoginPage'
 import { RegisterPage } from './features/auth/pages/RegisterPage'
 import { PERMISSIONS } from './features/auth/permissions'
@@ -22,6 +21,7 @@ import { LessonDetailPage } from './features/lessons/pages/LessonDetailPage'
 import { WritingHomePage } from './features/writing/pages/WritingHomePage'
 import { WritingPracticePage } from './features/writing/pages/WritingPracticePage'
 import { ProfilePage } from './features/profile/pages/ProfilePage'
+import { DashboardPage } from './features/progress/pages/DashboardPage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
 
@@ -35,7 +35,9 @@ export const router = createBrowserRouter([
       {
         element: <AppShell />,
         children: [
-          { index: true, element: <HomePage /> },
+          // F11: trang chủ = bảng tổng quan tiến độ (thay HomePage F1). Không bọc RequirePermission: người thiếu
+          // `study.use` vẫn vào được và thấy dải giải thích (trang chủ là điểm vào của mọi tài khoản).
+          { index: true, element: <DashboardPage /> },
           {
             // F5: pinyin & thanh điệu (`?tab=huong-dan|bang|luyen`) — cần `study.use` như mọi route học.
             path: 'pinyin',

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isApiError } from '@af/api'
+import { PROGRESS_KEYS } from '@/features/progress/hooks'
 import { getChart, getGuide, getToneStats, submitToneDrill } from './api'
 import type { SubmitToneDrillRequest } from './types'
 
@@ -43,11 +44,14 @@ export function useToneStats() {
   })
 }
 
-/** Nộp phiên luyện thanh; thành công ⇒ thống kê phải tải lại. */
+/** Nộp phiên luyện thanh; thành công ⇒ thống kê phải tải lại + tổng quan trang chủ (F11: chuỗi ngày, thanh yếu). */
 export function useSubmitToneDrill() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (body: SubmitToneDrillRequest) => submitToneDrill(body),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: PINYIN_KEYS.toneStats }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: PINYIN_KEYS.toneStats })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
+    },
   })
 }

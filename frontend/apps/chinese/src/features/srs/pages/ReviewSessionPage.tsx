@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Box, Button, CircularProgress, Skeleton, Stack, Typography } from '@mui/material'
 import { AppDrawer, StickyActionBar, useConfirm, useToast } from '@af/ui'
 import { parseApiError } from '@af/utils'
@@ -9,6 +10,7 @@ import { WordDetailBody } from '@/features/dictionary/pages/WordDetailPage'
 import { useWord } from '@/features/dictionary/hooks'
 import { getSrsQueue, QUEUE_LIMIT_DEFAULT } from '../api'
 import { useApplySrsSummary } from '../hooks'
+import { PROGRESS_KEYS } from '@/features/progress/hooks'
 import { useReviewOutbox } from '../useReviewOutbox'
 import { ratingFromKey } from '../lib/ratings'
 import { clampDurationMs, countRatings, mergeIncoming, shouldLoadMore } from '../lib/sessionDeck'
@@ -45,6 +47,7 @@ function ReviewSessionInner() {
   const confirm = useConfirm()
   const toast = useToast()
   const applySummary = useApplySrsSummary()
+  const queryClient = useQueryClient()
   const { autoPlayAudio, canSpeak, speakZh } = useChineseSpeech()
 
   const [phase, setPhase] = useState<Phase>('loading')
@@ -80,6 +83,9 @@ function ReviewSessionInner() {
     onSent: (_item, res) => {
       applySummary(res.summary)
       setLastSummary(res.summary)
+      // F11: một lượt chấm là một hoạt động có kết quả ⇒ chuỗi ngày/mục tiêu ngày ở trang chủ đổi. Chỉ invalidate
+      // (không refetch ngay — trang chủ không mount trong phiên ôn), tải hàng đợi KHÔNG chạm tới tổng quan.
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
     },
     onDropped: (_item, err) => {
       const parsed = parseApiError(err)

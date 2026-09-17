@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isApiError } from '@af/api'
 import { DICTIONARY_KEYS } from '@/features/dictionary/hooks'
+import { PROGRESS_KEYS } from '@/features/progress/hooks'
 import { addSrsCards, getLearningSettings, getSrsSummary, putLearningSettings, setSrsCardSuspension } from './api'
 import type { LearningSettings, LearningSettingsResponse, SrsSummary } from './types'
 
@@ -55,6 +56,8 @@ export function useUpdateLearningSettings() {
     onSuccess: (saved: LearningSettingsResponse) => {
       queryClient.setQueryData(SRS_KEYS.learningSettings, saved)
       void queryClient.invalidateQueries({ queryKey: SRS_KEYS.summary })
+      // F11: hạn mức từ mới/lượt ôn đổi ⇒ mục tiêu ngày ở trang chủ đổi.
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
     },
   })
 }
@@ -66,6 +69,7 @@ export function useAddCards() {
     mutationFn: (wordIds: string[]) => addSrsCards(wordIds),
     onSuccess: (_res, wordIds) => {
       void queryClient.invalidateQueries({ queryKey: SRS_KEYS.summary })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
       for (const id of wordIds) void queryClient.invalidateQueries({ queryKey: DICTIONARY_KEYS.word(id) })
     },
   })
@@ -79,6 +83,7 @@ export function useSetCardSuspension() {
       setSrsCardSuspension(cardId, suspended),
     onSuccess: (_card, vars) => {
       void queryClient.invalidateQueries({ queryKey: SRS_KEYS.summary })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
       void queryClient.invalidateQueries({ queryKey: DICTIONARY_KEYS.word(vars.wordId) })
     },
   })

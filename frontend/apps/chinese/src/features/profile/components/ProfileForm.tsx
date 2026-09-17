@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Alert, Box, Button, Stack, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
+import { useQueryClient } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { bindField, describeAuthError, useAuth } from '@af/auth'
 import { TimeZoneAutocomplete, useToast } from '@af/ui'
 import { detectBrowserTimeZone, displayNameSchema, normalizeTimeZone, parseApiError, timeZoneSchema } from '@af/utils'
 import { updateAccount } from '../api'
+import { PROGRESS_KEYS } from '@/features/progress/hooks'
+import { SRS_KEYS } from '@/features/srs/hooks'
 
 const profileSchema = z.object({
   displayName: displayNameSchema,
@@ -21,6 +24,7 @@ type ProfileFormValues = z.infer<typeof profileSchema>
  */
 export function ProfileForm() {
   const { account, refreshSession } = useAuth()
+  const queryClient = useQueryClient()
   const toast = useToast()
   const [formError, setFormError] = useState<string | null>(null)
   const browserTimeZone = useMemo(() => detectBrowserTimeZone(), [])
@@ -71,6 +75,10 @@ export function ProfileForm() {
         toast.warning('Đã lưu hồ sơ, nhưng chưa làm mới được phiên — tên/múi giờ mới sẽ hiện sau khi tải lại.')
         return
       }
+      // Múi giờ mới chỉ tới service tiếng Trung qua token mới (claim `zoneinfo`) ⇒ sau refresh mới làm mới
+      // "hôm nay"/chuỗi ngày (F11) và tóm tắt SRS (thẻ đến hạn theo ngày địa phương).
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_KEYS.overview })
+      void queryClient.invalidateQueries({ queryKey: SRS_KEYS.summary })
       toast.success('Đã lưu hồ sơ')
     } catch (err) {
       const view = describeAuthError(err)

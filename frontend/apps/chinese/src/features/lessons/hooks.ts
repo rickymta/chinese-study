@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isApiError } from '@af/api'
 import { SRS_KEYS } from '@/features/srs/hooks'
+import { PROGRESS_KEYS } from '@/features/progress/hooks'
 import { getLesson, getLessons, getQuizAttempts, startLesson, submitQuiz } from './api'
 import type { LessonDetail, LessonProgress, QuizResult, SubmitQuizRequest } from './types'
 
@@ -12,8 +13,8 @@ export const LESSON_KEYS = {
   attempts: (id: string) => ['lessons', 'attempts', id] as const,
 }
 
-/** Khoá tổng quan tiến độ của F11 (chưa có hook, nhưng hợp đồng yêu cầu invalidate sẵn sau khi nộp quiz). */
-export const PROGRESS_OVERVIEW_KEY = ['progress', 'overview'] as const
+/** Khoá tổng quan tiến độ của F11 — nguồn ở `features/progress/hooks.ts`; giữ re-export cho các import có từ F8/F9. */
+export const PROGRESS_OVERVIEW_KEY = PROGRESS_KEYS.overview
 
 const ONE_MINUTE = 60 * 1000
 
@@ -67,6 +68,8 @@ export function useStartLesson(slug: string) {
     onSuccess: (progress: LessonProgress) => {
       queryClient.setQueryData<LessonDetail>(LESSON_KEYS.detail(slug), (prev) => (prev ? { ...prev, progress } : prev))
       void queryClient.invalidateQueries({ queryKey: LESSON_KEYS.list })
+      // F11: số bài "đang học dở" ở trang chủ đổi.
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_OVERVIEW_KEY })
     },
   })
 }

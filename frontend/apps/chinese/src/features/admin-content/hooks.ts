@@ -1,6 +1,6 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isApiError } from '@af/api'
-import { LESSON_KEYS } from '@/features/lessons/hooks'
+import { LESSON_KEYS, PROGRESS_OVERVIEW_KEY } from '@/features/lessons/hooks'
 import { DICTIONARY_KEYS } from '@/features/dictionary/hooks'
 import {
   bulkReviewWords,
@@ -94,6 +94,7 @@ function useLessonWriteCache() {
     queryClient.setQueryData(ADMIN_CONTENT_KEYS.lesson(lesson.id), lesson)
     void queryClient.invalidateQueries({ queryKey: ['admin-lessons', 'list'] })
     void queryClient.invalidateQueries({ queryKey: LESSON_KEYS.all })
+    void queryClient.invalidateQueries({ queryKey: PROGRESS_OVERVIEW_KEY }) // F11: số bài published / bài tiếp theo
   }
 }
 
@@ -173,6 +174,7 @@ export function useDeleteLesson(id: string) {
       }
       void queryClient.invalidateQueries({ queryKey: ['admin-lessons', 'list'] })
       void queryClient.invalidateQueries({ queryKey: LESSON_KEYS.all })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_OVERVIEW_KEY }) // F11: số bài published / bài tiếp theo
     },
   })
 }
@@ -218,6 +220,7 @@ export function useUpdateWord() {
       )
       void queryClient.invalidateQueries({ queryKey: DICTIONARY_KEYS.all })
       void queryClient.invalidateQueries({ queryKey: LESSON_KEYS.all })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_OVERVIEW_KEY }) // F11: nhất quán với LESSON_KEYS.all (tổng quan có tên bài)
     },
   })
 }
@@ -231,6 +234,7 @@ export function useBulkReviewWords() {
       void queryClient.invalidateQueries({ queryKey: ADMIN_CONTENT_KEYS.words })
       void queryClient.invalidateQueries({ queryKey: DICTIONARY_KEYS.all })
       void queryClient.invalidateQueries({ queryKey: LESSON_KEYS.all })
+      void queryClient.invalidateQueries({ queryKey: PROGRESS_OVERVIEW_KEY }) // F11: nhất quán với LESSON_KEYS.all (tổng quan có tên bài)
     },
   })
 }

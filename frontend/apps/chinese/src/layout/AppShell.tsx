@@ -12,15 +12,16 @@ import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import { APP_BRAND } from '@/constants'
 import { UserMenu } from '@/features/auth/components/UserMenu'
 import { PERMISSIONS } from '@/features/auth/permissions'
 import { useSrsSummary } from '@/features/srs/hooks'
 
-// Thứ tự menu theo hợp đồng §5.3 (chốt ở F8): Trang chủ · Ôn tập · Bài học · Luyện viết · Pinyin · Từ điển — việc
-// hằng ngày (ôn, học bài, viết) lên trước, tra cứu (Pinyin, Từ điển) sau. Mục quản trị luôn ở cuối. Ở điện thoại
-// học viên có 6 mục ⇒ bottom nav hiện 4 mục đầu + "Thêm" (AppLayout gom phần thừa). F4 thêm /quan-tri/nguoi-dung,
-// F10 thêm /quan-tri/bai-hoc, /quan-tri/tu-vung (requiredPermission: 'content.manage').
+// Thứ tự menu CUỐI CÙNG theo hợp đồng F8–F11 §5.3 (chốt ở F11): Trang chủ · Ôn tập · Bài học · Luyện viết · Pinyin ·
+// Từ điển · Hồ sơ · Quản trị nội dung (content.manage) · Quản trị + Người dùng (users.manage) — việc hằng ngày
+// (ôn, học bài, viết) lên trước, tra cứu (Pinyin, Từ điển) sau, hồ sơ rồi mới tới quản trị. Ở điện thoại học viên có
+// 7 mục ⇒ bottom nav hiện 4 mục đầu + "Thêm" (AppLayout gom phần thừa).
 const buildNavItems = (dueBadge: number): NavItem[] => [
   { label: 'Trang chủ', to: '/', icon: <HomeOutlinedIcon />, end: true },
   // F7: ôn tập — huy hiệu = thẻ đến hạn lúc này + từ mới còn học được (tối đa "99+"), từ `GET /api/srs/summary`.
@@ -41,6 +42,17 @@ const buildNavItems = (dueBadge: number): NavItem[] => [
   { label: 'Pinyin', to: '/pinyin', icon: <RecordVoiceOverOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
   // F6: từ điển — mục không `end` để /tu-dien/:id và /tu-dien/chu/:hanzi vẫn sáng mục này.
   { label: 'Từ điển', to: '/tu-dien', icon: <MenuBookOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
+  // F11: hồ sơ (múi giờ, mật khẩu, cài đặt học) — chỉ cần đăng nhập; vẫn có trong UserMenu, thêm ở đây theo thứ tự
+  // menu cuối cùng của hợp đồng để người dùng điện thoại tìm thấy trong "Thêm".
+  { label: 'Hồ sơ', to: '/ho-so', icon: <PersonOutlineOutlinedIcon /> },
+  // F10: quản trị nội dung (bài học + từ vựng, cùng tab liên kết) — quyền `content.manage` độc lập với `users.manage`
+  // nên KHÔNG ẩn ở mobile: người chỉ có quyền soạn nội dung vẫn cần lối vào (bottom nav gom vào "Thêm").
+  {
+    label: 'Quản trị nội dung',
+    to: '/quan-tri/bai-hoc',
+    icon: <EditNoteOutlinedIcon />,
+    requiredPermission: PERMISSIONS.CONTENT_MANAGE,
+  },
   // Ẩn với người không có `users.manage` — `AppLayout` lọc theo `hasPermission` (quyền từ GET /chinese/api/me).
   { label: 'Quản trị', to: '/quan-tri', icon: <AdminPanelSettingsOutlinedIcon />, requiredPermission: PERMISSIONS.USERS_MANAGE },
   // F4: trang con của Quản trị — ở điện thoại KHÔNG chiếm thêm ô trên bottom nav (vào qua thẻ trong /quan-tri);
@@ -51,14 +63,6 @@ const buildNavItems = (dueBadge: number): NavItem[] => [
     icon: <ManageAccountsOutlinedIcon />,
     requiredPermission: PERMISSIONS.USERS_MANAGE,
     hideOnMobile: true,
-  },
-  // F10: quản trị nội dung (bài học + từ vựng, cùng tab liên kết) — quyền `content.manage` độc lập với `users.manage`
-  // nên KHÔNG ẩn ở mobile: người chỉ có quyền soạn nội dung vẫn cần lối vào (bottom nav gom vào "Thêm").
-  {
-    label: 'Quản trị nội dung',
-    to: '/quan-tri/bai-hoc',
-    icon: <EditNoteOutlinedIcon />,
-    requiredPermission: PERMISSIONS.CONTENT_MANAGE,
   },
 ]
 
