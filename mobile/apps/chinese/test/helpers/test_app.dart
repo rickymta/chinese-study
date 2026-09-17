@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:af_auth/af_auth.dart';
 import 'package:af_chinese/api/clients.dart';
 import 'package:af_chinese/app.dart';
 import 'package:af_chinese/config/app_config_provider.dart';
+import 'package:af_chinese/features/auth/application/auth_providers.dart';
 import 'package:af_core/af_core.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:dio/dio.dart';
@@ -52,20 +54,86 @@ const testConfig = AppConfig(
   isWeb: false,
 );
 
-/// Dựng app đầy đủ (router + theme + provider) với client giả — dùng cho widget test shell/trang.
-Widget buildTestApp({required FakeAdapter chineseAdapter, required FakeAdapter identityAdapter, KeyValueStore? store}) {
-  Dio withAdapter(String baseUrl, FakeAdapter adapter) {
-    final dio = createApiClient(baseUrl: baseUrl);
-    dio.httpClientAdapter = adapter;
-    return dio;
-  }
+/// Tài khoản/phiên mẫu đã lưu trong kho (như đã đăng nhập ở lần chạy trước).
+const testAccount = Account(id: 'u-1', email: 'ban@vidu.com', displayName: 'Quân', timeZone: 'Asia/Ho_Chi_Minh');
+
+StoredSession testStoredSession() =>
+    StoredSession(refreshToken: 'rt-0', refreshTokenExpiresAt: DateTime.utc(2099), account: testAccount);
+
+/// JWT không ký cho claim tài khoản mẫu.
+String testJwt({String sub = 'u-1', String email = 'ban@vidu.com', String name = 'Quân'}) {
+  String enc(Object o) => base64Url.encode(utf8.encode(jsonEncode(o))).replaceAll('=', '');
+  return '${enc({'alg': 'none'})}.${enc({'sub': sub, 'email': email, 'name': name, 'zoneinfo': 'Asia/Ho_Chi_Minh'})}.x';
+}
+
+/// Thân JSON phản hồi token (login/register/refresh) chuẩn §6.1.
+String tokenBody({bool withAccount = false}) => jsonEncode({
+  'accessToken': testJwt(),
+  'accessTokenExpiresAt': '2099-01-01T00:00:00Z',
+  'refreshToken': 'rt-1',
+  'refreshTokenExpiresAt': '2099-02-01T00:00:00Z',
+  if (withAccount) 'account': testAccount.toJson(),
+});
+
+/// Adapter identity: `/auth/mobile/*` trả theo [auth] (mặc định refresh/login/register OK, logout 204), còn lại
+/// giao cho [rest] (vd `system/info`). Giữ số lời gọi `system/info` của test cũ không đổi.
+FakeAdapter identityStub({required FakeAdapter rest, Future<(int, String)> Function(RequestOptions req)? auth}) =>
+    FakeAdapter((req) {
+      final path = req.uri.path;
+      if (path.contains('/auth/mobile/')) {
+        if (auth != null) return auth(req);
+        if (path.endsWith('/logout')) return Future.value((204, ''));
+        return Future.value((200, tokenBody(withAccount: !path.endsWith('/refresh'))));
+      }
+      return rest.handler(req);
+    });
+
+/// Adapter chinese: `/me` trả hồ sơ với [permissions]; còn lại giao cho [rest].
+FakeAdapter chineseStub({required FakeAdapter rest, Set<String> permissions = const {'study.use'}}) =>
+    FakeAdapter((req) {
+      if (req.uri.path.endsWith('/me')) {
+        return Future.value((
+          200,
+          jsonEncode({
+            'id': 'u-1',
+            'email': 'ban@vidu.com',
+            'displayName': 'Quân',
+            'timeZone': 'Asia/Ho_Chi_Minh',
+            'roles': ['learner'],
+            'permissions': permissions.toList(),
+            'firstSeenAt': '2026-09-17T08:00:00Z',
+          }),
+        ));
+      }
+      return rest.handler(req);
+    });
+
+/// Dựng app đầy đủ (router + theme + provider + phiên) với client giả — dùng cho widget test shell/trang.
+///
+/// Mặc định [signedIn] ⇒ kho có phiên (như mở lại app) ⇒ refresh + `/me` OK ⇒ vào trang chủ. [permissions] để thử
+/// `/403`; [authHandler] để thử lỗi đăng nhập; [tokenStore] để assert kho sau đăng xuất.
+Widget buildTestApp({
+  required FakeAdapter chineseAdapter,
+  required FakeAdapter identityAdapter,
+  KeyValueStore? store,
+  bool signedIn = true,
+  Set<String> permissions = const {'study.use'},
+  Future<(int, String)> Function(RequestOptions req)? authHandler,
+  InMemoryTokenStore? tokenStore,
+}) {
+  final tokens = tokenStore ?? InMemoryTokenStore();
+  if (signedIn && tokens.session == null) tokens.session = testStoredSession();
+  final prefs = store ?? InMemoryKeyValueStore({kInstallFlagKey: true});
 
   return ProviderScope(
     overrides: [
       appConfigProvider.overrideWithValue(testConfig),
-      keyValueStoreProvider.overrideWithValue(store ?? InMemoryKeyValueStore()),
-      chineseDioProvider.overrideWithValue(withAdapter(testConfig.chineseApiUrl, chineseAdapter)),
-      identityDioProvider.overrideWithValue(withAdapter(testConfig.identityApiUrl, identityAdapter)),
+      keyValueStoreProvider.overrideWithValue(prefs),
+      tokenStoreProvider.overrideWithValue(tokens),
+      chineseAdapterProvider.overrideWithValue(chineseStub(rest: chineseAdapter, permissions: permissions)),
+      identityAdapterProvider.overrideWithValue(identityStub(rest: identityAdapter, auth: authHandler)),
+      authDepsProvider.overrideWith(buildChineseAuthDeps),
+      deviceTimeZoneProvider.overrideWith((_) async => 'Asia/Ho_Chi_Minh'),
     ],
     retry: afNoRetry,
     child: const ChineseApp(),

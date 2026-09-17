@@ -1,3 +1,4 @@
+import 'package:af_auth/af_auth.dart';
 import 'package:af_core/af_core.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'config/app_config_provider.dart';
 import 'core/config_error_app.dart';
+import 'features/auth/application/auth_providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +28,12 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
-      overrides: [appConfigProvider.overrideWithValue(config), clientHeaderProvider.overrideWithValue(clientHeader)],
+      overrides: [
+        appConfigProvider.overrideWithValue(config),
+        clientHeaderProvider.overrideWithValue(clientHeader),
+        // Phiên đăng nhập (af_auth) — identity client + secure storage + loadMe của service tiếng Trung.
+        authDepsProvider.overrideWith(buildChineseAuthDeps),
+      ],
       retry: afNoRetry,
       child: const ChineseApp(),
     ),

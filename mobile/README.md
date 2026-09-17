@@ -76,11 +76,14 @@ mobile/
     af_core/                  # AppConfig, createApiClient (dio), ApiError, json_read, KeyValueStore, uuidV4, X-AF-Client, afLog
     af_ui/                    # theme sáng/tối, ThemeModeController, LangText/HanziText, AfShellScaffold, StickyActionBar,
                               # showAfDialog/showAfConfirm/showAfBottomSheet, showAfToast, ErrorView, AsyncValueView, EmptyState, SectionCard
-    af_auth/                  # (M2) phiên đăng nhập mobile — chưa tạo ở M0
+    af_auth/                  # phiên đăng nhập mobile (M2): TokenStore (secure storage), AuthSession (refresh single-flight,
+                              # ghi kho trước khi dùng), AuthController + authRedirect (go_router), LoginPage/RegisterPage,
+                              # AuthGate (splash / không kết nối / nội dung), describeAuthError, validators, deviceTimeZone
   apps/chinese/               # af_chinese — bundle xyz.antfarms.chinese, tên "AntFarm Trung"
     config/*.json · web_dev_config.yaml
-    lib/main.dart · app.dart · config/ · api/clients.dart · router/ · shell/ · core/ · features/<module>/{data,application,presentation}
-    test/                     # widget test shell, thẻ trạng thái, parse model (fixtures/)
+    lib/main.dart · app.dart · config/ (links.dart — URL duy nhất) · api/clients.dart (Dio + AuthSession) · router/ (redirect)
+    lib/core/session_scope.dart (userScopeProvider) · features/auth/ (auth_providers, sign_out, me_api, error_pages 401/403/404)
+    test/                     # widget test shell/thẻ trạng thái/luồng đăng nhập, parse model (fixtures/)
 ```
 
 Quy ước: `apps/<ngon-ngu>` = `af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>`; mọi chữ Hán qua `HanziText` (locale `zh-CN` + phông CJK dự phòng); pinyin lưu số, hiển thị dấu; không `uuid`; dialog/bottom sheet qua `af_ui`; token chỉ ở `flutter_secure_storage` (refresh) / bộ nhớ (access); "hôm nay" lấy từ server; mobile-first 360–390 px, chữ 1.3× không vỡ.
@@ -94,13 +97,25 @@ Quy ước: `apps/<ngon-ngu>` = `af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>
 | dio | 5.11.1 | MIT | af_core |
 | shared_preferences | 2.5.5 | BSD-3-Clause | af_core (`SharedPreferencesAsync`), af_ui |
 | package_info_plus | 10.2.1 | BSD-3-Clause | af_core (phiên bản cho `X-AF-Client`) |
+| flutter_secure_storage | 11.2.0 | BSD-3-Clause | af_auth (`af.auth.session`; iOS Keychain `first_unlock_this_device`, Android RSA-OAEP+AES-GCM mặc định v11, minSdk 24) |
+| flutter_timezone | 5.1.0 | Apache-2.0 | af_auth (`deviceTimeZone()` khi đăng ký) |
 | flutter_lints | 6.0.0 | BSD-3-Clause | af_lints |
+| fake_async | 1.3.3 | Apache-2.0 | dev af_auth (test hẹn giờ làm mới) |
 | mocktail | 1.0.5 | MIT | dev |
 | shared_preferences_platform_interface | 2.4.2 | BSD-3-Clause | dev af_core (kho giả cho test) |
 | flutter_localizations / intl | SDK / `any` | BSD | app (`vi`, `en`) |
 
-Bổ sung ở feature sau (theo hợp đồng §5.3.2): `flutter_secure_storage` 11.2.0 (M2), `flutter_timezone` 5.1.0 (M2), `flutter_tts` 4.2.5 (M3), `path_parsing` 1.1.0 (M10.2).
+Bổ sung ở feature sau (theo hợp đồng §5.3.2): `flutter_tts` 4.2.5 (M3), `path_parsing` 1.1.0 (M10.2).
 Ghi chú: `uuid` 4.6.0 xuất hiện trong `pubspec.lock` là phụ thuộc **bắc cầu** của `riverpod` — app không import (`uuid-import` FAIL nếu vi phạm).
+
+## Phiên đăng nhập (M2)
+
+- Endpoint riêng `/identity/api/auth/mobile/{register,login,refresh,logout,password}` (header `X-AF-Client` bắt buộc, không cookie). Refresh token + tài khoản rút gọn lưu **chỉ** trong `flutter_secure_storage` (khoá `af.auth.session`); access token chỉ ở bộ nhớ (`AuthSession`).
+- Làm mới: single-flight theo thế hệ phiên (`_epoch` tăng khi đăng xuất/đăng nhập — refresh đang bay của phiên cũ bị bỏ, không ghi đè, không xoá phiên mới); lời gọi refresh không gắn Bearer (`skipAuthHeader`); request 401 mang token cũ được gửi lại bằng token hiện tại không xoay thêm; **ghi kho trước rồi mới phát token** (RM-S2); lỗi mạng/5xx thử lại 1 s, 3 s rồi giữ phiên (màn "Không kết nối được máy chủ" có Thử lại/Đăng xuất); chỉ 401/403 mới mất phiên ⇒ `/dang-nhap?reason=expired`. Hẹn giờ 60 s trước hạn + khi app resumed.
+- Quyền chỉ từ `GET /chinese/api/me` (fail-closed); thiếu `study.use` ⇒ `/403` có nút Đăng xuất. Người có `content.manage`/`users.manage` thấy dòng "Quản trị … dùng bản web" ở "Thêm" (không có màn quản trị).
+- Lần chạy đầu sau khi cài (thiếu cờ `af.install.v1` trong shared_preferences) xoá sạch `af.auth.*` trong secure storage (RM-S4 — Keychain iOS sống sót sau gỡ app).
+- **Bản web dev:** `flutter_secure_storage_web` mã hoá bằng WebCrypto và lưu `localStorage`, chỉ chạy trên HTTPS/localhost — đủ để dev ở `http://localhost:3290`, KHÔNG dùng cho người dùng thật (RK-M19).
+- Luồng đăng xuất duy nhất: `signOutFlow` (`features/auth/application/sign_out.dart`) — M6 nối số đánh giá chưa gửi (`pendingOutboxCountProvider`) để hỏi xác nhận.
 
 ## Chưa verify
 

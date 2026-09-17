@@ -1,0 +1,9 @@
+{
+  "id": "0192",
+  "email": "ban@vidu.com",
+  "displayName": "Quân",
+  "timeZone": "Asia/Ho_Chi_Minh",
+  "roles": ["learner"],
+  "permissions": ["study.use"],
+  "firstSeenAt": "2026-09-17T08:00:05Z"
+}

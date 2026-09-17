@@ -54,6 +54,110 @@ void main() {
   });
 
   group('createApiClient — làm mới phiên khi 401', () {
+    test('request skipAuthHeader bị 401 ⇒ KHÔNG gửi lại bằng token hiện tại (đi thẳng đường làm mới)', () async {
+      var refreshCalls = 0;
+      final adapter = FakeHttpClientAdapter((req, _) async {
+        if (req.headers['Authorization'] == 'Bearer new') return FakeResponse.json(200, {'ok': true});
+        return FakeResponse.json(401, {'error': 'Cần đăng nhập'});
+      });
+      final dio = client(
+        adapter,
+        getAccessToken: () => 'tok',
+        refresh: () async {
+          refreshCalls++;
+          return 'new';
+        },
+      );
+      await dio.get<Object?>('/public', options: afOptions(skipAuthHeader: true));
+      expect(refreshCalls, 1);
+      expect(adapter.requests.map((r) => r.headers['Authorization']), [null, 'Bearer new']);
+    });
+
+    test('refresh bị từ chối nhưng token hiện tại đã đổi (request mang token cũ) ⇒ KHÔNG onAuthLost', () async {
+      var lost = 0;
+      var token = 'cu';
+      final adapter = FakeHttpClientAdapter((_, _) async => FakeResponse.json(401, {'error': 'Cần đăng nhập'}));
+      final dio = client(
+        adapter,
+        getAccessToken: () => token,
+        refresh: () async {
+          token = 'moi'; // phiên khác đã đăng nhập trong lúc chờ
+          throw ApiError('mất', status: 401);
+        },
+        onAuthLost: () => lost++,
+      );
+      await expectLater(
+        dio.get<Object?>('/me', options: Options(headers: {'Authorization': 'Bearer cu'})),
+        throwsA(isA<ApiError>()),
+      );
+      expect(lost, 0);
+    });
+
+    test('gửi lại vẫn 401 nhưng token hiện tại đã đổi ⇒ KHÔNG onAuthLost; token trùng ⇒ có', () async {
+      var lost = 0;
+      var token = 'cu';
+      final adapter = FakeHttpClientAdapter((req, i) async {
+        if (i == 1) token = 'khac'; // đổi phiên đúng lúc gửi lại
+        return FakeResponse.json(401, {'error': 'Cần đăng nhập'});
+      });
+      final dio = client(adapter, getAccessToken: () => token, refresh: () async => 'new', onAuthLost: () => lost++);
+      await expectLater(
+        dio.get<Object?>('/me', options: Options(headers: {'Authorization': 'Bearer cu'})),
+        throwsA(isA<ApiError>()),
+      );
+      expect(lost, 0);
+
+      var token2 = 'cu';
+      final adapter2 = FakeHttpClientAdapter((_, _) async => FakeResponse.json(401, {'error': 'Cần đăng nhập'}));
+      var lost2 = 0;
+      final dio2 = client(
+        adapter2,
+        getAccessToken: () => token2,
+        refresh: () async {
+          token2 = 'new';
+          return 'new';
+        },
+        onAuthLost: () => lost2++,
+      );
+      await expectLater(dio2.get<Object?>('/me'), throwsA(isA<ApiError>()));
+      expect(lost2, 1);
+    });
+
+    test('401 mang token CŨ ⇒ gửi lại bằng token hiện tại, KHÔNG gọi refresh', () async {
+      var refreshCalls = 0;
+      final adapter = FakeHttpClientAdapter((req, _) async {
+        if (req.headers['Authorization'] == 'Bearer moi') return FakeResponse.json(200, {'ok': true});
+        return FakeResponse.json(401, {'error': 'Cần đăng nhập'});
+      });
+      var token = 'cu';
+      final dio = client(
+        adapter,
+        getAccessToken: () => token,
+        refresh: () async {
+          refreshCalls++;
+          return 'refreshed';
+        },
+      );
+      // Request đi với token cũ; trước khi 401 về, phiên đã đổi sang token mới.
+      final future = dio.get<Object?>('/me', options: Options(headers: {'Authorization': 'Bearer cu'}));
+      token = 'moi';
+      final res = await future;
+      expect(res.data, {'ok': true});
+      expect(refreshCalls, 0);
+      expect(adapter.requests, hasLength(2));
+      expect(adapter.requests.last.headers['Authorization'], 'Bearer moi');
+    });
+
+    test('skipAuthHeader ⇒ không gắn Authorization dù có token', () async {
+      final adapter = FakeHttpClientAdapter((_, _) async => FakeResponse.json(200, {}));
+      await client(adapter, getAccessToken: () => 'tok').post<Object?>(
+        '/auth/mobile/refresh',
+        data: {'refreshToken': 'x'},
+        options: afOptions(skipAuthRefresh: true, skipAuthHeader: true),
+      );
+      expect(adapter.requests.single.headers.containsKey('Authorization'), isFalse);
+    });
+
     test('401 → refresh → gửi lại một lần thành công', () async {
       final adapter = FakeHttpClientAdapter((req, i) async {
         if (req.headers['Authorization'] == 'Bearer new') return FakeResponse.json(200, {'id': 1});

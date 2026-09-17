@@ -26,6 +26,16 @@ class AuthRefreshInterceptor extends Interceptor {
 
   Future<String>? _refreshing;
 
+  /// Token của request lỗi có còn là token hiện tại không — chỉ khi trùng mới được coi là MẤT PHIÊN (request mang
+  /// token của phiên cũ trả 401 muộn không được xoá phiên mới). Không có `getAccessToken` ⇒ coi như trùng.
+  bool _isCurrentToken(RequestOptions r) {
+    final get = getAccessToken;
+    if (get == null) return true;
+    final cur = get();
+    final expected = (cur == null || cur.isEmpty) ? null : 'Bearer $cur';
+    return r.headers['Authorization'] == expected;
+  }
+
   Future<String> _refreshOnce() {
     final existing = _refreshing;
     if (existing != null) return existing;
@@ -37,7 +47,7 @@ class AuthRefreshInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final token = getAccessToken?.call();
-    if (token != null && token.isNotEmpty && !options.headers.containsKey('Authorization')) {
+    if (!options.skipAuthHeader && token != null && token.isNotEmpty && !options.headers.containsKey('Authorization')) {
       options.headers['Authorization'] = 'Bearer $token';
     }
     handler.next(options);
@@ -50,6 +60,23 @@ class AuthRefreshInterceptor extends Interceptor {
       return handler.next(err);
     }
 
+    // Request này mang token CŨ (phiên đã được làm mới/đăng nhập lại trong lúc nó đang bay) ⇒ gửi lại bằng token
+    // hiện tại, KHÔNG xoay refresh thêm lần nữa. Lần gửi lại vẫn 401 ⇒ đi qua đường làm mới bình thường (token khớp).
+    final current = getAccessToken?.call();
+    if (!req.skipAuthHeader &&
+        current != null &&
+        current.isNotEmpty &&
+        req.headers['Authorization'] != 'Bearer $current') {
+      try {
+        handler.resolve(
+          await dio.fetch<Object?>(req.copyWith(headers: {...req.headers, 'Authorization': 'Bearer $current'})),
+        );
+      } on DioException catch (retryErr) {
+        handler.reject(retryErr);
+      }
+      return;
+    }
+
     String token;
     try {
       token = await _refreshOnce();
@@ -57,7 +84,7 @@ class AuthRefreshInterceptor extends Interceptor {
       // Chỉ coi là MẤT PHIÊN khi identity từ chối refresh (401 REFRESH_INVALID / 403 ACCOUNT_DISABLED).
       // Lỗi mạng/5xx lúc refresh: không đá người dùng ra — token cũ có thể vẫn còn hạn, lần 401 sau sẽ thử lại.
       final apiErr = refreshErr is ApiError ? refreshErr : null;
-      if (apiErr != null && (apiErr.status == 401 || apiErr.status == 403)) onAuthLost?.call();
+      if (apiErr != null && (apiErr.status == 401 || apiErr.status == 403) && _isCurrentToken(req)) onAuthLost?.call();
       return handler.next(err); // trả lỗi 401 gốc của request ban đầu (đi tiếp sang bước chuẩn hoá)
     }
 
@@ -70,7 +97,7 @@ class AuthRefreshInterceptor extends Interceptor {
       final response = await dio.fetch<Object?>(retryOptions);
       handler.resolve(response);
     } on DioException catch (retryErr) {
-      if (retryErr is ApiError && retryErr.status == 401) onAuthLost?.call();
+      if (retryErr is ApiError && retryErr.status == 401 && _isCurrentToken(retryOptions)) onAuthLost?.call();
       // Lỗi lần gửi lại đã qua chuỗi interceptor (là ApiError) ⇒ trả thẳng, không chạy lại các interceptor sau.
       handler.reject(retryErr);
     }

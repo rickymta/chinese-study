@@ -39,5 +39,9 @@ flutter doctor                          # mục Android + Xcode phải xanh
 | 14 | TTS (M3) | Android có giọng Google tiếng Trung; iOS gạt im lặng vẫn nghe; tốc độ 0,8 tự nhiên | Nghe được; ghi lại hệ số iOS nếu chỉnh | ☐ |
 | 15 | Viết chữ bằng ngón tay (M10) | Vẽ 爱 đúng thứ tự | Không cuộn trang khi vẽ; không báo sai oan | ☐ |
 | 16 | Release với `config/prod.json` (khi F12 lên server) | `flutter build apk --release --dart-define-from-file=config/prod.json` | Đăng nhập `https://id.antfarms.xyz/api/auth/mobile/login` OK; `identity.refresh_tokens.client_app` = `chinese-mobile/… (android|ios)` | ☐ |
+| 17 | Secure storage iOS (M2) | Đăng nhập → tắt hẳn app → mở lại | Vẫn đăng nhập (Keychain `first_unlock_this_device`). Nếu KHÔNG giữ phiên: README flutter_secure_storage 11 yêu cầu thêm `keychain-access-groups` (mảng rỗng) vào `ios/Runner/*.entitlements` + `CODE_SIGN_ENTITLEMENTS` — chưa thêm vì chưa build được để kiểm | ☐ |
+| 18 | Secure storage Android (M2) | Như #17 trên emulator API ≥ 24 | Vẫn đăng nhập; `adb logcat` không có `InvalidKeyException` (allowBackup=false) | ☐ |
+| 19 | Múi giờ đăng ký (M2) | Máy đặt múi giờ khác (vd Asia/Tokyo) → đăng ký | Dòng "Múi giờ: Asia/Tokyo (theo máy)"; `identity.users.time_zone` đúng | ☐ |
+| 20 | Mất phiên khi app ở nền (M2) | Đăng nhập → revoke họ token trong DB → đưa app ra nền > 15 phút → mở lại | Về `/dang-nhap` có banner "Phiên đăng nhập đã hết hạn", không crash | ☐ |
 
 Ghi kết quả (ngày, thiết bị, phiên bản OS, lệch nếu có) vào bảng này khi verify.

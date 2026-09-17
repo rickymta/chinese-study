@@ -43,10 +43,13 @@ void main() {
     BuildContext ctx() => tester.element(find.text('Giao diện'));
     expect(Theme.of(ctx()).brightness, Brightness.light);
 
+    // Trang dài hơn viewport test: cuộn tới nút trước khi bấm (không thì tap rơi vào bottom nav).
+    await tester.ensureVisible(find.text('Tối'));
     await tester.tap(find.text('Tối'));
     await tester.pumpAndSettle();
     expect(Theme.of(ctx()).brightness, Brightness.dark);
 
+    await tester.ensureVisible(find.text('Sáng'));
     await tester.tap(find.text('Sáng'));
     await tester.pumpAndSettle();
     expect(Theme.of(ctx()).brightness, Brightness.light);

@@ -1,3 +1,4 @@
+import 'package:af_auth/af_auth.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,6 +32,8 @@ class ChineseApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: router,
+      // Làm mới token khi app trở lại foreground (RM-S3); M5/M6 nối thêm làm mới tổng quan + gửi outbox.
+      builder: (context, child) => AuthLifecycleObserver(child: child ?? const SizedBox.shrink()),
     );
   }
 }

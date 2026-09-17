@@ -7,5 +7,6 @@ environment:
 workspace:
   - packages/af_lints
   - packages/af_core
+  - packages/af_auth
   - packages/af_ui
   - apps/chinese

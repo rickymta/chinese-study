@@ -1,8 +1,10 @@
-import 'package:af_ui/af_ui.dart';
+import 'package:af_auth/af_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/application/sign_out.dart';
+import '../features/auth/presentation/pages/error_pages.dart';
 import '../features/system/presentation/pages/home_page.dart';
 import '../shell/app_shell.dart';
 import '../shell/coming_soon_page.dart';
@@ -11,19 +13,38 @@ import 'routes.dart';
 
 export 'routes.dart';
 
-/// Navigator gốc — màn toàn màn hình (phiên ôn, bảng viết, trang lỗi) đẩy lên đây để ẩn bottom nav.
+/// Tên app hiện trên màn đăng nhập/đăng ký.
+const kBrand = 'AntFarm · Tiếng Trung';
+
+/// Navigator gốc — màn toàn màn hình (phiên ôn, bảng viết, trang lỗi, đăng nhập) đẩy lên đây để ẩn bottom nav.
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
-/// GoRouter của app. M0: chưa có redirect xác thực (M2 thêm `authRedirect` + `refreshListenable`).
+/// GoRouter của app: `redirect` = `authRedirect` (hợp đồng mobile §5.3.8), chạy lại mỗi khi `AuthState` đổi qua
+/// `refreshListenable`. Cây cần đăng nhập bọc trong `AuthGate` (splash / không kết nối / nội dung).
 ///
 /// Web dev dùng hash URL mặc định (DB-M16) — không gọi `usePathUrlStrategy()`.
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.home,
+    refreshListenable: authRefreshListenable(ref),
+    redirect: (context, state) => authRedirect(ref.read(authControllerProvider), state.uri),
     routes: [
+      GoRoute(
+        path: AppRoutes.login,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const LoginPage(brand: kBrand, registerPath: AppRoutes.register),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const RegisterPage(brand: kBrand, loginPath: AppRoutes.login),
+      ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
+        builder: (context, state, navigationShell) => AuthGate(
+          onLogout: signOutFlow,
+          child: AppShell(navigationShell: navigationShell),
+        ),
         branches: [
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const HomePage())],
@@ -78,49 +99,21 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // Trang lỗi thống nhất (toàn màn hình, ngoài shell). M2 bổ sung nút Đăng xuất ở /403.
+      // Trang lỗi thống nhất (toàn màn hình, ngoài shell).
       GoRoute(
         path: AppRoutes.unauthorized,
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, _) => const _ErrorPage(kind: ErrorViewKind.unauthorized),
+        builder: (_, _) => const UnauthorizedPage(),
       ),
       GoRoute(
         path: AppRoutes.forbidden,
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, _) => const _ErrorPage(kind: ErrorViewKind.forbidden),
+        builder: (_, _) => const ForbiddenPage(),
       ),
-      GoRoute(
-        path: AppRoutes.notFound,
-        parentNavigatorKey: rootNavigatorKey,
-        builder: (context, _) => const _ErrorPage(kind: ErrorViewKind.notFound),
-      ),
+      GoRoute(path: AppRoutes.notFound, parentNavigatorKey: rootNavigatorKey, builder: (_, _) => const NotFoundPage()),
     ],
-    errorBuilder: (context, state) => const _ErrorPage(kind: ErrorViewKind.notFound),
+    errorBuilder: (context, state) => const NotFoundPage(),
   );
   ref.onDispose(router.dispose);
   return router;
 });
-
-/// Trang lỗi toàn màn: `ErrorView` + nút về trang chủ.
-class _ErrorPage extends StatelessWidget {
-  const _ErrorPage({required this.kind});
-
-  final ErrorViewKind kind;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(ErrorView.defaultTitle(kind))),
-      body: ErrorView(
-        kind: kind,
-        actions: [
-          OutlinedButton.icon(
-            onPressed: () => context.go(AppRoutes.home),
-            icon: const Icon(Icons.home_outlined),
-            label: const Text('Về trang chủ'),
-          ),
-        ],
-      ),
-    );
-  }
-}

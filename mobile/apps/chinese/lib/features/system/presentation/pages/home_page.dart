@@ -1,3 +1,4 @@
+import 'package:af_auth/af_auth.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +14,8 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final account = ref.watch(currentAccountProvider);
+    final name = account == null || account.displayName.isEmpty ? '' : ', ${account.displayName}';
     return Scaffold(
       appBar: AppBar(title: const Text('AntFarm · Tiếng Trung')),
       body: RefreshIndicator(
@@ -32,10 +35,10 @@ class HomePage extends ConsumerWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.zero,
             children: [
-              Text('Xin chào!', style: theme.textTheme.headlineSmall),
+              Text('Xin chào$name!', style: theme.textTheme.headlineSmall),
               const SizedBox(height: 4),
               Text(
-                'Bảng tổng quan tiến độ (việc hôm nay, chuỗi ngày học) sẽ xuất hiện ở đây sau khi đăng nhập.',
+                'Bảng tổng quan tiến độ (việc hôm nay, chuỗi ngày học) sẽ xuất hiện ở đây (M5).',
                 style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: 16),
