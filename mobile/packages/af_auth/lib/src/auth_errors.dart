@@ -22,9 +22,13 @@ String? formatLockedUntil(Object? value) {
   return '${two(local.hour)}:${two(local.minute)}';
 }
 
+/// Ngữ cảnh diễn giải lỗi: ở màn đăng nhập/đăng ký, 401 không mã nghĩa là sai thông tin; ở nơi khác (hồ sơ, đổi mật
+/// khẩu — đã đăng nhập) 401 nghĩa là phiên không còn hợp lệ.
+enum AuthErrorContext { login, session }
+
 /// Diễn giải lỗi của identity-service (mã §6.0/§6.1) thành lời tiếng Việt để hiện tại chỗ trên màn đăng nhập/đăng
 /// ký/đổi mật khẩu. Mã lạ ⇒ dùng `error` của máy chủ (đã nằm trong `ApiError.message`) hoặc thông điệp mặc định.
-AuthErrorView describeAuthError(Object err) {
+AuthErrorView describeAuthError(Object err, {AuthErrorContext context = AuthErrorContext.login}) {
   final error = ApiError.from(err);
   final fieldErrors = <String, String>{};
   for (final entry in (error.details ?? const <String, Object?>{}).entries) {
@@ -67,7 +71,9 @@ AuthErrorView describeAuthError(Object err) {
       if (fieldErrors.isNotEmpty) message = 'Vui lòng kiểm tra lại các ô được đánh dấu.';
     default:
       if (error.status == 401) {
-        message = 'Email hoặc mật khẩu không đúng.';
+        message = context == AuthErrorContext.login
+            ? 'Email hoặc mật khẩu không đúng.'
+            : 'Phiên đăng nhập không còn hợp lệ, vui lòng đăng nhập lại.';
       } else if (error.status == 429) {
         message = 'Bạn thao tác quá nhanh, vui lòng thử lại sau ít phút.';
       }

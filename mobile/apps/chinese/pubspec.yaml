@@ -32,3 +32,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Dữ liệu nét chữ (M10.1, tập con hanzi-writer-data + ARPHICPL.TXT + NOTICE.md) và giấy phép hanzi-writer (MIT).
+  assets:
+    - assets/hanzi-data/
+    - assets/licenses/

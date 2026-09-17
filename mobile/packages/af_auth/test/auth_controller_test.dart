@@ -158,6 +158,44 @@ void main() {
     expect(t.container.read(authControllerProvider), isA<AuthAuthenticated>());
   });
 
+  test(
+    'refreshSession: xoay token + GET /account + loadMe ⇒ true; loadMe lỗi mạng ⇒ false + AuthUnreachable',
+    () async {
+      var meDown = false;
+      final t = build(
+        identity: (req, i) async {
+          if (req.uri.path.endsWith('/account')) {
+            return FakeResponse.json(200, {
+              'id': 'u-1',
+              'email': 'ban@vidu.com',
+              'displayName': 'Tên mới',
+              'timeZone': 'Asia/Tokyo',
+              'createdAt': '2026-09-01T00:00:00Z',
+            });
+          }
+          return refreshOk(req, i);
+        },
+        loadMe: () async {
+          if (meDown) throw ApiError.network();
+          return meWithStudy;
+        },
+        stored: storedSession(),
+      );
+      await waitFor(t.container, (s) => s is AuthAuthenticated);
+      final refreshesBefore = t.adapter.requests.where((r) => r.uri.path.endsWith('/refresh')).length;
+
+      expect(await t.container.read(authControllerProvider.notifier).refreshSession(), isTrue);
+      expect(t.adapter.requests.where((r) => r.uri.path.endsWith('/refresh')).length, refreshesBefore + 1);
+      expect(t.container.read(authControllerProvider).account?.displayName, 'Tên mới');
+      expect(t.container.read(authControllerProvider).account?.timeZone, 'Asia/Tokyo');
+
+      meDown = true;
+      expect(await t.container.read(authControllerProvider.notifier).refreshSession(), isFalse);
+      expect(t.container.read(authControllerProvider), isA<AuthUnreachable>());
+      expect(t.store.session, isNotNull); // giữ phiên (RM-S3)
+    },
+  );
+
   test('login: ghi kho, gửi deviceName, loadMe ⇒ authenticated; sai mật khẩu ⇒ ném ApiError, vẫn ẩn danh', () async {
     final t = build(
       identity: (req, i) async {

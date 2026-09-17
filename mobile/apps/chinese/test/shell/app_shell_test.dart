@@ -35,24 +35,13 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
-  testWidgets('chuyển chế độ tối ở trang Thêm đổi Theme.of(context).brightness', (tester) async {
+  testWidgets('"Thêm" không còn khối Giao diện/Giọng đọc (M4 chuyển vào Hồ sơ)', (tester) async {
     await pumpApp(tester);
     await tester.tap(find.text('Thêm'));
     await tester.pumpAndSettle();
-
-    BuildContext ctx() => tester.element(find.text('Giao diện'));
-    expect(Theme.of(ctx()).brightness, Brightness.light);
-
-    // Trang dài hơn viewport test: cuộn tới nút trước khi bấm (không thì tap rơi vào bottom nav).
-    await tester.ensureVisible(find.text('Tối'));
-    await tester.tap(find.text('Tối'));
-    await tester.pumpAndSettle();
-    expect(Theme.of(ctx()).brightness, Brightness.dark);
-
-    await tester.ensureVisible(find.text('Sáng'));
-    await tester.tap(find.text('Sáng'));
-    await tester.pumpAndSettle();
-    expect(Theme.of(ctx()).brightness, Brightness.light);
+    expect(find.text('Giao diện'), findsNothing);
+    expect(find.text('Giọng đọc'), findsNothing);
+    expect(find.textContaining('giao diện, giọng đọc'), findsOneWidget);
   });
 
   testWidgets('màn 360×740 và chữ 1.3× không overflow ở trang chủ / Thêm', (tester) async {

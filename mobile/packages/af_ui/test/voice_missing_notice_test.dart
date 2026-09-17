@@ -38,6 +38,38 @@ void main() {
     expect(find.byIcon(Icons.volume_off_outlined), findsNothing);
   });
 
+  testWidgets('chế độ tối: chữ dùng onTertiaryContainer trên nền tertiaryContainer, 360×740 chữ 1.3× không overflow', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 740);
+    tester.view.devicePixelRatio = 1.0;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+      tester.platformDispatcher.clearTextScaleFactorTestValue();
+    });
+    final dark = buildAfTheme(brightness: Brightness.dark, accent: afAccentChinese);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: dark,
+        home: Scaffold(
+          body: VoiceMissingNotice(status: SpeechStatus.noVoice, platform: TtsPlatform.android, onRetry: () {}),
+        ),
+      ),
+    );
+    expect(tester.takeException(), isNull);
+    final title = tester.widget<Text>(find.text('Chưa có giọng tiếng Trung'));
+    expect(title.style?.color, dark.colorScheme.onTertiaryContainer);
+    final material = tester.widget<Material>(
+      find.ancestor(of: find.text('Chưa có giọng tiếng Trung'), matching: find.byType(Material)).first,
+    );
+    expect(material.color, dark.colorScheme.tertiaryContainer);
+    // Tương phản đủ đọc: nền tối, chữ sáng.
+    expect(dark.colorScheme.tertiaryContainer.computeLuminance(), lessThan(0.3));
+    expect(dark.colorScheme.onTertiaryContainer.computeLuminance(), greaterThan(0.5));
+  });
+
   test('voiceInstallInstructions đổi tên ngôn ngữ', () {
     expect(voiceInstallInstructions(TtsPlatform.ios, languageName: 'tiếng Nhật'), contains('Tiếng Nhật'));
   });

@@ -12,15 +12,14 @@ import '../router/routes.dart';
 /// Quyền quản trị — có một trong hai ⇒ hiện dòng giải thích dùng bản web (RM-S6). App KHÔNG có màn quản trị.
 const kAdminPermissions = {'content.manage', 'users.manage'};
 
-/// Trang "Thêm": tài khoản, Pinyin, Từ điển, Hồ sơ, Giấy phép & nguồn, chế độ giao diện (tạm tới khi có Hồ sơ — M4),
-/// dòng giải thích quản trị (RM-S6), Đăng xuất (RM-S7).
+/// Trang "Thêm": tài khoản, Pinyin, Từ điển, Hồ sơ (tên, múi giờ, mật khẩu, học tập, giao diện/giọng đọc), Giấy phép
+/// & nguồn, dòng giải thích quản trị (RM-S6), Đăng xuất (RM-S7).
 class MorePage extends ConsumerWidget {
   const MorePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final mode = ref.watch(themeModeProvider);
     final config = ref.watch(appConfigProvider);
     final clientHeader = ref.watch(clientHeaderProvider);
     final account = ref.watch(currentAccountProvider);
@@ -63,50 +62,14 @@ class MorePage extends ConsumerWidget {
             _NavTile(
               icon: Icons.person_outline,
               title: 'Hồ sơ',
-              subtitle: 'Tên, múi giờ, mật khẩu, cài đặt học tập',
+              subtitle: 'Tên, múi giờ, mật khẩu, cài đặt học tập, giao diện, giọng đọc',
               onTap: () => context.push(AppRoutes.profile),
-            ),
-            // Giọng đọc tạm đặt ở đây (M3); M4 chuyển vào Hồ sơ → tab Giao diện.
-            _NavTile(
-              icon: Icons.volume_up_outlined,
-              title: 'Giọng đọc',
-              subtitle: 'Chọn giọng tiếng Trung, tốc độ, nghe thử',
-              onTap: () => context.push(AppRoutes.voice),
             ),
             _NavTile(
               icon: Icons.gavel_outlined,
               title: 'Giấy phép & nguồn',
               subtitle: 'Nguồn học liệu và giấy phép phần mềm',
               onTap: () => context.push(AppRoutes.licenses),
-            ),
-            const Divider(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Giao diện', style: theme.textTheme.titleSmall),
-                  const SizedBox(height: 8),
-                  // Chế độ tối tạm đặt ở đây (M0); M4 chuyển vào Hồ sơ → tab Giao diện.
-                  SegmentedButton<ThemeMode>(
-                    segments: [
-                      for (final m in ThemeMode.values)
-                        ButtonSegment(
-                          value: m,
-                          label: Text(themeModeLabel(m)),
-                          icon: Icon(switch (m) {
-                            ThemeMode.system => Icons.brightness_auto_outlined,
-                            ThemeMode.light => Icons.light_mode_outlined,
-                            ThemeMode.dark => Icons.dark_mode_outlined,
-                          }),
-                        ),
-                    ],
-                    selected: {mode},
-                    showSelectedIcon: false,
-                    onSelectionChanged: (s) => ref.read(themeModeProvider.notifier).setMode(s.first),
-                  ),
-                ],
-              ),
             ),
             const Divider(height: 24),
             ListTile(

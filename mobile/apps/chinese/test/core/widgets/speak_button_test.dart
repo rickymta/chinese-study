@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:af_chinese/core/speech/chinese_speech.dart';
 import 'package:af_chinese/core/widgets/speak_button.dart';
+import 'package:af_chinese/features/srs/data/models.dart';
 import 'package:af_core/af_core.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import '../../helpers/speech_helpers.dart';
 
 void main() {
   group('SpeakButton', () {
-    testWidgets('có giọng ⇒ bấm đọc đúng chữ với tốc độ đã lưu; onDone gọi sau khi xong', (tester) async {
+    testWidgets('có giọng, server chưa trả lời ⇒ đọc với tốc độ CACHE; onDone gọi sau khi xong', (tester) async {
       final tts = FakeAfTts(voices: zhVoices);
       final store = InMemoryKeyValueStore({kTtsRateKey: '1.1'});
       var done = 0;
@@ -34,6 +35,40 @@ void main() {
       expect(tts.rate, 1.1);
       expect(tts.voice?.name, 'Tingting');
       expect(done, 1);
+    });
+
+    testWidgets('server có ttsRate ⇒ thắng cache và ghi lại cache', (tester) async {
+      final tts = FakeAfTts(voices: zhVoices);
+      final store = InMemoryKeyValueStore({kTtsRateKey: '1.1'});
+      await tester.pumpWidget(
+        speechTestApp(
+          const Scaffold(body: SpeakButton(text: '你好')),
+          tts: tts,
+          store: store,
+          settings: LearningSettings.defaults.copyWith(ttsRate: 0.6, isDefault: false),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(IconButton));
+      await tester.pumpAndSettle();
+      expect(tts.rate, 0.6);
+      expect(store.snapshot[kTtsRateKey], '0.6');
+    });
+
+    testWidgets('đang dò giọng (loading) ⇒ vô hiệu nhưng KHÔNG tooltip "Chưa có giọng"', (tester) async {
+      final tts = FakeAfTts(voices: zhVoices)..initGate = Completer<void>();
+      await tester.pumpWidget(
+        speechTestApp(
+          const Scaffold(body: SpeakButton(text: '你好')),
+          tts: tts,
+        ),
+      );
+      await tester.pump();
+      expect(tester.widget<IconButton>(find.byType(IconButton)).onPressed, isNull);
+      expect(find.byTooltip(kNoVoiceTooltip), findsNothing);
+      tts.initGate!.complete();
+      await tester.pumpAndSettle();
+      expect(tester.widget<IconButton>(find.byType(IconButton)).onPressed, isNotNull);
     });
 
     testWidgets('rate ghi đè thắng tốc độ đã lưu', (tester) async {

@@ -20,3 +20,4 @@ export 'src/widgets/auth_gate.dart';
 export 'src/widgets/auth_lifecycle_observer.dart';
 export 'src/widgets/auth_scaffold.dart';
 export 'src/widgets/password_field.dart';
+export 'src/widgets/time_zone_field.dart';

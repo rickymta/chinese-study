@@ -9,9 +9,12 @@ import 'app.dart';
 import 'config/app_config_provider.dart';
 import 'core/config_error_app.dart';
 import 'features/auth/application/auth_providers.dart';
+import 'features/licenses/licenses.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Giấy phép dữ liệu nét chữ (Arphic) + hanzi-writer (MIT) vào trang "Giấy phép phần mềm" (§5.4.1).
+  registerAntFarmLicenses();
 
   // Cấu hình máy chủ từ --dart-define-from-file; web dev suy từ origin trang (proxy cùng origin).
   final AppConfig config;

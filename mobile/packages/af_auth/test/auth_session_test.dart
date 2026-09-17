@@ -76,6 +76,28 @@ void main() {
     t.session.dispose();
   });
 
+  test('refresh(force: true) khi đang có lượt bay ⇒ lượt MỚI xếp sau, 2 lời gọi mạng, token của lượt sau', () async {
+    final gate = Completer<void>();
+    final t = build(
+      responses: [
+        refreshResponse(access: 'at-1', refresh: 'rt-1'),
+        refreshResponse(access: 'at-2', refresh: 'rt-2'),
+      ],
+      stored: storedSession(),
+      gate: gate,
+    );
+    await t.session.restore();
+    final f1 = t.session.refresh();
+    final f2 = t.session.refresh(force: true);
+    final f3 = t.session.refresh(); // dùng chung lượt force (đang là lượt hiện hành)
+    expect(t.calls, ['rt-0']); // lượt force CHƯA gọi mạng — chờ lượt 1 xong (không xoay song song)
+    gate.complete();
+    expect(await Future.wait([f1, f2, f3]), ['at-1', 'at-2', 'at-2']);
+    expect(t.calls, ['rt-0', 'rt-1']); // lượt 2 dùng token đã xoay của lượt 1
+    expect(t.session.refreshToken, 'rt-2');
+    t.session.dispose();
+  });
+
   test('refresh: kho được ghi trước khi Future hoàn tất (thứ tự trong log)', () async {
     final t = build(
       responses: [refreshResponse(refresh: 'rt-1')],

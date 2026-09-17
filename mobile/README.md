@@ -83,7 +83,9 @@ mobile/
     config/*.json · web_dev_config.yaml
     lib/main.dart · app.dart · config/ (links.dart — URL duy nhất) · api/clients.dart (Dio + AuthSession) · router/ (redirect)
     lib/core/session_scope.dart (userScopeProvider) · features/auth/ (auth_providers, sign_out, me_api, error_pages 401/403/404)
-    test/                     # widget test shell/thẻ trạng thái/luồng đăng nhập, parse model (fixtures/)
+    lib/features/profile/ (hồ sơ 4 tab) · features/srs/ (learning-settings) · features/licenses/ (giấy phép & nguồn)
+    assets/hanzi-data/ (nét chữ, ARPHICPL.TXT) · assets/licenses/ (hanzi-writer MIT)
+    test/                     # widget test shell/thẻ trạng thái/luồng đăng nhập/hồ sơ, parse model (fixtures/)
 ```
 
 Quy ước: `apps/<ngon-ngu>` = `af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>`; mọi chữ Hán qua `HanziText` (locale `zh-CN` + phông CJK dự phòng); pinyin lưu số, hiển thị dấu; không `uuid`; dialog/bottom sheet qua `af_ui`; token chỉ ở `flutter_secure_storage` (refresh) / bộ nhớ (access); "hôm nay" lấy từ server; mobile-first 360–390 px, chữ 1.3× không vỡ.
@@ -98,7 +100,7 @@ Quy ước: `apps/<ngon-ngu>` = `af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>
 | shared_preferences | 2.5.5 | BSD-3-Clause | af_core (`SharedPreferencesAsync`), af_ui |
 | package_info_plus | 10.2.1 | BSD-3-Clause | af_core (phiên bản cho `X-AF-Client`) |
 | flutter_secure_storage | 11.2.0 | BSD-3-Clause | af_auth (`af.auth.session`; iOS Keychain `first_unlock_this_device`, Android RSA-OAEP+AES-GCM mặc định v11, minSdk 24) |
-| flutter_timezone | 5.1.0 | Apache-2.0 | af_auth (`deviceTimeZone()` khi đăng ký) |
+| flutter_timezone | 5.1.0 | Apache-2.0 | af_auth (`deviceTimeZone()` khi đăng ký; `listTimeZones()` cho ô chọn múi giờ ở Hồ sơ) |
 | flutter_lints | 6.0.0 | BSD-3-Clause | af_lints |
 | fake_async | 1.3.3 | Apache-2.0 | dev af_auth (test hẹn giờ làm mới) |
 | mocktail | 1.0.5 | MIT | dev |
@@ -123,9 +125,22 @@ Ghi chú: `uuid` 4.6.0 xuất hiện trong `pubspec.lock` là phụ thuộc **b�
 - `apps/chinese/lib/core/pinyin/pinyin.dart`: port toàn bộ `frontend/apps/chinese/src/lib/pinyin.ts` (số thanh ⇒ dấu, dấu ⇒ số, dấu câu hai đầu âm tiết, `r5` nhi hoá, `Xī'ān`, gợi ý biến điệu 3-3/不/一). Dart không có `normalize('NFC')` ⇒ tự ghép dấu tổ hợp cho 6 nguyên âm pinyin. Test `test/core/pinyin_test.dart` chép đủ ca của `pinyin.test.ts`.
 - Widget dùng chung `lib/core/widgets/`: `PinyinText` (số ⇒ dấu, chú thích biến điệu), `HanziBig` (cỡ đặt tên, luôn qua `HanziText` — RK-M7), `SpeakButton` (vô hiệu + tooltip khi chưa có giọng; huỷ đọc khi rời màn), `MeaningStatusChip` ("Chưa duyệt").
 - `af_ui` speech: `AfTts` bọc `flutter_tts` (lọc giọng `zh`, loại Quảng Đông `zh-HK`/`yue`, ưu tiên `zh-CN` rồi Enhanced/Premium), `SpeechController` (`loading|ready|noVoice|unsupported`, nhớ giọng `af.speech.voice.zh`), `VoiceMissingNotice` (hướng dẫn cài giọng theo nền tảng). App ngôn ngữ khác override `speechLangPrefixProvider`/`speechLanguageProvider`.
-- **Tốc độ đọc**: người dùng chọn 0,5–1,2 (mặc định 0,8), tạm lưu `af.chinese.ttsRate` trong shared_preferences (M4 chuyển nguồn sự thật sang `learning-settings`). Quy đổi sang plugin theo mã flutter_tts 4.2.5: web giữ nguyên; **Android và iOS nhân 0,5** (Android plugin gọi `setSpeechRate(rate × 2)`, iOS gán thẳng `AVSpeechUtterance.rate` với 0,5 = bình thường) — khác BA-mặc định §5.3.7 (Android giữ nguyên); cần kiểm máy thật (VERIFY-DEVICE #14).
-- Màn thử: Thêm → "Giọng đọc" (`/giong-doc`, tạm tới M4): chọn giọng, thanh tốc độ, nghe thử 你好; không giọng ⇒ hướng dẫn cài + nút "Dò lại giọng".
+- **Tốc độ đọc**: người dùng chọn 0,5–1,2 (mặc định 0,8). Từ M4 **nguồn sự thật là `learner_settings.tts_rate`** (`GET/PUT /me/learning-settings`, `learningSettingsProvider`); `af.chinese.ttsRate` trong shared_preferences chỉ là cache để có giá trị ngay khi mở app (`ttsRateProvider`: server → cache → 0,8; kéo thanh trượt ở Hồ sơ → Giao diện ghi máy chủ khi thả tay; chọn trước khi server trả lời thì giá trị chọn thắng và được đẩy lên). Quy đổi sang plugin theo mã flutter_tts 4.2.5: web giữ nguyên; **Android và iOS nhân 0,5** (Android plugin gọi `setSpeechRate(rate × 2)`, iOS gán thẳng `AVSpeechUtterance.rate` với 0,5 = bình thường) — khác BA-mặc định §5.3.7 (Android giữ nguyên); cần kiểm máy thật (VERIFY-DEVICE #14).
+- Chọn giọng/tốc độ/nghe thử 你好 ở Thêm → Hồ sơ → tab **Giao diện** (màn tạm `/giong-doc` của M3 đã gỡ); không giọng ⇒ hướng dẫn cài + nút "Dò lại giọng". `SpeakButton` chỉ hiện tooltip "Chưa có giọng" khi thật sự `noVoice`/`unsupported` (đang dò thì chỉ vô hiệu).
 - iOS: `setSharedInstance(true)` + audio category `playback` + `mixWithOthers` để phát cả khi gạt im lặng (chưa verify).
+
+## Hồ sơ & cài đặt (M4)
+
+- `/ho-so?tab=thong-tin|mat-khau|hoc-tap|giao-dien` — tab khởi đầu từ query, sau đó state cục bộ, không ghi lại URL (RM-L6). Thiếu `study.use` ⇒ ẩn tab Học tập kèm dải giải thích.
+- **Thông tin**: `PUT /identity/api/account` ⇒ `AuthController.refreshSession()` (xoay refresh token ⇒ claim mới ⇒ `GET /account` ⇒ `GET /chinese/api/me`) ⇒ toast; `422 INVALID_TIME_ZONE` dưới ô múi giờ. Ô múi giờ = `TimeZoneField` (af_auth): bottom sheet có ô tìm (`matchesTimeZoneQuery`: không phân biệt hoa thường, `_`≡khoảng trắng, "ho chi" ⇒ `Asia/Ho_Chi_Minh`), danh sách `FlutterTimezone.getAvailableTimezones()` đã quy bí danh (lỗi/quá ngắn ⇒ `kFallbackTimeZones` ~36 múi giờ), ghim "Múi giờ của máy"; máy ≠ hồ sơ ⇒ dải + "Dùng múi giờ này".
+- **Mật khẩu**: `POST /auth/mobile/password` kèm refresh token hiện tại (chờ lời làm mới đang bay xong để gửi token mới nhất); `currentSessionKept=false` ⇒ `signOutLocally(passwordChanged)` ⇒ `/dang-nhap?reason=password-changed`.
+- **Học tập**: port `LearningSettingsTab` web (thanh trượt từ mới/độ nhớ/tốc độ + nghe thử theo giá trị đang kéo, ô số giới hạn ôn, công tắc tự đọc); `400 VALIDATION` `details` hiện dưới đúng ô. M6 thêm `invalidate(srsSummaryProvider)` sau khi lưu.
+- **Giao diện**: chế độ Hệ thống/Sáng/Tối (`af.themeMode`) + giọng đọc (xem mục M3).
+- `/giay-phep`: nguồn học liệu như `SourceAttribution` web + Arphic/hanzi-writer + py-fsrs (`features/licenses/data/sources.dart` — file duy nhất ngoài `config/` được chứa URL), mỗi nguồn kèm URL giấy phép (nghĩa vụ CC BY-SA 4.0 §3(a)(1)(C)); nút "Giấy phép phần mềm" = `showLicensePage` với Arphic (`assets/hanzi-data/ARPHICPL.TXT`), MIT hanzi-writer, CC BY-SA 4.0, Unicode License v3, MIT (hsk30, complete-hsk-vocabulary, py-fsrs) — bản sao nguyên văn từ `content/chinese/LICENSES/` ở `assets/licenses/` (xem `NOTICE.md` ở đó), đăng ký qua `registerAntFarmLicenses()` ở `main.dart`. Không có `url_launcher` ⇒ URL hiện dạng chữ.
+- **Đổi tài khoản trên cùng máy:** provider theo người dùng (`learningSettingsProvider`) khi dựng lại vẫn giữ `.value` của người trước trong lúc `AsyncLoading` (Riverpod 3) ⇒ mọi chỗ đọc để DÙNG dữ liệu phải qua `unwrapPrevious()` (`ttsRateProvider`, `autoPlayAudioProvider`, tab Học tập); cache tốc độ đọc khoá theo người dùng (`af.chinese.ttsRate.<userId>`); hộp "giá trị chờ" của thanh tốc độ cũng theo `userScopeProvider`. Áp dụng mẫu này cho mọi provider theo người dùng ở M5+.
+- `AuthController.refreshSession()` luôn mở lượt làm mới MỚI (`AuthSession.refresh(force: true)`, xếp sau lượt đang bay) và trả `bool`: `false` ⇒ đã lưu nhưng chưa tải lại được hồ sơ/quyền (toast cảnh báo). `describeAuthError(context: AuthErrorContext.session)` cho màn đã đăng nhập: 401 không mã ⇒ "Phiên đăng nhập không còn hợp lệ" (không nói sai mật khẩu).
+
+**Việc để M5/M6:** sau khi lưu hồ sơ (múi giờ đổi ⇒ "hôm nay" đổi) và sau khi lưu cài đặt học tập (hạn mức thẻ mới đổi) phải `ref.invalidate` provider tổng quan (M5) và `srsSummaryProvider` (M6) — vị trí đã đánh dấu bằng bình luận trong `profile_info_tab.dart` và `learning_settings_tab.dart`.
 
 ## Chưa verify
 

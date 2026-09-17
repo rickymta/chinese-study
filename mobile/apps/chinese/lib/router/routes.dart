@@ -11,9 +11,6 @@ abstract final class AppRoutes {
   static const dictionary = '/tu-dien';
   static const profile = '/ho-so';
   static const licenses = '/giay-phep';
-
-  /// Màn thử giọng đọc (M3, tạm — M4 chuyển vào Hồ sơ → tab Giao diện).
-  static const voice = '/giong-doc';
   static const login = '/dang-nhap';
   static const register = '/dang-ky';
   static const unauthorized = '/401';

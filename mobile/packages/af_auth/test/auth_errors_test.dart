@@ -9,6 +9,11 @@ void main() {
   test('INVALID_CREDENTIALS / 401 không mã ⇒ "Email hoặc mật khẩu không đúng."', () {
     expect(describeAuthError(err(401, 'INVALID_CREDENTIALS')).message, 'Email hoặc mật khẩu không đúng.');
     expect(describeAuthError(ApiError('x', status: 401)).message, 'Email hoặc mật khẩu không đúng.');
+    // Ngoài màn đăng nhập (hồ sơ/đổi mật khẩu) 401 không mã = phiên không còn hợp lệ, không nói sai mật khẩu.
+    expect(
+      describeAuthError(ApiError('x', status: 401), context: AuthErrorContext.session).message,
+      'Phiên đăng nhập không còn hợp lệ, vui lòng đăng nhập lại.',
+    );
   });
 
   test('ACCOUNT_LOCKED kèm lockedUntil ⇒ giờ địa phương HH:mm; thiếu ⇒ 15 phút', () {

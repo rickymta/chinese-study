@@ -77,7 +77,7 @@ class _SpeakButtonState extends ConsumerState<SpeakButton> {
   @override
   Widget build(BuildContext context) {
     final speech = ref.watch(speechControllerProvider);
-    // Watch để tốc độ đã lưu được nạp từ kho trước khi người dùng bấm (Notifier chỉ khởi tạo khi có người đọc).
+    // Watch để tốc độ (server/cache) được nạp trước khi người dùng bấm (Notifier chỉ khởi tạo khi có người đọc).
     ref.watch(ttsRateProvider);
     _controller = ref.read(speechControllerProvider.notifier);
     final canSpeak = speech.canSpeak && !widget.disabled;
@@ -98,8 +98,10 @@ class _SpeakButtonState extends ConsumerState<SpeakButton> {
       ),
       SpeakButtonVariant.button => OutlinedButton.icon(onPressed: onPressed, icon: icon, label: Text(widget.label)),
     };
-    if (!canSpeak && !widget.disabled) {
-      // Tooltip bọc ngoài để vẫn hiện trên nút bị vô hiệu (bấm/giữ).
+    final noVoice = speech.status == SpeechStatus.noVoice || speech.status == SpeechStatus.unsupported;
+    if (!canSpeak && !widget.disabled && noVoice) {
+      // Tooltip bọc ngoài để vẫn hiện trên nút bị vô hiệu (bấm/giữ). CHỈ khi thật sự thiếu giọng — lúc đang dò
+      // (`loading`) nút cũng vô hiệu nhưng không được báo "chưa có giọng" oan (review M3).
       return Tooltip(message: kNoVoiceTooltip, triggerMode: TooltipTriggerMode.tap, child: control);
     }
     return Semantics(label: semantics, button: true, child: control);

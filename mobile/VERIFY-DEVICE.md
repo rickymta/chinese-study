@@ -31,17 +31,19 @@ flutter doctor                          # mục Android + Xcode phải xanh
 | 6 | Quyền INTERNET ở manifest chính | `aapt dump permissions app-release.apk` hoặc `grep INTERNET android/app/src/main/AndroidManifest.xml` | Có `android.permission.INTERNET` | ☐ |
 | 7 | iOS simulator gọi gateway | `flutter run -d "iPhone 17" --dart-define-from-file=config/dev-ios.json` | Hai chip "đang chạy" qua `http://localhost:5280` (`NSAllowsLocalNetworking`) | ☐ |
 | 8 | Android thật qua `adb reverse` | `adb reverse tcp:5280 tcp:5280 && flutter run -d <id> --dart-define-from-file=config/dev-ios.json` | Như #4 | ☐ |
-| 9 | Chế độ tối | Thêm → Giao diện → Tối; tắt app mở lại | Vẫn tối (lưu `af.themeMode`) | ☐ |
+| 9 | Chế độ tối | Thêm → Hồ sơ → tab Giao diện → Tối; tắt app mở lại | Vẫn tối (lưu `af.themeMode`) | ☐ |
 | 10 | Chữ Hán đúng glyph giản thể (RK-M7) | Máy đặt ngôn ngữ tiếng Việt, xem chữ 直 骨 角 (từ M3) | Giống web (không ra glyph Nhật/phồn thể) | ☐ |
 | 11 | Bố cục 360×740, chữ hệ thống lớn, xoay ngang | Cài đặt hiển thị → cỡ chữ lớn nhất | Không overflow, bottom nav còn 5 nhãn | ☐ |
 | 12 | Tắt app khi còn outbox ôn thẻ (M6) | Ôn 3 thẻ khi tắt mạng → tắt app → bật mạng → mở lại | Đánh giá tự gửi, DB không trùng | ☐ |
 | 13 | Gỡ app iOS rồi cài lại (RM-S4, M2) | Xoá app → cài lại | Phải đăng nhập lại (Keychain cũ bị xoá) | ☐ |
-| 14 | TTS (M3) | Thêm → Giọng đọc: danh sách giọng `zh` (không có `zh-HK`), Nghe thử 你好 ở tốc độ 0,8 rồi 1,2; Android có giọng Google tiếng Trung; iOS gạt im lặng vẫn nghe; máy chưa có giọng ⇒ hướng dẫn cài + "Dò lại giọng" sau khi cài | Nghe được, 0,8 hơi chậm hơn tự nhiên (không nhanh gấp đôi). Hệ số quy đổi hiện tại: Android và iOS ×0,5, web ×1 (`AfTts.platformRate`, đọc từ mã plugin) — nếu Android đọc quá chậm thì sửa hệ số Android về ×1 và ghi lại đây | ☐ |
+| 14 | TTS (M3/M4) | Thêm → Hồ sơ → tab Giao diện: danh sách giọng `zh` (không có `zh-HK`), Nghe thử 你好 ở tốc độ 0,8 rồi 1,2; Android có giọng Google tiếng Trung; iOS gạt im lặng vẫn nghe; máy chưa có giọng ⇒ hướng dẫn cài + "Dò lại giọng" sau khi cài | Nghe được, 0,8 hơi chậm hơn tự nhiên (không nhanh gấp đôi). Hệ số quy đổi hiện tại: Android và iOS ×0,5, web ×1 (`AfTts.platformRate`, đọc từ mã plugin) — nếu Android đọc quá chậm thì sửa hệ số Android về ×1 và ghi lại đây | ☐ |
 | 15 | Viết chữ bằng ngón tay (M10) | Vẽ 爱 đúng thứ tự | Không cuộn trang khi vẽ; không báo sai oan | ☐ |
 | 16 | Release với `config/prod.json` (khi F12 lên server) | `flutter build apk --release --dart-define-from-file=config/prod.json` | Đăng nhập `https://id.antfarms.xyz/api/auth/mobile/login` OK; `identity.refresh_tokens.client_app` = `chinese-mobile/… (android|ios)` | ☐ |
 | 17 | Secure storage iOS (M2) | Đăng nhập → tắt hẳn app → mở lại | Vẫn đăng nhập (Keychain `first_unlock_this_device`). Nếu KHÔNG giữ phiên: README flutter_secure_storage 11 yêu cầu thêm `keychain-access-groups` (mảng rỗng) vào `ios/Runner/*.entitlements` + `CODE_SIGN_ENTITLEMENTS` — chưa thêm vì chưa build được để kiểm | ☐ |
 | 18 | Secure storage Android (M2) | Như #17 trên emulator API ≥ 24 | Vẫn đăng nhập; `adb logcat` không có `InvalidKeyException` (allowBackup=false) | ☐ |
 | 19 | Múi giờ đăng ký (M2) | Máy đặt múi giờ khác (vd Asia/Tokyo) → đăng ký | Dòng "Múi giờ: Asia/Tokyo (theo máy)"; `identity.users.time_zone` đúng | ☐ |
 | 20 | Mất phiên khi app ở nền (M2) | Đăng nhập → revoke họ token trong DB → đưa app ra nền > 15 phút → mở lại | Về `/dang-nhap` có banner "Phiên đăng nhập đã hết hạn", không crash | ☐ |
+| 21 | Múi giờ ở Hồ sơ (M4) | Thêm → Hồ sơ → Thông tin → chạm ô Múi giờ | Sheet liệt kê múi giờ của máy (`getAvailableTimezones`, không phải danh sách dự phòng 36 mục); gõ "ho chi" ra `Asia/Ho_Chi_Minh`; ghim "Múi giờ của máy" đúng | ☐ |
+| 22 | Đổi mật khẩu trên máy thật (M4) | Đăng nhập app + web cùng tài khoản → app đổi mật khẩu | Web bị đăng xuất, app vẫn dùng (`currentSessionKept=true`) | ☐ |
 
 Ghi kết quả (ngày, thiết bị, phiên bản OS, lệch nếu có) vào bảng này khi verify.

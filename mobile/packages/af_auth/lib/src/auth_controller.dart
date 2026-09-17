@@ -107,17 +107,21 @@ class AuthController extends Notifier<AuthState> {
     await _loadMeThenAuthenticate(_session.account ?? stored.account);
   }
 
-  Future<void> _loadMeThenAuthenticate(Account account) async {
+  /// Trả `true` khi đã đặt được [AuthAuthenticated] (hồ sơ/quyền mới nhất); `false` khi `loadMe` lỗi mạng (trạng
+  /// thái chuyển sang [AuthUnreachable]) hoặc kết quả bị bỏ vì phiên đã đổi.
+  Future<bool> _loadMeThenAuthenticate(Account account) async {
     final gen = _gen;
     try {
       final me = await _deps.loadMe();
-      if (gen != _gen || _session.account?.id != account.id) return; // đã đăng xuất/đổi người trong lúc chờ
+      if (gen != _gen || _session.account?.id != account.id) return false; // đã đăng xuất/đổi người trong lúc chờ
       _set(AuthAuthenticated(account: account, me: me));
+      return true;
     } on ApiError catch (e) {
-      if (gen != _gen || _session.account?.id != account.id) return;
+      if (gen != _gen || _session.account?.id != account.id) return false;
       if (e.status == 403) {
         // Tài khoản không có quyền nào ở service này ⇒ vẫn đăng nhập, router đưa /403 (có nút Đăng xuất).
         _set(AuthAuthenticated(account: account, me: MeInfo.empty));
+        return true;
       } else if (e.status == 401) {
         // Interceptor trả lại 401 GỐC khi làm mới gặp lỗi mạng/5xx (phiên vẫn còn) — KHÔNG được xoá kho ở đây.
         // Mất phiên thật (refresh bị từ chối) đã đi qua onAuthLost ⇒ kho rỗng ⇒ ẩn danh.
@@ -129,9 +133,11 @@ class AuthController extends Notifier<AuthState> {
       } else {
         _set(AuthUnreachable(message: e.message, account: account));
       }
+      return false;
     } on Object catch (e) {
-      if (gen != _gen) return;
+      if (gen != _gen) return false;
       _set(AuthUnreachable(message: ApiError.from(e).message, account: account));
+      return false;
     }
   }
 
@@ -203,16 +209,23 @@ class AuthController extends Notifier<AuthState> {
   }
 
   /// R4-4: làm mới phiên NGAY (xoay refresh token ⇒ claim mới) ⇒ `GET /api/account` ⇒ `loadMe`. Dùng sau `PUT /account`.
-  Future<void> refreshSession() async {
-    await _session.refresh(); // 401/403 ⇒ sự kiện lost ⇒ ẩn danh; ném lỗi lên người gọi
+  /// Luôn mở LƯỢT LÀM MỚI MỚI (`force`) — lượt đang bay từ trước khi ghi có thể trả token mang claim cũ.
+  ///
+  /// Trả `true` khi hồ sơ + quyền đã tải lại xong; `false` khi `GET /account`/`loadMe` lỗi mạng (màn hình báo "đã
+  /// lưu nhưng chưa tải lại được hồ sơ"). 401/403 khi làm mới ⇒ ném [ApiError] (phiên đã mất).
+  Future<bool> refreshSession() async {
+    await _session.refresh(force: true); // 401/403 ⇒ sự kiện lost ⇒ ẩn danh; ném lỗi lên người gọi
     var account = _session.account;
+    var accountOk = true;
     try {
       account = await _deps.identity.getAccount();
     } on Object {
       // Không lấy được hồ sơ đầy đủ (mạng) ⇒ vẫn có claim mới trong token để hiển thị tên/múi giờ mới.
+      accountOk = false;
     }
-    if (account == null) return;
-    await _loadMeThenAuthenticate(account);
+    if (account == null) return false;
+    final meOk = await _loadMeThenAuthenticate(account);
+    return accountOk && meOk;
   }
 
   bool hasPermission(String code) => switch (state) {

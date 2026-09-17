@@ -7,6 +7,8 @@ import 'package:af_chinese/api/clients.dart';
 import 'package:af_chinese/app.dart';
 import 'package:af_chinese/config/app_config_provider.dart';
 import 'package:af_chinese/features/auth/application/auth_providers.dart';
+import 'package:af_chinese/features/srs/data/models.dart';
+import 'package:af_chinese/router/router.dart';
 import 'package:af_core/af_core.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:dio/dio.dart';
@@ -61,52 +63,107 @@ StoredSession testStoredSession() =>
     StoredSession(refreshToken: 'rt-0', refreshTokenExpiresAt: DateTime.utc(2099), account: testAccount);
 
 /// JWT không ký cho claim tài khoản mẫu.
-String testJwt({String sub = 'u-1', String email = 'ban@vidu.com', String name = 'Quân'}) {
+String testJwt({
+  String sub = 'u-1',
+  String email = 'ban@vidu.com',
+  String name = 'Quân',
+  String timeZone = 'Asia/Ho_Chi_Minh',
+}) {
   String enc(Object o) => base64Url.encode(utf8.encode(jsonEncode(o))).replaceAll('=', '');
-  return '${enc({'alg': 'none'})}.${enc({'sub': sub, 'email': email, 'name': name, 'zoneinfo': 'Asia/Ho_Chi_Minh'})}.x';
+  return '${enc({'alg': 'none'})}.${enc({'sub': sub, 'email': email, 'name': name, 'zoneinfo': timeZone})}.x';
 }
 
-/// Thân JSON phản hồi token (login/register/refresh) chuẩn §6.1.
-String tokenBody({bool withAccount = false}) => jsonEncode({
-  'accessToken': testJwt(),
+/// Thân JSON phản hồi token (login/register/refresh) chuẩn §6.1. [name]/[timeZone] để giả token mang claim mới sau
+/// khi sửa hồ sơ (R4-4); [sub]/[email] để giả người dùng KHÁC đăng nhập (test đổi tài khoản).
+String tokenBody({
+  bool withAccount = false,
+  String name = 'Quân',
+  String timeZone = 'Asia/Ho_Chi_Minh',
+  String sub = 'u-1',
+  String email = 'ban@vidu.com',
+}) => jsonEncode({
+  'accessToken': testJwt(sub: sub, email: email, name: name, timeZone: timeZone),
   'accessTokenExpiresAt': '2099-01-01T00:00:00Z',
   'refreshToken': 'rt-1',
   'refreshTokenExpiresAt': '2099-02-01T00:00:00Z',
-  if (withAccount) 'account': testAccount.toJson(),
+  if (withAccount) 'account': Account(id: sub, email: email, displayName: name, timeZone: timeZone).toJson(),
 });
 
 /// Adapter identity: `/auth/mobile/*` trả theo [auth] (mặc định refresh/login/register OK, logout 204), còn lại
-/// giao cho [rest] (vd `system/info`). Giữ số lời gọi `system/info` của test cũ không đổi.
-FakeAdapter identityStub({required FakeAdapter rest, Future<(int, String)> Function(RequestOptions req)? auth}) =>
-    FakeAdapter((req) {
-      final path = req.uri.path;
-      if (path.contains('/auth/mobile/')) {
-        if (auth != null) return auth(req);
-        if (path.endsWith('/logout')) return Future.value((204, ''));
-        return Future.value((200, tokenBody(withAccount: !path.endsWith('/refresh'))));
-      }
-      return rest.handler(req);
-    });
+/// giao cho [rest] (vd `system/info`, `/account`). Giữ số lời gọi `system/info` của test cũ không đổi. Mọi request
+/// (kể cả `/me`, refresh) được ghi vào [log] nếu có — để test đếm lời gọi.
+FakeAdapter identityStub({
+  required FakeAdapter rest,
+  Future<(int, String)> Function(RequestOptions req)? auth,
+  List<RequestOptions>? log,
+}) => FakeAdapter((req) {
+  log?.add(req);
+  final path = req.uri.path;
+  if (path.contains('/auth/mobile/')) {
+    if (auth != null) return auth(req);
+    if (path.endsWith('/logout')) return Future.value((204, ''));
+    return Future.value((200, tokenBody(withAccount: !path.endsWith('/refresh'))));
+  }
+  return rest.handler(req);
+});
+
+/// Phản hồi mặc định của `/auth/mobile/*` (để handler tuỳ biến trong test uỷ quyền phần còn lại).
+Future<(int, String)> defaultAuthResponse(RequestOptions req) {
+  final path = req.uri.path;
+  if (path.endsWith('/logout')) return Future.value((204, ''));
+  return Future.value((200, tokenBody(withAccount: !path.endsWith('/refresh'))));
+}
 
 /// Adapter chinese: `/me` trả hồ sơ với [permissions]; còn lại giao cho [rest].
-FakeAdapter chineseStub({required FakeAdapter rest, Set<String> permissions = const {'study.use'}}) =>
-    FakeAdapter((req) {
-      if (req.uri.path.endsWith('/me')) {
-        return Future.value((
-          200,
-          jsonEncode({
-            'id': 'u-1',
-            'email': 'ban@vidu.com',
-            'displayName': 'Quân',
-            'timeZone': 'Asia/Ho_Chi_Minh',
-            'roles': ['learner'],
-            'permissions': permissions.toList(),
-            'firstSeenAt': '2026-09-17T08:00:00Z',
-          }),
-        ));
+FakeAdapter chineseStub({
+  required FakeAdapter rest,
+  Set<String> permissions = const {'study.use'},
+  List<RequestOptions>? log,
+  String Function()? meId,
+}) => FakeAdapter((req) {
+  log?.add(req);
+  if (req.uri.path.endsWith('/me')) {
+    return Future.value((
+      200,
+      jsonEncode({
+        'id': meId?.call() ?? 'u-1',
+        'email': 'ban@vidu.com',
+        'displayName': 'Quân',
+        'timeZone': 'Asia/Ho_Chi_Minh',
+        'roles': ['learner'],
+        'permissions': permissions.toList(),
+        'firstSeenAt': '2026-09-17T08:00:00Z',
+      }),
+    ));
+  }
+  return rest.handler(req);
+});
+
+/// Thân JSON cài đặt học tập (`GET/PUT /me/learning-settings`) theo [s].
+String learningSettingsBody(LearningSettings s) => jsonEncode({...s.toJson(), 'isDefault': s.isDefault});
+
+/// Adapter chinese trả `system/info` OK và `GET/PUT /me/learning-settings` (PUT ⇒ lưu lại vào [state], trả
+/// `isDefault=false`) — cho test hồ sơ/giọng đọc. [onPut] tuỳ biến phản hồi PUT (vd 400 details).
+FakeAdapter chineseWithSettings({
+  LearningSettings initial = LearningSettings.defaults,
+  Future<(int, String)>? Function(RequestOptions req)? onPut,
+  List<LearningSettings>? saved,
+}) {
+  var state = initial;
+  return FakeAdapter((req) async {
+    if (req.uri.path.endsWith('/me/learning-settings')) {
+      if (req.method == 'PUT') {
+        final custom = onPut?.call(req);
+        if (custom != null) return custom;
+        final body = asJsonMap(req.data is String ? jsonDecode(req.data as String) : req.data);
+        state = LearningSettings.fromJson(body).copyWith(isDefault: false);
+        saved?.add(state);
       }
-      return rest.handler(req);
-    });
+      return (200, learningSettingsBody(state));
+    }
+    return okSystemInfo('chinese-backend').handler(req);
+  });
+}
 
 /// Dựng app đầy đủ (router + theme + provider + phiên) với client giả — dùng cho widget test shell/trang.
 ///
@@ -120,6 +177,10 @@ Widget buildTestApp({
   Set<String> permissions = const {'study.use'},
   Future<(int, String)> Function(RequestOptions req)? authHandler,
   InMemoryTokenStore? tokenStore,
+  List<RequestOptions>? requestLog,
+  String deviceTimeZone = 'Asia/Ho_Chi_Minh',
+  AfTts? tts,
+  String Function()? meId,
 }) {
   final tokens = tokenStore ?? InMemoryTokenStore();
   if (signedIn && tokens.session == null) tokens.session = testStoredSession();
@@ -130,10 +191,16 @@ Widget buildTestApp({
       appConfigProvider.overrideWithValue(testConfig),
       keyValueStoreProvider.overrideWithValue(prefs),
       tokenStoreProvider.overrideWithValue(tokens),
-      chineseAdapterProvider.overrideWithValue(chineseStub(rest: chineseAdapter, permissions: permissions)),
-      identityAdapterProvider.overrideWithValue(identityStub(rest: identityAdapter, auth: authHandler)),
+      chineseAdapterProvider.overrideWithValue(
+        chineseStub(rest: chineseAdapter, permissions: permissions, log: requestLog, meId: meId),
+      ),
+      identityAdapterProvider.overrideWithValue(
+        identityStub(rest: identityAdapter, auth: authHandler, log: requestLog),
+      ),
       authDepsProvider.overrideWith(buildChineseAuthDeps),
-      deviceTimeZoneProvider.overrideWith((_) async => 'Asia/Ho_Chi_Minh'),
+      deviceTimeZoneProvider.overrideWith((_) async => deviceTimeZone),
+      availableTimeZonesProvider.overrideWith((_) async => kFallbackTimeZones),
+      if (tts != null) afTtsProvider.overrideWithValue(tts),
     ],
     retry: afNoRetry,
     child: const ChineseApp(),
@@ -155,3 +222,6 @@ FakeAdapter okSystemInfo(String service) => FakeAdapter(
 
 /// Adapter giả lập service tắt (gateway 502).
 FakeAdapter downSystemInfo() => FakeAdapter((_) async => (502, ''));
+
+/// Router của app (để test điều hướng thẳng tới `/ho-so?tab=...` như deep link).
+final routerProviderForTest = routerProvider;

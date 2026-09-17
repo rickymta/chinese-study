@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:af_chinese/core/session_scope.dart';
+import 'package:af_chinese/features/srs/application/providers.dart';
+import 'package:af_chinese/features/srs/data/models.dart';
 import 'package:af_core/af_core.dart';
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +21,12 @@ class FakeAfTts extends AfTts {
   int stops = 0;
   Completer<void>? speakGate;
 
+  /// Khi đặt, `init` chờ tới khi completer hoàn thành (mô phỏng đang dò giọng — trạng thái `loading`).
+  Completer<void>? initGate;
+
   @override
   Future<TtsProbe> init() async {
+    if (initGate != null) await initGate!.future;
     if (unsupported) return const TtsProbe(status: SpeechStatus.unsupported);
     final list = AfTts.filterAndSort(voices, 'zh');
     return TtsProbe(status: list.isEmpty ? SpeechStatus.noVoice : SpeechStatus.ready, voices: list);
@@ -41,12 +48,18 @@ class FakeAfTts extends AfTts {
 
 const zhVoices = <TtsVoice>[TtsVoice(name: 'Tingting', locale: 'zh-CN'), TtsVoice(name: 'Mei-Jia', locale: 'zh-TW')];
 
-/// Bọc widget trong `ProviderScope` với TTS giả + kho trong bộ nhớ.
-Widget speechTestApp(Widget child, {required FakeAfTts tts, KeyValueStore? store}) {
+/// Bọc widget trong `ProviderScope` với TTS giả + kho trong bộ nhớ. [settings] = cài đặt học tập server trả
+/// (nguồn `ttsRate`); null ⇒ server "chưa trả lời" (Future treo) ⇒ dùng cache/mặc định.
+Widget speechTestApp(Widget child, {required FakeAfTts tts, KeyValueStore? store, LearningSettings? settings}) {
   return ProviderScope(
     overrides: [
       keyValueStoreProvider.overrideWithValue(store ?? InMemoryKeyValueStore()),
       afTtsProvider.overrideWithValue(tts),
+      // Không có phiên đăng nhập trong test này ⇒ khoá cache/hộp chờ dùng nhánh "chưa đăng nhập".
+      userScopeProvider.overrideWithValue(null),
+      learningSettingsProvider.overrideWithBuild(
+        (ref, notifier) => settings == null ? Completer<LearningSettings>().future : Future.value(settings),
+      ),
     ],
     child: MaterialApp(
       theme: buildAfTheme(brightness: Brightness.light, accent: afAccentChinese),

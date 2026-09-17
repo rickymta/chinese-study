@@ -161,12 +161,29 @@ class AuthSession {
 
   /// Làm mới access token bằng refresh token trong kho — single-flight: mọi lời gọi đồng thời dùng chung một Future.
   ///
+  /// [force] ⇒ KHÔNG dùng chung lượt đang bay (lượt đó bắt đầu TRƯỚC, token trả về có thể mang claim cũ — vd vừa
+  /// `PUT /account`): chờ lượt đó xong rồi mở lượt mới, để token chắc chắn phản ánh dữ liệu sau khi ghi.
+  ///
   /// Trả access token mới. Ném [ApiError]: 401/403 ⇒ phiên đã bị xoá + phát [AuthSessionLost]; lỗi mạng/5xx sau
   /// khi thử lại ⇒ giữ nguyên phiên; không có phiên ⇒ 401 `NO_SESSION` (không phát sự kiện).
-  Future<String> refresh() {
+  Future<String> refresh({bool force = false}) {
     final existing = _inflight;
     // Lời gọi đang bay thuộc thế hệ hiện tại thì dùng chung; thuộc thế hệ cũ (đã đăng xuất/đăng nhập lại) thì mở mới.
-    if (existing != null && _inflightEpoch == _epoch) return existing;
+    if (existing != null && _inflightEpoch == _epoch) {
+      if (!force) return existing;
+      // Lượt mới xếp SAU lượt đang bay (không chạy song song — hai lần xoay cùng token cha sẽ đụng ân hạn).
+      final epoch = _epoch;
+      late final Future<String> future;
+      future = existing
+          .then<void>((_) {}, onError: (Object _) {})
+          .then((_) => epoch == _epoch ? _doRefresh(epoch) : throw const AuthSessionChanged())
+          .whenComplete(() {
+            if (identical(_inflight, future)) _inflight = null;
+          });
+      _inflight = future;
+      _inflightEpoch = epoch;
+      return future;
+    }
     final epoch = _epoch;
     late final Future<String> future;
     future = _doRefresh(epoch).whenComplete(() {
