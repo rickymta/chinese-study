@@ -223,7 +223,7 @@ Dùng `SharedPreferencesAsync` hoặc `SharedPreferencesWithCache` (API mới c�
 | Api | `Features/Auth/AuthController.cs` | Chỉ đổi lời gọi service sang `ClientContext.Web(...)` / `RefreshClientType.Web`. **Không đổi route, filter, cookie** |
 | Api | `Program.cs` | `options.AddPolicy("auth-mobile", …)` giống `auth` nhưng `PermitLimit = authOptions.MobileRateLimitPermitPerMinute`; sau `Build()`: nếu `!IsDevelopment() && MobileDevOrigins.Length > 0` ⇒ `Log.Warning("Auth:MobileDevOrigins bị bỏ qua ngoài Development")` |
 | Api | `appsettings.json` | `"MobileDevOrigins": []`, `"MobileRateLimitPermitPerMinute": 30` trong `Auth` |
-| Api | `appsettings.Development.json.example` | `"MobileDevOrigins": ["http://localhost:3290"]` (cổng web-dev của app mobile §5.3.9) |
+| Api | `appsettings.Development.json.example` | `"MobileDevOrigins": ["http://localhost:3291"]` (cổng web-dev của app mobile §5.3.9) |
 | Tests | `tests/AntFarm.Identity.ApiTests/Auth/MobileAuthTests.cs`, `MobileRefreshReuseTests.cs` (đồng hồ giả), `MobileChannelIsolationTests.cs`, `MobileOriginAndHeaderTests.cs`, `MobileRateLimitTests.cs`; `tests/AntFarm.Identity.UnitTests/Accounts/RefreshTokenTests.cs` (kế thừa kênh) | §5.2.3 |
 
 Controller mỏng: map header/body → `ClientContext(Mobile, clientApp, deviceName, userAgent, ip)` → service → response. `ChangePassword` mobile gọi `accountService.ChangePasswordAsync(accountId, cur, new, familyId, ct)` như web, với `familyId = GetActiveFamilyIdForAccountAsync(accountId, body.RefreshToken, Mobile)`.
@@ -251,7 +251,7 @@ Web controller: nhánh `catch (AppException)` xoá cookie giữ nguyên. Mobile 
 3. Mobile refresh xoay: token cũ dùng lại **trong** 30 giây ⇒ 200 (cùng family); **sau** 31 giây (TimeProvider giả) ⇒ 401 + mọi token active của family bị thu hồi `reuse_detected`.
 4. Cô lập kênh: token web (lấy từ cookie register web) gửi tới `/mobile/refresh` ⇒ 401 và token web **vẫn** làm mới được qua cookie sau đó; token mobile gửi làm cookie `af_rt` tới `/api/auth/refresh` (kèm `Origin` hợp lệ) ⇒ 401 và token mobile **vẫn** làm mới được qua `/mobile/refresh`.
 5. Cookie bị lờ: gửi `/mobile/refresh` với body token mobile hợp lệ **và** header `Cookie: af_rt=<token web>` ⇒ 200, token web không bị xoay/thu hồi.
-6. Origin: request có `Origin: https://evil.example` ⇒ 403 `ORIGIN_NOT_ALLOWED` (cả 5 endpoint); `Origin: http://localhost:3290` ⇒ cho qua khi môi trường Development + có trong `MobileDevOrigins`, **bị chặn** khi môi trường `Production` (factory đặt `UseEnvironment("Production")` + cấu hình tối thiểu); không `Origin` ⇒ cho qua.
+6. Origin: request có `Origin: https://evil.example` ⇒ 403 `ORIGIN_NOT_ALLOWED` (cả 5 endpoint); `Origin: http://localhost:3291` ⇒ cho qua khi môi trường Development + có trong `MobileDevOrigins`, **bị chặn** khi môi trường `Production` (factory đặt `UseEnvironment("Production")` + cấu hình tối thiểu); không `Origin` ⇒ cho qua.
 7. Header `X-AF-Client`: thiếu / `abc` / `chinese-mobile/1.0 (windows)` ⇒ 400 `VALIDATION` có khoá `X-AF-Client`; `chinese-mobile/1.0.0+1 (ios)` ⇒ qua.
 8. Logout mobile ⇒ 204, mọi token của family bị thu hồi `logout`, refresh sau đó 401; logout token lạ ⇒ 204; logout token web qua mobile ⇒ 204 và token web vẫn sống.
 9. Đổi mật khẩu mobile (Bearer + refreshToken đúng) ⇒ `currentSessionKept=true`, family mobile hiện tại còn sống, family web khác bị thu hồi `password_changed`; không gửi refreshToken ⇒ `currentSessionKept=false`, mọi family bị thu hồi; sai mật khẩu hiện tại ⇒ 422 `WRONG_PASSWORD`.
@@ -577,17 +577,17 @@ Thứ tự nav giống web (Trang chủ, Ôn tập, Bài học, Luyện viết, 
 
 #### 5.3.9 Chạy dev — bản web cùng origin với gateway (giải bài toán CORS)
 
-Vấn đề: bản Flutter web chạy ở origin riêng; gọi `http://localhost:5280/chinese/api` sẽ bị CORS, mà quy tắc dự án cấm thêm CORS ở gateway/chinese-backend. **Giải pháp [BA-mặc định]: dùng proxy có sẵn của dev server Flutter (`web_dev_config.yaml`, §4.5)** — trình duyệt chỉ thấy một origin `http://localhost:3290`, dev server chuyển `/identity/*` và `/chinese/*` sang gateway (giống Vite proxy của web). Không cần script proxy riêng, giữ được hot reload.
+Vấn đề: bản Flutter web chạy ở origin riêng; gọi `http://localhost:5280/chinese/api` sẽ bị CORS, mà quy tắc dự án cấm thêm CORS ở gateway/chinese-backend. **Giải pháp [BA-mặc định]: dùng proxy có sẵn của dev server Flutter (`web_dev_config.yaml`, §4.5)** — trình duyệt chỉ thấy một origin `http://localhost:3291`, dev server chuyển `/identity/*` và `/chinese/*` sang gateway (giống Vite proxy của web). Không cần script proxy riêng, giữ được hot reload.
 
 `mobile/apps/chinese/web_dev_config.yaml` (commit):
 
 ```yaml
 # Dev server Flutter web — CÙNG ORIGIN với API như Vite của frontend/apps/chinese.
-# Trình duyệt → http://localhost:3290 → (proxy) gateway :5280 → service. Không thêm CORS ở gateway/service.
+# Trình duyệt → http://localhost:3291 → (proxy) gateway :5280 → service. Không thêm CORS ở gateway/service.
 # Lưu ý: gateway tắt ⇒ proxy rơi về index.html (200 text/html) — af_core chặn bằng JSON guard.
 server:
   host: localhost
-  port: 3290
+  port: 3291
   proxy:
     - prefix: "/identity/"
       target: "http://localhost:5280/"
@@ -595,7 +595,7 @@ server:
       target: "http://localhost:5280/"
 ```
 
-Cổng **3290** = dải 32xx của app, dành cho "web dev của app mobile tiếng Trung" [BA-mặc định]; thêm vào bảng cổng CLAUDE.md. identity-service dev: `Auth:MobileDevOrigins = ["http://localhost:3290"]` (trình duyệt gửi `Origin` cả khi cùng origin). Cookie web `af_rt` (host-only `localhost`, không phân biệt cổng) có thể bị gửi kèm tới `/identity/api/auth/mobile/*` — endpoint mobile bỏ qua (RM-A1, test M1 #5).
+Cổng **3291** = dải 32xx của app, dành cho "web dev của app mobile tiếng Trung" [BA-mặc định]; thêm vào bảng cổng CLAUDE.md. identity-service dev: `Auth:MobileDevOrigins = ["http://localhost:3291"]` (trình duyệt gửi `Origin` cả khi cùng origin). Cookie web `af_rt` (host-only `localhost`, không phân biệt cổng) có thể bị gửi kèm tới `/identity/api/auth/mobile/*` — endpoint mobile bỏ qua (RM-A1, test M1 #5).
 
 `config/*.json` (commit, không bí mật):
 
@@ -616,13 +616,13 @@ Lệnh (sau khi chạy identity → chinese → gateway theo README gốc):
 cd mobile && flutter pub get
 cd apps/chinese
 # Chrome có giao diện (người dùng/Orchestrator xem):
-flutter run -d chrome --web-port 3290 --dart-define-from-file=config/dev-web.json
+flutter run -d chrome --web-port 3291 --dart-define-from-file=config/dev-web.json
 # Không giao diện (agent tự kiểm proxy):
-flutter run -d web-server --web-port 3290 --dart-define-from-file=config/dev-web.json &
-curl -s http://localhost:3290/chinese/api/system/info     # ⇒ JSON service=chinese-backend
-curl -s http://localhost:3290/identity/api/system/info    # ⇒ JSON service=identity-service
-curl -s -X POST http://localhost:3290/identity/api/auth/mobile/refresh \
-  -H 'Origin: http://localhost:3290' -H 'X-AF-Client: chinese-mobile/0.1.0+1 (web)' \
+flutter run -d web-server --web-port 3291 --dart-define-from-file=config/dev-web.json &
+curl -s http://localhost:3291/chinese/api/system/info     # ⇒ JSON service=chinese-backend
+curl -s http://localhost:3291/identity/api/system/info    # ⇒ JSON service=identity-service
+curl -s -X POST http://localhost:3291/identity/api/auth/mobile/refresh \
+  -H 'Origin: http://localhost:3291' -H 'X-AF-Client: chinese-mobile/0.1.0+1 (web)' \
   -H 'Content-Type: application/json' -d '{"refreshToken":"'"$(printf 'a%.0s' {1..64})"'"}'   # ⇒ 401 REFRESH_INVALID (M1 xong)
 # Thiết bị (khi người dùng đã cài SDK — §10.5):
 flutter run -d emulator-5554 --dart-define-from-file=config/dev-android.json
@@ -631,7 +631,7 @@ flutter run -d "iPhone 17" --dart-define-from-file=config/dev-ios.json
 flutter build web --release --dart-define-from-file=config/dev-web.json
 ```
 
-Nếu `flutter run -d web-server` không nạp `web_dev_config.yaml` (khác phiên bản) ⇒ agent **dừng và báo** (không tự thêm CORS vào gateway/service); phương án dự phòng: script `mobile/tool/dev_proxy.dart` (`shelf` + `shelf_proxy`, thêm vào dev_dependencies root) phục vụ `build/web` ở cổng 3290 và chuyển `/identity`, `/chinese` sang 5280.
+Nếu `flutter run -d web-server` không nạp `web_dev_config.yaml` (khác phiên bản) ⇒ agent **dừng và báo** (không tự thêm CORS vào gateway/service); phương án dự phòng: script `mobile/tool/dev_proxy.dart` (`shelf` + `shelf_proxy`, thêm vào dev_dependencies root) phục vụ `build/web` ở cổng 3291 và chuyển `/identity`, `/chinese` sang 5280.
 
 `web/index.html`: `lang="vi"`, title "AntFarm · Tiếng Trung (dev)". Bản web **không bao giờ** được đóng gói Docker/đưa lên server (RK-M19).
 
@@ -768,7 +768,7 @@ Thời điểm gửi lên: `DateTime.toUtc().toIso8601String()` (luôn có `Z`) 
 - **Tiêu chí hoàn thành + tự test:**
   1. `cd mobile && ./tool/ci.sh` exit 0 (format, analyze `--fatal-infos`, check_conventions, test mọi package, `flutter build web`).
   2. Thêm tạm `showDialog(` vào `apps/chinese/lib/` ⇒ `dart run tool/check_conventions.dart` exit 1 (rồi gỡ).
-  3. Chạy 3 backend + `flutter run -d web-server --web-port 3290 …` ⇒ `curl` 2 `system/info` qua 3290 ra JSON; tắt chinese-backend ⇒ thẻ trạng thái báo lỗi, app không trắng.
+  3. Chạy 3 backend + `flutter run -d web-server --web-port 3291 …` ⇒ `curl` 2 `system/info` qua 3291 ra JSON; tắt chinese-backend ⇒ thẻ trạng thái báo lỗi, app không trắng.
   4. Widget test: shell hiện 5 nhãn nav đúng thứ tự; chuyển chế độ tối đổi `Theme.of(context).brightness`; màn 360×740 không overflow.
   5. `git status` không có `build/`, `.dart_tool/`, `local.properties`, `Pods/`, `Generated.xcconfig`.
   6. `applicationId`/`PRODUCT_BUNDLE_IDENTIFIER` = `xyz.antfarms.chinese` (grep). Build Android/iOS: **CHƯA VERIFY** (ghi trong commit + VERIFY-DEVICE).
@@ -1060,7 +1060,7 @@ Kèm: `git status` không có file sinh (§10.4 `.gitignore`), không bí mật.
 | DB-M12 | UUID v4 tự viết bằng `Random.secure()` | Không dùng package `uuid` |
 | DB-M13 | Tab trong trang: khởi đầu từ query, không ghi lại URL | App không có thanh địa chỉ |
 | DB-M14 | GET 403 ⇒ `go('/403')`; GET 404 ⇒ `push('/404')` | Giữ nút quay lại |
-| DB-M15 | Dev web cùng origin bằng `web_dev_config.yaml` cổng 3290 | Proxy có sẵn của Flutter, không thêm CORS |
+| DB-M15 | Dev web cùng origin bằng `web_dev_config.yaml` cổng 3291 | Proxy có sẵn của Flutter, không thêm CORS |
 | DB-M16 | Hash URL trên web-dev | Tránh phụ thuộc fallback của dev server |
 | DB-M17 | Dữ liệu nét đóng gói vào assets (bản sao byte-byte của web) | Offline, cùng phiên bản, giấy phép rõ |
 | DB-M18 | Luyện viết tự viết engine + port `strokeMatches` (MIT) thay `stroke_order_animator` | Số liệu khớp web, không phụ thuộc gói cũ |
@@ -1071,7 +1071,7 @@ Kèm: `git status` không có file sinh (§10.4 `.gitignore`), không bí mật.
 | DB-M23 | Thiếu `study.use` ⇒ `/403` (không vào trang chủ như web) | Không có màn nào dùng được |
 | DB-M24 | Phiên ôn và bảng viết là màn toàn màn hình (ẩn bottom nav) | Tập trung, tránh chạm nhầm |
 | DB-M25 | iOS TTS: category playback (phát cả khi gạt im lặng), tốc độ ×0,5 | Học viên cần nghe; thang AVSpeech khác |
-| DB-M26 | Tên hiển thị "AntFarm Trung", bundle `xyz.antfarms.chinese`, cổng web-dev 3290 | Quy ước theo domain |
+| DB-M26 | Tên hiển thị "AntFarm Trung", bundle `xyz.antfarms.chinese`, cổng web-dev 3291 | Quy ước theo domain |
 | DB-M27 | Engine viết đặt trong app, không tạo package chung | Đặc thù chữ Hán (quy tắc tiện ích đặc thù ngôn ngữ ở app) |
 | DB-M28 | `deviceName` = "Android app" / "iOS app" / "Web dev" | Không thêm plugin thông tin thiết bị |
 
@@ -1105,9 +1105,9 @@ mobile/**/*.xcworkspace/xcshareddata/swiftpm/
 
 **`CLAUDE.md`** (M0; M1 bổ sung phần xác thực):
 - Mục lục + sơ đồ: thêm "Mobile (Flutter) — `mobile/`" và trỏ hợp đồng này.
-- Mục mới **"Mobile — `mobile/` (Flutter 3.47 + Dart pub workspaces + Riverpod 3 + go_router)"**: cấu trúc `packages/af_*` + `apps/<ngon-ngu>` (`af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>`); lệnh `cd mobile && ./tool/ci.sh`; chạy dev web `flutter run -d chrome --web-port 3290 --dart-define-from-file=config/dev-web.json`; quy tắc: **agent Flutter = `frontend-implement` + `model: "fable"`**; `showAfDialog/showAfBottomSheet` thay dialog trần; chữ Hán qua `HanziText`; không `uuid`; token chỉ ở secure storage, access token chỉ bộ nhớ; không script trong `bin/`; build Android/iOS "chưa verify" tới khi có SDK; **bản Flutter web không bao giờ triển khai**.
+- Mục mới **"Mobile — `mobile/` (Flutter 3.47 + Dart pub workspaces + Riverpod 3 + go_router)"**: cấu trúc `packages/af_*` + `apps/<ngon-ngu>` (`af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>`); lệnh `cd mobile && ./tool/ci.sh`; chạy dev web `flutter run -d chrome --web-port 3291 --dart-define-from-file=config/dev-web.json`; quy tắc: **agent Flutter = `frontend-implement` + `model: "fable"`**; `showAfDialog/showAfBottomSheet` thay dialog trần; chữ Hán qua `HanziText`; không `uuid`; token chỉ ở secure storage, access token chỉ bộ nhớ; không script trong `bin/`; build Android/iOS "chưa verify" tới khi có SDK; **bản Flutter web không bao giờ triển khai**.
 - Quy tắc xác thực: thêm câu "Client mobile dùng `/api/auth/mobile/*` (refresh token trong body, header `X-AF-Client`, bị chặn nếu có `Origin` ngoài `Auth:MobileDevOrigins` ở Development); refresh token có `client_type` — dùng sai kênh ⇒ 401. Luồng cookie web giữ nguyên, vẫn kiểm `Origin`."
-- Bảng cổng: thêm `apps/chinese (mobile, web-dev) | http://localhost:3290 (proxy /identity, /chinese → 5280) | — (không Docker)`.
+- Bảng cổng: thêm `apps/chinese (mobile, web-dev) | http://localhost:3291 (proxy /identity, /chinese → 5280) | — (không Docker)`.
 - "Thêm một ngôn ngữ mới": thêm bước `mobile/apps/<ngon-ngu>` (tuỳ chọn).
 
 **`README.md` gốc**: mục "Mobile (Flutter)" ngắn trỏ `mobile/README.md` (M0); mục "5b. Xác thực" thêm bảng endpoint mobile + `Auth:MobileDevOrigins`, `Auth:MobileRateLimitPermitPerMinute` (M1).

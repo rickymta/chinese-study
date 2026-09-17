@@ -1,0 +1,5 @@
+{
+  "AF_ENV": "prod",
+  "AF_IDENTITY_API_URL": "https://id.antfarms.xyz/api",
+  "AF_CHINESE_API_URL": "https://chinese.antfarms.xyz/chinese/api"
+}

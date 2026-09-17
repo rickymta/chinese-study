@@ -23,7 +23,7 @@ public sealed class AuthOptions
 
     /// <summary>
     /// M1 (RM-A4): origin trình duyệt được PHÉP gọi <c>/api/auth/mobile/*</c> — CHỈ có tác dụng
-    /// khi môi trường là Development (dev web của app Flutter, cổng 3290 mặc định). Rỗng ⇒ chặn
+    /// khi môi trường là Development (dev web của app Flutter, cổng 3291 mặc định). Rỗng ⇒ chặn
     /// mọi request có Origin. Khác Development thì bị BỎ QUA hoàn toàn (Program.cs log Warning
     /// lúc khởi động nếu khác rỗng) — production không có lý do hợp lệ nào để trình duyệt gọi
     /// luồng mobile (app native không gửi Origin).

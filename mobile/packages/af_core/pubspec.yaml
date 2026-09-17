@@ -1,0 +1,20 @@
+name: af_core
+description: Lõi dùng chung — cấu hình, HTTP client (dio), lỗi API, đọc JSON, kho khoá-giá trị, tiện ích.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: 5.11.1
+  package_info_plus: 10.2.1
+  shared_preferences: 2.5.5
+dev_dependencies:
+  af_lints: ^0.1.0
+  flutter_test:
+    sdk: flutter
+  mocktail: 1.0.5
+  shared_preferences_platform_interface: 2.4.2

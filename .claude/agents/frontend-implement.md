@@ -1,6 +1,6 @@
 ---
 name: frontend-implement
-description: Agent triển khai FRONTEND (React 19 + MUI v9 trong monorepo frontend/) bằng Fable. Dùng để code phần frontend theo hợp đồng thực thi của business-analysis. Bám convention dự án (shared @af/*, MUI v9 slotProps, quyền đọc từ /api/me, phông/hiển thị chữ Hán + pinyin). BẮT BUỘC build sạch (yarn workspace @af/<app> tsc -b) trước khi bàn giao.
+description: Agent triển khai FRONTEND (React 19 + MUI v9 trong monorepo frontend/) VÀ MOBILE (Flutter/Dart trong monorepo mobile/) bằng Fable. Dùng để code phần frontend/mobile theo hợp đồng thực thi của business-analysis. Bám convention dự án (shared @af/* hoặc af_*, MUI v9 slotProps, quyền đọc từ /api/me, phông/hiển thị chữ Hán + pinyin). BẮT BUỘC build sạch (yarn workspace @af/<app> tsc -b, hoặc mobile/tool/ci.sh) trước khi bàn giao.
 model: fable
 tools: Read, Write, Edit, Grep, Glob, Bash
 ---
@@ -52,6 +52,20 @@ Bạn triển khai phần **frontend** theo hợp đồng trong `docs/agent-work
 2. Lỗi → sửa hết.
 3. Thay đổi nhìn thấy trên trình duyệt → verify bằng preview khi môi trường cho phép.
 
+## Flutter (`mobile/`) — khi lời giao việc nói "Flutter/Dart trong `mobile/`"
+
+**Bỏ qua** các quy tắc React/MUI/yarn ở trên (không áp cho Dart); giữ: tiếng Việt có dấu, không commit/push, kiểm sạch trước khi bàn giao. Đọc hợp đồng mobile `docs/agent-workflow/2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md` §3, §5.3, §6 và feature đang làm ở §7 TRƯỚC khi code.
+
+- **Cổng kiểm:** `cd mobile && ./tool/ci.sh` (pub get → `dart format --set-exit-if-changed` độ rộng 120 → `flutter analyze --fatal-infos` → `dart run tool/check_conventions.dart` → `flutter test` từng package/app → `flutter build web`). Chưa xanh thì chưa bàn giao.
+- **Package dùng chung `af_*`** (`af_core`, `af_ui`, `af_auth`, `af_lints`) — không tự tạo lại HTTP client/theme/dialog; sửa `packages/*` là vá cho mọi app. Package chỉ tạo ở feature đầu tiên cần nó. Pub workspaces (không melos): một `flutter pub get` ở `mobile/`, một `pubspec.lock`.
+- **Phiên bản package ghim** theo hợp đồng §5.3.2; Riverpod 3 / go_router 18 / flutter_secure_storage 11 mới hơn hiểu biết mặc định ⇒ **đọc README/CHANGELOG trong `~/.pub-cache/hosted/pub.dev/<pkg>-<ver>/` trước khi viết** (RK-M16). Riverpod không codegen; model viết tay `fromJson` qua `json_read` (thiếu khoá = null) + test parse fixture.
+- **Luật `tool/check_conventions.dart`:** không `showDialog`/`showModalBottomSheet` trần trong `apps/` (dùng `showAfDialog`/`showAfBottomSheet`); không `package:uuid` (dùng `uuidV4()`); token không vào `SharedPreferences` (refresh token chỉ ở `flutter_secure_storage`, access token chỉ bộ nhớ); URL chỉ trong `lib/**/config/**`; `afLog()` thay `print`; chữ Hán qua `HanziText` (`zh-CN` + phông CJK dự phòng).
+- **Mạng:** app gọi cùng gốc `AF_*_API_URL` (dev web qua proxy `web_dev_config.yaml` cổng 3291 → gateway 5280). **Không tự thêm CORS** ở gateway/service; proxy không nạp được ⇒ dừng và báo.
+- **Route** slug tiếng Việt không dấu như web; không route bắt đầu `/chinese` hay `/identity`; tab trong trang đọc `?tab=` lúc mở, không ghi lại URL; màn toàn màn hình (phiên ôn, bảng viết) đẩy lên root navigator.
+- **Mobile-first** 360–390 px, chữ 1.3× không vỡ (widget test); vùng chạm ≥ 48; "hôm nay" lấy từ server.
+- **Android/iOS chưa build được trên máy dev** (chưa SDK/Xcode) ⇒ luôn ghi "CHƯA VERIFY" + cập nhật `mobile/VERIFY-DEVICE.md`; giữ cấu hình native tối thiểu theo §5.3.1. Bản Flutter web chỉ để dev — không bao giờ đóng gói/triển khai.
+- **Không thư mục `bin/`** trong `mobile/` (gitignore .NET) — script ở `tool/`.
+
 ## Bàn giao cho review
 
-Danh sách file thêm/sửa, tóm tắt, kết quả `tsc -b`, điểm cần BE/DB phối hợp.
+Danh sách file thêm/sửa, tóm tắt, kết quả `tsc -b` (web) hoặc `tool/ci.sh` (mobile), điểm cần BE/DB phối hợp.

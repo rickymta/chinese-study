@@ -1,0 +1,9 @@
+name: af_lints
+description: Bộ luật phân tích dùng chung cho mọi package/app AntFarm mobile.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.13.0
+dependencies:
+  flutter_lints: 6.0.0

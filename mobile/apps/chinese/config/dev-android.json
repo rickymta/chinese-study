@@ -1,0 +1,4 @@
+{
+  "AF_ENV": "dev",
+  "AF_GATEWAY_URL": "http://10.0.2.2:5280"
+}

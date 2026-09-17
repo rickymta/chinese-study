@@ -1,0 +1,12 @@
+# Dev server Flutter web — CÙNG ORIGIN với API như Vite của frontend/apps/chinese.
+# Trình duyệt → http://localhost:3291 → (proxy) gateway :5280 → service. Không thêm CORS ở gateway/service.
+# Lưu ý: gateway tắt ⇒ proxy rơi về index.html (200 text/html) — af_core chặn bằng JSON guard.
+# Bản Flutter web CHỈ là công cụ dev — không bao giờ đóng gói/triển khai (hợp đồng mobile RK-M19).
+server:
+  host: localhost
+  port: 3291
+  proxy:
+    - prefix: "/identity/"
+      target: "http://localhost:5280/"
+    - prefix: "/chinese/"
+      target: "http://localhost:5280/"

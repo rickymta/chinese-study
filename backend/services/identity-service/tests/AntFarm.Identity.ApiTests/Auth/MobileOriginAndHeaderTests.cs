@@ -86,7 +86,7 @@ public class MobileOriginAndHeaderTests(IdentityDbApiFactory factory) : IClassFi
             Content = JsonContent.Create(new { email = NewEmail(), password = "khong-quan-trong" }, options: JsonDefaults.Options)
         };
         request.Headers.Add("X-AF-Client", "chinese-mobile/1.0.0+1 (android)");
-        request.Headers.Add("Origin", "http://localhost:3290");
+        request.Headers.Add("Origin", "http://localhost:3291");
 
         var response = await client.SendAsync(request);
 
@@ -185,7 +185,7 @@ public class MobileOriginDevOriginTests(IdentityDbApiFactoryMobileDevOrigin fact
             Content = JsonContent.Create(new { email = $"devorigin-{Guid.NewGuid():N}@vidu.com", password = "khong-quan-trong" }, options: JsonDefaults.Options)
         };
         request.Headers.Add("X-AF-Client", "chinese-mobile/1.0.0+1 (web)");
-        request.Headers.Add("Origin", "http://localhost:3290");
+        request.Headers.Add("Origin", "http://localhost:3291");
 
         var response = await client.SendAsync(request);
 
@@ -207,7 +207,7 @@ public class MobileOriginDevOriginProdTests(IdentityDbApiFactoryMobileDevOriginP
             Content = JsonContent.Create(new { email = $"devoriginprod-{Guid.NewGuid():N}@vidu.com", password = "khong-quan-trong" }, options: JsonDefaults.Options)
         };
         request.Headers.Add("X-AF-Client", "chinese-mobile/1.0.0+1 (web)");
-        request.Headers.Add("Origin", "http://localhost:3290");
+        request.Headers.Add("Origin", "http://localhost:3291");
 
         var response = await client.SendAsync(request);
 

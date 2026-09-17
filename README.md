@@ -142,6 +142,39 @@ Development tự sinh khi thư mục trống; **mất thư mục này ⇒ mọi 
 (phải đăng nhập lại — refresh token trong DB không mất nên chỉ cần làm mới phiên, không mất dữ
 liệu học).
 
+### 5b.1 Phiên mobile (M1 — client Flutter `mobile/`)
+
+Client mobile (app native, không phải trình duyệt) dùng nhóm endpoint riêng dưới
+`/api/auth/mobile/*` — **không cookie**, refresh token trả trong body JSON; header `X-AF-Client`
+**bắt buộc** ở mọi endpoint này (nhận diện nền tảng cho log/thống kê, không phải bảo mật).
+
+| Endpoint | Body | Trả về | Lỗi riêng |
+|---|---|---|---|
+| `POST /api/auth/mobile/register` | `email, password, displayName, timeZone, deviceName?` | `201` `{ accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt, account }` | `403 REGISTRATION_CLOSED`, `409 EMAIL_TAKEN`, `422 INVALID_TIME_ZONE` |
+| `POST /api/auth/mobile/login` | `email, password, deviceName?` | `200` (như register) | `401 INVALID_CREDENTIALS`, `403 ACCOUNT_DISABLED`, `423 ACCOUNT_LOCKED` |
+| `POST /api/auth/mobile/refresh` | `refreshToken` | `200` `{ accessToken, accessTokenExpiresAt, refreshToken (MỚI), refreshTokenExpiresAt }` | `401 REFRESH_INVALID` (hết hạn/thu hồi/**sai kênh**/dùng lại ngoài ân hạn 30s), `403 ACCOUNT_DISABLED` |
+| `POST /api/auth/mobile/logout` | `refreshToken` | `204` luôn (kể cả token lạ) | — |
+| `POST /api/auth/mobile/password` | Bearer + `currentPassword, newPassword, refreshToken?` | `200` `{ otherSessionsRevoked, currentSessionKept }` | `422 WRONG_PASSWORD`, `422 PASSWORD_UNCHANGED` |
+
+Lỗi chung mọi endpoint: `400 VALIDATION` (kể cả thiếu/sai `X-AF-Client`) · `403 ORIGIN_NOT_ALLOWED`
+(có header `Origin` — chặn trình duyệt, trừ `Auth:MobileDevOrigins` ở Development) · `429 RATE_LIMITED`
+(policy `auth-mobile` riêng, mặc định `Auth:MobileRateLimitPermitPerMinute=30`/phút/IP, cao hơn web
+vì CGNAT di động).
+
+Mỗi refresh token mang `client_type` (`web`/`mobile`) — dùng SAI kênh (token web gọi endpoint
+mobile hoặc ngược lại) bị từ chối `401 REFRESH_INVALID` mà **không thu hồi gì** (chỉ là gọi nhầm
+endpoint, không phải dấu hiệu đánh cắp). Luồng cookie của web (`/api/auth/{register,login,refresh,logout,password}`)
+**không đổi**, vẫn bắt `Origin`.
+
+```bash
+curl -i -X POST http://localhost:5281/api/auth/mobile/login \
+  -H "Content-Type: application/json" -H "X-AF-Client: chinese-mobile/0.1.0+1 (android)" \
+  -d '{"email":"ban@vidu.com","password":"mat-khau-du-dai"}'
+```
+
+Cấu hình dev web của app Flutter (cổng 3291 mặc định) gọi được luồng mobile qua trình duyệt (chỉ
+Development): `Auth:MobileDevOrigins: ["http://localhost:3291"]` trong `appsettings.Development.json`.
+
 ## 5c. Phân quyền cục bộ (F3 — chinese-backend)
 
 `chinese-backend` kiểm access token qua JWKS của `identity-service` (mạng nội bộ, `Auth:JwksUrl`
@@ -225,6 +258,19 @@ dotnet test backend/backend.slnx
 ## 7. Frontend
 
 **(F1 bổ sung)**
+
+## 7b. Mobile (Flutter) — `mobile/`
+
+App học viên gốc Android/iOS (tiếng Trung: `mobile/apps/chinese`, bundle `xyz.antfarms.chinese`, tên "AntFarm Trung"),
+monorepo Dart pub workspaces với package dùng chung `af_core`, `af_ui` (M2: `af_auth`). Hướng dẫn đầy đủ (yêu cầu,
+chạy dev web cùng origin qua proxy cổng **3291**, thiết bị, cổng kiểm, cấu trúc, phụ thuộc):
+**[`mobile/README.md`](mobile/README.md)**. Checklist chạy trên thiết bị thật (chưa verify — máy dev chưa có SDK):
+`mobile/VERIFY-DEVICE.md`.
+
+```bash
+cd mobile && flutter pub get && ./tool/ci.sh                       # cổng kiểm bắt buộc
+cd apps/chinese && flutter run -d chrome --web-port 3291 --dart-define-from-file=config/dev-web.json
+```
 
 ## 8. Triển khai production
 
