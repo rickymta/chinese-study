@@ -3,6 +3,7 @@ using AntFarm.Core.Errors;
 using AntFarm.Identity.Api.Configuration;
 using AntFarm.Identity.Application.Accounts;
 using AntFarm.Identity.Application.Common.Options;
+using AntFarm.Identity.Domain.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -30,7 +31,7 @@ public sealed class AuthController(
     [AllowAnonymous]
     public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request, CancellationToken ct)
     {
-        var result = await authService.RegisterAsync(request, GetUserAgent(), GetClientIp(), ct);
+        var result = await authService.RegisterAsync(request, ClientContext.Web(GetUserAgent(), GetClientIp()), ct);
         SetRefreshCookie(result.RefreshTokenPlain);
         return StatusCode(StatusCodes.Status201Created, ToResponse(result));
     }
@@ -39,7 +40,7 @@ public sealed class AuthController(
     [AllowAnonymous]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request, CancellationToken ct)
     {
-        var result = await authService.LoginAsync(request, GetUserAgent(), GetClientIp(), ct);
+        var result = await authService.LoginAsync(request, ClientContext.Web(GetUserAgent(), GetClientIp()), ct);
         SetRefreshCookie(result.RefreshTokenPlain);
         return Ok(ToResponse(result));
     }
@@ -51,7 +52,7 @@ public sealed class AuthController(
         var cookieToken = Request.Cookies[authOptions.RefreshCookieName];
         try
         {
-            var result = await authService.RefreshAsync(cookieToken, GetUserAgent(), GetClientIp(), ct);
+            var result = await authService.RefreshAsync(cookieToken, ClientContext.Web(GetUserAgent(), GetClientIp()), ct);
             SetRefreshCookie(result.RefreshTokenPlain);
             return Ok(new RefreshResponse(result.AccessToken, result.AccessTokenExpiresAt));
         }
@@ -72,7 +73,7 @@ public sealed class AuthController(
     public async Task<IActionResult> Logout(CancellationToken ct)
     {
         var cookieToken = Request.Cookies[authOptions.RefreshCookieName];
-        await authService.LogoutAsync(cookieToken, ct);
+        await authService.LogoutAsync(cookieToken, RefreshClientType.Web, ct);
         DeleteRefreshCookie();
         return NoContent();
     }
@@ -84,7 +85,7 @@ public sealed class AuthController(
     {
         var accountId = User.GetAccountId()!.Value;
         var cookieToken = Request.Cookies[authOptions.RefreshCookieName];
-        var currentFamilyId = await authService.GetActiveFamilyIdForAccountAsync(accountId, cookieToken, ct);
+        var currentFamilyId = await authService.GetActiveFamilyIdForAccountAsync(accountId, cookieToken, RefreshClientType.Web, ct);
 
         var result = await accountService.ChangePasswordAsync(accountId, request.CurrentPassword, request.NewPassword, currentFamilyId, ct);
 

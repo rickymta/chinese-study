@@ -15,7 +15,8 @@
     "RefreshCookieDomain": "",
     "RefreshCookiePath": "/identity/api/auth",
     "RefreshCookieSecure": false,
-    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281", "http://localhost:3290"]
+    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281", "http://localhost:3290"],
+    "MobileDevOrigins": ["http://localhost:3290"]
   },
   "Internal": {
     "Port": 5291,

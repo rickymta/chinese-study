@@ -97,6 +97,17 @@ builder.Services.AddRateLimiter(options =>
             Window = TimeSpan.FromMinutes(1),
             QueueLimit = 0
         }));
+
+    // M1/RM-A9: ngân sách RIÊNG cho luồng mobile, cao hơn web vì CGNAT nhà mạng di động dồn
+    // nhiều máy vào một IP — vẫn partition theo IP (không phải một ngân sách dùng chung).
+    options.AddPolicy("auth-mobile", httpContext => RateLimitPartition.GetFixedWindowLimiter(
+        partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        factory: _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = authOptions.MobileRateLimitPermitPerMinute,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
 });
 
 // RK32: .NET chỉ tin loopback theo mặc định — XOÁ danh sách mặc định rồi nạp tường minh
@@ -136,6 +147,13 @@ builder.Services.AddOpenApi("v1", options =>
 });
 
 var app = builder.Build();
+
+// M1/RM-A4: MobileDevOrigins chỉ có tác dụng ở Development (RejectBrowserOriginAttribute tự
+// kiểm IsDevelopment() ở mỗi request) — cấu hình khác rỗng ngoài Development là dấu hiệu sai sót
+// triển khai (vd copy nhầm appsettings.Development.json.example), cảnh báo SỚM lúc khởi động thay
+// vì im lặng bỏ qua.
+if (!app.Environment.IsDevelopment() && authOptions.MobileDevOrigins.Length > 0)
+    Log.Warning("Auth:MobileDevOrigins bị bỏ qua ngoài Development ({Environment})", app.Environment.EnvironmentName);
 
 app.UseForwardedHeaders();
 app.UseAfSecurityHeaders();

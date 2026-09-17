@@ -11,8 +11,8 @@ using Microsoft.Extensions.Logging;
 namespace AntFarm.Identity.Application.Accounts;
 
 /// <summary>
-/// Đăng ký/đăng nhập/làm mới/đăng xuất (§5.2.2, R-A1..R-A13). <c>ILogger&lt;T&gt;</c> dùng được ở
-/// đây dù Application không FrameworkReference AspNetCore.App vì
+/// Đăng ký/đăng nhập/làm mới/đăng xuất (§5.2.2, R-A1..R-A13; M1 §3.1/§5.2.2 thêm kênh mobile).
+/// <c>ILogger&lt;T&gt;</c> dùng được ở đây dù Application không FrameworkReference AspNetCore.App vì
 /// <c>Microsoft.Extensions.Logging.Abstractions</c> là dependency bắc cầu của
 /// <c>Microsoft.EntityFrameworkCore</c> (đã tham chiếu sẵn).
 /// </summary>
@@ -26,7 +26,7 @@ public sealed class AuthService(
     IRegistrationGate registrationGate,
     ILogger<AuthService> logger)
 {
-    public async Task<AuthResult> RegisterAsync(RegisterRequest request, string? userAgent, string? ip, CancellationToken ct)
+    public async Task<AuthResult> RegisterAsync(RegisterRequest request, ClientContext context, CancellationToken ct)
     {
         // D-W4/W10: "đăng ký mở" là cài đặt RUNTIME (bảng identity.settings) — authOptions.AllowRegistration
         // giờ chỉ còn là giá trị KHỞI TẠO dùng khi chưa có dòng nào trong DB (đọc bên trong gate).
@@ -47,7 +47,7 @@ public sealed class AuthService(
 
         db.Accounts.Add(account);
 
-        var (refreshPlain, refreshEntity) = CreateRefreshToken(account.Id, Guid.CreateVersion7(), now, userAgent, ip);
+        var (refreshPlain, refreshEntity) = CreateRefreshToken(account.Id, Guid.CreateVersion7(), now, context);
         db.RefreshTokens.Add(refreshEntity);
 
         try
@@ -65,10 +65,10 @@ public sealed class AuthService(
         }
 
         var (accessToken, expiresAt) = tokenIssuer.IssueAccessToken(account);
-        return new AuthResult(accessToken, expiresAt, refreshPlain, AccountDto.From(account));
+        return new AuthResult(accessToken, expiresAt, refreshPlain, refreshEntity.ExpiresAt, AccountDto.From(account));
     }
 
-    public async Task<AuthResult> LoginAsync(LoginRequest request, string? userAgent, string? ip, CancellationToken ct)
+    public async Task<AuthResult> LoginAsync(LoginRequest request, ClientContext context, CancellationToken ct)
     {
         var normalized = Account.NormalizeEmail(request.Email);
         var account = await db.Accounts.FirstOrDefaultAsync(a => a.EmailNormalized == normalized, ct);
@@ -104,26 +104,26 @@ public sealed class AuthService(
         account.RegisterSuccessfulLogin(now);
         await RemoveLongExpiredTokensAsync(account.Id, now, ct);
 
-        var (refreshPlain, refreshEntity) = CreateRefreshToken(account.Id, Guid.CreateVersion7(), now, userAgent, ip);
+        var (refreshPlain, refreshEntity) = CreateRefreshToken(account.Id, Guid.CreateVersion7(), now, context);
         db.RefreshTokens.Add(refreshEntity);
 
         await db.SaveChangesAsync(ct);
 
         var (accessToken, expiresAt) = tokenIssuer.IssueAccessToken(account);
-        return new AuthResult(accessToken, expiresAt, refreshPlain, AccountDto.From(account));
+        return new AuthResult(accessToken, expiresAt, refreshPlain, refreshEntity.ExpiresAt, AccountDto.From(account));
     }
 
     /// <summary>
-    /// Luồng xoay refresh token (R-A5/R-A6, §5.2.2) — toàn bộ trong MỘT transaction, khoá dòng
-    /// bằng <c>SELECT ... FOR UPDATE</c> để hai tab cùng làm mới gần như đồng thời không đua
-    /// nhau tạo hai nhánh xoay khác nhau (RK7).
+    /// Luồng xoay refresh token (R-A5/R-A6, §5.2.2; M1 thêm kiểm kênh RM-A3) — toàn bộ trong MỘT
+    /// transaction, khoá dòng bằng <c>SELECT ... FOR UPDATE</c> để hai tab cùng làm mới gần như
+    /// đồng thời không đua nhau tạo hai nhánh xoay khác nhau (RK7).
     /// </summary>
-    public async Task<RefreshResult> RefreshAsync(string? cookieToken, string? userAgent, string? ip, CancellationToken ct)
+    public async Task<RefreshResult> RefreshAsync(string? tokenPlain, ClientContext context, CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(cookieToken))
+        if (string.IsNullOrEmpty(tokenPlain))
             throw new UnauthenticatedException("Thiếu refresh token.", "REFRESH_INVALID");
 
-        var hash = HashToken(cookieToken);
+        var hash = HashToken(tokenPlain);
         var now = timeProvider.GetUtcNow().UtcDateTime;
 
         await using var transaction = await db.BeginTransactionAsync(ct);
@@ -134,6 +134,21 @@ public sealed class AuthService(
 
         if (token is null || token.RevokedAt is not null || token.ExpiresAt <= now)
             throw new UnauthenticatedException("Refresh token không hợp lệ hoặc đã hết hạn.", "REFRESH_INVALID");
+
+        // M1/RM-A3: token phát hành ở kênh khác (vd cookie web gửi tới /mobile/refresh, hoặc
+        // ngược lại) KHÔNG được coi là dùng lại/đánh cắp — chỉ là gọi nhầm endpoint. Không thu hồi
+        // gì (transaction không COMMIT, tự ROLLBACK khi `await using` dispose) để không đăng xuất
+        // oan phiên đang hoạt động ở kênh đúng.
+        if (token.ClientType != context.Type)
+        {
+            // ĐãXoay=true: token sai kênh này đã từng được xoay hợp lệ ở kênh gốc — dấu hiệu hữu
+            // ích để phân biệt "gọi nhầm endpoint ngay từ token đầu" với "cầm token cũ nhầm kênh
+            // sau khi đã dùng đúng kênh một thời gian" (không log token, chỉ log cờ boolean).
+            logger.LogWarning(
+                "Refresh token sai kênh {Expected}/{Actual} — họ {FamilyId} của tài khoản {AccountId}, đãXoay={DaXoay}",
+                context.Type, token.ClientType, token.FamilyId, token.AccountId, token.RotatedAt is not null);
+            throw new UnauthenticatedException("Refresh token không hợp lệ hoặc đã hết hạn.", "REFRESH_INVALID");
+        }
 
         if (token.RotatedAt is not null)
         {
@@ -161,7 +176,10 @@ public sealed class AuthService(
             throw new ForbiddenException("Tài khoản đã bị khoá.", "ACCOUNT_DISABLED");
         }
 
-        var (refreshPlain, newToken) = CreateRefreshToken(account.Id, token.FamilyId, now, userAgent, ip);
+        // RM-A3: token kế nhiệm kế thừa NGUYÊN kênh/clientApp/deviceName của token cha — chỉ
+        // UserAgent/Ip cập nhật theo request xoay hiện tại (giống hành vi web trước M1).
+        var (refreshPlain, newToken) = CreateRefreshToken(
+            account.Id, token.FamilyId, now, token.ClientType, token.ClientApp, token.DeviceName, context.UserAgent, context.Ip);
         db.RefreshTokens.Add(newToken);
 
         if (token.RotatedAt is null)
@@ -171,39 +189,51 @@ public sealed class AuthService(
         await transaction.CommitAsync(ct);
 
         var (accessToken, expiresAt) = tokenIssuer.IssueAccessToken(account);
-        return new RefreshResult(accessToken, expiresAt, refreshPlain);
+        return new RefreshResult(accessToken, expiresAt, refreshPlain, newToken.ExpiresAt);
     }
 
-    public async Task LogoutAsync(string? cookieToken, CancellationToken ct)
+    /// <summary>
+    /// Đăng xuất. Web (<see cref="RefreshClientType.Web"/>) giữ hành vi cũ: chỉ thu hồi ĐÚNG token
+    /// đang dùng. Mobile (RM-A7): một thiết bị = một họ ⇒ thu hồi CẢ HỌ. Token không tồn tại/đã
+    /// thu hồi/thuộc kênh khác ⇒ bỏ qua im lặng (không lộ thông tin qua thời gian phản hồi/lỗi —
+    /// caller luôn nhận 204).
+    /// </summary>
+    public async Task LogoutAsync(string? tokenPlain, RefreshClientType channel, CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(cookieToken))
+        if (string.IsNullOrEmpty(tokenPlain))
             return;
 
-        var hash = HashToken(cookieToken);
+        var hash = HashToken(tokenPlain);
         var token = await db.RefreshTokens.SingleOrDefaultAsync(t => t.TokenHash == hash, ct);
-        if (token is null || token.RevokedAt is not null)
+        if (token is null || token.RevokedAt is not null || token.ClientType != channel)
             return;
 
-        token.Revoke(timeProvider.GetUtcNow().UtcDateTime, "logout");
+        var now = timeProvider.GetUtcNow().UtcDateTime;
+        if (channel == RefreshClientType.Mobile)
+            await RevokeFamilyAsync(token.FamilyId, now, "logout", ct);
+        else
+            token.Revoke(now, "logout");
+
         await db.SaveChangesAsync(ct);
     }
 
     /// <summary>
-    /// D21/D22: dùng bởi <c>POST /api/auth/password</c> để biết family hiện tại (KHÔNG tự đăng
-    /// xuất phiên đang đổi mật khẩu). Chỉ tin cookie khi nó ACTIVE (chưa hết hạn/thu hồi) VÀ
-    /// thuộc ĐÚNG tài khoản trong Bearer — cookie của người khác/đã hỏng ⇒ null (AccountService
+    /// D21/D22: dùng bởi <c>POST /api/auth/password</c> (web) và <c>POST /api/auth/mobile/password</c>
+    /// (M1, RM-A8) để biết family hiện tại (KHÔNG tự đăng xuất phiên đang đổi mật khẩu). Chỉ tin
+    /// token khi nó ACTIVE (chưa hết hạn/thu hồi), thuộc ĐÚNG tài khoản trong Bearer, VÀ đúng
+    /// <paramref name="channel"/> — token của kênh khác/người khác/đã hỏng ⇒ null (AccountService
     /// thu hồi TẤT CẢ, an toàn hơn).
     /// </summary>
-    public async Task<Guid?> GetActiveFamilyIdForAccountAsync(Guid accountId, string? cookieToken, CancellationToken ct)
+    public async Task<Guid?> GetActiveFamilyIdForAccountAsync(Guid accountId, string? tokenPlain, RefreshClientType channel, CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(cookieToken))
+        if (string.IsNullOrEmpty(tokenPlain))
             return null;
 
-        var hash = HashToken(cookieToken);
+        var hash = HashToken(tokenPlain);
         var now = timeProvider.GetUtcNow().UtcDateTime;
         var token = await db.RefreshTokens.AsNoTracking().SingleOrDefaultAsync(t => t.TokenHash == hash, ct);
 
-        if (token is null || token.AccountId != accountId || !token.IsActive(now))
+        if (token is null || token.AccountId != accountId || token.ClientType != channel || !token.IsActive(now))
             return null;
 
         return token.FamilyId;
@@ -245,11 +275,18 @@ public sealed class AuthService(
         db.RefreshTokens.RemoveRange(stale);
     }
 
-    private (string Plain, RefreshToken Entity) CreateRefreshToken(Guid accountId, Guid familyId, DateTime now, string? userAgent, string? ip)
+    /// <summary>Đăng ký/đăng nhập: kênh/clientApp/deviceName/UA/IP đều lấy từ <see cref="ClientContext"/> của request hiện tại.</summary>
+    private (string Plain, RefreshToken Entity) CreateRefreshToken(Guid accountId, Guid familyId, DateTime now, ClientContext context)
+        => CreateRefreshToken(accountId, familyId, now, context.Type, context.ClientApp, context.DeviceName, context.UserAgent, context.Ip);
+
+    private (string Plain, RefreshToken Entity) CreateRefreshToken(
+        Guid accountId, Guid familyId, DateTime now, RefreshClientType clientType, string? clientApp, string? deviceName, string? userAgent, string? ip)
     {
         var plain = GenerateRandomToken();
         var hash = HashToken(plain);
-        var entity = RefreshToken.CreateNew(accountId, familyId, hash, now, jwtOptions.RefreshTokenDays, Truncate(userAgent, 300), ip);
+        var entity = RefreshToken.CreateNew(
+            accountId, familyId, hash, now, jwtOptions.RefreshTokenDays,
+            clientType, clientApp, deviceName, Truncate(userAgent, 300), ip);
         return (plain, entity);
     }
 

@@ -173,3 +173,19 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] (b) Từ một container trong `af-net` (gateway; từ W11 là cms-backend): `wget -qO- --header "X-Service-Key: $IDENTITY_INTERNAL_KEY" http://identity-service:8081/internal/ping` ⇒ `{"ok":true}`.
 - [ ] (c) `docker compose port identity-service 8081` ⇒ không có ánh xạ cổng.
 - [ ] (d) `wget -qO- http://identity-service:8081/.well-known/jwks.json` ⇒ 404 (route công khai không phục vụ trên cổng nội bộ).
+
+## 11. Endpoint đăng nhập mobile (M1, identity-service) — CHƯA VERIFY bằng Docker/HTTPS thật
+
+> M1 thêm `POST /api/auth/mobile/{register,login,refresh,logout,password}` — **không đổi**
+> `docker-compose.yml`/nginx/gateway (khối `id.antfarms.xyz` đã chuyển MỌI đường dẫn tới gateway
+> `/identity/*`, gateway route `/identity/**` không lọc theo path con, xem `deploy/conf/nginx.conf.example`
+> + `backend/services/gateway`). Chỉ verify được cục bộ (`dotnet run`, không Docker) tới nay
+> (17/09/2026) — xem lệnh curl dưới, đã chạy thật qua gateway `:5280` local.
+
+- [x] (17/09/2026, MacBook, `dotnet run` không Docker) `curl -i -X POST http://localhost:5280/identity/api/auth/mobile/register -H "Content-Type: application/json" -H "X-AF-Client: chinese-mobile/0.1.0+1 (android)" -d '{...}'` ⇒ `201`, có `refreshToken` trong body, **không** `Set-Cookie`, có `Cache-Control: no-store`.
+- [x] (17/09/2026, MacBook) Thiếu `X-AF-Client` ⇒ `400 VALIDATION` JSON có khoá `X-AF-Client`.
+- [ ] Trên server thật (sau F12): `curl -s -X POST https://id.antfarms.xyz/api/auth/mobile/refresh -H 'X-AF-Client: chinese-mobile/0.1.0+1 (android)' -H 'Content-Type: application/json' -d '{"refreshToken":"<64 ký tự a>"}'` ⇒ `401 REFRESH_INVALID` JSON.
+- [ ] Cùng lệnh thêm `-H 'Origin: https://chinese.antfarms.xyz'` ⇒ `403 ORIGIN_NOT_ALLOWED` (production không có `Auth:MobileDevOrigins`).
+- [ ] Thiếu `X-AF-Client` trên server thật ⇒ `400 VALIDATION`.
+- [ ] Nếu Cloudflare/WAF có luật chặn request không `Origin`/`User-Agent` lạ (dio native không gửi `Origin`, `User-Agent` là chuỗi dio mặc định) ⇒ phải whitelist `/api/auth/mobile/*`.
+- [ ] `deploy/.env.example`/`docker-compose.yml`: xác nhận KHÔNG có biến `Auth__MobileDevOrigins` nào bị đặt ở production (rỗng theo mặc định `appsettings.json`) — đặt nhầm không nguy hiểm (chỉ có tác dụng ở Development) nhưng nên dọn nếu copy nhầm từ dev.
