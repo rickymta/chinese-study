@@ -272,7 +272,9 @@ CREATE DATABASE af_cms OWNER af_cms ENCODING 'UTF8' TEMPLATE template0;
 
 Máy dev Windows cài Postgres trực tiếp: chạy hai câu trên bằng psql.
 
-#### 5.1.2 W3 — schema `site` phần nền (migration `W3_SiteBasics`)
+#### 5.1.2 W3 — schema `site` phần nền (chẻ 2 migration theo W3a/W3b)
+
+> **Chẻ 17/09/2026:** W3 tách **W3a** (migration `W3a_SiteBasics`: `site.settings`, `site.languages`, `site.audit_logs`) và **W3b** (migration `W3b_Faqs`: `site.faqs`). `audit_logs` tạo ở W3a vì mọi thao tác ghi của W3a đã phải ghi nhật ký. Cột `xmin` ánh xạ thuộc tính `uint Version` + `IsRowVersion()` (khuôn chinese-backend F10). Chỉ mục `site.languages(sort_order)`. Kiểu `status` lưu chuỗi `open|coming_soon|hidden` (EF `HasConversion` chuỗi, CHECK constraint như dưới). **Không seed FAQ** [BA-mặc định — không bịa nội dung hỏi đáp; người dùng tự soạn].
 
 ```
 site.settings        key varchar(64) PK · value text NOT NULL · updated_at timestamptz · updated_by uuid NULL
@@ -342,6 +344,7 @@ site.newsletter_subscribers  id · email varchar(254) · email_normalized varcha
 identity.settings  key varchar(64) PK · value text NOT NULL · updated_at timestamptz · updated_by uuid NULL
 ```
 Không seed (thiếu dòng ⇒ dùng env, R-W18). Không thêm cột vào `accounts`.
+Entity Domain `AntFarm.Identity.Domain.Settings.PlatformSetting` (`Key`, `Value`, `UpdatedAt`, `UpdatedBy`; factory `Create(key, value, actorId, now)` + `Update(value, actorId, now)`), hằng `PlatformSettingKeys.RegistrationEnabled = "registration.enabled"` (giá trị `"true"|"false"`). Cấu hình EF `Persistence/Configurations/PlatformSettingConfiguration.cs`, bảng `settings` (schema mặc định `identity`). `IIdentityDbContext` + `IdentityDbContext` thêm `DbSet<PlatformSetting> Settings`. Migration: `dotnet ef migrations add W10_Settings --project backend/services/identity-service/src/AntFarm.Identity.Infrastructure --startup-project backend/services/identity-service/src/AntFarm.Identity.Api --output-dir Persistence/Migrations`.
 
 ---
 
@@ -477,13 +480,60 @@ Tiêu chí tay: chạy identity 5281 + cms 5290 + gateway 5280; đăng nhập �
 
 - identity `appsettings.Development.json.example` `Auth:AllowedOrigins` thêm `http://localhost:3290`; compose identity thêm `Auth__AllowedOrigins__1: https://admin.${APP_DOMAIN}` (giữ `__0` chinese; website **không** gọi identity nên không thêm apex). ⚠️ Máy dev có `appsettings.Development.json` thật (gitignore) ⇒ ghi rõ trong báo cáo feature: người dùng phải tự thêm `http://localhost:3290` vào file thật, nếu không đăng nhập admin trả 403 `ORIGIN_NOT_ALLOWED`.
 
-#### 5.2.3 W3 — API site nền (thiết kế)
+#### 5.2.3 W3 — API site nền (CHI TIẾT LÀM NGAY — chẻ W3a / W3b)
 
-- Domain `Site/{SiteSetting, SiteSettingKeys, Language, LanguageStatus, Faq, AuditLog}`; Application `Site/{SiteSettingsService, LanguageAdminService, FaqAdminService, PublicSiteService}` + validators; `Common/Revalidation/IRevalidationNotifier` (W3 đăng ký bản **no-op ghi log Debug**; W7 thay bản thật) — mọi service ghi gọi `NotifyAsync(tags)` sau `SaveChanges`.
-- `Common/Audit/IAuditLogger` (ghi `site.audit_logs` trong cùng `SaveChanges`) — dùng cho mọi thao tác ghi CMS (tóm tắt ngắn, không kèm nội dung dài).
-- Seeder `SiteSeeder` (settings chèn bù khoá; languages/faqs chỉ khi trống). Ngôn ngữ seed đọc `CmsSeed:Languages` (appsettings mặc định app_url prod; `.Development.json.example` ghi đè `http://localhost:3280`).
-- Controllers: `Features/Admin/SiteSettingsController` (`GET/PUT /api/admin/site-settings`, `site.manage`), `Features/Admin/LanguagesController` (CRUD + `PUT /api/admin/languages/order`), `Features/Admin/FaqsController` (CRUD + order), `Features/Public/PublicSiteController` (`GET /api/public/site` gộp settings+languages(không hidden)+faqs published — một lời gọi cho layout/trang chủ), `Features/Admin/AuditLogsController` (`GET /api/admin/audit-logs?targetType&page`, quyền `users.manage`).
-- Public controller `[AllowAnonymous]` tường minh; response `Cache-Control: public, max-age=60`.
+**Lý do chẻ:** BE+FE đủ 4 nhóm (cấu hình, ngôn ngữ, FAQ, nhật ký) + trình soạn Markdown + thêm dependency vượt ~40 phút code một lượt. **W3a** = cấu hình site/SEO + ngôn ngữ + `GET /api/public/site` + hạ tầng nhật ký/revalidate (BE + FE). **W3b** = FAQ + màn nhật ký + `MarkdownEditor` (BE + FE). Mỗi phần commit riêng.
+
+##### W3a — Backend (chỉ trong `backend/services/cms-backend/**`)
+
+- **Domain** `AntFarm.Cms.Domain/Site/`:
+  - `SiteSetting` (`Key`, `Value`, `UpdatedAt`, `UpdatedBy?`; `Create`, `Update(value, actorId, now)` — chỉ đổi `UpdatedAt` khi giá trị khác).
+  - `SiteSettingKeys` — whitelist + giá trị mặc định + luật (nguồn DUY NHẤT, validator và seeder đọc từ đây) [BA-mặc định cho độ dài/mặc định]:
+
+    | Khoá | Luật (sau `Trim`) | Mặc định seed |
+    |---|---|---|
+    | `site.name` | bắt buộc, 1–100 | `AntFarm` |
+    | `site.tagline` | ≤ 160 | `Học ngoại ngữ trực tuyến cho người Việt` |
+    | `seo.default_title` | ≤ 70 | `AntFarm — Học ngoại ngữ trực tuyến` |
+    | `seo.default_description` | ≤ 160 | `""` |
+    | `seo.og_image_media_id` | `""` hoặc GUID (W3a không kiểm tồn tại — W4 thêm) | `""` |
+    | `contact.email` | `""` hoặc email ≤ 254 | `""` |
+    | `social.facebook` · `social.youtube` · `social.tiktok` | `""` hoặc URL `https://` ≤ 300 | `""` |
+    | `footer.text` | ≤ 500 | `""` |
+    | `home.hero_mode` | `banners` \| `static` | `static` (banner chưa có tới W5) |
+
+  - `Language` (`Id` uuid v7 `Guid.CreateVersion7()`, `Code`, `Name`, `NativeName`, `Tagline`, `DescriptionMarkdown`, `Status`, `AppUrl?`, `AccentColor?`, `CoverMediaId?` (W3a luôn null), `SortOrder`, `UpdatedAt`, `UpdatedBy?`, `uint Version`), enum `LanguageStatus { Open, ComingSoon, Hidden }` lưu `open|coming_soon|hidden`.
+  - `AuditLog` (`Create(at, actorId, actorEmail, action, targetType, targetId, summary, success)`; cắt `summary` 500).
+- **Application** `AntFarm.Cms.Application/`:
+  - `Common/Abstractions/ICmsDbContext` thêm `DbSet<SiteSetting> SiteSettings`, `DbSet<Language> Languages`, `DbSet<AuditLog> AuditLogs`, `void SetOriginalVersion(object entity, uint version)` (chép khuôn `IChineseDbContext`).
+  - `Common/Audit/IAuditLogger` + `AuditLogger`: `void Add(Actor actor, string action, string targetType, string? targetId, string summary, bool success = true)` — chỉ `db.AuditLogs.Add`, **không** tự `SaveChanges` (ghi cùng giao dịch với thao tác). `record Actor(Guid Id, string Email)` — controller dựng từ `User.GetAccountId()` + `User.GetEmail()` (`AntFarm.Auth`).
+  - `Common/Revalidation/IRevalidationNotifier { Task NotifyAsync(IReadOnlyCollection<string> tags, CancellationToken ct); }` + `NoopRevalidationNotifier` (log Debug) đăng ký trong `AddInfrastructure`. Gọi **sau** `SaveChanges` thành công, tag theo §5.4.3.
+  - `Site/SiteSettingsService` (`GetAsync`, `UpdateAsync(actor, values)`), `Site/LanguageAdminService` (`ListAsync`, `GetAsync`, `CreateAsync`, `UpdateAsync`, `DeleteAsync`, `ReorderAsync`), `Site/PublicSiteService` (`GetAsync`), DTO trong `Site/Dtos/`, validator FluentValidation `UpdateSiteSettingsRequestValidator`, `CreateLanguageRequestValidator`, `UpdateLanguageRequestValidator`, `ReorderRequestValidator`.
+  - Nghiệp vụ ngôn ngữ: `code` `^[a-z][a-z0-9-]{1,31}$`, **bất biến sau khi tạo** (PUT không có `code` — mã dùng làm khoá `interest` nhận tin + đường dẫn website); `name`/`nativeName` 1–60; `tagline` ≤ 160; `descriptionMarkdown` ≤ 4000; `appUrl` ≤ 300, `https://…` hoặc `http://localhost[:port]…`/`http://127.0.0.1[:port]…` (sai ⇒ 400); `status=open` mà `appUrl` rỗng ⇒ **422 `APP_URL_REQUIRED`**; `accentColor` `^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$` hoặc null. Tạo: `sortOrder = max+1`; trùng `code` ⇒ 409 `CODE_TAKEN` (kiểm trước + bắt `unique_violation` 23505). Sửa: `SetOriginalVersion(entity, version)` ⇒ `DbUpdateConcurrencyException` ⇒ 409 `CONCURRENCY_CONFLICT`. Xoá: xoá cứng, 404 nếu không có. Sắp xếp: `ids` phải **đúng bằng** tập id hiện có (thiếu/thừa/trùng ⇒ 422 `ORDER_MISMATCH`), gán `sortOrder = 1..n`.
+  - Cấu hình: PUT phải gửi **đủ 11 khoá**, thiếu/lạ ⇒ 400 `VALIDATION` (`details` theo khoá). Không kiểm concurrency cho cấu hình (một người biên tập — last-write-wins) [BA-mặc định]. Chỉ khoá đổi giá trị mới cập nhật. Không đổi gì ⇒ 200, không ghi nhật ký, không revalidate.
+  - Nhật ký W3a — `action`/`targetType`/`targetId`/`summary` (**không** chép giá trị dài/Markdown vào `summary`):
+    `site_settings.update` / `site_settings` / null / `Đổi: site.name, seo.default_title` · `language.create|update|delete` / `language` / `<code>` / `Tạo|Sửa|Xoá ngôn ngữ <code>` · `language.reorder` / `language` / null / `Sắp xếp lại ngôn ngữ`.
+  - Public: `settings` bỏ khoá có giá trị rỗng; `ogImageUrl` = null (W4 điền); `languages` loại `hidden`, sắp `sortOrder`, `coverUrl` = null; `faqs` = `[]` ở W3a (W3b điền).
+- **Infrastructure**: `Persistence/Configurations/Site/{SiteSettingConfiguration, LanguageConfiguration, AuditLogConfiguration}.cs` (schema `site`, snake_case, CHECK `status`, `xmin` row version, chỉ mục §5.1.2); `CmsDbContext` thêm DbSet + `SetOriginalVersion`; migration `W3a_SiteBasics`:
+  `dotnet ef migrations add W3a_SiteBasics --project backend/services/cms-backend/src/AntFarm.Cms.Infrastructure --startup-project backend/services/cms-backend/src/AntFarm.Cms.Api --output-dir Persistence/Migrations`.
+  `Seeding/SiteSeeder` chạy **sau** `AccessSeeder`, bọc `try/catch` log Error **không ném**: settings chèn bù **khoá thiếu** (không ghi đè giá trị có sẵn); languages **chỉ khi bảng trống**, đọc `CmsSeed:Languages` (mảng `{code,name,nativeName,tagline,status,appUrl,sortOrder}`), thiếu cấu hình ⇒ mặc định trong code: `chinese` "Tiếng Trung"/"中文"/open/`https://chinese.antfarms.xyz`/1, `english` "Tiếng Anh"/"English"/coming_soon/2, `japanese` "Tiếng Nhật"/"日本語"/coming_soon/3. `appsettings.Development.json.example` của cms ghi đè `appUrl` chinese = `http://localhost:3280`.
+- **Api** `Features/Admin/SiteSettingsController` (`[RequirePermission(PermissionCodes.SiteManage)]`), `Features/Admin/LanguagesController` (cùng quyền; route `order` khai **trước** `{id:guid}` không xung đột vì ràng buộc `:guid`), `Features/Public/PublicSiteController` (`[AllowAnonymous]` tường minh — FallbackPolicy đang `RequireAuthenticatedUser`; `Response.Headers.CacheControl = "public, max-age=60"`). `UserProvisioningMiddleware` đã bỏ qua request ẩn danh (kiểm `IsAuthenticated`) — giữ nguyên.
+- **Test bắt buộc W3a** (`tests/AntFarm.Cms.ApiTests/Site/`, `[DbFact]`; `tests/AntFarm.Cms.UnitTests/Site/`):
+  1. Unit `SiteSettingKeysTests`: đủ 11 khoá, mặc định hợp lệ theo chính luật của nó; URL `http://` social bị từ chối; `home.hero_mode=abc` bị từ chối.
+  2. Không token ⇒ 401; token không có `site.manage` (vai trò `support`) ⇒ 403 cho **mọi** endpoint admin W3a.
+  3. GET settings sau seed ⇒ đủ 11 khoá; PUT thiếu khoá / khoá lạ / quá dài ⇒ 400; PUT hợp lệ ⇒ 200 + đúng 1 dòng `audit_logs` có `actor_email` người gọi, `summary` liệt kê khoá, không chứa giá trị.
+  4. Languages: tạo ⇒ 201 `sortOrder` cuối; trùng code ⇒ 409 `CODE_TAKEN`; `open` thiếu `appUrl` ⇒ 422 `APP_URL_REQUIRED`; PUT `version` cũ ⇒ 409 `CONCURRENCY_CONFLICT`; order thiếu id ⇒ 422 `ORDER_MISMATCH`; order đúng ⇒ 204 + GET theo thứ tự mới; xoá ⇒ 204, xoá lại ⇒ 404.
+  5. Public ẩn danh ⇒ 200, header `Cache-Control: public, max-age=60`, không có `hidden`, sắp đúng, khoá rỗng bị bỏ, `faqs` là mảng.
+  6. Seeder chạy 2 lần ⇒ không nhân đôi; xoá 1 ngôn ngữ rồi chạy seeder ⇒ không mọc lại; xoá 1 dòng settings rồi chạy seeder ⇒ khoá được chèn bù, các khoá khác giữ giá trị đã sửa.
+
+##### W3b — Backend (chỉ trong `backend/services/cms-backend/**`)
+
+- Domain `Site/Faq` (`Id`, `Question`, `AnswerMarkdown`, `GroupKey`, `SortOrder`, `IsPublished`, `UpdatedAt`, `UpdatedBy?`, `uint Version`). `ICmsDbContext` + `DbSet<Faq> Faqs`. Migration `W3b_Faqs`. Không seed.
+- `Site/FaqAdminService` + validators: `question` 1–300; `answerMarkdown` 1–10000; `groupKey` `^[a-z0-9-]{1,32}$` (mặc định `general`); `isPublished` bool. Tạo: `sortOrder = max+1` **trong nhóm**. Đổi `groupKey` khi sửa ⇒ đưa về cuối nhóm mới. PUT kèm `version` ⇒ 409 `CONCURRENCY_CONFLICT`. Sắp xếp `PUT /api/admin/faqs/order { groupKey, ids }` — `ids` đúng bằng tập FAQ của nhóm ⇒ nếu không 422 `ORDER_MISMATCH`.
+- Nhật ký: `faq.create|update|delete|reorder`, `targetType=faq`, `targetId=<id>`, summary `Tạo/Sửa/Xoá FAQ: <60 ký tự đầu câu hỏi>`. Revalidate tag `site`, `faqs`.
+- `Site/AuditLogQueryService` + `Features/Admin/AuditLogsController` `[RequirePermission(PermissionCodes.UsersManage)]`: `GET /api/admin/audit-logs?targetType=&targetId=&page=1&pageSize=50` (pageSize 1–100, `targetType` ≤ 32, `targetId` ≤ 64), sắp `at DESC, id DESC`.
+- `PublicSiteService` điền `faqs`: `is_published = true`, sắp `group_key, sort_order`.
+- **Test bắt buộc W3b:** CRUD FAQ + 403 thiếu quyền + concurrency 409 + order mismatch 422; public chỉ trả `isPublished=true`; audit-logs: `editor` ⇒ 403, `admin` ⇒ 200 có phân trang + lọc `targetType=faq` đúng; mọi thao tác ghi FAQ sinh 1 dòng nhật ký đúng actor.
 
 #### 5.2.4 W4 — Media MinIO (thiết kế)
 
@@ -509,7 +559,36 @@ Tiêu chí tay: chạy identity 5281 + cms 5290 + gateway 5280; đăng nhập �
 
 Public: `POST /api/public/contact`, `POST /api/public/newsletter` (rate limiter policy `public-forms` phân vùng theo IP thật sau `UseForwardedHeaders`, R-W30). Admin (`inbox.manage`): `GET /api/admin/contacts?status&from&to&q&page` (ngày: `DateOnly` query ⇒ quy về mốc UTC của 00:00 `Asia/Ho_Chi_Minh`, nửa hở — **không** dùng `DateTime` query trần, CLAUDE.md), `PUT /api/admin/contacts/{id}/status` `{ status, note }`, `GET /api/admin/contacts/export.csv?...`, tương tự `newsletter` (`PUT .../{id}/unsubscribe`, `export.csv`).
 
-#### 5.2.9 W10 — identity-service API nội bộ (thiết kế đủ làm)
+#### 5.2.9 W10 — identity-service API nội bộ (CHI TIẾT LÀM NGAY — bổ sung 17/09/2026, ưu tiên hơn các gạch đầu dòng "thiết kế" ngay dưới nếu lệch)
+
+**Phạm vi file: CHỈ `backend/services/identity-service/**`** (kể cả `Dockerfile`, `launchSettings.json`, `appsettings.json`, `appsettings.Development.json.example`, tests). Không sửa `shared/`, gateway, cms-backend, `deploy/`, `CLAUDE.md` — phần đó ở §8.1.
+
+- **Options** `Application/Common/Options/InternalOptions.cs`: `int Port` (mặc định 0), `string ServiceKey` (mặc định `""`). Bind section `Internal` trong `Program.cs`, singleton instance (khuôn `AuthOptions`). **Bật** khi `Port > 0` **và** `ServiceKey.Length >= 32`; `Port > 0` mà key ngắn ⇒ log **Warning** lúc khởi động "API nội bộ bị tắt: Internal:ServiceKey < 32 ký tự" và coi như tắt (không ném — service vẫn phải chạy). `appsettings.json`: `"Internal": { "Port": 8081, "ServiceKey": "" }`. `appsettings.Development.json.example`: `"Internal": { "Port": 5291, "ServiceKey": "dev-internal-key-change-me-0123456789abcdef" }` (cms-backend W11 dùng CÙNG chuỗi). `launchSettings.json` profile `http`: `"applicationUrl": "http://localhost:5281;http://localhost:5291"`. `Dockerfile`: `ENV ASPNETCORE_URLS=http://+:8080;http://+:8081` + `EXPOSE 8080 8081` (EXPOSE chỉ tài liệu; compose vẫn **không** `ports:`), HEALTHCHECK giữ cổng 8080. Ghi "chưa verify Docker".
+- **Chốt chặn** `Api/Internal/InternalAccessPolicy.cs` — hàm THUẦN (unit test được):
+  `static InternalAccessDecision Evaluate(bool isInternalPath, int localPort, InternalOptions o, string? providedKey)` ⇒ `PassThrough | NotFound | Unauthorized | Allow`:
+  - Internal tắt: `isInternalPath` ⇒ `NotFound`; ngược lại `PassThrough`.
+  - `localPort == o.Port` (cổng nội bộ): `!isInternalPath` ⇒ `NotFound` (cổng nội bộ không phục vụ API công khai/health/JWKS); key thiếu/sai (so bằng `CryptographicOperations.FixedTimeEquals` trên UTF-8 bytes, độ dài khác ⇒ sai) ⇒ `Unauthorized`; đúng ⇒ `Allow`.
+  - `localPort != o.Port` (cổng công khai): `isInternalPath` ⇒ `NotFound`; ngược lại `PassThrough`.
+  - `isInternalPath` = `Request.Path.StartsWithSegments("/internal")`.
+- `Api/Internal/ILocalPortAccessor` (`int GetLocalPort(HttpContext)`), bản thật `ConnectionLocalPortAccessor` ⇒ `ctx.Connection.LocalPort` (singleton). **Không** đọc header `Host`. ApiTests thay bằng accessor đọc header test (§test) — TestServer có `LocalPort = 0`.
+- `Api/Internal/InternalAccessMiddleware.cs`: `NotFound` ⇒ 404 body trống (không JSON lộ thông tin); `Unauthorized` ⇒ 401 `{ error: "Khoá dịch vụ không hợp lệ.", code: "SERVICE_KEY_INVALID" }` + log Warning (IP nguồn, path; **không** log key). Đặt trong pipeline **ngay sau `UseAfExceptionHandler()`**, TRƯỚC `UseIdentityCors`/`UseRateLimiter`/`UseAuthentication` (route nội bộ không CORS, không rate limit "auth", không JWT).
+- **Actor**: `Api/Internal/InternalActor.cs` đọc `X-Actor-Id` (GUID) + `X-Actor-Email` (≤ 254) — **bắt buộc với mọi POST/PUT** `/internal/*`, thiếu/sai định dạng ⇒ 400 `{ code: "VALIDATION", details: { "X-Actor-Id": [...] } }` (ném `ValidationAppException`). GET không cần.
+- **Controllers** `Api/Features/Internal/{InternalPingController, InternalAccountsController, InternalStatsController, InternalSettingsController}` — `[AllowAnonymous]`, `[ApiExplorerSettings(IgnoreApi = true)]` (không lộ trong Scalar), không `[ValidateOrigin]`. Route theo §6.5.
+- **Domain `Account`** thêm: `Disable(now)` (`IsActive=false`, `UpdatedAt`); `Enable(now)` (`IsActive=true`, `LockoutUntil=null`, `FailedLoginCount=0`); `ClearLockout(now)` (`LockoutUntil=null`, `FailedLoginCount=0`); `ResetPasswordByAdmin(hash, now)` (đổi hash, `PasswordChangedAt=now`, xoá lockout + `FailedLoginCount=0`). Idempotent: Disable tài khoản đã khoá ⇒ không lỗi, vẫn 200. `RefreshToken.Revoke(now, reason)` **đã có** — dùng lại.
+- **Application `Admin/`**:
+  - `AccountAdminService`: `ListAsync(q, status, page, pageSize)` — `q` ≤ 100, khớp `email_normalized LIKE %q_lower%` hoặc `display_name ILIKE %q%` (escape `%`/`_`); `status`: `active` = `IsActive && !(LockoutUntil > now)`, `disabled` = `!IsActive`, `locked` = `IsActive && LockoutUntil > now`; page ≥ 1, pageSize 1–100 (mặc định 20); sắp `CreatedAt DESC`. `GetAsync(id)` kèm `activeSessionCount` = số **family** có token `RevokedAt == null && RotatedAt == null && ExpiresAt > now`. `DisableAsync`/`EnableAsync`/`ClearLockoutAsync`/`ResetPasswordAsync`/`RevokeSessionsAsync` (actor, id). Lý do thu hồi: `admin_disabled`, `admin_password_reset`, `admin_revoked` — thu hồi **mọi** token `RevokedAt == null` của tài khoản. `actor.Id == id` với disable/reset-password/revoke-sessions ⇒ 422 `SELF_ACTION_FORBIDDEN` (`BusinessRuleException`). Không có tài khoản ⇒ 404 `NotFoundException`. Log Information `"Admin {ActorEmail} {Action} tài khoản {AccountId}"` — **không bao giờ** đưa mật khẩu/hash vào log hay exception.
+  - `TemporaryPasswordGenerator` (interface `ITemporaryPasswordGenerator` để test): 16 ký tự từ bảng `ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789` (bỏ `I l 1 O 0 o`), `RandomNumberGenerator.GetItems`. `newPassword` admin tự nhập: 8–128 ký tự (R-A2, dùng lại luật validator đăng ký) ⇒ response `temporaryPassword: null`.
+  - `RegistrationStatsService.GetAsync(DateOnly? from, DateOnly? to)`: mặc định `to` = hôm nay theo `Asia/Ho_Chi_Minh` (`TimeZoneInfo.FindSystemTimeZoneById`), `from = to - 29 ngày`; `from > to` hoặc số ngày > 366 ⇒ 400 `VALIDATION`. Cận UTC: `fromUtc` = 00:00 VN của `from` đổi sang UTC (`DateTime.SpecifyKind(..., Utc)`), `toUtcExclusive` = 00:00 VN của `to+1`; truy vấn `CreatedAt >= fromUtc && < toUtcExclusive`, kéo **chỉ cột `CreatedAt`** về bộ nhớ, nhóm theo ngày VN; `days` đủ mọi ngày (0 ⇒ `count: 0`). `totalAccounts`, `disabledAccounts` (`!IsActive`), `activeLast7Days`/`activeLast30Days` (`LastLoginAt >= now - 7/30 ngày`). Tham số bind kiểu `DateOnly?` (không `DateTime` — CLAUDE.md).
+  - `IRegistrationGate` (Application) + `RegistrationGate` (singleton, `IServiceScopeFactory` + `TimeProvider` + `AuthOptions`): `Task<RegistrationState> GetAsync(ct)` (`Enabled`, `Source: database|configuration`, `UpdatedAt?`), cache **30 giây**; `void Invalidate()`. Không có dòng ⇒ `authOptions.AllowRegistration`, `source=configuration`. Giá trị DB không phải `true|false` ⇒ log Warning, dùng cấu hình.
+  - `PlatformSettingsService.SetRegistrationAsync(actor, enabled)`: upsert dòng `registration.enabled`, `SaveChanges`, `gate.Invalidate()`, trả trạng thái mới.
+  - **Sửa `AuthService.RegisterAsync`**: thay `if (!authOptions.AllowRegistration)` bằng `if (!(await registrationGate.GetAsync(ct)).Enabled)` — giữ nguyên 403 `REGISTRATION_CLOSED`. Test F2 hiện có phải xanh không đổi.
+- **Test bắt buộc W10** (`tests/AntFarm.Identity.UnitTests/Internal/`, `tests/AntFarm.Identity.ApiTests/Internal/`):
+  1. Unit `InternalAccessPolicyTests` — bảng đủ ca: tắt (port 0 / key < 32) ⇒ `/internal` 404, route thường PassThrough; cổng công khai + `/internal/*` ⇒ `NotFound` **kể cả key đúng**; cổng nội bộ + route thường ⇒ `NotFound`; cổng nội bộ + key sai/thiếu/khác độ dài ⇒ `Unauthorized`; đúng ⇒ `Allow`.
+  2. Unit `TemporaryPasswordGeneratorTests` (16 ký tự, chỉ ký tự trong bảng, 1000 lần không trùng), `AccountTests` (Disable/Enable/ClearLockout/ResetPasswordByAdmin), `RegistrationStatsServiceTests`/hàm thuần tính ngày: tài khoản tạo **23:30 VN ngày D** (16:30Z) và **00:30 VN ngày D+1** (17:30Z) rơi đúng 2 ngày khác nhau; ngày trống ⇒ 0; 367 ngày ⇒ lỗi.
+  3. ApiTests: factory `IdentityDbApiFactory` con (vd `IdentityInternalApiFactory`) cấu hình `Internal:Port=5291`, key test ≥ 32 ký tự, thay `ILocalPortAccessor` bằng bản đọc header `X-Test-Local-Port` (chỉ tồn tại trong project test). Ca: **`GET /internal/ping` với cổng 5281 (công khai) + key đúng ⇒ 404**; cổng 5291 thiếu key ⇒ 401 `SERVICE_KEY_INVALID`; key sai ⇒ 401; đúng ⇒ 200; `GET /api/health`… (route công khai bất kỳ, vd `/.well-known/jwks.json`) qua cổng 5291 ⇒ 404; POST thiếu `X-Actor-Id` ⇒ 400.
+  4. Luồng: đăng ký + đăng nhập tài khoản A (lấy cookie refresh) → `disable` ⇒ refresh bằng cookie cũ không cấp token mới (403 `ACCOUNT_DISABLED` hoặc 401 — khớp hành vi `RefreshAsync` hiện tại), login ⇒ 403 `ACCOUNT_DISABLED`; `enable` ⇒ login lại được. `reset-password` không body ⇒ 200 có `temporaryPassword` 16 ký tự + header `Cache-Control: no-store`, `revokedSessions ≥ 1`; login mật khẩu cũ ⇒ 401, mật khẩu tạm ⇒ 200; refresh cũ ⇒ không dùng được. `newPassword` 7 ký tự ⇒ 400. Actor = chính A ⇒ 422 `SELF_ACTION_FORBIDDEN` (disable, reset, revoke). `revoke-sessions` ⇒ `revokedSessions` đúng số, refresh cũ hỏng. `clear-lockout` sau khi đăng nhập sai đủ `MaxFailedLogins` ⇒ login đúng được ngay.
+  5. Cài đặt: GET khi chưa có dòng ⇒ `source=configuration`; `PUT { enabled:false }` ⇒ `POST /api/auth/register` ⇒ 403 `REGISTRATION_CLOSED` **ngay** (PUT gọi `Invalidate`); `PUT true` ⇒ đăng ký lại được; list/get: `status=disabled` lọc đúng, 404 id lạ.
+  6. Log mật khẩu: test dùng sink bộ nhớ (`Serilog.Sinks.InMemory` nếu đã có trong CPM; **không có thì không thêm package** — thay bằng review code + `grep -rn "temporaryPassword\|newPassword" backend/services/identity-service/src --include=*.cs` chỉ xuất hiện ở DTO/service trả về, không trong `Log.`/`logger.`).
 
 - Cấu hình mới section `Internal`: `Port` (dev 5291, Docker 8081), `ServiceKey` (env `IDENTITY_INTERNAL_KEY`, ≥ 32 ký tự; rỗng ⇒ tắt). `launchSettings` profile http: `applicationUrl = "http://localhost:5281;http://localhost:5291"`; Docker `ASPNETCORE_URLS=http://+:8080;http://+:8081`.
 - `Api/Internal/InternalEndpointFilter` (hoặc middleware nhánh `app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/internal"))`): kiểm R-W4 **trước** authentication; controller nội bộ `[AllowAnonymous]` đối với JWT (xác thực bằng service key) và **không** áp CORS/`ValidateOrigin`. Mọi request `/internal/*` tới cổng 8080 ⇒ 404; request không phải `/internal/*` tới 8081 ⇒ 404 (cổng nội bộ chỉ phục vụ nội bộ).
@@ -633,7 +712,24 @@ server {
 
 **Thành phần dùng chung trong `apps/admin/src/components/`** (tạo ở feature đầu cần): `MarkdownEditor` (W3: textarea `minRows` lớn + tab Xem trước dùng `react-markdown` + `remark-gfm` — cùng version với website; thanh công cụ chèn **đậm/nghiêng/tiêu đề/link/danh sách/ảnh**), `MediaPicker` (W4: `AppDialog` lưới ảnh + tải lên tại chỗ, trả `MediaDto`; `MediaField` hiển thị ảnh đã chọn), `SlugField` (W5: gợi ý từ tiêu đề, bỏ dấu), `StatusChip`. Không tạo package mới cho chúng (chỉ admin dùng).
 
-#### 5.3.4 W7–W8 — `apps/website` Next.js (thiết kế)
+#### 5.3.3a W3a / W3b — màn admin (CHI TIẾT LÀM NGAY, chỉ trong `frontend/apps/admin/**`)
+
+Khuôn theo `src/features/cms-users/` (W2): `api.ts` (hàm gọi `cmsApi`, chuẩn hoá phản hồi thiếu trường; GET không `skipErrorRedirect`, ghi giữ lỗi báo tại chỗ bằng `parseApiError`), `types.ts`, `hooks.ts` (TanStack Query, khoá `['cms', '<nhóm>', ...]`), `pages/`, `components/`. Form: `react-hook-form` + `zod` **phản chiếu đúng luật BE §5.2.3**. Mọi màn dùng tốt ở 375px.
+
+**W3a**
+- `src/router.tsx`: thêm dưới `AdminLayout`: `website/cau-hinh` → `SiteSettingsPage`, `website/ngon-ngu` → `LanguagesPage` (bọc `RequirePermission permission={CMS_PERMS.SITE_MANAGE}`); chuyển `nguoi-dung-cms` sang `he-thong/nguoi-dung-cms`, route cũ `nguoi-dung-cms` → `<Navigate to="/he-thong/nguoi-dung-cms" replace />`.
+- `src/layout/navigation.tsx`: nhóm `website` thêm mục "Cấu hình website" (`/website/cau-hinh`) + "Ngôn ngữ" (`/website/ngon-ngu`), `requiredPermission: CMS_PERMS.SITE_MANAGE`, sửa `planned` bỏ phần đã làm; nhóm `he-thong` đổi `to` sang `/he-thong/nguoi-dung-cms`. `DashboardPage` nếu có link cứng `/nguoi-dung-cms` thì đổi.
+- `src/features/site-settings/`: `SiteSettingsPage` — `PageContainer`, các `Card` nhóm: **Thông tin chung** (`site.name`, `site.tagline`), **SEO mặc định** (`seo.default_title` có đếm ký tự /70, `seo.default_description` /160; ô ảnh OG **ẩn** tới W4), **Liên hệ & mạng xã hội** (`contact.email`, 3 URL), **Chân trang** (`footer.text` multiline), **Trang chủ** (`home.hero_mode` radio "Nội dung tĩnh" / "Banner (cần W5)"). `StickyActionBar` nút Lưu (disabled khi không `isDirty`), toast thành công, lỗi 400 map `details` về đúng ô. Chặn rời trang khi chưa lưu: `useBlocker` của react-router (chép ý `useUnsavedChangesGuard` từ `apps/chinese/src/features/admin-content` vào `src/hooks/useUnsavedChangesGuard.ts`).
+- `src/features/site-languages/`: `LanguagesPage` — danh sách thẻ `LanguageCard` (tên, `nativeName` đặt `lang` phù hợp — chinese ⇒ `lang="zh-CN"`, `StatusChip` open/coming_soon/hidden với nhãn "Đang mở"/"Sắp ra mắt"/"Ẩn", appUrl), nút lên/xuống `src/components/ReorderButtons.tsx` (chép từ `apps/chinese/src/features/admin-content/components/ReorderButtons.tsx`) gọi `PUT order` với toàn bộ id; nút "Thêm ngôn ngữ"; `LanguageDrawer` (`AppDrawer` của `@af/ui`) form tạo/sửa (`code` chỉ nhập khi tạo, khi sửa hiển thị chỉ đọc kèm chú thích "Mã không đổi được sau khi tạo"), `descriptionMarkdown` dùng `TextField multiline minRows={6}` ở W3a (W3b thay `MarkdownEditor`); `appUrl` bắt buộc khi status `open` (lỗi 422 `APP_URL_REQUIRED` hiện ở ô). 409 `CONCURRENCY_CONFLICT` ⇒ `Alert` trong drawer "Có người vừa sửa ngôn ngữ này" + nút "Tải lại bản mới" (không đóng drawer). Xoá qua `useConfirm` ("Website sẽ không còn hiện ngôn ngữ này").
+- `src/components/StatusChip.tsx` (dùng chung sau này).
+- Tự test tay: sửa cấu hình ⇒ F5 giữ giá trị; thêm/sửa/xoá/sắp xếp ngôn ngữ; tài khoản `support` (không `site.manage`) không thấy mục Website và gõ URL ⇒ `/403`; `/nguoi-dung-cms` cũ chuyển hướng đúng; 375px không tràn ngang.
+
+**W3b**
+- Dependency: `react-markdown` + `remark-gfm` (bản mới nhất ổn định, kiểm peer React 19) vào `frontend/apps/admin/package.json` `dependencies`; chạy `yarn install` trong `frontend/` (đổi `frontend/yarn.lock` — W10 không đụng frontend nên không xung đột). Website (W7) sau này dùng **cùng version**.
+- `src/components/MarkdownPreview.tsx`: `<ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>`; **không** dùng `rehype-raw`; giữ `urlTransform` mặc định (chặn `javascript:`/`data:`); link ngoài render `target="_blank" rel="noopener noreferrer"`; ảnh `max-width: 100%`. `src/components/MarkdownEditor.tsx` (props `value`, `onChange`, `label`, `error`, `helperText`, `minRows=12`): `Tabs` Soạn/Xem trước (state cục bộ — **không** `useTabParam` vì là tab trong form, ghi chú lý do để `lint:ui` WARN được hiểu), thanh công cụ chèn đậm `**…**`, nghiêng `*…*`, tiêu đề `## `, link `[chữ](https://)`, danh sách `- `, ảnh `![alt](url)` quanh vùng chọn của textarea (giữ con trỏ). Test vitest `MarkdownPreview.test.tsx`: `<script>alert(1)</script>` không sinh thẻ `script`; `[x](javascript:alert(1))` không có `href` chứa `javascript:`; bảng GFM render `table`.
+- `LanguageDrawer`: đổi ô `descriptionMarkdown` sang `MarkdownEditor`.
+- `src/features/site-faqs/`: route `website/faq` (`SITE_MANAGE`), nav "Câu hỏi thường gặp". `FaqsPage`: nhóm theo `groupKey` (tiêu đề nhóm), mỗi dòng: câu hỏi, chip "Đã xuất bản"/"Nháp", `ReorderButtons` trong nhóm, sửa/xoá. `FaqDialog` (`AppDialog maxWidth="md"`, `fullScreen` khi < sm): `question`, `groupKey` (Autocomplete `freeSolo` gợi ý nhóm đã có — trải `params.slotProps` trước khi ghi đè, CLAUDE.md), `answerMarkdown` (`MarkdownEditor`), `isPublished` switch. 409 như ngôn ngữ.
+- `src/features/audit-logs/`: route `he-thong/nhat-ky` (`CMS_PERMS.USERS_MANAGE`), nav "Nhật ký thao tác" (bỏ `planned` nhóm Hệ thống). `AuditLogsPage`: lọc `targetType` (Tất cả / `site_settings` / `language` / `faq`) + trang **lên URL** (`useSearchParams`, `replace`); ≥ md bảng (Thời điểm theo giờ trình duyệt `dd/MM/yyyy HH:mm`, Người làm, Hành động, Đối tượng, Tóm tắt, Kết quả); < md danh sách thẻ.
 
 **package.json** (mẫu MedDental, kiểm version mới nhất tương thích trước khi khoá): `next ^15.x`, `react`/`react-dom` **cùng dải `^19.2.6` với các app khác** (một bản React hoisted trong workspace), `react-markdown`, `remark-gfm`; dev `tailwindcss ^4`, `@tailwindcss/postcss ^4`, `@tailwindcss/typography`, `typescript ~6.0.2`, `@types/*`. **Không** dùng `@af/*` (MUI/emotion không cần cho site tĩnh) ⇒ Dockerfile chỉ COPY `package.json` của website. Scripts: `dev: next dev --port 3281`, `build: next build`, `start: next start --port 3281`, `typecheck: tsc --noEmit` ⚠️ **ngoại lệ có chủ đích** với quy tắc `tsc -b`: app Next không có project references, tsconfig riêng không `files: []`; cổng kiểm là `yarn workspace @af/website build` (next build tự type-check). Kiểm `turbo.json` không vỡ khi app không có `typecheck -b`.
 
@@ -784,18 +880,23 @@ Sắp xếp danh sách user: `last_seen_at DESC`. `q` khớp `lower(email)` ho�
 ### 6.2 W3 — site nền
 
 ```
+── W3a ──
 GET  /api/admin/site-settings      site.manage   200 { "values": { "site.name": "AntFarm", "seo.default_title": "...", ... }, "updatedAt": "..." }
 PUT  /api/admin/site-settings      site.manage   { "values": { ...đủ mọi khoá... } } → 200 như GET · 400 VALIDATION (khoá lạ/độ dài)
 GET  /api/admin/languages          site.manage   200 [ LanguageDto ]
-POST /api/admin/languages          site.manage   LanguageInput → 201 LanguageDto · 409 CODE_TAKEN
-PUT  /api/admin/languages/{id}     site.manage   LanguageInput + "version" → 200 · 409 CONCURRENCY_CONFLICT · 422 APP_URL_REQUIRED
-DELETE /api/admin/languages/{id}   site.manage   204
-PUT  /api/admin/languages/order    site.manage   { "ids": ["…","…"] } → 204
+POST /api/admin/languages          site.manage   LanguageInput + "code" → 201 LanguageDto · 409 CODE_TAKEN · 422 APP_URL_REQUIRED · 400 VALIDATION
+  LanguageInput { name, nativeName, tagline, descriptionMarkdown, status, appUrl|null, accentColor|null }   (W3a chưa có coverMediaId — W4 thêm)
+PUT  /api/admin/languages/{id}     site.manage   LanguageInput (KHÔNG có code) + "version" → 200 · 409 CONCURRENCY_CONFLICT · 422 APP_URL_REQUIRED · 404
+DELETE /api/admin/languages/{id}   site.manage   204 · 404
+PUT  /api/admin/languages/order    site.manage   { "ids": ["…","…"] } (đủ mọi id) → 204 · 422 ORDER_MISMATCH
   LanguageDto { id, code, name, nativeName, tagline, descriptionMarkdown, status: "open|coming_soon|hidden", appUrl, accentColor, coverMedia: MediaDto|null, sortOrder, version, updatedAt }
   (version = xmin dạng chuỗi số; PUT gửi lại nguyên bản ghi kèm version)
-GET/POST/PUT/DELETE /api/admin/faqs[/{id}], PUT /api/admin/faqs/order    site.manage
+── W3b ──
+GET/POST/PUT/DELETE /api/admin/faqs[/{id}]    site.manage   FaqInput { question, answerMarkdown, groupKey, isPublished } (+ "version" khi PUT) · 409 CONCURRENCY_CONFLICT · 404
+PUT  /api/admin/faqs/order         site.manage   { "groupKey": "general", "ids": [...] } (đủ id của nhóm) → 204 · 422 ORDER_MISMATCH
   FaqDto { id, question, answerMarkdown, groupKey, sortOrder, isPublished, version, updatedAt }
-GET  /api/admin/audit-logs?targetType=&targetId=&page=   users.manage   → phân trang { at, actorEmail, action, targetType, targetId, summary, success }
+GET  /api/admin/audit-logs?targetType=&targetId=&page=&pageSize=50   users.manage   → { items: [ { id, at, actorId, actorEmail, action, targetType, targetId, summary, success } ], page, pageSize, totalCount }   (W3b; bảng tạo ở W3a)
+── W3a (W3a trả "faqs": [] — W3b điền; "ogImageUrl"/"coverUrl" luôn null tới W4) ──
 GET  /api/public/site              ẩn danh
   200 { "settings": { "site.name": "...", ... (bỏ khoá rỗng) }, "ogImageUrl": "/cms/api/public/media/…/og.png" | null,
         "languages": [ { "code": "chinese", "name": "Tiếng Trung", "nativeName": "中文", "tagline", "descriptionMarkdown", "status": "open", "appUrl": "https://chinese.antfarms.xyz", "accentColor", "coverUrl" } ],
@@ -843,7 +944,7 @@ POST /internal/accounts/{id}/disable        → 200 item · 422 SELF_ACTION_FORB
 POST /internal/accounts/{id}/enable         → 200 item
 POST /internal/accounts/{id}/clear-lockout  → 200 item
 POST /internal/accounts/{id}/reset-password { "newPassword"?: "..." }
-  200 { "temporaryPassword": "k7Pq-…" | null (null khi admin tự nhập), "revokedSessions": 2 }  + Cache-Control: no-store · 400 VALIDATION · 422 SELF_ACTION_FORBIDDEN
+  200 { "temporaryPassword": "k7PqXw3mZr9TbN2h" (16 ký tự, không gạch nối) | null (null khi admin tự nhập), "revokedSessions": 2 }  + Cache-Control: no-store · 400 VALIDATION · 422 SELF_ACTION_FORBIDDEN
 POST /internal/accounts/{id}/revoke-sessions → 200 { "revokedSessions": 3 } · 422 SELF_ACTION_FORBIDDEN
 GET  /internal/stats/registrations?from=2026-08-19&to=2026-09-17
   200 { "timeZone": "Asia/Ho_Chi_Minh", "days": [ { "date": "2026-09-17", "count": 4 } ], "totalAccounts": 57, "disabledAccounts": 1, "activeLast7Days": 12, "activeLast30Days": 30 }
@@ -898,11 +999,19 @@ GET  /api/health → 200 { "ok": true }
 - Phụ thuộc: W1.
 - Tiêu chí + tự test: 6 ca tay §5.3.1 ở 1366px và 375px; `tsc -b`/`build`/`lint:ui` sạch; `CLAUDE.md` dòng W2.
 
-### Feature W3: CMS nội dung nền — cấu hình site/SEO, ngôn ngữ, FAQ, nhật ký (BE + FE)
-- Mục tiêu: biên tập được thông tin chung, danh mục ngôn ngữ, FAQ; có `GET /api/public/site`.
-- BE §5.2.3, DB §5.1.2 (`W3_SiteBasics`), API §6.2; FE §5.3.3 (3 màn + nhật ký + `MarkdownEditor`, đổi route người dùng CMS sang `/he-thong/...`). `IRevalidationNotifier` no-op. Chưa có ảnh (ô ảnh OG/ảnh bìa ngôn ngữ ẩn tới W4 — hoặc để trống, không lỗi).
-- Phụ thuộc: W2.
-- Tiêu chí: ApiTests CRUD + concurrency 409 + public chỉ trả `is_published`/không `hidden` + seed chỉ khi trống (chạy seeder 2 lần; xoá một ngôn ngữ, restart ⇒ không mọc lại) + audit ghi đúng actor; tay: sửa cấu hình, sắp xếp ngôn ngữ, soạn FAQ Markdown có xem trước. *Bổ sung chi tiết khi tới lượt nếu thiếu.*
+### Feature W3a: CMS nền — cấu hình site/SEO + ngôn ngữ + `GET /api/public/site` (BE + FE)
+- Mục tiêu: biên tập được thông tin chung/SEO và danh mục ngôn ngữ; website (W7) có một API công khai để dựng layout; hạ tầng nhật ký thao tác + revalidate no-op sẵn cho mọi feature ghi sau.
+- Phạm vi BE: §5.2.3 "W3a — Backend"; DB: §5.1.2 migration `W3a_SiteBasics` (`site.settings`, `site.languages`, `site.audit_logs`); API §6.2 phần W3a. FE: §5.3.3a "W3a" (2 màn + đổi route Người dùng CMS sang `/he-thong/...`). Học liệu: không. Chưa có ảnh (ô OG/ảnh bìa ẩn tới W4).
+- **Ranh giới file:** BE chỉ `backend/services/cms-backend/**`; FE chỉ `frontend/apps/admin/**`. Không sửa `shared/`, `frontend/packages/**`, `deploy/**`, `CLAUDE.md` (W3a không đổi cổng/biến môi trường; `CmsSeed:Languages` tuỳ chọn, chỉ ghi trong `appsettings.Development.json.example` của cms).
+- Phụ thuộc: W2. **Song song được với W10** (khác service, khác thư mục). BE ‖ FE song song (§6.2 đã chốt).
+- Tiêu chí + tự test: 6 nhóm test W3a §5.2.3 xanh với `AF_TEST_PG` (báo số chạy/skip); `dotnet build` 0 error; `yarn workspace @af/admin tsc -b`, `yarn lint:ui` sạch; tay theo §5.3.3a W3a ở 1366px + 375px; `curl http://localhost:5280/cms/api/public/site` không token ⇒ 200 JSON.
+
+### Feature W3b: CMS nền — FAQ + nhật ký thao tác + trình soạn Markdown (BE + FE)
+- Mục tiêu: soạn FAQ bằng Markdown có xem trước an toàn XSS (D-W1); quản trị viên xem được ai đã sửa gì.
+- Phạm vi BE: §5.2.3 "W3b — Backend"; DB: migration `W3b_Faqs`; API §6.2 phần W3b. FE: §5.3.3a "W3b" (`MarkdownEditor`/`MarkdownPreview` + dependency `react-markdown`/`remark-gfm`, màn FAQ, màn nhật ký, ô mô tả ngôn ngữ dùng `MarkdownEditor`).
+- **Ranh giới file:** như W3a + `frontend/yarn.lock`.
+- Phụ thuộc: W3a (bảng `audit_logs`, `IAuditLogger`, `PublicSiteService`, route/nav đã đổi).
+- Tiêu chí + tự test: test W3b §5.2.3 xanh; vitest `MarkdownPreview.test.tsx` xanh (`yarn workspace @af/admin test`); `yarn workspace @af/admin build` sạch (đổi dependency); tay: soạn FAQ có bảng/danh sách, xem trước đúng, dán `<script>` không chạy; bỏ xuất bản ⇒ `/cms/api/public/site` không còn FAQ đó; tài khoản `editor` vào `/he-thong/nhat-ky` ⇒ `/403`.
 
 ### Feature W4: Thư viện ảnh MinIO + MediaPicker
 - Mục tiêu: tải/quản lý ảnh, gắn ảnh OG + ảnh bìa ngôn ngữ, phục vụ ảnh công khai.
@@ -938,9 +1047,11 @@ GET  /api/health → 200 { "ok": true }
 - Tiêu chí: ApiTests honeypot ⇒ 202 + `spam`; `renderedAt` < 3 giây ⇒ spam; rate limit 6 lần/10 phút ⇒ 429; nhận tin trùng ⇒ 1 dòng; CSV có BOM + chống injection (`=cmd` ⇒ `'=cmd`); lọc ngày VN nửa hở (ca 23:30 VN); tay: gửi form ở 375px, xử lý trong admin, mở CSV bằng Excel đúng dấu. *Bổ sung khi tới lượt.*
 
 ### Feature W10: identity-service — API nội bộ quản trị tài khoản + cài đặt đăng ký runtime + thống kê
-- BE §5.2.9, DB §5.1.7 (`W10_Settings` ở `af_identity`), API §6.5. Deploy: `ASPNETCORE_URLS` 2 cổng, `Internal__*` env, `IDENTITY_INTERNAL_KEY` `.env.example`, **không** ports/cluster/location; `VERIFY-DOCKER.md` ca (a)(b); quy tắc mới `CLAUDE.md` (§5.7 W10).
-- Phụ thuộc: không (làm song song được với W3–W9; đặt sau để nhóm theo luồng).
-- Tiêu chí: test §5.2.9 xanh — đặc biệt **route nội bộ qua cổng công khai ⇒ 404**, key sai ⇒ 401, khoá ⇒ refresh cũ không dùng được, reset ⇒ mật khẩu tạm đăng nhập được + không xuất hiện trong log (test bắt log sink hoặc review), tự thao tác ⇒ 422, thống kê ranh giới ngày VN; test cũ F2 vẫn xanh (đăng ký dùng `IRegistrationGate`). *Bổ sung khi tới lượt.*
+- Mục tiêu: identity có API nội bộ (chỉ cổng 8081/5291 + `X-Service-Key`) để cms-backend (W11) khoá/mở, gỡ khoá tạm, đặt lại mật khẩu, thu hồi phiên, xem thống kê đăng ký, bật/tắt đăng ký lúc chạy — identity **vẫn không có vai trò/quyền** (R-W3).
+- Phạm vi BE: §5.2.9 (phần "CHI TIẾT LÀM NGAY" ưu tiên); DB §5.1.7 migration `W10_Settings` trong `af_identity`; API §6.5. FE / học liệu: không. **W11 (cms-backend gọi API này + màn `/tai-khoan`) KHÔNG thuộc W10.**
+- **Ranh giới file:** CHỈ `backend/services/identity-service/**` (src + tests + `Dockerfile` + `launchSettings.json` + `appsettings*.json(.example)`). Không sửa `deploy/**`, `CLAUDE.md`, gateway, `shared/`, `Directory.Packages.props` (không thêm package). Phần dùng chung ⇒ agent **ghi vào báo cáo**, orchestrator ráp theo §8.1.
+- Phụ thuộc: không. Song song với W3a/W3b.
+- Tiêu chí + tự test: 6 nhóm test W10 §5.2.9 xanh — bắt buộc có **`/internal/ping` qua cổng công khai + key đúng ⇒ 404**, key sai ⇒ 401, route công khai qua cổng nội bộ ⇒ 404, khoá ⇒ refresh cũ/đăng nhập hỏng, reset ⇒ mật khẩu tạm đăng nhập được + mật khẩu cũ 401 + `Cache-Control: no-store`, tự thao tác ⇒ 422, ranh giới ngày 23:30/00:30 VN, tắt đăng ký ⇒ `REGISTRATION_CLOSED`; **toàn bộ test F2 cũ vẫn xanh**. Tay (dev): `curl -i http://localhost:5281/internal/ping -H "X-Service-Key: <key dev>"` ⇒ 404; `curl -i http://localhost:5291/internal/ping -H "X-Service-Key: <key dev>"` ⇒ 200; `curl -i http://localhost:5280/identity/internal/ping` (qua gateway) ⇒ 404. Máy dev có `appsettings.Development.json` thật (gitignore) ⇒ báo cáo nhắc người dùng thêm section `Internal` vào file thật (thiếu ⇒ API nội bộ tắt, chỉ 404).
 
 ### Feature W11: Admin — quản trị tài khoản nền tảng
 - BE §5.2.10, API §6.6; FE màn `/tai-khoan` (§5.3.3). Compose cms `IdentityInternal__*`.
@@ -976,7 +1087,8 @@ GET  /api/health → 200 { "ok": true }
 W1 ─► W2 ─► W3 ─► W4 ─┬─► W5 ─► W6 ─┐
                       └─► W7 ───────┴─► W8
                           W7 ─► W9
-W10 ─► W11 (cần W3)
+W10 ─► W11 (cần W3a)
+W3 = W3a ─► W3b (chẻ 17/09/2026)
 W12 ─► W13 (cần W2) ─► W14
 W1…W14 ─► W15
 ```
@@ -985,6 +1097,28 @@ W1…W14 ─► W15
 - **Có thể song song** (nếu Orchestrator muốn nhanh, vẫn commit tách): trong một feature, BE ‖ FE sau khi §6 chốt (W3–W6, W9, W11). **W10** độc lập hoàn toàn với W3–W9 (khác service). **W12** độc lập với mọi W khác (chỉ đụng `apps/chinese` + package mới). **W7 FE khung** làm được song song W5/W6 (dùng `hero_mode=static`).
 - **Phân công agent:** mọi FRONTEND (`apps/admin`, `apps/website`, `packages/chinese-kit`, `apps/chinese`) → `frontend-implement` **model `fable`**; Backend/Database → Sonnet; Review/Integration → Opus.
 - **Trong phiên tới 22:30 17/09:** mục tiêu thực tế W1 → W2 (→ W3 nếu kịp). Không dừng hỏi giữa feature; quyết định mở dùng mặc định §10.2.
+
+### 8.1 Phiên 17/09/2026 tối (tới 23:33): W3a ‖ W10 song song, rồi W3b
+
+```
+Làn A (cms):      W3a BE ‖ W3a FE ─► review ─► commit ─► W3b BE ‖ W3b FE ─► review ─► commit
+Làn B (identity): W10 BE ───────────► review ─► commit
+```
+
+- Hai làn **không chung file nào** (W3: `backend/services/cms-backend/**` + `frontend/apps/admin/**` + `frontend/yarn.lock` ở W3b; W10: `backend/services/identity-service/**`). File chung (`backend/backend.slnx`, `Directory.Packages.props`, `deploy/**`, `CLAUDE.md`, `docs/**`) **không agent nào sửa**. Commit tách; trước mỗi commit chạy lại `dotnet build`/`dotnet test` toàn solution vì làn kia có thể đã commit.
+- Hết giờ: ưu tiên hoàn tất **W10** + **W3a**; W3b dời phiên sau (không commit dở).
+- **Đoạn orchestrator ráp sau khi W10 qua review** (agent BE không tự sửa):
+  1. `deploy/docker-compose.yml`, service `identity-service` → `environment:` thêm `Internal__Port: "8081"` và `Internal__ServiceKey: ${IDENTITY_INTERNAL_KEY:-}` (rỗng ⇒ API nội bộ tắt, service vẫn chạy); **không** thêm `ports:`; gateway **không** thêm cluster. `ASPNETCORE_URLS` hai cổng nằm trong Dockerfile; nếu compose đè `ASPNETCORE_URLS` thì sửa thành `http://+:8080;http://+:8081`.
+  2. `deploy/.env.example` thêm:
+     ```
+     # Khoá dịch vụ cho API nội bộ identity-service (cổng 8081, KHÔNG public). cms-backend (W11) dùng CÙNG giá trị.
+     # Sinh: openssl rand -base64 48   (>= 32 ký tự; rỗng/ngắn => API nội bộ tắt, trả 404)
+     IDENTITY_INTERNAL_KEY=
+     ```
+     và chú thích `AUTH_ALLOW_REGISTRATION`: "Chỉ là giá trị KHỞI TẠO — khi admin đã bật/tắt đăng ký (bảng identity.settings) thì giá trị trong DB thắng."
+  3. `deploy/VERIFY-DOCKER.md` thêm mục W10 ("chưa verify"): (a) `curl -sk -o /dev/null -w "%{http_code}" https://id.antfarms.xyz/internal/ping` ⇒ `404`; (b) từ một container trong `af-net` (gateway; từ W11 là cms-backend): `wget -qO- --header "X-Service-Key: $IDENTITY_INTERNAL_KEY" http://identity-service:8081/internal/ping` ⇒ `{"ok":true}`; (c) `docker compose port identity-service 8081` ⇒ không có ánh xạ; (d) `wget -qO- http://identity-service:8081/.well-known/jwks.json` ⇒ 404.
+  4. `CLAUDE.md`: (i) Quy tắc bắt buộc thêm quy tắc §5.7 dòng W10 (nguyên văn); (ii) bảng cổng thêm `identity-service nội bộ (W10) | http://localhost:5291 (chỉ /internal/*, không qua gateway) | identity-service:8081 (không publish)`; (iii) mục identity-service thêm "`/internal/*` (W10): quản trị tài khoản + `identity.settings` (`registration.enabled`, cache 30s) — chỉ cms-backend gọi"; (iv) cập nhật dòng tiến độ "W1, W2, W12 xong".
+- **Đoạn orchestrator ráp sau W3a/W3b:** `CLAUDE.md` mục cms-backend thêm "schema `site`: `settings`, `languages`, `audit_logs` (W3a), `faqs` (W3b); `GET /api/public/site` ẩn danh, `IAuditLogger` + `IRevalidationNotifier` (no-op tới W7)"; mục `apps/admin` thêm "`src/components/` (`MarkdownEditor`/`MarkdownPreview` — `react-markdown` + `remark-gfm`, `skipHtml`, không `rehype-raw`)"; dòng tiến độ. Không đổi `deploy/**` (không biến môi trường/cổng mới).
 
 ---
 
