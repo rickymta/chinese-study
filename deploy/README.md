@@ -34,6 +34,7 @@ Tạo bản ghi A cho **cả hai** subdomain, trỏ về IP máy này:
 |---|---|
 | `id.antfarms.xyz` | IP máy này |
 | `chinese.antfarms.xyz` | IP máy này |
+| `admin.antfarms.xyz` | IP máy này (W2) |
 
 **Chế độ proxy:**
 
@@ -158,7 +159,7 @@ docker run --rm -v antfarm_identity-keys:/keys alpine:3 ls -la /keys
 
 ```bash
 set -a && source .env && set +a
-./scripts/get-cert.sh "$LETSENCRYPT_EMAIL" id.antfarms.xyz chinese.antfarms.xyz
+./scripts/get-cert.sh "$LETSENCRYPT_EMAIL" id.antfarms.xyz chinese.antfarms.xyz admin.antfarms.xyz
 ```
 
 ⚠️ **Luôn truyền ĐỦ mọi tên miền của máy này** (cũ + mới) — chỉ truyền tên mới sẽ **đè mất**

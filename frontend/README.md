@@ -19,7 +19,16 @@ frontend/
     chinese-kit/                        # @af/chinese-kit — pinyin (số⇄dấu), Hanzi/Pinyin, ChineseSpeechProvider/SpeakButton, LessonContent + khối/quiz, kiểu bài học/từ điển (W12)
   apps/
     chinese/                            # @af/chinese — app tiếng Trung, cổng dev 3280
+    admin/                              # @af/admin — Admin kiêm CMS chung (W2), cổng dev 3290, proxy /identity /cms /chinese → 5280
 ```
+
+`apps/admin` (W2, hợp đồng `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md` §5.3.1):
+đăng nhập bằng tài khoản nền tảng (không có link Đăng ký), `src/auth/loadMe.ts` gọi song song `GET /cms/api/me` +
+`GET /<ngôn-ngữ>/api/me` của mọi module trong `src/modules/registry.ts` và gộp quyền **có tiền tố service**
+(`cms:users.manage`, `chinese:content.manage` — `useAuth().can('cms:site.manage')`); service không phản hồi chỉ bị ẩn
+phần đó (Dashboard cảnh báo), 0 quyền khi mọi service đều trả lời ⇒ `/403` có nút Đăng xuất. Hàm gộp là hàm thuần
+`src/auth/mergeMe.ts` có test: `yarn workspace @af/admin test`. Route admin là tiếng Việt không dấu; module ngôn ngữ
+nằm dưới `/ngon-ngu/<code>/...` (W13). W2 có màn **Người dùng CMS** (`/nguoi-dung-cms`, quyền `cms:users.manage`).
 
 `@af/*` là workspace symlink, **import thẳng TS source** (không build/dist): sửa `packages/<pkg>/src` là vá cho mọi app.
 `@af/chinese-kit` (W12) chỉ chứa thứ **không gọi API** — dùng chung giữa `apps/chinese` và module Tiếng Trung của admin (W13);
@@ -35,6 +44,8 @@ yarn install                          # cài toàn bộ workspace
 yarn workspace @af/chinese dev        # http://localhost:3280 (Vite, strictPort)
 yarn workspace @af/chinese tsc -b     # type-check — BẮT BUỘC -b (root tsconfig có files: [])
 yarn workspace @af/chinese build      # tsc -b && vite build → apps/chinese/dist
+yarn workspace @af/admin dev          # http://localhost:3290 (W2) — cần thêm cms-backend (5290) sau gateway
+yarn workspace @af/admin tsc -b       # type-check admin; `build` / `test` tương tự
 yarn lint:ui                          # quét apps/*/src; exit 1 khi vi phạm luật FAIL
 ```
 

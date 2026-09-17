@@ -92,7 +92,8 @@ services:
       Auth__RefreshCookieSecure: "true"
       Auth__AllowRegistration: ${AUTH_ALLOW_REGISTRATION:-false}
       Auth__AllowedOrigins__0: https://chinese.${APP_DOMAIN}
-      # Auth__AllowedOrigins__1: https://${APP_DOMAIN}   # bật khi có portal (F13)
+      Auth__AllowedOrigins__1: https://admin.${APP_DOMAIN}   # W2 — app admin/CMS
+      # Auth__AllowedOrigins__2: https://${APP_DOMAIN}   # website antfarms.xyz nếu cần gọi identity (W7+) — giữ chỉ số liền nhau
     volumes: [identity-keys:/keys]
     depends_on:
       postgres: { condition: service_healthy }
@@ -181,6 +182,17 @@ services:
     networks: [af-net]
     logging: *default-logging
 
+  # ── admin-frontend (W2) — admin kiêm CMS chung, ảnh nginx tĩnh, KHÔNG publish cổng ──
+  admin-frontend:
+    image: ${REGISTRY:-localhost/antfarm}/admin-frontend:${ADMIN_FRONTEND_TAG:-latest}
+    build:
+      context: ../frontend
+      dockerfile: apps/admin/Dockerfile
+      args: { VITE_IDENTITY_API_URL: "https://id.${APP_DOMAIN}/api" }
+    restart: unless-stopped
+    networks: [af-net]
+    logging: *default-logging
+
   nginx: # nginx biên — container DUY NHẤT publish cổng
     image: nginx:1.27-alpine
     restart: unless-stopped
@@ -197,6 +209,7 @@ services:
     depends_on:
       - gateway
       - chinese-frontend
+      - admin-frontend
     networks: [af-net]
     logging: *default-logging
 

@@ -99,6 +99,7 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 | Host | Đích |
 |---|---|
 | `id.antfarms.xyz` | identity-service (mọi đường dẫn → gateway `/identity/*`): đăng nhập/refresh/tài khoản, JWKS `https://id.antfarms.xyz/.well-known/jwks.json`, là `iss` của token |
+| `admin.antfarms.xyz` | app admin kiêm CMS chung (W2) + `/cms/*`, `/chinese/*` → gateway; `X-Robots-Tag: noindex` |
 | `chinese.antfarms.xyz` | app tiếng Trung + `/chinese/*` → gateway → chinese-backend |
 | `antfarms.xyz` | portal / trang chọn ngôn ngữ — **feature sau (F13), ngoài MVP**; chưa có server block thật |
 | `english.` · `japanese.` · `vietnamese.antfarms.xyz` | dành sẵn, cùng mẫu `chinese.` |
@@ -134,9 +135,9 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
 
 **Đợt W1–W15 (từ 17/09/2026):** thêm `cms-backend` (nền tảng quản trị chung) + `apps/admin` +
 `apps/website` (Next.js, `antfarms.xyz`) — hợp đồng
-`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1 xong**
+`docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`. **W1, W2, W12 xong**
 (cms-backend khung + phân quyền cục bộ fail-closed + `/api/me` + audience `af-cms` + route
-gateway `/cms/**`); W2+ chưa làm.
+gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/chinese-kit`); W3–W11, W13–W15 chưa làm.
 
 ### Backend — `backend/` (.NET 10, `backend.slnx`, Central Package Management)
 
@@ -157,13 +158,14 @@ gateway `/cms/**`); W2+ chưa làm.
 | chinese-backend | http://localhost:5282 (Scalar `/scalar/v1`) | `chinese-backend:8080` |
 | cms-backend (W1) | http://localhost:5290 (Scalar `/scalar/v1`) | `cms-backend:8080` |
 | apps/chinese | http://localhost:3280 (Vite proxy `/identity`, `/chinese` → 5280) | `chinese-frontend:80` |
-| apps/admin (W2 — chưa làm) | http://localhost:3290 (dành sẵn) | `admin-frontend:80` |
+| apps/admin (W2) | http://localhost:3290 (Vite proxy `/identity`, `/cms`, `/chinese` → 5280) | `admin-frontend:80` |
 | apps/website (W7 — chưa làm, Next.js `antfarms.xyz`) | http://localhost:3281 (dành sẵn) | `website:3000` |
 | Ngôn ngữ kế tiếp | backend 5283, app 3282, ... | `<ngon-ngu>-backend:8080` |
 
 ### Frontend — `frontend/` (Turborepo + Yarn Classic Workspaces + React 19 + MUI v9 + TypeScript + Vite)
 
 - `packages/tsconfig|ui|api|auth|utils` (tên `@af/*`): `@af/ui` (theme, AppLayout, AppDialog, ErrorPage, useTabParam, LangText, TTS `speech`...), `@af/api` (`createApiClient`), `@af/auth` (AuthProvider, RequireAuth, RequirePermission, LoginPage/RegisterPage dùng chung — gọi identity-service), `@af/utils` (parseApiError, zod). Import thẳng TS source — không build/dist. Package chỉ được tạo ở feature đầu tiên cần nó; tiện ích đặc thù một ngôn ngữ đặt trong app của ngôn ngữ đó **cho tới khi có app thứ hai cần** — tiền lệ: `packages/chinese-kit` (`@af/chinese-kit`, W12 17/09/2026) tách từ `apps/chinese` để module Tiếng Trung của admin (W13) dùng chung: pinyin số⇄dấu, `Hanzi`/`Pinyin`, `ChineseSpeechProvider`/`SpeakButton`, `LessonContent` + khối/quiz, kiểu bài học/từ điển. Kit **không gọi API**: hook gọi máy chủ (`useTtsRate`) ở lại app và tiêm qua props; test riêng `yarn workspace @af/chinese-kit test`.
+- `apps/admin` (`@af/admin`, W2) — admin kiêm CMS chung: `loadMe` gộp `GET /cms/api/me` + `/<ngôn-ngữ>/api/me` (Promise.allSettled), quyền gắn tiền tố service (`cms:users.manage`, `chinese:content.manage`), service không phản hồi chỉ ẩn phần của nó (`RequireAuth allowNoPermissions`), module ngôn ngữ khai ở `src/modules/registry.ts`. Origin `http://localhost:3290` / `https://admin.antfarms.xyz` phải có trong `Auth:AllowedOrigins` của identity.
 - `apps/chinese` (`@af/chinese`) — học viên + quản trị nội dung tiếng Trung (ẩn theo quyền). `src/features/<module>/`; route slug tiếng Việt không dấu. Mỗi app có `Dockerfile` + `nginx.conf` (chỉ phục vụ tĩnh).
 - `scripts/check-ui-conventions.mjs` (`yarn lint:ui`): FAIL `raw-dialog`, `uuid-import`, `autocomplete-slotprops-override`; WARN `tabs-no-url`.
 
@@ -173,7 +175,7 @@ gateway `/cms/**`); W2+ chưa làm.
 
 ### Triển khai — `deploy/`
 
-`docker-compose.yml` (postgres, identity-service, chinese-backend, **cms-backend (W1)**, gateway, chinese-frontend, nginx, certbot — chỉ nginx publish cổng), `.env.example`, `conf/nginx.conf.example` (khối 80 ACME + server `id.`/`chinese.` + mẫu ngôn ngữ/portal để comment — khối `admin.`/`antfarms.xyz` thêm ở W2/W7), `conf/cloudflare-realip.conf.example`, `scripts/{self-signed,get-cert,renew-cert}.sh`, `certs/` (gitignore), `postgres/init/` (tạo role+DB `af_identity`/`af_chinese`/`af_cms`, chỉ chạy khi volume trống), `VERIFY-DOCKER.md` (checklist verify Docker + HTTPS khi có server).
+`docker-compose.yml` (postgres, identity-service, chinese-backend, **cms-backend (W1)**, gateway, chinese-frontend, **admin-frontend (W2)**, nginx, certbot — chỉ nginx publish cổng), `.env.example`, `conf/nginx.conf.example` (khối 80 ACME + server `id.`/`chinese.`/`admin.` + mẫu ngôn ngữ/portal để comment — khối `antfarms.xyz` thêm ở W7), `conf/cloudflare-realip.conf.example`, `scripts/{self-signed,get-cert,renew-cert}.sh`, `certs/` (gitignore), `postgres/init/` (tạo role+DB `af_identity`/`af_chinese`/`af_cms`, chỉ chạy khi volume trống), `VERIFY-DOCKER.md` (checklist verify Docker + HTTPS khi có server).
 
 ### Thêm một ngôn ngữ mới (tóm tắt — checklist đầy đủ ở hợp đồng §5.5)
 
@@ -208,4 +210,4 @@ docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f 
 ```
 
 > Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal — **F13 đã bị thay thế bởi đợt W1–W15**): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.
-> Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1 xong**, W2+ chưa làm): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.
+> Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1, W2, W12 xong**): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.

@@ -158,3 +158,11 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
       `psql -U postgres`: `CREATE ROLE af_cms LOGIN PASSWORD '<mật khẩu>'; CREATE DATABASE af_cms
       OWNER af_cms ENCODING 'UTF8' TEMPLATE template0;` rồi `docker compose up -d cms-backend`.
 - [ ] `docker compose ps` ⇒ `cms-backend` KHÔNG có cột PORTS ra host (chỉ `nginx` được publish).
+
+## 9. admin-frontend (W2) — CHƯA VERIFY bằng Docker
+
+- [ ] `docker compose build admin-frontend` thành công; `yarn install --frozen-lockfile` không báo thiếu module.
+- [ ] `docker run --rm --entrypoint sh <ảnh admin-frontend> -c 'grep -rl "id.antfarms.xyz" /usr/share/nginx/html | head -3'` có kết quả (biến `VITE_IDENTITY_API_URL` nướng đúng).
+- [ ] `curl -I https://admin.antfarms.xyz/` ⇒ 200 và có `X-Robots-Tag: noindex, nofollow`; file `.mjs` trả `application/javascript`; `/abc` ⇒ 200 `index.html` (SPA fallback).
+- [ ] Identity có `Auth__AllowedOrigins__1=https://admin.antfarms.xyz` — đăng nhập tại admin không bị 403 `ORIGIN_NOT_ALLOWED`.
+- [ ] Chứng chỉ SAN có `admin.antfarms.xyz` (`get-cert.sh` truyền ĐỦ `id. chinese. admin.`), bản ghi DNS Cloudflare `admin` đã tạo.

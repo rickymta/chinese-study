@@ -15,6 +15,6 @@
     "RefreshCookieDomain": "",
     "RefreshCookiePath": "/identity/api/auth",
     "RefreshCookieSecure": false,
-    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281"]
+    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281", "http://localhost:3290"]
   }
 }
