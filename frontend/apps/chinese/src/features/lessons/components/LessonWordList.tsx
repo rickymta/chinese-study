@@ -1,11 +1,8 @@
 import { Box, Chip, List, ListItem, ListItemButton, Typography } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
 import { linkState } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
-import { MeaningStatusChip } from '@/features/dictionary/components/MeaningStatusChip'
-import type { LessonWord } from '../types'
+import { Hanzi, SpeakButton, numberedToMarked, MeaningStatusChip } from '@af/chinese-kit'
+import type { LessonWord } from '@af/chinese-kit'
 
 export interface LessonWordListProps {
   words: LessonWord[]

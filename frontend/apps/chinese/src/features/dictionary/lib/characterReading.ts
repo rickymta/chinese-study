@@ -1,4 +1,4 @@
-import { normalizeNumbered } from '@/lib/pinyin'
+import { normalizeNumbered } from '@af/chinese-kit'
 
 /** Khoá so sánh pinyin số: chuẩn hoá (`ü` ⇒ `v`, gộp khoảng trắng) rồi về chữ thường. */
 const toKey = (s: string): string => (normalizeNumbered(s) ?? s.trim()).toLowerCase()

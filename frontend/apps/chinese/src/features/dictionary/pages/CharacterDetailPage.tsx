@@ -4,15 +4,13 @@ import { Box, Button, List, Skeleton, Stack, Typography } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
 import { LangText, PageContainer, linkState, useBackTo } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeech'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
+import { Hanzi, SpeakButton, numberedToMarked } from '@af/chinese-kit'
+import type { CharacterDetail } from '@af/chinese-kit'
+import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeechProvider'
 import { useCharacter } from '../hooks'
 import { WordListItem } from '../components/WordListItem'
 import { QueryErrorAlert } from '../components/QueryErrorAlert'
 import { SourceAttribution } from '../components/SourceAttribution'
-import type { CharacterDetail } from '../types'
 
 /** Một dòng "Nhãn: giá trị" trong bảng thông tin chữ. */
 function InfoRow({ label, children }: { label: string; children: ReactNode }) {

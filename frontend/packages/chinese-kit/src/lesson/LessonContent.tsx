@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material'
-import type { GlossaryEntry, LessonBlock } from '../types'
+import type { GlossaryEntry, LessonBlock } from './types'
 import { TextBlock } from './blocks/TextBlock'
 import { DialogueBlock } from './blocks/DialogueBlock'
 import { GrammarBlock } from './blocks/GrammarBlock'

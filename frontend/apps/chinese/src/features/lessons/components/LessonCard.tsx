@@ -4,7 +4,7 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined'
 import { linkState } from '@af/ui'
-import type { LessonSummary } from '../types'
+import type { LessonSummary } from '@af/chinese-kit'
 
 export const UNREVIEWED_LESSON_LABEL = 'Nội dung chưa được duyệt'
 

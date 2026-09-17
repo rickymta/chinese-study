@@ -1,5 +1,5 @@
 import { Chip, Tooltip, type ChipProps } from '@mui/material'
-import type { MeaningViStatus } from '../types'
+import type { MeaningViStatus } from './types'
 
 export const MACHINE_MEANING_TOOLTIP = 'Nghĩa dịch máy, có thể chưa chính xác — đối chiếu nghĩa tiếng Anh'
 

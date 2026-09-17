@@ -13,6 +13,7 @@ COPY packages/ui/package.json       ./packages/ui/
 COPY packages/api/package.json      ./packages/api/
 COPY packages/utils/package.json    ./packages/utils/
 COPY packages/auth/package.json     ./packages/auth/
+COPY packages/chinese-kit/package.json ./packages/chinese-kit/
 COPY apps/chinese/package.json      ./apps/chinese/
 RUN yarn install --frozen-lockfile --network-timeout 300000
 

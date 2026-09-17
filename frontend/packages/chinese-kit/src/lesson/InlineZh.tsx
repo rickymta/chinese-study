@@ -1,8 +1,8 @@
 import { useMemo, type KeyboardEvent } from 'react'
 import { Box, Typography, type SxProps, type Theme, type TypographyProps } from '@mui/material'
-import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
-import { numberedToMarked } from '@/lib/pinyin'
-import { parseInlineZh } from '../lib/inlineZh'
+import { useChineseSpeech } from '../speech/ChineseSpeech'
+import { numberedToMarked } from '../pinyin/pinyin'
+import { parseInlineZh } from './lib/inlineZh'
 import { useLessonDisplay } from './LessonDisplayContext'
 
 export interface InlineZhProps {

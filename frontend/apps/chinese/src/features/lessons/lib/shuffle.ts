@@ -1,4 +1,4 @@
-import type { QuizOption, QuizQuestion } from '../types'
+import type { QuizOption, QuizQuestion } from '@af/chinese-kit'
 
 /** Nguồn ngẫu nhiên `[0, 1)` — mặc định `Math.random`; test truyền hàm giả để có kết quả tất định. */
 export type Rng = () => number

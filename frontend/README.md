@@ -16,11 +16,15 @@ frontend/
     api/                                # @af/api — createApiClient (axios): Bearer, làm mới 401 single-flight, ApiError
     utils/                              # @af/utils — parseApiError, schema zod (emailSchema, passwordSchema, displayNameSchema, timeZoneSchema)
     auth/                               # @af/auth — createAuthSession, AuthProvider/useAuth, RequireAuth, RequirePermission, LoginPage/RegisterPage
+    chinese-kit/                        # @af/chinese-kit — pinyin (số⇄dấu), Hanzi/Pinyin, ChineseSpeechProvider/SpeakButton, LessonContent + khối/quiz, kiểu bài học/từ điển (W12)
   apps/
     chinese/                            # @af/chinese — app tiếng Trung, cổng dev 3280
 ```
 
 `@af/*` là workspace symlink, **import thẳng TS source** (không build/dist): sửa `packages/<pkg>/src` là vá cho mọi app.
+`@af/chinese-kit` (W12) chỉ chứa thứ **không gọi API** — dùng chung giữa `apps/chinese` và module Tiếng Trung của admin (W13);
+hook gọi máy chủ (`useTtsRate`, query key...) ở lại app và tiêm vào kit qua props (`ChineseSpeechProvider rate/onRateChange`).
+Kit có test riêng: `yarn workspace @af/chinese-kit test` (pinyin, inlineZh) — `yarn test` ở root chạy cả app lẫn kit.
 Package dùng chung khai thư viện ở `peerDependencies` ⇒ **app tiêu thụ phải khai đủ trong `dependencies`** (máy dev
 hoisted nên không báo, chỉ Docker/CI lộ). Trước khi gỡ dependency khỏi app: `grep -l "<thu-vien>" packages/*/package.json`.
 

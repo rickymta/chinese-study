@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildAnswers, countUnanswered, firstUnansweredIndex, isPassed, minCorrectToPass, scorePercent } from './quizScore'
-import type { QuizQuestion } from '../types'
+import type { QuizQuestion } from '@af/chinese-kit'
 
 const q = (id: string): QuizQuestion => ({ id, type: 'single_choice', prompt: 'p', promptLang: 'vi', options: [] })
 

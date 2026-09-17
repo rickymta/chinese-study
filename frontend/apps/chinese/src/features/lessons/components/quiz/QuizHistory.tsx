@@ -1,7 +1,7 @@
 import { Box, Chip, Skeleton, Stack, Typography } from '@mui/material'
 import { useAuth } from '@af/auth'
 import { useQuizAttempts } from '../../hooks'
-import type { QuizAttemptSummary } from '../../types'
+import type { QuizAttemptSummary } from '@af/chinese-kit'
 
 /** `HH:mm dd/MM/yyyy` theo múi giờ người học (claim `zoneinfo`); múi giờ lạ ⇒ múi giờ trình duyệt. */
 function formatSubmittedAt(iso: string, timeZone: string | undefined): string {

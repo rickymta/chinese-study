@@ -1,8 +1,7 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { Box, ButtonBase, Tooltip, Typography } from '@mui/material'
 import { linkState } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { numberedToMarked } from '@/lib/pinyin'
+import { Hanzi, numberedToMarked } from '@af/chinese-kit'
 import { practicePath } from '../lib/setParam'
 import type { MasteryStatus, WritingCharacterItem, WritingSet } from '../types'
 

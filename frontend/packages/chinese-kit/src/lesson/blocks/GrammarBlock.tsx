@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
-import type { GrammarBlockPayload } from '../../types'
+import type { GrammarBlockPayload } from '../types'
 import { InlineZh } from '../InlineZh'
 import { ZhLineRow } from '../ZhLineRow'
 

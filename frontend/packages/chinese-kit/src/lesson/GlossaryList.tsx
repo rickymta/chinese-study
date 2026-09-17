@@ -1,8 +1,8 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
-import { Hanzi } from '@/components/Hanzi'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
-import type { GlossaryEntry } from '../types'
+import { Hanzi } from '../components/Hanzi'
+import { SpeakButton } from '../speech/SpeakButton'
+import { numberedToMarked } from '../pinyin/pinyin'
+import type { GlossaryEntry } from './types'
 
 /** "Từ bổ sung (không vào ôn tập)": tên riêng, địa danh... chỉ để hiểu bài — không phải từ HSK, không thành thẻ. */
 export function GlossaryList({ entries }: { entries: GlossaryEntry[] }) {

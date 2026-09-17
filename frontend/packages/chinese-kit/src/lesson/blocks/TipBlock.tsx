@@ -5,7 +5,7 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
-import type { TipBlockPayload, TipVariant } from '../../types'
+import type { TipBlockPayload, TipVariant } from '../types'
 import { InlineZh } from '../InlineZh'
 
 const VARIANT_META: Record<TipVariant, { title: string; icon: ReactElement }> = {

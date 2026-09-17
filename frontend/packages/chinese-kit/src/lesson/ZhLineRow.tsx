@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material'
-import { Hanzi } from '@/components/Hanzi'
-import { Pinyin } from '@/components/Pinyin'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import type { ZhLine } from '../types'
+import { Hanzi } from '../components/Hanzi'
+import { Pinyin } from '../components/Pinyin'
+import { SpeakButton } from '../speech/SpeakButton'
+import type { ZhLine } from './types'
 import { useLessonDisplay } from './LessonDisplayContext'
 
 export interface ZhLineRowProps {

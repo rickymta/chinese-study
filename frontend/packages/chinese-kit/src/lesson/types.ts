@@ -2,7 +2,7 @@
 // Serializer backend bật `WhenWritingNull` ⇒ trường có thể `null` bị LƯỢC khỏi JSON: khai `?:`/`| null`.
 // Pinyin luôn dạng SỐ THANH (`ni3 hao3`) — hiển thị dạng dấu qua `lib/pinyin.ts`.
 
-import type { MeaningViStatus } from '@/features/dictionary/types'
+import type { MeaningViStatus } from '../dictionary/types'
 
 /** `machine`: bài do agent soạn/nhập, chưa người duyệt (R-LS2) ⇒ hiện chip "Nội dung chưa được duyệt". */
 export type LessonReviewStatus = 'machine' | 'reviewed'

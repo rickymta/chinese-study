@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import type { TextBlockPayload } from '../../types'
+import type { TextBlockPayload } from '../types'
 import { InlineZh } from '../InlineZh'
 
 /** Khối văn bản: mỗi đoạn một `<p>`, chữ Hán nội dòng dạng ruby (bấm để nghe). */

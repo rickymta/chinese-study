@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material'
-import { Hanzi } from '@/components/Hanzi'
-import { Pinyin } from '@/components/Pinyin'
-import { numberedToMarked } from '@/lib/pinyin'
-import type { QuizOption, QuizQuestion } from '../../types'
+import { Hanzi } from '../../components/Hanzi'
+import { Pinyin } from '../../components/Pinyin'
+import { numberedToMarked } from '../../pinyin/pinyin'
+import type { QuizOption, QuizQuestion } from '../types'
 import { useLessonDisplay } from '../LessonDisplayContext'
 
 /**

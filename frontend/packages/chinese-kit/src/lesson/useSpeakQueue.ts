@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
+import { useChineseSpeech } from '../speech/ChineseSpeech'
 
 export interface SpeakQueue {
   /** Đang đọc cả đoạn. */

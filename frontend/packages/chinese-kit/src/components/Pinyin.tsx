@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Box, Typography, type SxProps, type Theme, type TypographyProps } from '@mui/material'
-import { numberedToMarked, sandhiHints } from '@/lib/pinyin'
+import { numberedToMarked, sandhiHints } from '../pinyin/pinyin'
 
 export interface PinyinProps {
   /** Pinyin dạng SỐ (`ni3 hao3`) — dạng lưu trữ; component tự đổi sang dạng dấu để hiển thị. */

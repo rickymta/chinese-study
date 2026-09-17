@@ -115,7 +115,7 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 
 **Học liệu — bản quyền trước tiên:** chỉ dùng nguồn có giấy phép cho phép tái sử dụng; ghi nguồn + giấy phép + phần đã dùng vào `content/<ngôn-ngữ>/SOURCES.md`. Không rõ giấy phép ⇒ không dùng. Nghĩa tiếng Việt dịch máy phải đánh dấu `machine` cho tới khi được duyệt.
 
-**Quy ước tiếng Trung:** giản thể là mặc định; pinyin **lưu dạng số thanh** (`ni3 hao3`, thanh nhẹ `5`, `ü` = `v`) làm nguồn sự thật, **hiển thị dạng dấu** (`nǐ hǎo`) qua tiện ích trong `apps/chinese`. Phần tử chứa chữ Hán đặt `lang="zh-CN"` + phông fallback CJK. Chuẩn từ vựng **HSK 3.0**; SRS **FSRS-6** (chốt 16/09/2026).
+**Quy ước tiếng Trung:** giản thể là mặc định; pinyin **lưu dạng số thanh** (`ni3 hao3`, thanh nhẹ `5`, `ü` = `v`) làm nguồn sự thật, **hiển thị dạng dấu** (`nǐ hǎo`) qua `numberedToMarked` của `@af/chinese-kit` (W12 — trước đó ở `apps/chinese/src/lib/pinyin`). Phần tử chứa chữ Hán đặt `lang="zh-CN"` + phông fallback CJK. Chuẩn từ vựng **HSK 3.0**; SRS **FSRS-6** (chốt 16/09/2026).
 
 **Mobile-first:** mọi màn học phải dùng tốt ở ~375px — người học ôn thẻ trên điện thoại là chính.
 
@@ -152,7 +152,7 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
 
 ### Frontend — `frontend/` (Turborepo + Yarn Classic Workspaces + React 19 + MUI v9 + TypeScript + Vite)
 
-- `packages/tsconfig|ui|api|auth|utils` (tên `@af/*`): `@af/ui` (theme, AppLayout, AppDialog, ErrorPage, useTabParam, LangText, TTS `speech`...), `@af/api` (`createApiClient`), `@af/auth` (AuthProvider, RequireAuth, RequirePermission, LoginPage/RegisterPage dùng chung — gọi identity-service), `@af/utils` (parseApiError, zod). Import thẳng TS source — không build/dist. Package chỉ được tạo ở feature đầu tiên cần nó; tiện ích đặc thù một ngôn ngữ (vd pinyin) đặt trong app của ngôn ngữ đó.
+- `packages/tsconfig|ui|api|auth|utils` (tên `@af/*`): `@af/ui` (theme, AppLayout, AppDialog, ErrorPage, useTabParam, LangText, TTS `speech`...), `@af/api` (`createApiClient`), `@af/auth` (AuthProvider, RequireAuth, RequirePermission, LoginPage/RegisterPage dùng chung — gọi identity-service), `@af/utils` (parseApiError, zod). Import thẳng TS source — không build/dist. Package chỉ được tạo ở feature đầu tiên cần nó; tiện ích đặc thù một ngôn ngữ đặt trong app của ngôn ngữ đó **cho tới khi có app thứ hai cần** — tiền lệ: `packages/chinese-kit` (`@af/chinese-kit`, W12 17/09/2026) tách từ `apps/chinese` để module Tiếng Trung của admin (W13) dùng chung: pinyin số⇄dấu, `Hanzi`/`Pinyin`, `ChineseSpeechProvider`/`SpeakButton`, `LessonContent` + khối/quiz, kiểu bài học/từ điển. Kit **không gọi API**: hook gọi máy chủ (`useTtsRate`) ở lại app và tiêm qua props; test riêng `yarn workspace @af/chinese-kit test`.
 - `apps/chinese` (`@af/chinese`) — học viên + quản trị nội dung tiếng Trung (ẩn theo quyền). `src/features/<module>/`; route slug tiếng Việt không dấu. Mỗi app có `Dockerfile` + `nginx.conf` (chỉ phục vụ tĩnh).
 - `scripts/check-ui-conventions.mjs` (`yarn lint:ui`): FAIL `raw-dialog`, `uuid-import`, `autocomplete-slotprops-override`; WARN `tabs-no-url`.
 

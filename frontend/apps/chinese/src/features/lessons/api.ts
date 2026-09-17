@@ -6,7 +6,7 @@ import type {
   QuizAttemptsResponse,
   QuizResult,
   SubmitQuizRequest,
-} from './types'
+} from '@af/chinese-kit'
 
 // Hợp đồng F8–F11 §6.1 (trình duyệt gọi `/chinese/api/lessons/...`). Lời gọi GET không đặt `skipErrorRedirect`:
 // 403 (mất `study.use`) và 404 (bài không published — R-LS1) phải đi tới trang lỗi dùng chung.
