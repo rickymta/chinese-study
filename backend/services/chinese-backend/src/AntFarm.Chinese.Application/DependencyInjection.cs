@@ -7,6 +7,7 @@ using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Application.Learning;
 using AntFarm.Chinese.Application.Lessons;
 using AntFarm.Chinese.Application.Pinyin;
+using AntFarm.Chinese.Application.Progress;
 using AntFarm.Chinese.Application.Srs;
 using AntFarm.Chinese.Application.Writing;
 using FluentValidation;
@@ -75,6 +76,9 @@ public static class DependencyInjection
         // F10: quản trị nội dung (§5.2.3) — soạn/sửa/xuất bản bài học + quiz, duyệt nghĩa từ vựng.
         services.AddScoped<LessonAdminService>();
         services.AddScoped<WordReviewService>();
+
+        // F11: tổng quan tiến độ (§5.2.4) — gộp streak/today/srs/từ vựng/bài học/viết/thanh điệu.
+        services.AddScoped<ProgressOverviewService>();
 
         return services;
     }
