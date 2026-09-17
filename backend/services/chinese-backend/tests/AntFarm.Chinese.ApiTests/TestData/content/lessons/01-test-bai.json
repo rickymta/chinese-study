@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "slug": "test-bai",
+  "title": "Bài kiểm thử",
+  "topic": "kiem-thu",
+  "level": "hsk1",
+  "orderIndex": 1,
+  "status": "published",
+  "summary": "Bài dùng để kiểm thử importer.",
+  "objectives": ["Kiểm thử nạp bài học"],
+  "estimatedMinutes": 5,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "你", "pinyin": "ni3" },
+    { "simplified": "好", "pinyin": "hao3" },
+    { "simplified": "谢谢", "pinyin": "xie4 xie5" }
+  ],
+  "glossary": [],
+  "blocks": [
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Chào nhau",
+        "lines": [
+          { "speaker": "Lan", "hanzi": "你好！", "pinyin": "Ni3 hao3!", "vi": "Chào bạn!" },
+          { "speaker": "Minh", "hanzi": "谢谢你！", "pinyin": "Xie4 xie5 ni3!", "vi": "Cảm ơn bạn!" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Chào hỏi",
+        "explanation": "[[你好|ni3 hao3]] dùng để chào.",
+        "examples": [ { "hanzi": "你好！", "pinyin": "Ni3 hao3!", "vi": "Chào bạn!" } ]
+      }
+    }
+  ],
+  "quiz": [
+    {
+      "key": "q1", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你好",
+      "options": [ { "id": "a", "text": "Chào bạn", "lang": "vi" }, { "id": "b", "text": "Cảm ơn", "lang": "vi" } ],
+      "correctOptionId": "a", "explanation": "你好 nghĩa là chào bạn."
+    },
+    {
+      "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "谢谢",
+      "options": [ { "id": "a", "text": "Chào bạn", "lang": "vi" }, { "id": "b", "text": "Cảm ơn", "lang": "vi" } ],
+      "correctOptionId": "b", "explanation": "谢谢 nghĩa là cảm ơn."
+    },
+    {
+      "key": "q3", "type": "single_choice", "prompt": "你好 nghĩa là gì?", "promptLang": "vi",
+      "options": [ { "id": "a", "text": "Chào bạn", "lang": "vi" }, { "id": "b", "text": "Tạm biệt", "lang": "vi" } ],
+      "correctOptionId": "a", "explanation": "你好 nghĩa là chào bạn."
+    }
+  ]
+}

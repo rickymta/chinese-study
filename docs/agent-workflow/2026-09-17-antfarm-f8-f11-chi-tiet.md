@@ -606,6 +606,9 @@ src/features/lessons/
   components/LessonContent.tsx      render danh sách khối — DÙNG LẠI ở xem trước F10 (prop `blocks`, `glossary`)
   components/blocks/TextBlock.tsx · DialogueBlock.tsx · GrammarBlock.tsx · TipBlock.tsx
   components/InlineZh.tsx           hiển thị token: chữ Hán (lang zh-CN) + pinyin dấu nhỏ phía sau trong ngoặc; bấm ⇒ đọc TTS
+                                    ⚠ CHỐT KHI TÍCH HỢP F9 (17/09/2026): hiển thị bằng `<ruby>` (pinyin dấu ở `<rt>` phía TRÊN chữ,
+                                    `<rp>` ngoặc dự phòng; tắt công tắc Pinyin ⇒ bỏ `rt`) thay cho "pinyin trong ngoặc phía sau".
+                                    F10 (xem trước bài, `LessonPreview`) dùng lại `InlineZh` nguyên dạng ruby này, không làm kiểu khác.
   components/SpeakButton.tsx        nút loa nhỏ dùng useSpeech('zh'); status `unsupported`/`no-voice` ⇒ disabled + Tooltip "Chưa có giọng tiếng Trung" (cùng lời F5)
   components/LessonWordList.tsx     danh sách từ: chữ Hán lớn, pinyin, Hán Việt, nghĩa (nhãn "chưa duyệt" khi machine), nút nghe, link /tu-dien/:id, chip "Đang ôn" khi inSrs
   components/GlossaryList.tsx       "Từ bổ sung (không vào ôn tập)"

@@ -35,6 +35,11 @@ public static class ContentImportRunner
 
             var wordsPath = Path.Combine(rootPath, "data", "vocabulary", "hsk-words.json");
             await importer.ImportWordsAsync(wordsPath, "hsk-words", ct);
+
+            // F9 (§5.2.1.4): bài học SAU CÙNG — cần content.words đã có sẵn để tra (simplified, pinyin).
+            var lessonImporter = serviceProvider.GetRequiredService<LessonImporter>();
+            var lessonsPath = Path.Combine(rootPath, "data", "lessons");
+            await lessonImporter.ImportDirectoryAsync(lessonsPath, "lessons", ct);
         }
         catch (Exception ex)
         {

@@ -9,6 +9,7 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlin
 import RecordVoiceOverOutlinedIcon from '@mui/icons-material/RecordVoiceOverOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
 import { APP_BRAND } from '@/constants'
 import { UserMenu } from '@/features/auth/components/UserMenu'
 import { PERMISSIONS } from '@/features/auth/permissions'
@@ -33,6 +34,9 @@ const buildNavItems = (dueBadge: number): NavItem[] => [
     ),
     requiredPermission: PERMISSIONS.STUDY_USE,
   },
+  // F9: bài học chủ đề — không `end` để /bai-hoc/:slug vẫn sáng mục này. Học viên thường có đúng 5 mục ở bottom nav
+  // (Trang chủ · Pinyin · Từ điển · Ôn tập · Bài học); admin có thêm Quản trị ⇒ AppLayout gom vào "Thêm".
+  { label: 'Bài học', to: '/bai-hoc', icon: <AutoStoriesOutlinedIcon />, requiredPermission: PERMISSIONS.STUDY_USE },
   // Ẩn với người không có `users.manage` — `AppLayout` lọc theo `hasPermission` (quyền từ GET /chinese/api/me).
   { label: 'Quản trị', to: '/quan-tri', icon: <AdminPanelSettingsOutlinedIcon />, requiredPermission: PERMISSIONS.USERS_MANAGE },
   // F4: trang con của Quản trị — ở điện thoại KHÔNG chiếm thêm ô trên bottom nav (vào qua thẻ trong /quan-tri);

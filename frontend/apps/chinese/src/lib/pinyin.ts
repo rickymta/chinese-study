@@ -130,21 +130,43 @@ export interface NumberedToMarkedOptions {
 }
 
 /**
+ * Dấu câu có thể dính đầu/cuối một âm tiết trong pinyin của hội thoại/ví dụ (F9): ASCII `!?,.;:"'()` và toàn khổ
+ * `，。！？、；：“”‘’…（）`. KHÔNG gồm `'` giữa âm tiết của dạng nối (`Xī'ān`) — chỉ cắt ở hai đầu token.
+ */
+const PUNCT_CLASS = '!?,.;:"\'()\\-–—…，。！？、；：“”‘’（）'
+const TOKEN_PUNCT_RE = new RegExp(`^([${PUNCT_CLASS}]*)(.*?)([${PUNCT_CLASS}]*)$`)
+const PUNCT_ONLY_RE = new RegExp(`^[${PUNCT_CLASS}\\s]+$`)
+
+/** Tách dấu câu hai đầu token: `'hao3!'` ⇒ `{ lead: '', core: 'hao3', trail: '!' }`. */
+export function splitPunctuation(token: string): { lead: string; core: string; trail: string } {
+  const m = TOKEN_PUNCT_RE.exec(token)
+  if (!m) return { lead: '', core: token, trail: '' }
+  return { lead: m[1] ?? '', core: m[2] ?? '', trail: m[3] ?? '' }
+}
+
+/** Bỏ mọi dấu câu (và khoảng trắng) khỏi chuỗi chữ Hán — để đếm/ánh xạ chữ ↔ âm tiết. */
+export function stripPunctuation(text: string): string {
+  return text.replace(new RegExp(`[${PUNCT_CLASS}\\s]`, 'g'), '')
+}
+
+/**
  * Chuỗi pinyin số ⇒ dạng dấu: `'ni3 hao3'` ⇒ `'nǐ hǎo'`. Âm tiết `r5` (nhi hoá) dính vào âm tiết trước
- * (`'na3 r5'` ⇒ `'nǎr'`, R5-6). Token không hợp lệ giữ nguyên văn.
+ * (`'na3 r5'` ⇒ `'nǎr'`, R5-6). Dấu câu dính đầu/cuối âm tiết được giữ nguyên chỗ (`'Ni3 hao3!'` ⇒ `'Nǐ hǎo!'`,
+ * `'Lao3 shi1, nin2 hao3 ma5?'` ⇒ `'Lǎo shī, nín hǎo ma?'`). Token không hợp lệ giữ nguyên văn.
  */
 export function numberedToMarked(pinyin: string, opts?: NumberedToMarkedOptions): string {
   const tokens = pinyin.normalize('NFC').trim().split(/\s+/).filter(Boolean)
   const parts: { text: string; startsWithAOE: boolean }[] = []
   for (const token of tokens) {
-    const parsed = parseSyllable(token)
-    if (parsed && parsed.letters === 'r' && parsed.tone === 5 && parts.length > 0) {
-      parts[parts.length - 1]!.text += 'r'
+    const { lead, core, trail } = splitPunctuation(token)
+    const parsed = core ? parseSyllable(core) : null
+    if (parsed && parsed.letters === 'r' && parsed.tone === 5 && parts.length > 0 && !lead) {
+      parts[parts.length - 1]!.text += 'r' + trail
       continue
     }
     parts.push({
-      text: parsed ? markLetters(parsed.letters, parsed.tone, parsed.capitalized) : token,
-      startsWithAOE: parsed ? 'aoe'.includes(parsed.letters[0] ?? '') : false,
+      text: parsed ? lead + markLetters(parsed.letters, parsed.tone, parsed.capitalized) + trail : token,
+      startsWithAOE: parsed && !lead ? 'aoe'.includes(parsed.letters[0] ?? '') : false,
     })
   }
   if (!opts?.join) return parts.map((p) => p.text).join(' ')
@@ -210,12 +232,20 @@ export interface SandhiHint {
  *   ⇒ chỉ gợi ý 3-3.
  */
 export function sandhiHints(pinyin: string, hanzi?: string): SandhiHint[] {
-  const tokens = pinyin.normalize('NFC').trim().split(/\s+/).filter(Boolean)
+  // Bỏ dấu câu dính hai đầu âm tiết (`hao3!`, `ma5?`) và token chỉ có dấu câu trước khi đếm — F9 truyền pinyin
+  // của cả câu hội thoại.
+  const tokens = pinyin
+    .normalize('NFC')
+    .trim()
+    .split(/\s+/)
+    .filter((t) => t && !PUNCT_ONLY_RE.test(t))
+    .map((t) => splitPunctuation(t).core)
   const parsed = tokens.map((t) => parseSyllable(t))
   const tones = parsed.map((p) => p?.tone ?? null)
 
-  // Ánh xạ chữ Hán ↔ âm tiết theo vị trí; `r5` (儿 nhi hoá) có thể có hoặc không có chữ riêng ⇒ thử cả hai cách.
-  const chars = hanzi ? Array.from(hanzi.replace(/\s+/g, '')) : []
+  // Ánh xạ chữ Hán ↔ âm tiết theo vị trí (bỏ dấu câu trong chuỗi chữ Hán); `r5` (儿 nhi hoá) có thể có hoặc
+  // không có chữ riêng ⇒ thử cả hai cách.
+  const chars = hanzi ? Array.from(stripPunctuation(hanzi)) : []
   const nonErhua = parsed.map((p, i) => (p && p.letters === 'r' && p.tone === 5 && i > 0 ? null : i)).filter((i): i is number => i !== null)
   const charAt = (index: number): string | undefined => {
     if (chars.length === 0) return undefined

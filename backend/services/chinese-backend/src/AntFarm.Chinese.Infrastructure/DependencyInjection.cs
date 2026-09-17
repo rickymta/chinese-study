@@ -41,6 +41,9 @@ public static class DependencyInjection
         // F6: nạp từ vựng/chữ Hán — Scoped vì dùng ChineseDbContext (ContentImportRunner tự tạo scope riêng ở Program.cs).
         services.AddScoped<ContentImporter>();
 
+        // F9: nạp bài học — Scoped, cùng lý do (§5.2.1.4).
+        services.AddScoped<LessonImporter>();
+
         return services;
     }
 }

@@ -25,14 +25,14 @@ export function Pinyin({ value, hanzi, showSandhi = false, join, variant = 'body
 
   if (hints.length === 0) {
     return (
-      <Typography component={component} variant={variant} sx={sx} title={value}>
+      <Typography component={component} variant={variant} sx={sx}>
         {marked}
       </Typography>
     )
   }
   return (
     <Box component="span" sx={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-      <Typography component={component} variant={variant} sx={sx} title={value}>
+      <Typography component={component} variant={variant} sx={sx}>
         {marked}
       </Typography>
       <Typography component="span" variant="caption" color="text.secondary">

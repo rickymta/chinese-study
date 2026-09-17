@@ -552,31 +552,26 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<bool>("AutoPlayAudio")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
                         .HasColumnName("auto_play_audio");
 
                     b.Property<short>("DailyNewCards")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)10)
                         .HasColumnName("daily_new_cards");
 
                     b.Property<short>("DailyReviewLimit")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)200)
                         .HasColumnName("daily_review_limit");
 
                     b.Property<decimal>("DesiredRetention")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("numeric(3,2)")
                         .HasDefaultValue(0.90m)
                         .HasColumnName("desired_retention");
 
                     b.Property<decimal>("TtsRate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("numeric(3,2)")
                         .HasDefaultValue(0.80m)
                         .HasColumnName("tts_rate");
@@ -597,6 +592,141 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("ck_learner_settings_desired_retention", "desired_retention BETWEEN 0.80 AND 0.97");
 
                             t.HasCheckConstraint("ck_learner_settings_tts_rate", "tts_rate BETWEEN 0.50 AND 1.20");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.LessonProgress", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lesson_id");
+
+                    b.Property<int>("AttemptsCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0)
+                        .HasColumnName("attempts_count");
+
+                    b.Property<short?>("BestScorePercent")
+                        .HasColumnType("smallint")
+                        .HasColumnName("best_score_percent");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("completed_at");
+
+                    b.Property<DateTime?>("LastAttemptAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_attempt_at");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("UserId", "LessonId")
+                        .HasName("pk_lesson_progress");
+
+                    b.HasIndex("LessonId")
+                        .HasDatabaseName("ix_lesson_progress_lesson_id");
+
+                    b.HasIndex("UserId", "Status")
+                        .HasDatabaseName("ix_lesson_progress_user_status");
+
+                    b.ToTable("lesson_progress", "learning", t =>
+                        {
+                            t.HasCheckConstraint("ck_lesson_progress_best_score", "best_score_percent IS NULL OR best_score_percent BETWEEN 0 AND 100");
+
+                            t.HasCheckConstraint("ck_lesson_progress_status", "status IN ('in_progress','completed')");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.QuizAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Answers")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("answers");
+
+                    b.Property<Guid>("ClientAttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("client_attempt_id");
+
+                    b.Property<short>("Correct")
+                        .HasColumnType("smallint")
+                        .HasColumnName("correct");
+
+                    b.Property<int?>("DurationMs")
+                        .HasColumnType("integer")
+                        .HasColumnName("duration_ms");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lesson_id");
+
+                    b.Property<bool>("Passed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("passed");
+
+                    b.Property<short>("ScorePercent")
+                        .HasColumnType("smallint")
+                        .HasColumnName("score_percent");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("submitted_at");
+
+                    b.Property<short>("Total")
+                        .HasColumnType("smallint")
+                        .HasColumnName("total");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_quiz_attempts");
+
+                    b.HasIndex("ClientAttemptId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_quiz_attempts_client_attempt_id");
+
+                    b.HasIndex("LessonId")
+                        .HasDatabaseName("ix_quiz_attempts_lesson_id");
+
+                    b.HasIndex("UserId", "LessonId", "SubmittedAt")
+                        .IsDescending(false, false, true)
+                        .HasDatabaseName("ix_quiz_attempts_user_lesson");
+
+                    b.ToTable("quiz_attempts", "learning", t =>
+                        {
+                            t.HasCheckConstraint("ck_quiz_attempts_correct", "correct BETWEEN 0 AND total");
+
+                            t.HasCheckConstraint("ck_quiz_attempts_score_percent", "score_percent BETWEEN 0 AND 100");
+
+                            t.HasCheckConstraint("ck_quiz_attempts_total", "total > 0");
                         });
                 });
 
@@ -656,6 +786,315 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("ck_study_events_correct", "correct IS NULL OR (correct >= 0 AND correct <= quantity)");
 
                             t.HasCheckConstraint("ck_study_events_quantity", "quantity >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.Lesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("edited_at");
+
+                    b.Property<Guid?>("EditedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("edited_by");
+
+                    b.Property<short>("EstimatedMinutes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)15)
+                        .HasColumnName("estimated_minutes");
+
+                    b.Property<string>("Glossary")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasDefaultValue("[]")
+                        .HasColumnName("glossary");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasDefaultValue("hsk1")
+                        .HasColumnName("level");
+
+                    b.PrimitiveCollection<List<string>>("Objectives")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text[]")
+                        .HasColumnName("objectives")
+                        .HasDefaultValueSql("'{}'");
+
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_index");
+
+                    b.Property<DateTime?>("PublishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("published_at");
+
+                    b.Property<string>("ReviewStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasDefaultValue("machine")
+                        .HasColumnName("review_status");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("reviewed_at");
+
+                    b.Property<Guid?>("ReviewedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reviewed_by");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("slug");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("source");
+
+                    b.Property<string>("SourceHash")
+                        .HasMaxLength(64)
+                        .HasColumnType("character(64)")
+                        .HasColumnName("source_hash")
+                        .IsFixedLength();
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasDefaultValue("")
+                        .HasColumnName("summary");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("title");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("topic");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id")
+                        .HasName("pk_lessons");
+
+                    b.HasIndex("CreatedBy")
+                        .HasDatabaseName("ix_lessons_created_by");
+
+                    b.HasIndex("EditedBy")
+                        .HasDatabaseName("ix_lessons_edited_by");
+
+                    b.HasIndex("ReviewedBy")
+                        .HasDatabaseName("ix_lessons_reviewed_by");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ux_lessons_slug");
+
+                    b.HasIndex("Status", "OrderIndex")
+                        .HasDatabaseName("ix_lessons_status_order");
+
+                    b.ToTable("lessons", "content", t =>
+                        {
+                            t.HasCheckConstraint("ck_lessons_estimated_minutes", "estimated_minutes BETWEEN 1 AND 120");
+
+                            t.HasCheckConstraint("ck_lessons_level", "level IN ('hsk1')");
+
+                            t.HasCheckConstraint("ck_lessons_review_status", "review_status IN ('machine','reviewed')");
+
+                            t.HasCheckConstraint("ck_lessons_source", "source IN ('seed','admin')");
+
+                            t.HasCheckConstraint("ck_lessons_status", "status IN ('draft','published','archived')");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.LessonBlock", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lesson_id");
+
+                    b.Property<short>("OrderIndex")
+                        .HasColumnType("smallint")
+                        .HasColumnName("order_index");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_lesson_blocks");
+
+                    b.HasIndex("LessonId", "OrderIndex")
+                        .HasDatabaseName("ix_lesson_blocks_lesson");
+
+                    b.ToTable("lesson_blocks", "content", t =>
+                        {
+                            t.HasCheckConstraint("ck_lesson_blocks_type", "type IN ('text','dialogue','grammar','tip')");
+                        });
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.LessonWord", b =>
+                {
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lesson_id");
+
+                    b.Property<Guid>("WordId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("word_id");
+
+                    b.Property<short>("OrderIndex")
+                        .HasColumnType("smallint")
+                        .HasColumnName("order_index");
+
+                    b.HasKey("LessonId", "WordId")
+                        .HasName("pk_lesson_words");
+
+                    b.HasIndex("WordId")
+                        .HasDatabaseName("ix_lesson_words_word");
+
+                    b.ToTable("lesson_words", "content");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.QuizQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AudioText")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("audio_text");
+
+                    b.Property<string>("CorrectOptionId")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("correct_option_id");
+
+                    b.Property<string>("Explanation")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasDefaultValue("")
+                        .HasColumnName("explanation");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("key");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("lesson_id");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("options");
+
+                    b.Property<short>("OrderIndex")
+                        .HasColumnType("smallint")
+                        .HasColumnName("order_index");
+
+                    b.Property<string>("Prompt")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("prompt");
+
+                    b.Property<string>("PromptLang")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("prompt_lang");
+
+                    b.Property<string>("PromptPinyin")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("prompt_pinyin");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_quiz_questions");
+
+                    b.HasIndex("LessonId", "Key")
+                        .IsUnique()
+                        .HasDatabaseName("ux_quiz_questions_lesson_key");
+
+                    b.HasIndex("LessonId", "OrderIndex")
+                        .HasDatabaseName("ix_quiz_questions_lesson");
+
+                    b.ToTable("quiz_questions", "content", t =>
+                        {
+                            t.HasCheckConstraint("ck_quiz_questions_prompt_lang", "prompt_lang IN ('vi','zh')");
+
+                            t.HasCheckConstraint("ck_quiz_questions_type", "type IN ('single_choice','listen_choice')");
                         });
                 });
 
@@ -820,7 +1259,6 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("CardType")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(24)
                         .HasColumnType("character varying(24)")
                         .HasDefaultValue("hanzi_to_meaning")
@@ -851,7 +1289,6 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .HasColumnName("is_suspended");
 
                     b.Property<int>("Lapses")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0)
                         .HasColumnName("lapses");
@@ -861,7 +1298,6 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .HasColumnName("last_review_at");
 
                     b.Property<int>("Reps")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0)
                         .HasColumnName("reps");
@@ -1084,6 +1520,40 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_learner_settings_users_user_id");
                 });
 
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.LessonProgress", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Lessons.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_lesson_progress_lessons_lesson_id");
+
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_lesson_progress_users_user_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.QuizAttempt", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Lessons.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_quiz_attempts_lessons_lesson_id");
+
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_quiz_attempts_users_user_id");
+                });
+
             modelBuilder.Entity("AntFarm.Chinese.Domain.Learning.StudyEvent", b =>
                 {
                     b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
@@ -1092,6 +1562,64 @@ namespace AntFarm.Chinese.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_study_events_users_user_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.Lesson", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_lessons_users_created_by");
+
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("EditedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_lessons_users_edited_by");
+
+                    b.HasOne("AntFarm.Chinese.Domain.Access.User", null)
+                        .WithMany()
+                        .HasForeignKey("ReviewedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_lessons_users_reviewed_by");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.LessonBlock", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Lessons.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_lesson_blocks_lessons_lesson_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.LessonWord", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Lessons.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_lesson_words_lessons_lesson_id");
+
+                    b.HasOne("AntFarm.Chinese.Domain.Content.Word", null)
+                        .WithMany()
+                        .HasForeignKey("WordId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_lesson_words_words_word_id");
+                });
+
+            modelBuilder.Entity("AntFarm.Chinese.Domain.Lessons.QuizQuestion", b =>
+                {
+                    b.HasOne("AntFarm.Chinese.Domain.Lessons.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_quiz_questions_lessons_lesson_id");
                 });
 
             modelBuilder.Entity("AntFarm.Chinese.Domain.Pinyin.ToneDrillAnswer", b =>

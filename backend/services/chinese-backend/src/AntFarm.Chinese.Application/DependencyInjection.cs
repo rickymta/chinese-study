@@ -4,6 +4,7 @@ using AntFarm.Chinese.Application.Access;
 using AntFarm.Chinese.Application.Common.Time;
 using AntFarm.Chinese.Application.Dictionary;
 using AntFarm.Chinese.Application.Learning;
+using AntFarm.Chinese.Application.Lessons;
 using AntFarm.Chinese.Application.Pinyin;
 using AntFarm.Chinese.Application.Srs;
 using FluentValidation;
@@ -53,6 +54,13 @@ public static class DependencyInjection
         services.AddScoped<ISrsCardService>(sp => sp.GetRequiredService<SrsCardService>());
         services.AddScoped<SrsQueueService>();
         services.AddScoped<SrsReviewService>();
+
+        // F9: bài học + quiz (§5.2.1.2) — QuizSubmissionService cần TimeProvider trực tiếp (chấm +
+        // ghi study_events/srs_cards trong một transaction, K12) nên KHÔNG qua IUserDayContext (dùng
+        // "bây giờ" của server, không phải ngày lịch người học — R-LS7 chỉ cần occurredAtUtc).
+        services.AddScoped<LessonQueryService>();
+        services.AddScoped<LessonProgressService>();
+        services.AddScoped<QuizSubmissionService>();
 
         return services;
     }

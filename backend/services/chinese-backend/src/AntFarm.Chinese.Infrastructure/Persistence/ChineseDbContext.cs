@@ -3,6 +3,7 @@ using AntFarm.Chinese.Application.Common.Abstractions;
 using AntFarm.Chinese.Domain.Access;
 using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
+using AntFarm.Chinese.Domain.Lessons;
 using AntFarm.Chinese.Domain.Pinyin;
 using AntFarm.Chinese.Domain.Srs;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,9 @@ namespace AntFarm.Chinese.Infrastructure.Persistence;
 /// — words, characters, word_characters, import_runs; bật extension <c>pg_trgm</c> (RK39: role
 /// af_chinese là OWNER của DB af_chinese, extension trusted nên tự CREATE EXTENSION được, không
 /// cần superuser). F7: schema `learning` (migration F7_Srs, §5.1.2) — srs_cards, srs_review_logs,
-/// learner_settings. KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự khai schema riêng.
+/// learner_settings. F9: schema `content`/`learning` (migration F9_Lessons, §5.1.1) — bài học, khối,
+/// từ của bài, quiz, tiến độ, lần nộp quiz. KHÔNG gọi <c>HasDefaultSchema</c> — mỗi cấu hình tự khai
+/// schema riêng.
 /// </summary>
 public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     : DbContext(options), IChineseDbContext
@@ -40,6 +43,13 @@ public sealed class ChineseDbContext(DbContextOptions<ChineseDbContext> options)
     public DbSet<SrsCard> SrsCards => Set<SrsCard>();
     public DbSet<SrsReviewLog> SrsReviewLogs => Set<SrsReviewLog>();
     public DbSet<LearnerSettings> LearnerSettings => Set<LearnerSettings>();
+
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<LessonBlock> LessonBlocks => Set<LessonBlock>();
+    public DbSet<LessonWord> LessonWords => Set<LessonWord>();
+    public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
+    public DbSet<LessonProgress> LessonProgress => Set<LessonProgress>();
+    public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

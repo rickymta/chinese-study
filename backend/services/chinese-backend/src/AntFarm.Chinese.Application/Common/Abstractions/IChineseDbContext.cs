@@ -1,6 +1,7 @@
 using AntFarm.Chinese.Domain.Access;
 using AntFarm.Chinese.Domain.Content;
 using AntFarm.Chinese.Domain.Learning;
+using AntFarm.Chinese.Domain.Lessons;
 using AntFarm.Chinese.Domain.Pinyin;
 using AntFarm.Chinese.Domain.Srs;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,8 @@ namespace AntFarm.Chinese.Application.Common.Abstractions;
 /// `learning` (§5.1.1) + <see cref="BeginTransactionAsync"/> (nộp bài luyện thanh ghi
 /// session + answers + study_event trong CÙNG một transaction, R5-12). F6 bổ sung schema `content`
 /// (§5.1.1) — từ vựng, chữ Hán, nhật ký nạp học liệu. F7 bổ sung thẻ SRS + cài đặt học tập
-/// (§5.1.2, schema `learning`).
+/// (§5.1.2, schema `learning`). F9 bổ sung bài học + quiz (schema `content`/`learning`, migration
+/// F9_Lessons).
 /// </summary>
 public interface IChineseDbContext
 {
@@ -36,6 +38,13 @@ public interface IChineseDbContext
     DbSet<SrsCard> SrsCards { get; }
     DbSet<SrsReviewLog> SrsReviewLogs { get; }
     DbSet<LearnerSettings> LearnerSettings { get; }
+
+    DbSet<Lesson> Lessons { get; }
+    DbSet<LessonBlock> LessonBlocks { get; }
+    DbSet<LessonWord> LessonWords { get; }
+    DbSet<QuizQuestion> QuizQuestions { get; }
+    DbSet<LessonProgress> LessonProgress { get; }
+    DbSet<QuizAttempt> QuizAttempts { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

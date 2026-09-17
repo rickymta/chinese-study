@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "slug": "test-loi",
+  "title": "Bài lỗi",
+  "topic": "kiem-thu",
+  "level": "hsk1",
+  "orderIndex": 3,
+  "status": "draft",
+  "summary": "Bài có từ không tồn tại trong content.words — dùng để kiểm thử R-LS15.",
+  "objectives": ["Kiểm thử bỏ qua cả bài khi thiếu từ"],
+  "estimatedMinutes": 5,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "错误示例词", "pinyin": "cuo4 wu4 shi4 li4 ci2" }
+  ],
+  "glossary": [],
+  "blocks": [
+    { "type": "text", "payload": { "paragraphs": ["Bài này sẽ bị bỏ qua vì thiếu từ."] } }
+  ],
+  "quiz": []
+}

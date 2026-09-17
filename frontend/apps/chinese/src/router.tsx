@@ -14,6 +14,8 @@ import { WordDetailPage } from './features/dictionary/pages/WordDetailPage'
 import { CharacterDetailPage } from './features/dictionary/pages/CharacterDetailPage'
 import { ReviewHomePage } from './features/srs/pages/ReviewHomePage'
 import { ReviewSessionPage } from './features/srs/pages/ReviewSessionPage'
+import { LessonListPage } from './features/lessons/pages/LessonListPage'
+import { LessonDetailPage } from './features/lessons/pages/LessonDetailPage'
 import { ProfilePage } from './features/profile/pages/ProfilePage'
 import { UnauthorizedPage } from './pages/errors/UnauthorizedPage'
 import { ForbiddenPage } from './pages/errors/ForbiddenPage'
@@ -56,6 +58,16 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <ReviewHomePage /> },
               { path: 'phien', element: <ReviewSessionPage /> },
+            ],
+          },
+          {
+            // F9: bài học chủ đề — danh sách + trang bài (`?tab=noi-dung|tu-vung|quiz`). Bài không published ⇒ 404
+            // do `createApiClient` điều hướng (R-LS1).
+            path: 'bai-hoc',
+            element: <RequirePermission permission={PERMISSIONS.STUDY_USE} />,
+            children: [
+              { index: true, element: <LessonListPage /> },
+              { path: ':slug', element: <LessonDetailPage /> },
             ],
           },
           {

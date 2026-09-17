@@ -66,6 +66,23 @@ describe('numberedToMarked', () => {
   it('gộp khoảng trắng thừa', () => {
     expect(numberedToMarked('  ni3   hao3 ')).toBe('nǐ hǎo')
   })
+  it('dấu câu dính cuối âm tiết vẫn đổi dấu thanh (F9 review)', () => {
+    expect(numberedToMarked('Ni3 hao3!')).toBe('Nǐ hǎo!')
+    expect(numberedToMarked('Lao3 shi1, nin2 hao3 ma5?')).toBe('Lǎo shī, nín hǎo ma?')
+    expect(numberedToMarked('Bu4 ke4 qi5.')).toBe('Bù kè qi.')
+  })
+  it('dấu câu toàn khổ và dấu ngoặc kép hai đầu', () => {
+    expect(numberedToMarked('“Xie4 xie5，” ta1 shuo1。')).toBe('“Xiè xie，” tā shuō。')
+    expect(numberedToMarked('(wo3) men5')).toBe('(wǒ) men')
+  })
+  it('giữ đúng ü và thanh nhẹ: nv3 er2 → nǚ ér, xie4 xie5 → xiè xie, lv4 → lǜ', () => {
+    expect(numberedToMarked('nv3 er2')).toBe('nǚ ér')
+    expect(numberedToMarked('xie4 xie5')).toBe('xiè xie')
+    expect(numberedToMarked('lv4')).toBe('lǜ')
+  })
+  it('nhi hoá có dấu câu sau: na3 r5? → nǎr?', () => {
+    expect(numberedToMarked('na3 r5?')).toBe('nǎr?')
+  })
 })
 
 describe('normalizeNumbered', () => {
@@ -140,4 +157,15 @@ describe('sandhiHints', () => {
   it('yi1 fu5 + 衣服 → rỗng (không phải 一)', () => expect(sandhiHints('yi1 fu5', '衣服')).toEqual([]))
   it('tong3 yi1 + 统一 → rỗng (一 đứng cuối)', () => expect(sandhiHints('tong3 yi1', '统一')).toEqual([]))
   it('không có hanzi → không gợi ý 不/一', () => expect(sandhiHints('bu4 shi4')).toEqual([]))
+  it('bỏ dấu câu trước khi đếm âm tiết: "Ni3 hao3!" + "你好！" → index 0', () => {
+    expect(sandhiHints('Ni3 hao3!', '你好！').map((h) => h.index)).toEqual([0])
+  })
+  it('dấu câu giữa câu không làm lệch ánh xạ chữ Hán: "Bu4 shi4, wo3 hen3 hao3." + "不是，我很好。"', () => {
+    const h = sandhiHints('Bu4 shi4, wo3 hen3 hao3.', '不是，我很好。')
+    expect(h.map((x) => [x.index, x.kind])).toEqual([
+      [0, 'bu'],
+      [2, 'third_tone'],
+      [3, 'third_tone'],
+    ])
+  })
 })
