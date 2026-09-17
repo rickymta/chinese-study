@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/application/sign_out.dart';
 import '../features/auth/presentation/pages/error_pages.dart';
 import '../features/licenses/presentation/pages/licenses_page.dart';
+import '../features/pinyin/presentation/pages/pinyin_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/progress/presentation/pages/dashboard_page.dart';
 import '../features/srs/presentation/pages/review_home_page.dart';
@@ -84,10 +85,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             initialLocation: AppRoutes.more,
             routes: [
               GoRoute(path: AppRoutes.more, builder: (_, _) => const MorePage()),
-              GoRoute(
-                path: AppRoutes.pinyin,
-                builder: (_, _) => const ComingSoonPage(title: 'Pinyin', icon: Icons.record_voice_over_outlined),
-              ),
+              // `/pinyin?tab=huong-dan|bang|luyen&che-do=mot|cap` (M7) — đích của "Việc hôm nay"/thẻ Thanh điệu.
+              GoRoute(path: AppRoutes.pinyin, builder: (_, _) => const PinyinPage()),
               GoRoute(
                 path: AppRoutes.dictionary,
                 builder: (_, _) => const ComingSoonPage(title: 'Tra từ', icon: Icons.search),
