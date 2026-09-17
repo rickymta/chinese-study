@@ -84,6 +84,7 @@ mobile/
     lib/main.dart · app.dart · config/ (links.dart — URL duy nhất) · api/clients.dart (Dio + AuthSession) · router/ (redirect)
     lib/core/session_scope.dart (userScopeProvider) · features/auth/ (auth_providers, sign_out, me_api, error_pages 401/403/404)
     lib/features/profile/ (hồ sơ 4 tab) · features/srs/ (learning-settings) · features/licenses/ (giấy phép & nguồn)
+    lib/features/progress/ (tổng quan trang chủ: domain port web + test, DashboardPage, huy hiệu Ôn tập)
     assets/hanzi-data/ (nét chữ, ARPHICPL.TXT) · assets/licenses/ (hanzi-writer MIT)
     test/                     # widget test shell/thẻ trạng thái/luồng đăng nhập/hồ sơ, parse model (fixtures/)
 ```
@@ -140,7 +141,18 @@ Ghi chú: `uuid` 4.6.0 xuất hiện trong `pubspec.lock` là phụ thuộc **b�
 - **Đổi tài khoản trên cùng máy:** provider theo người dùng (`learningSettingsProvider`) khi dựng lại vẫn giữ `.value` của người trước trong lúc `AsyncLoading` (Riverpod 3) ⇒ mọi chỗ đọc để DÙNG dữ liệu phải qua `unwrapPrevious()` (`ttsRateProvider`, `autoPlayAudioProvider`, tab Học tập); cache tốc độ đọc khoá theo người dùng (`af.chinese.ttsRate.<userId>`); hộp "giá trị chờ" của thanh tốc độ cũng theo `userScopeProvider`. Áp dụng mẫu này cho mọi provider theo người dùng ở M5+.
 - `AuthController.refreshSession()` luôn mở lượt làm mới MỚI (`AuthSession.refresh(force: true)`, xếp sau lượt đang bay) và trả `bool`: `false` ⇒ đã lưu nhưng chưa tải lại được hồ sơ/quyền (toast cảnh báo). `describeAuthError(context: AuthErrorContext.session)` cho màn đã đăng nhập: 401 không mã ⇒ "Phiên đăng nhập không còn hợp lệ" (không nói sai mật khẩu).
 
-**Việc để M5/M6:** sau khi lưu hồ sơ (múi giờ đổi ⇒ "hôm nay" đổi) và sau khi lưu cài đặt học tập (hạn mức thẻ mới đổi) phải `ref.invalidate` provider tổng quan (M5) và `srsSummaryProvider` (M6) — vị trí đã đánh dấu bằng bình luận trong `profile_info_tab.dart` và `learning_settings_tab.dart`.
+**Việc để M6:** sau khi lưu cài đặt học tập phải thêm `ref.invalidate(srsSummaryProvider)` (vị trí đã đánh dấu trong `learning_settings_tab.dart`); M5 đã nối `ref.invalidateProgressOverview()` ở cả hai tab.
+
+## Tổng quan — trang chủ (M5)
+
+- `/` = `DashboardPage` (`features/progress/`, port `features/progress/` web): tiêu đề "Hôm nay, {thứ} {dd/MM}" theo `localDate` của server (không dùng ngày máy); thứ tự khối §5.3.4: chuỗi ngày → mục tiêu → việc hôm nay → lịch 90 ngày → từ vựng → bài học → luyện viết → thanh điệu; khối vắng trong JSON ⇒ ẩn; số 0 ⇒ nút mời (CTA); lỗi ⇒ `ErrorView` trong trang + Thử lại (503 `CONTENT_UNAVAILABLE` ⇒ "Học liệu chưa sẵn sàng"); kéo để làm mới. Khối "Trạng thái hệ thống" chỉ hiện với `users.manage`, thu gọn cuối trang (`ExpansionTile`, chỉ gọi `/system/info` khi mở).
+- `domain/` port thuần từ web kèm test cùng số ca: `dates.dart` (số ngày epoch, tuần bắt đầu Thứ Hai), `heatmap.dart` (`levelOf` 0 · 1–9 · 10–29 · 30–59 · ≥60, `buildHeatmap` 13–14 cột, nhãn tháng), `today_tasks.dart` (thứ tự R-PG9, `kPinyinMinAnswered = 40`, đường dẫn giống web), `labels.dart` (`todayHeading`, `streakMessage`, `longestLabel`, `isDeviceTimeZoneDifferent` quy bí danh `Asia/Saigon`, `toPercent`).
+- `ActivityHeatmap`: lưới tự vẽ ô 16 px khe 3 (14 cột = 263 px + cột nhãn 22 ⇒ vừa 360 px); điện thoại không có hover ⇒ **chạm ô ghim nhãn "dd/MM: N lượt" 3 s** dưới lưới; hẹp hơn lưới ⇒ cuộn ngang mở sẵn ở tuần hiện tại.
+- **Provider theo người dùng:** `progressOverviewByUserProvider` là `FutureProvider.autoDispose.family` **theo id người dùng** (`progressOverviewProvider` chọn instance theo `userScopeProvider`): đổi tài khoản ⇒ instance mới (không mang `.value` người trước — cùng mục đích với `unwrapPrevious()`), còn làm mới cùng người thì giữ số cũ trong lúc tải nên huy hiệu không nháy về 0. Làm mới bằng `ref.invalidateProgressOverview()` (extension cho `WidgetRef`/`Ref`): app resumed (`AuthLifecycleObserver.onResumed`), chọn lại tab Trang chủ, kéo-để-làm-mới, sau khi lưu hồ sơ (múi giờ đổi ⇒ "hôm nay" đổi) và lưu cài đặt học tập (hạn mức thẻ mới đổi). M6+ gọi thêm sau khi gửi đánh giá/nộp quiz/viết chữ (danh sách invalidate như web).
+- **Huy hiệu "Ôn tập"** = `srs.dueNow + srs.newAvailableToday` từ tổng quan (`reviewBadgeProvider`; `AfShellScaffold` cắt "99+"); thiếu `study.use`/khối `srs` vắng ⇒ ẩn. M6 có thể chuyển nguồn sang `srsSummaryProvider`.
+- Việc hôm nay/nút trong thẻ dẫn tới `/on-tap`, `/bai-hoc/<slug>`, `/luyen-viet?tab=…`, `/pinyin?tab=luyen` — màn chưa có trên app ⇒ `ComingSoonPage` (route `/bai-hoc/:slug` thêm ở M5, M9 thay).
+- Múi giờ máy ≠ `overview.timeZone` ⇒ dòng "Ngày học tính theo múi giờ hồ sơ (…) — đổi ở Hồ sơ" (chạm ⇒ `/ho-so`).
+- Fixture `test/fixtures/progress_overview_{full,minimal,new_user}.json` (minimal = chỉ 5 trường luôn có; new_user = bản ghi thật của tài khoản mới); widget test `buildTestApp` mặc định trả fixture người mới cho `/progress/overview` (`overviewBody`/`overview` để đổi).
 
 ## Chưa verify
 

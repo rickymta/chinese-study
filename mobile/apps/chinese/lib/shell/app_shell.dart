@@ -1,6 +1,9 @@
 import 'package:af_ui/af_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../features/progress/application/providers.dart';
 
 /// Nhãn 5 nhánh — thứ tự giống web (Trang chủ, Ôn tập, Bài học, Luyện viết, còn lại vào "Thêm").
 const kShellDestinations = <AfNavDestination>[
@@ -11,26 +14,33 @@ const kShellDestinations = <AfNavDestination>[
   AfNavDestination(label: 'Thêm', icon: Icons.more_horiz),
 ];
 
+/// Chỉ số nhánh Trang chủ / Ôn tập trong [kShellDestinations].
+const kHomeBranch = 0;
+const kReviewBranch = 1;
+
 /// Khung 5 nhánh của `StatefulShellRoute.indexedStack`. Mỗi trang tự dựng `AppBar` riêng (shell không có tiêu đề)
 /// để nút hành động của từng trang (làm mới, lọc...) nằm đúng chỗ.
 ///
-/// Badge "Ôn tập" (`dueNow + newAvailableToday`) do M6 điền; M0 chưa có.
-class AppShell extends StatelessWidget {
-  const AppShell({super.key, required this.navigationShell, this.reviewBadge = 0});
+/// Huy hiệu "Ôn tập" = `dueNow + newAvailableToday` từ tổng quan (`reviewBadgeProvider`, M5; `AfShellScaffold` cắt
+/// "99+"); [reviewBadge] truyền tường minh để test/ghi đè, null ⇒ đọc provider. Chọn lại tab Trang chủ đang mở ⇒ về
+/// gốc nhánh + làm mới tổng quan (hợp đồng §5.3.8).
+class AppShell extends ConsumerWidget {
+  const AppShell({super.key, required this.navigationShell, this.reviewBadge});
 
   final StatefulNavigationShell navigationShell;
-  final int reviewBadge;
+  final int? reviewBadge;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int badge = reviewBadge ?? ref.watch<int>(reviewBadgeProvider);
     final destinations = [
       for (var i = 0; i < kShellDestinations.length; i++)
-        if (i == 1 && reviewBadge > 0)
+        if (i == kReviewBranch && badge > 0)
           AfNavDestination(
             label: kShellDestinations[i].label,
             icon: kShellDestinations[i].icon,
             selectedIcon: kShellDestinations[i].selectedIcon,
-            badgeCount: reviewBadge,
+            badgeCount: badge,
           )
         else
           kShellDestinations[i],
@@ -38,8 +48,12 @@ class AppShell extends StatelessWidget {
     return AfShellScaffold(
       destinations: destinations,
       selectedIndex: navigationShell.currentIndex,
-      // Chọn lại nhánh đang mở ⇒ về trang gốc của nhánh (initialLocation) — giống bấm lại tab trên web.
-      onDestinationSelected: (i) => navigationShell.goBranch(i, initialLocation: i == navigationShell.currentIndex),
+      onDestinationSelected: (i) {
+        final reselect = i == navigationShell.currentIndex;
+        if (reselect && i == kHomeBranch) ref.invalidateProgressOverview();
+        // Chọn lại nhánh đang mở ⇒ về trang gốc của nhánh (initialLocation) — giống bấm lại tab trên web.
+        navigationShell.goBranch(i, initialLocation: reselect);
+      },
       body: navigationShell,
     );
   }

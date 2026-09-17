@@ -27,6 +27,11 @@ void main() {
     expect(textOf(kDataLicenses[1].$1), contains('Unicode'));
     expect(textOf(kDataLicenses[2].$1), contains('Pleco'));
     expect(textOf(kDataLicenses[4].$1), contains('Open Spaced Repetition'));
+
+    // NOTICE.md (ghi chú nguồn cho người bảo trì) KHÔNG được đăng ký/hiển thị như giấy phép (review M4).
+    final allText = entries.map((e) => e.paragraphs.map((p) => p.text).join('\n')).join('\n');
+    expect(allText, isNot(contains('Giấy phép đóng gói trong app mobile')));
+    expect(entries.any((e) => e.packages.any((p) => p.contains('NOTICE'))), isFalse);
   });
 
   testWidgets('/giay-phep liệt kê nguồn (CC BY-SA, CVDICT, CC-CEDICT, Unihan, Arphic, py-fsrs); nút mở LicensePage', (

@@ -17,13 +17,14 @@ void main() {
     final labels = tester.widgetList<NavigationDestination>(find.byType(NavigationDestination)).map((d) => d.label);
     expect(labels, ['Trang chủ', 'Ôn tập', 'Bài học', 'Luyện viết', 'Thêm']);
     expect(kShellDestinations.map((d) => d.label), labels);
-    expect(find.text('AntFarm · Tiếng Trung'), findsOneWidget);
+    expect(find.text('Hôm nay, Thứ Năm 17/09'), findsOneWidget); // tiêu đề trang chủ theo localDate server (M5)
 
-    await tester.tap(find.text('Bài học'));
+    // Chỉ tìm trong thanh nav: trang chủ M5 cũng có thẻ "Bài học".
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bài học')));
     await tester.pumpAndSettle();
     expect(find.text('Tính năng này sắp có trên ứng dụng'), findsOneWidget);
 
-    await tester.tap(find.text('Thêm'));
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Thêm')));
     await tester.pumpAndSettle();
     expect(find.text('Pinyin & luyện thanh'), findsOneWidget);
     expect(find.text('Giấy phép & nguồn'), findsOneWidget);
@@ -56,7 +57,7 @@ void main() {
 
     await pumpApp(tester);
     expect(tester.takeException(), isNull);
-    expect(find.text('Tiếng Trung: đang chạy'), findsOneWidget);
+    expect(find.text('Chuỗi ngày học'), findsOneWidget);
 
     await tester.tap(find.text('Thêm'));
     await tester.pumpAndSettle();

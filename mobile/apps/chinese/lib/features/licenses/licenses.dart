@@ -13,7 +13,8 @@ const kArphicLicenseAsset = 'assets/hanzi-data/ARPHICPL.TXT';
 const kHanziWriterLicenseAsset = 'assets/licenses/hanzi-writer.LICENSE.txt';
 
 /// Giấy phép dữ liệu học liệu — bản sao nguyên văn của `content/chinese/LICENSES/` (xem `assets/licenses/NOTICE.md`):
-/// (tên gói hiện trong LicensePage, asset).
+/// (tên gói hiện trong LicensePage, asset). `NOTICE.md` chỉ là ghi chú nguồn/ngày chép cho người bảo trì — KHÔNG đăng
+/// ký vào `LicenseRegistry`, không hiển thị như giấy phép (review M4; test `licenses_page_test` chốt điều này).
 const kDataLicenses = <(String, String)>[
   (
     'Dữ liệu từ điển dẫn xuất CC-CEDICT / CVDICT / Wiktionary / Hán Việt AntFarm (CC BY-SA 4.0)',

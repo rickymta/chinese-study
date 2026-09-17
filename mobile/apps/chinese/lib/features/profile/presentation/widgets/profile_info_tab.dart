@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../auth/application/auth_providers.dart';
+import '../../../progress/application/providers.dart';
 import '../pages/profile_page.dart';
 
 /// Tab "Thông tin" (port `ProfileForm.tsx`): email chỉ đọc, tên hiển thị, múi giờ (`TimeZoneField`). Lưu ⇒
@@ -87,10 +88,12 @@ class _ProfileInfoTabState extends ConsumerState<ProfileInfoTab> {
       try {
         synced = await ref.read(authControllerProvider.notifier).refreshSession();
       } on Object catch (refreshErr) {
-        // Lưu đã thành công. 401/403 khi làm mới = MẤT PHIÊN (router đưa về đăng nhập) ⇒ không báo thêm. Lỗi khác
-        // (mạng/5xx): token cũ vẫn dùng tới hạn — báo nhẹ, không coi là lỗi lưu.
+        // Lưu đã thành công. 401/403 khi làm mới = MẤT PHIÊN (router đưa về đăng nhập) ⇒ không báo thêm;
+        // `AuthSessionChanged` = phiên đã bị đăng xuất/đổi người trong lúc làm mới (đang chuyển về đăng nhập) ⇒ cũng
+        // im lặng (review M4). Lỗi khác (mạng/5xx): token cũ vẫn dùng tới hạn — báo nhẹ, không coi là lỗi lưu.
+        if (refreshErr is AuthSessionChanged || !mounted) return;
         final status = ApiError.from(refreshErr).status;
-        if (status == 401 || status == 403 || !mounted) return;
+        if (status == 401 || status == 403) return;
         showAfToast(
           context,
           'Đã lưu hồ sơ, nhưng chưa làm mới được phiên — tên/múi giờ mới sẽ hiện sau khi mở lại ứng dụng.',
@@ -109,7 +112,9 @@ class _ProfileInfoTabState extends ConsumerState<ProfileInfoTab> {
         );
         return;
       }
-      // Múi giờ mới chỉ tới service tiếng Trung qua token mới ⇒ M5/M6 invalidate tổng quan + tóm tắt SRS ở đây.
+      // Múi giờ mới chỉ tới service tiếng Trung qua token mới ⇒ "hôm nay"/chuỗi ngày/thẻ đến hạn đổi: làm mới tổng
+      // quan + huy hiệu (M5); M6 thêm `ref.invalidate(srsSummaryProvider)`.
+      ref.invalidateProgressOverview();
       showAfToast(context, 'Đã lưu hồ sơ', kind: AfToastKind.success);
     } on Object catch (err) {
       final view = describeAuthError(err, context: AuthErrorContext.session);

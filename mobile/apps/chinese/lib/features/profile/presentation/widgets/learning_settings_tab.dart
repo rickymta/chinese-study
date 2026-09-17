@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/speech/chinese_speech.dart';
 import '../../../../core/widgets/pinyin_text.dart';
 import '../../../../core/widgets/speak_button.dart';
+import '../../../progress/application/providers.dart';
 import '../../../srs/application/providers.dart';
 import '../../../srs/data/models.dart';
 import '../pages/profile_page.dart';
@@ -125,7 +126,9 @@ class _SettingsFormState extends ConsumerState<_SettingsForm> {
             ),
           );
       if (!mounted) return;
-      // M6: ref.invalidate(srsSummaryProvider) — hạn mức thẻ mới đổi ⇒ số thẻ đến hạn đổi.
+      // Hạn mức thẻ mới/lượt ôn đổi ⇒ mục tiêu ngày, thẻ mới hôm nay, huy hiệu "Ôn tập" đổi ⇒ làm mới tổng quan (M5);
+      // M6: thêm ref.invalidate(srsSummaryProvider).
+      ref.invalidateProgressOverview();
       showAfToast(context, 'Đã lưu cài đặt học tập', kind: AfToastKind.success);
     } on Object catch (err) {
       final e = ApiError.from(err);

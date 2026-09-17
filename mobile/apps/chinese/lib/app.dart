@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'features/progress/application/providers.dart';
 import 'router/router.dart';
 
 /// Ngôn ngữ giao diện: tiếng Việt (chuỗi viết thẳng trong code — DB-M20); `en` để Material có bản dịch dự phòng.
@@ -32,8 +33,12 @@ class ChineseApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: router,
-      // Làm mới token khi app trở lại foreground (RM-S3); M5/M6 nối thêm làm mới tổng quan + gửi outbox.
-      builder: (context, child) => AuthLifecycleObserver(child: child ?? const SizedBox.shrink()),
+      // Làm mới token khi app trở lại foreground (RM-S3) + làm mới tổng quan/huy hiệu (M5: người học có thể vừa ôn ở
+      // máy khác hoặc đã qua nửa đêm theo múi giờ hồ sơ); M6 nối thêm gửi outbox.
+      builder: (context, child) => AuthLifecycleObserver(
+        onResumed: () => ref.invalidateProgressOverview(),
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

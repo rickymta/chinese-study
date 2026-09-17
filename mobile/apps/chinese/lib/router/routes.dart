@@ -5,6 +5,12 @@ abstract final class AppRoutes {
   static const review = '/on-tap';
   static const reviewSession = '/on-tap/phien';
   static const lessons = '/bai-hoc';
+
+  /// Mẫu route bài học chi tiết (`:slug`), M9 — M5 dẫn tới `ComingSoonPage`.
+  static const lessonPattern = '/bai-hoc/:slug';
+
+  /// `/bai-hoc/<slug>` (slug đã `Uri.encodeComponent`, giống web).
+  static String lesson(String slug) => '$lessons/${Uri.encodeComponent(slug)}';
   static const writing = '/luyen-viet';
   static const more = '/them';
   static const pinyin = '/pinyin';

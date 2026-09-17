@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/test_app.dart';
 
 void main() {
-  testWidgets('ẩn danh ⇒ trang đăng nhập; đăng nhập đúng ⇒ trang chủ chào tên; kho được ghi', (tester) async {
+  testWidgets('ẩn danh ⇒ trang đăng nhập; đăng nhập đúng ⇒ trang chủ (tổng quan); kho được ghi', (tester) async {
     final tokens = InMemoryTokenStore();
     await tester.pumpWidget(
       buildTestApp(
@@ -29,7 +29,7 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Đăng nhập'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Xin chào, Quân!'), findsOneWidget);
+    expect(find.text('Chuỗi ngày học'), findsOneWidget); // trang chủ = tổng quan (M5)
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(tokens.session?.refreshToken, 'rt-1');
     expect(tokens.log, contains('write:rt-1'));
@@ -62,7 +62,7 @@ void main() {
       buildTestApp(chineseAdapter: okSystemInfo('chinese-backend'), identityAdapter: identity, tokenStore: tokens),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Xin chào, Quân!'), findsOneWidget);
+    expect(find.text('Chuỗi ngày học'), findsOneWidget); // trang chủ = tổng quan (M5)
     expect(tokens.session?.refreshToken, 'rt-1'); // đã xoay khi làm mới lúc mở app
 
     await tester.tap(find.text('Thêm'));

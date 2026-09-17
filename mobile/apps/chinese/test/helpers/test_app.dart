@@ -114,14 +114,23 @@ Future<(int, String)> defaultAuthResponse(RequestOptions req) {
   return Future.value((200, tokenBody(withAccount: !path.endsWith('/refresh'))));
 }
 
-/// Adapter chinese: `/me` trả hồ sơ với [permissions]; còn lại giao cho [rest].
+/// Thân JSON `/progress/overview` mặc định cho widget test: người mới (chuỗi 0, mọi khối có nhưng bằng 0).
+String defaultOverviewBody() => File('test/fixtures/progress_overview_new_user.json').readAsStringSync();
+
+/// Thân JSON `/progress/overview` từ fixture (`progress_overview_full.json`, `_minimal.json`, `_new_user.json`).
+String overviewFixture(String name) => File('test/fixtures/$name').readAsStringSync();
+
+/// Adapter chinese: `/me` trả hồ sơ với [permissions]; `/progress/overview` trả theo [overview] (null ⇒ giao cho
+/// [rest] — test lỗi tự trả 503/502); còn lại giao cho [rest].
 FakeAdapter chineseStub({
   required FakeAdapter rest,
   Set<String> permissions = const {'study.use'},
   List<RequestOptions>? log,
   String Function()? meId,
+  Future<(int, String)> Function(RequestOptions req)? overview,
 }) => FakeAdapter((req) {
   log?.add(req);
+  if (req.uri.path.endsWith('/progress/overview') && overview != null) return overview(req);
   if (req.uri.path.endsWith('/me')) {
     return Future.value((
       200,
@@ -167,8 +176,12 @@ FakeAdapter chineseWithSettings({
 
 /// Dựng app đầy đủ (router + theme + provider + phiên) với client giả — dùng cho widget test shell/trang.
 ///
-/// Mặc định [signedIn] ⇒ kho có phiên (như mở lại app) ⇒ refresh + `/me` OK ⇒ vào trang chủ. [permissions] để thử
-/// `/403`; [authHandler] để thử lỗi đăng nhập; [tokenStore] để assert kho sau đăng xuất.
+/// Mặc định [signedIn] ⇒ kho có phiên (như mở lại app) ⇒ refresh + `/me` OK ⇒ vào trang chủ (tổng quan). [permissions]
+/// để thử `/403`; [authHandler] để thử lỗi đăng nhập; [tokenStore] để assert kho sau đăng xuất.
+///
+/// Trang chủ M5 gọi `/progress/overview`: mặc định trả fixture người mới ([defaultOverviewBody]); [overviewBody] để
+/// đổi số liệu (vd `overviewFixture('progress_overview_full.json')`); [overview] để trả theo từng lời gọi (lỗi rồi
+/// thành công, đổi người). Cả hai null ⇒ giao cho [chineseAdapter] (test lỗi tải).
 Widget buildTestApp({
   required FakeAdapter chineseAdapter,
   required FakeAdapter identityAdapter,
@@ -181,10 +194,18 @@ Widget buildTestApp({
   String deviceTimeZone = 'Asia/Ho_Chi_Minh',
   AfTts? tts,
   String Function()? meId,
+  String? overviewBody,
+  Future<(int, String)> Function(RequestOptions req)? overview,
+  bool useDefaultOverview = true,
 }) {
   final tokens = tokenStore ?? InMemoryTokenStore();
   if (signedIn && tokens.session == null) tokens.session = testStoredSession();
   final prefs = store ?? InMemoryKeyValueStore({kInstallFlagKey: true});
+  final overviewHandler =
+      overview ??
+      (overviewBody != null || useDefaultOverview
+          ? (_) => Future.value((200, overviewBody ?? defaultOverviewBody()))
+          : null);
 
   return ProviderScope(
     overrides: [
@@ -192,7 +213,13 @@ Widget buildTestApp({
       keyValueStoreProvider.overrideWithValue(prefs),
       tokenStoreProvider.overrideWithValue(tokens),
       chineseAdapterProvider.overrideWithValue(
-        chineseStub(rest: chineseAdapter, permissions: permissions, log: requestLog, meId: meId),
+        chineseStub(
+          rest: chineseAdapter,
+          permissions: permissions,
+          log: requestLog,
+          meId: meId,
+          overview: overviewHandler,
+        ),
       ),
       identityAdapterProvider.overrideWithValue(
         identityStub(rest: identityAdapter, auth: authHandler, log: requestLog),

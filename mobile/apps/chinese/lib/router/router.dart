@@ -7,7 +7,7 @@ import '../features/auth/application/sign_out.dart';
 import '../features/auth/presentation/pages/error_pages.dart';
 import '../features/licenses/presentation/pages/licenses_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
-import '../features/system/presentation/pages/home_page.dart';
+import '../features/progress/presentation/pages/dashboard_page.dart';
 import '../shell/app_shell.dart';
 import '../shell/coming_soon_page.dart';
 import '../shell/more_page.dart';
@@ -49,7 +49,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const HomePage())],
+            routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const DashboardPage())],
           ),
           StatefulShellBranch(
             routes: [
@@ -63,6 +63,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.lessons,
+                builder: (_, _) => const ComingSoonPage(title: 'Bài học', icon: Icons.menu_book_outlined),
+              ),
+              // `/bai-hoc/:slug` — đích của "Việc hôm nay"/thẻ Bài học (M5); màn thật ở M9. Route riêng (không lồng
+              // dưới `/bai-hoc`) để không chồng trang tạm lên nhau.
+              GoRoute(
+                path: AppRoutes.lessonPattern,
                 builder: (_, _) => const ComingSoonPage(title: 'Bài học', icon: Icons.menu_book_outlined),
               ),
             ],
