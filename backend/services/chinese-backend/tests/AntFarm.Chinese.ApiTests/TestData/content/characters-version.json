@@ -1,0 +1,9 @@
+{
+  "dataset": "characters",
+  "version": "test",
+  "license": "test",
+  "characters": [
+    { "hanzi": "摩", "traditionalVariants": [], "pinyinReadings": ["mo2"], "hanViet": ["ma"], "hanVietByPinyin": { "mo2": "ma" }, "hanVietStatus": "derived", "strokeCount": 15, "radical": "手", "radicalNumber": 64, "sources": ["test"] },
+    { "hanzi": "托", "traditionalVariants": [], "pinyinReadings": ["tuo1"], "hanViet": ["thác"], "hanVietByPinyin": { "tuo1": "thác" }, "hanVietStatus": "derived", "strokeCount": 6, "radical": "扌", "radicalNumber": 64, "sources": ["test"] }
+  ]
+}

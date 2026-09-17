@@ -1,0 +1,58 @@
+# HANDOFF 17/09/2026 — MVP F0 → F11 xong
+
+> Đọc file này trước khi làm tiếp. Nguồn sự thật: `CLAUDE.md`, `docs/agents/AGENT-WORKFLOW.md`, hợp đồng gốc
+> `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md` và 3 hợp đồng chi tiết
+> `docs/agent-workflow/2026-09-17-antfarm-{f4-f5,f6-f7,f8-f11}-chi-tiet.md`.
+
+## 1. Trạng thái (nhánh `develop`, CHƯA push)
+
+| Commit | Nội dung |
+|---|---|
+| `fbbe48a` | Sửa F0 theo review: gateway không chặn preflight CORS, compose dev mount PG18 đúng |
+| `ad9fb1a` | Hợp đồng chi tiết F4–F11 |
+| `6658fce` | **F2** — identity-service xác thực, JWKS, `AntFarm.Auth`, `@af/auth`, `@af/utils` |
+| `4fd650c` | **F3** — chinese-backend nhận JWT, phân quyền cục bộ, trang 4xx |
+| `b0378e0`, `3ff66b4` | **F5** — học liệu pinyin + luyện thanh điệu |
+| `3bb2e8e`, `fa83a01` | Sửa nền tảng: Dockerfile bỏ `groupadd`; log lỗi nghiệp vụ đúng mã |
+| `7cb28dd` | **F4** — hồ sơ, đổi mật khẩu, quản trị vai trò |
+| `946cf79`, `dd168ca`, `aed346e` | **F6** — 500 từ HSK 3.0 cấp 1 + tra từ |
+| `13332d8` | Bundle triển khai theo khuôn MedDental (runbook `deploy/README.md`, preflight, backup) |
+| `c36af9c`, `d213e82` | **F7** — SRS FSRS-6 + màn ôn tập |
+| `1535128`, `061569a` | **F9** — 5 bài học + quiz |
+| `660f36a` | **F8.1** — dữ liệu nét chữ |
+| `8b27ad9` | Bàn giao tạm dừng ở F9 (người dùng cho làm tiếp sau đó) |
+| `aefed44` | Sửa F7: hai lượt mở hàng đợi song song không còn tạo dư thẻ mới |
+| `36245e2`, `bbe8b55` | **F8** — luyện viết chữ Hán 3 bước (Xem nét → Tô → Tự viết) |
+| `aac43a8`, `9b0d7d5` | **F10** — quản trị bài học & duyệt nghĩa |
+| `531474d`, `c3304fe` | **F11** — trang chủ tổng quan tiến độ & chuỗi ngày học |
+
+Cổng cuối: `dotnet test` 561 đạt (có `AF_TEST_PG`; không có thì 0 Failed), vitest 311 đạt, `tsc -b` / `build` / `lint:ui` / `validate:chinese` sạch. Nghiệm thu end-to-end MVP (§9.3) đạt ở 1366px và 375px: đăng ký → pinyin → tra từ → ôn thẻ → bài học + quiz → luyện viết → trang chủ phản ánh đủ.
+
+## 2. Việc tiếp theo
+
+MVP (F0–F11) đã xong. Còn: **F12** — đưa lên server (theo `deploy/README.md` + `deploy/VERIFY-DOCKER.md`: DNS Cloudflare, chứng chỉ SAN, khoá ký identity, tài khoản admin đầu tiên, `AUTH_ALLOW_REGISTRATION`, sao lưu). **F13** — portal `antfarms.xyz` (sau cùng, ngoài MVP). Song song: duyệt học liệu (mục 4).
+
+## 3. Quyết định dùng mặc định BA — CẦN NGƯỜI DÙNG DUYỆT
+
+- **D3** — đóng gói tập con `hanzi-writer-data` 2.0.1 vào `apps/chinese/public/hanzi-data/` (không dùng CDN).
+- **D5** — nghĩa Việt: 484 từ lấy từ CVDICT, 10 từ dịch máy, 6 từ sửa tay; **toàn bộ gắn `machine`** chờ duyệt ở F10.
+- **D6** — chấp nhận CC BY-SA 4.0 cho `content/chinese/data/` và `sources/`.
+- **D7** — quiz ≥ 80% là hoàn thành, không khoá tuần tự, lần đạt đầu thêm từ vào ôn tập.
+- **D8** — ngày có học = có ít nhất 1 `study_events` (áp khi làm F11).
+- **D21–D39** (file F4–F5): đổi mật khẩu ở `POST /api/auth/password`, bài luyện 20 câu, không dùng cặp 3-3...
+  Lưu ý: file F6–F7 cũng dùng mã **D21** cho một câu hỏi khác (HSK 2026 chỉ còn 294 từ cấp 1 — hiện vẫn giữ 500 từ).
+
+Lệch có chủ đích đã được review chấp nhận: mục "Người dùng" ẩn khỏi bottom nav mobile; nút "Hiện đáp án" ở thanh đáy; token `[[hanzi|pinyin]]` hiển thị ruby; tìm kiếm từ điển xếp hạng trong bộ nhớ (500 từ).
+
+## 4. Tồn đọng đáng chú ý
+
+- Chưa nghe TTS thật trên iPhone (mới giả lập `speechSynthesis`).
+- Docker: đã build được từng ảnh; `compose up` đầy đủ + HTTPS chưa verify (cần server).
+- Học liệu cần duyệt sớm: ~40 âm Hán Việt có ghi chú "cần duyệt", 什么 hiện "thập", 13 mục dịch máy, 吗 chưa có Hán Việt.
+- Ví dụ tìm `nǐhǎo` trong hợp đồng F6 không kiểm được vì 你好 không thuộc danh sách 500 từ.
+- Chưa có vai trò thật nào thiếu `study.use` (chỉ admin/learner) — Alert "chỉ xem" ở trang chủ mới kiểm bằng cách sửa quyền tạm; cân nhắc vai trò "biên tập nội dung".
+- Học viên đang mở `/bai-hoc` thấy bài vừa xuất bản sau tối đa 1 phút (cache).
+- Nên thử chạm lịch hoạt động trên điện thoại thật.
+- DB dev còn dữ liệu thử của `f3-admin@vidu.test` / `f3-learner@vidu.test` (mật khẩu `MatKhau-F3-2026`).
+- MacBook: nếu `docker pull` treo, dùng `DOCKER_CONFIG` riêng không có `credsStore` (xem `deploy/VERIFY-DOCKER.md` mục 0).
+- Áp migration thủ công phải dùng role `af_chinese`, không dùng `postgres` (bảng sẽ sai chủ sở hữu).

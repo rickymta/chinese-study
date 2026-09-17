@@ -1,0 +1,20 @@
+// Giá trị mặc định khớp deploy/dev/.env.example (Docker dev: postgres + minio) — copy là
+// chạy được ngay sau: docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d
+// Nếu dùng PostgreSQL cài thẳng trên máy (không Docker, vd Windows) thì đổi thành
+// Username=postgres;Password=<mật khẩu superuser của bạn> — xem README mục "Chạy không Docker".
+{
+  "ConnectionStrings": {
+    "Default": "Host=localhost;Port=5432;Database=af_identity;Username=af_identity;Password=af_identity_dev"
+  },
+  "Serilog": { "MinimumLevel": { "Default": "Debug" } },
+  "Jwt": {
+    "Issuer": "http://localhost:5280/identity",
+    "KeysPath": "../../../../../.secrets/identity/keys"
+  },
+  "Auth": {
+    "RefreshCookieDomain": "",
+    "RefreshCookiePath": "/identity/api/auth",
+    "RefreshCookieSecure": false,
+    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281"]
+  }
+}

@@ -1,0 +1,3588 @@
+{
+  "characters": [
+    {
+      "hanzi": "一",
+      "readings": [
+        "nhất"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "七",
+      "readings": [
+        "thất"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "三",
+      "readings": [
+        "tam"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "上",
+      "readings": [
+        "thượng"
+      ],
+      "byPinyin": {
+        "shang4": "thượng",
+        "shang5": "thượng"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "下",
+      "readings": [
+        "hạ"
+      ],
+      "byPinyin": {
+        "xia4": "hạ",
+        "xia5": "hạ"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "不",
+      "readings": [
+        "bất"
+      ],
+      "byPinyin": {
+        "bu4": "bất",
+        "bu5": "bất"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "东",
+      "readings": [
+        "đông"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "两",
+      "readings": [
+        "lưỡng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "个",
+      "readings": [
+        "cá"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "中",
+      "readings": [
+        "trung"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "么",
+      "readings": [
+        "yêu"
+      ],
+      "byPinyin": {
+        "yao1": "yêu",
+        "me5": ""
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Trong 什么/怎么/那么/多么 chỉ là trợ từ nghi vấn không mang nghĩa riêng — bỏ trống khi ghép."
+    },
+    {
+      "hanzi": "九",
+      "readings": [
+        "cửu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "也",
+      "readings": [
+        "dã"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "习",
+      "readings": [
+        "tập"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "书",
+      "readings": [
+        "thư"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "买",
+      "readings": [
+        "mãi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "了",
+      "readings": [
+        "liễu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "事",
+      "readings": [
+        "sự"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "二",
+      "readings": [
+        "nhị"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"nhì\" — đó là âm Nôm (số thứ tự thuần Việt), âm Hán Việt chuẩn là \"nhị\"."
+    },
+    {
+      "hanzi": "五",
+      "readings": [
+        "ngũ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "些",
+      "readings": [
+        "ta"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": "Ít dùng độc lập trong tiếng Việt hiện đại (chủ yếu qua 一些/那些) — cần duyệt."
+    },
+    {
+      "hanzi": "京",
+      "readings": [
+        "kinh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "人",
+      "readings": [
+        "nhân"
+      ],
+      "byPinyin": {
+        "ren2": "nhân",
+        "ren5": "nhân"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "什",
+      "readings": [
+        "thập"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": "Trong 什么 là mượn âm; nghĩa gốc \"nhóm mười\" đọc \"thập\"."
+    },
+    {
+      "hanzi": "今",
+      "readings": [
+        "kim"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "介",
+      "readings": [
+        "giới"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "从",
+      "readings": [
+        "tòng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Cũng đọc \"tùng\" tuỳ từ ghép (tòng quân / tùng chinh) — cần duyệt chọn âm phổ biến hơn."
+    },
+    {
+      "hanzi": "他",
+      "readings": [
+        "tha"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "们",
+      "readings": [
+        "môn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "休",
+      "readings": [
+        "hưu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "会",
+      "readings": [
+        "hội"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "住",
+      "readings": [
+        "trú"
+      ],
+      "byPinyin": {
+        "zhu4": "trú",
+        "zhu5": "trú"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "体",
+      "readings": [
+        "thể"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "作",
+      "readings": [
+        "tác"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "你",
+      "readings": [
+        "nễ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"nể\" (âm Nôm/nhầm dấu) — âm Hán Việt tự điển là \"nễ\"."
+    },
+    {
+      "hanzi": "候",
+      "readings": [
+        "hầu"
+      ],
+      "byPinyin": {
+        "hou4": "hầu",
+        "hou5": "hầu"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "假",
+      "readings": [
+        "giả",
+        "giá"
+      ],
+      "byPinyin": {
+        "jia3": "giả",
+        "jia4": "giá"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "jiǎ (giả dối) và jià (kỳ nghỉ, 放假) là hai âm Hán Việt khác nhau."
+    },
+    {
+      "hanzi": "做",
+      "readings": [
+        "tố"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Ít dùng độc lập — cần duyệt."
+    },
+    {
+      "hanzi": "儿",
+      "readings": [
+        "nhi"
+      ],
+      "byPinyin": {
+        "er2": "nhi",
+        "r5": ""
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": "r5 = 儿化 (erhua), không mang nghĩa riêng khi ghép."
+    },
+    {
+      "hanzi": "元",
+      "readings": [
+        "nguyên"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "先",
+      "readings": [
+        "tiên"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "八",
+      "readings": [
+        "bát"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "六",
+      "readings": [
+        "lục"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "关",
+      "readings": [
+        "quan"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "兴",
+      "readings": [
+        "hứng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Nghĩa \"hứng thú\" (高兴) đọc \"hứng\"; nghĩa \"thịnh vượng\" đọc \"hưng\" (không dùng trong HSK1)."
+    },
+    {
+      "hanzi": "再",
+      "readings": [
+        "tái"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "写",
+      "readings": [
+        "tả"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "冷",
+      "readings": [
+        "lãnh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"lạnh\" — đó là từ thuần Việt, không phải Hán Việt. Âm Hán Việt chuẩn là \"lãnh\" (lãnh đạm, hàn lãnh)."
+    },
+    {
+      "hanzi": "净",
+      "readings": [
+        "tịnh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "准",
+      "readings": [
+        "chuẩn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"chốn\" (rõ ràng sai/nhiễu) — âm Hán Việt chuẩn là \"chuẩn\" (chuẩn xác, tiêu chuẩn)."
+    },
+    {
+      "hanzi": "几",
+      "readings": [
+        "kỉ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "出",
+      "readings": [
+        "xuất"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "分",
+      "readings": [
+        "phân"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "别",
+      "readings": [
+        "biệt"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "到",
+      "readings": [
+        "đáo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "前",
+      "readings": [
+        "tiền"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "动",
+      "readings": [
+        "động"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "包",
+      "readings": [
+        "bao"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "北",
+      "readings": [
+        "bắc"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "医",
+      "readings": [
+        "y"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "十",
+      "readings": [
+        "thập"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "午",
+      "readings": [
+        "ngọ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "半",
+      "readings": [
+        "bán"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "南",
+      "readings": [
+        "nam"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "去",
+      "readings": [
+        "khứ"
+      ],
+      "byPinyin": {
+        "qu4": "khứ",
+        "qu5": "khứ"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "友",
+      "readings": [
+        "hữu"
+      ],
+      "byPinyin": {
+        "you3": "hữu",
+        "you5": "hữu"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "口",
+      "readings": [
+        "khẩu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "叫",
+      "readings": [
+        "khiếu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "右",
+      "readings": [
+        "hữu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "号",
+      "readings": [
+        "hiệu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "吃",
+      "readings": [
+        "ngật"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"khật\" (âm Nôm/không chuẩn) — âm Hán Việt tự điển là \"ngật\" (nay ít dùng độc lập)."
+    },
+    {
+      "hanzi": "同",
+      "readings": [
+        "đồng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "名",
+      "readings": [
+        "danh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "后",
+      "readings": [
+        "hậu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "吗",
+      "readings": [],
+      "byPinyin": {
+        "ma5": ""
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Trợ từ nghi vấn cuối câu, không mang nghĩa riêng."
+    },
+    {
+      "hanzi": "吧",
+      "readings": [
+        "ba"
+      ],
+      "byPinyin": {
+        "ba5": ""
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "Trợ từ ngữ khí, không mang nghĩa khi ghép (để trống ở byPinyin). kVietnamese (Unihan) ghi \"và\" — SAI (nhiễu). Đối chiếu Wiktionary (tư liệu) xác nhận âm đọc là \"ba\" (không mang nghĩa độc lập trong ngữ cảnh này)."
+    },
+    {
+      "hanzi": "听",
+      "readings": [
+        "thính"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "告",
+      "readings": [
+        "cáo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "呢",
+      "readings": [
+        "ni",
+        "nỉ"
+      ],
+      "byPinyin": {
+        "ne5": ""
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "Trợ từ ngữ khí, không mang nghĩa khi ghép (để trống ở byPinyin). kVietnamese (Unihan) ghi \"nài\" — không đáng tin. Đối chiếu Wiktionary (tư liệu) cho \"ni, nỉ\" (không mang nghĩa độc lập trong ngữ cảnh này)."
+    },
+    {
+      "hanzi": "和",
+      "readings": [
+        "hoà"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "哥",
+      "readings": [
+        "ca"
+      ],
+      "byPinyin": {
+        "ge1": "ca",
+        "ge5": "ca"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "哪",
+      "readings": [
+        "na"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": "Âm Hán Việt ít phổ biến, cần duyệt."
+    },
+    {
+      "hanzi": "唱",
+      "readings": [
+        "xướng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "商",
+      "readings": [
+        "thương"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "喜",
+      "readings": [
+        "hỉ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "喝",
+      "readings": [
+        "hát"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "四",
+      "readings": [
+        "tứ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "回",
+      "readings": [
+        "hồi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "国",
+      "readings": [
+        "quốc"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "图",
+      "readings": [
+        "đồ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "在",
+      "readings": [
+        "tại"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "地",
+      "readings": [
+        "địa"
+      ],
+      "byPinyin": {
+        "di4": "địa",
+        "de5": ""
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": "de5 là trợ từ định ngữ/trạng ngữ (地 sau tính từ), không mang nghĩa riêng."
+    },
+    {
+      "hanzi": "场",
+      "readings": [
+        "trường"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "坏",
+      "readings": [
+        "hoại"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": "Wiktionary (tư liệu) ghi nhầm \"phôi\" cho chữ này — hợp đồng F6 đã ghi nhận đây là giá trị lệch đã biết; giữ \"hoại\" (khớp kVietnamese/Unihan và từ ghép \"hư hoại\", \"phá hoại\")."
+    },
+    {
+      "hanzi": "坐",
+      "readings": [
+        "toạ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "块",
+      "readings": [
+        "khối"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "备",
+      "readings": [
+        "bị"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "外",
+      "readings": [
+        "ngoại"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "多",
+      "readings": [
+        "đa"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "大",
+      "readings": [
+        "đại"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "天",
+      "readings": [
+        "thiên"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "太",
+      "readings": [
+        "thái"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "女",
+      "readings": [
+        "nữ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"nữa\" (âm Nôm \"thêm nữa\") — âm Hán Việt chuẩn là \"nữ\"."
+    },
+    {
+      "hanzi": "奶",
+      "readings": [
+        "nãi"
+      ],
+      "byPinyin": {
+        "nai3": "nãi",
+        "nai5": "nãi"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"nái\" (nghĩa \"lợn nái\", thuần Việt) — âm Hán Việt chuẩn là \"nãi\" (nãi mẫu, phụ nãi)."
+    },
+    {
+      "hanzi": "她",
+      "readings": [
+        "tha"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "好",
+      "readings": [
+        "hảo",
+        "hiếu"
+      ],
+      "byPinyin": {
+        "hao3": "hảo",
+        "hao4": "hiếu"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "妈",
+      "readings": [
+        "ma"
+      ],
+      "byPinyin": {
+        "ma1": "ma",
+        "ma5": "ma"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Sửa theo review 2026-09-17: dùng \"ma\" (khớp âm hiện đại/thông dụng hơn \"mã\" cho nghĩa \"mẹ\" — mã dễ nhầm với 马/碼). Cần duyệt."
+    },
+    {
+      "hanzi": "妹",
+      "readings": [
+        "muội"
+      ],
+      "byPinyin": {
+        "mei4": "muội",
+        "mei5": "muội"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "姐",
+      "readings": [
+        "thư"
+      ],
+      "byPinyin": {
+        "jie3": "thư",
+        "jie5": "thư"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": "Xác nhận qua từ ghép phổ biến \"tiểu thư\" (小姐); hợp đồng F6 lưu ý kVietnamese có thể nhiễu ở chữ này — đã kiểm tra lại, giữ \"thư\"."
+    },
+    {
+      "hanzi": "子",
+      "readings": [
+        "tử"
+      ],
+      "byPinyin": {
+        "zi3": "tử",
+        "zi5": "tử"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"tí\" (giờ Tí, thuần Việt/khác nghĩa) — âm Hán Việt chuẩn là \"tử\"."
+    },
+    {
+      "hanzi": "字",
+      "readings": [
+        "tự"
+      ],
+      "byPinyin": {
+        "zi4": "tự",
+        "zi5": "tự"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "学",
+      "readings": [
+        "học"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "孩",
+      "readings": [
+        "hài"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "客",
+      "readings": [
+        "khách"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "家",
+      "readings": [
+        "gia"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "对",
+      "readings": [
+        "đối"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "小",
+      "readings": [
+        "tiểu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "少",
+      "readings": [
+        "thiểu"
+      ],
+      "byPinyin": {
+        "shao3": "thiểu",
+        "shao5": "thiểu"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "就",
+      "readings": [
+        "tựu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "山",
+      "readings": [
+        "sơn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "岁",
+      "readings": [
+        "tuế"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "工",
+      "readings": [
+        "công"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "左",
+      "readings": [
+        "tả"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "差",
+      "readings": [
+        "sai"
+      ],
+      "byPinyin": {
+        "cha4": "sai",
+        "cha1": "sai"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "师",
+      "readings": [
+        "sư"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "帮",
+      "readings": [
+        "bang"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "常",
+      "readings": [
+        "thường"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "干",
+      "readings": [
+        "cán",
+        "can"
+      ],
+      "byPinyin": {
+        "gan4": "cán",
+        "gan1": "can"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "gàn (làm) đọc \"cán\" (cán bộ); gān (khô) đọc \"can\" (can qua/khô ráo)."
+    },
+    {
+      "hanzi": "年",
+      "readings": [
+        "niên"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"nên\" (thuần Việt, nhiễu) — âm Hán Việt chuẩn là \"niên\"."
+    },
+    {
+      "hanzi": "床",
+      "readings": [
+        "sàng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "店",
+      "readings": [
+        "điếm"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "开",
+      "readings": [
+        "khai"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "弟",
+      "readings": [
+        "đệ"
+      ],
+      "byPinyin": {
+        "di4": "đệ",
+        "di5": "đệ"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "影",
+      "readings": [
+        "ảnh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "很",
+      "readings": [
+        "ngận"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Âm Hán Việt cổ, ít dùng độc lập trong tiếng Việt hiện đại — cần duyệt."
+    },
+    {
+      "hanzi": "得",
+      "readings": [
+        "đắc"
+      ],
+      "byPinyin": {
+        "de2": "đắc",
+        "de5": "đắc"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "忘",
+      "readings": [
+        "vong"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "忙",
+      "readings": [
+        "mang"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "快",
+      "readings": [
+        "khoái"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "怎",
+      "readings": [
+        "chẩm"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Sửa theo review 2026-09-17: dùng \"chẩm\" (âm Hán Việt tự điển cho đại từ nghi vấn 怎, thay vì để trống). Ít dùng độc lập trong tiếng Việt hiện đại — cần duyệt."
+    },
+    {
+      "hanzi": "息",
+      "readings": [
+        "tức"
+      ],
+      "byPinyin": {
+        "xi1": "tức",
+        "xi5": "tức"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "您",
+      "readings": [
+        "nâm"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Sửa theo review 2026-09-17: dùng \"nâm\" (âm Hán Việt tự điển cho kính ngữ 您, thay vì để trống). Chữ tạo muộn, ít tư liệu đối chiếu — cần duyệt."
+    },
+    {
+      "hanzi": "想",
+      "readings": [
+        "tưởng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "慢",
+      "readings": [
+        "mạn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "我",
+      "readings": [
+        "ngã"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "房",
+      "readings": [
+        "phòng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "手",
+      "readings": [
+        "thủ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "打",
+      "readings": [
+        "đả"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "找",
+      "readings": [
+        "trảo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"quơ\" (thuần Việt, nhiễu) — dùng \"trảo\" theo tự điển Hán Việt, ít phổ biến, cần duyệt."
+    },
+    {
+      "hanzi": "拿",
+      "readings": [
+        "nã"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": "Xác nhận qua từ ghép \"truy nã\" (追拿)."
+    },
+    {
+      "hanzi": "放",
+      "readings": [
+        "phóng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "教",
+      "readings": [
+        "giáo"
+      ],
+      "byPinyin": {
+        "jiao4": "giáo",
+        "jiao1": "giáo"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "文",
+      "readings": [
+        "văn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "新",
+      "readings": [
+        "tân"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "方",
+      "readings": [
+        "phương"
+      ],
+      "byPinyin": {
+        "fang1": "phương",
+        "fang5": "phương"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "旁",
+      "readings": [
+        "bàng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "日",
+      "readings": [
+        "nhật"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "早",
+      "readings": [
+        "tảo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "时",
+      "readings": [
+        "thời"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "明",
+      "readings": [
+        "minh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "星",
+      "readings": [
+        "tinh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "昨",
+      "readings": [
+        "tạc"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "是",
+      "readings": [
+        "thị"
+      ],
+      "byPinyin": {
+        "shi4": "thị",
+        "shi5": "thị"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "晚",
+      "readings": [
+        "vãn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "最",
+      "readings": [
+        "tối"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "月",
+      "readings": [
+        "nguyệt"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "有",
+      "readings": [
+        "hữu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "朋",
+      "readings": [
+        "bằng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "服",
+      "readings": [
+        "phục"
+      ],
+      "byPinyin": {
+        "fu2": "phục",
+        "fu5": "phục"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "期",
+      "readings": [
+        "kì"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "本",
+      "readings": [
+        "bản"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "机",
+      "readings": [
+        "cơ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "条",
+      "readings": [
+        "điều"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "来",
+      "readings": [
+        "lai"
+      ],
+      "byPinyin": {
+        "lai2": "lai",
+        "lai5": "lai"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "杯",
+      "readings": [
+        "bôi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "果",
+      "readings": [
+        "quả"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "树",
+      "readings": [
+        "thụ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "校",
+      "readings": [
+        "hiệu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (\"chò giâu hiệu\") — dùng \"hiệu\" (học hiệu)."
+    },
+    {
+      "hanzi": "样",
+      "readings": [
+        "dạng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "桌",
+      "readings": [
+        "trác"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Chữ tạo muộn, ít dùng trong Hán Việt cổ điển — cần duyệt."
+    },
+    {
+      "hanzi": "楼",
+      "readings": [
+        "lâu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "次",
+      "readings": [
+        "thứ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "欢",
+      "readings": [
+        "hoan"
+      ],
+      "byPinyin": {
+        "huan1": "hoan",
+        "huan5": "hoan"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "歌",
+      "readings": [
+        "ca"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "正",
+      "readings": [
+        "chính"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "比",
+      "readings": [
+        "tỉ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "毛",
+      "readings": [
+        "mao"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "气",
+      "readings": [
+        "khí"
+      ],
+      "byPinyin": {
+        "qi4": "khí",
+        "qi5": "khí"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "水",
+      "readings": [
+        "thuỷ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "汉",
+      "readings": [
+        "hán"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "汽",
+      "readings": [
+        "khí"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "没",
+      "readings": [
+        "một"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "洗",
+      "readings": [
+        "tẩy"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "渴",
+      "readings": [
+        "khát"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "火",
+      "readings": [
+        "hoả"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "点",
+      "readings": [
+        "điểm"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "热",
+      "readings": [
+        "nhiệt"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "爱",
+      "readings": [
+        "ái"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "爷",
+      "readings": [
+        "gia"
+      ],
+      "byPinyin": {
+        "ye2": "gia",
+        "ye5": "gia"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "爸",
+      "readings": [
+        "ba"
+      ],
+      "byPinyin": {
+        "ba4": "ba",
+        "ba5": "ba"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "Không có âm Hán Việt cổ điển độc lập (chữ khẩu ngữ hiện đại). Đối chiếu Wiktionary (tư liệu) cho \"bả, ba\" — chọn \"ba\" (cũng trùng nghĩa với từ thuần Việt \"ba\" = bố, dễ nhớ). Không chắc — cần duyệt."
+    },
+    {
+      "hanzi": "牛",
+      "readings": [
+        "ngưu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "玩",
+      "readings": [
+        "ngoạn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "现",
+      "readings": [
+        "hiện"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "班",
+      "readings": [
+        "ban"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "球",
+      "readings": [
+        "cầu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "生",
+      "readings": [
+        "sinh"
+      ],
+      "byPinyin": {
+        "sheng1": "sinh",
+        "sheng5": "sinh"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "用",
+      "readings": [
+        "dụng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "电",
+      "readings": [
+        "điện"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "男",
+      "readings": [
+        "nam"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "病",
+      "readings": [
+        "bệnh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "白",
+      "readings": [
+        "bạch"
+      ],
+      "byPinyin": {
+        "bai2": "bạch",
+        "bai5": "bạch"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "百",
+      "readings": [
+        "bách"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (\"bá bách trăm\") — dùng \"bách\" (chuẩn)."
+    },
+    {
+      "hanzi": "的",
+      "readings": [
+        "đích"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "看",
+      "readings": [
+        "khán"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (nhiều giá trị lẫn lộn) — dùng \"khán\" (khán giả), chuẩn cho nghĩa \"xem\"."
+    },
+    {
+      "hanzi": "真",
+      "readings": [
+        "chân"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "着",
+      "readings": [
+        "trước"
+      ],
+      "byPinyin": {
+        "zhe5": ""
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Trong HSK1 chỉ dùng làm trợ từ động thái (在/正 ... 着), không mang nghĩa riêng khi ghép; âm \"trước/trứ\" chỉ áp dụng cho nghĩa khác (著作, trứ danh)."
+    },
+    {
+      "hanzi": "睡",
+      "readings": [
+        "thuỵ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "知",
+      "readings": [
+        "tri"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "票",
+      "readings": [
+        "phiếu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "穿",
+      "readings": [
+        "xuyên"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "站",
+      "readings": [
+        "trạm"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "笑",
+      "readings": [
+        "tiếu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "第",
+      "readings": [
+        "đệ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (\"đậy đệ\") — dùng \"đệ\" (đệ nhất, đệ nhị)."
+    },
+    {
+      "hanzi": "等",
+      "readings": [
+        "đẳng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "答",
+      "readings": [
+        "đáp"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "米",
+      "readings": [
+        "mễ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "系",
+      "readings": [
+        "hệ"
+      ],
+      "byPinyin": {
+        "xi4": "hệ",
+        "xi5": "hệ"
+      },
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "累",
+      "readings": [
+        "luỵ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "绍",
+      "readings": [
+        "thiệu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "给",
+      "readings": [
+        "cấp"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "网",
+      "readings": [
+        "võng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "老",
+      "readings": [
+        "lão"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "考",
+      "readings": [
+        "khảo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "肉",
+      "readings": [
+        "nhục"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "能",
+      "readings": [
+        "năng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "脑",
+      "readings": [
+        "não"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "花",
+      "readings": [
+        "hoa"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "茶",
+      "readings": [
+        "trà"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "菜",
+      "readings": [
+        "thái"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Cần duyệt (ít dùng độc lập trong tiếng Việt hiện đại)."
+    },
+    {
+      "hanzi": "蛋",
+      "readings": [
+        "đản"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "行",
+      "readings": [
+        "hành"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"hàng\" — đó là âm cho nghĩa \"cửa hàng/dãy\" (hang2), HSK1 chỉ dùng nghĩa \"được/đi\" (xíng), âm Hán Việt tương ứng là \"hành\"."
+    },
+    {
+      "hanzi": "衣",
+      "readings": [
+        "y"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "西",
+      "readings": [
+        "tây"
+      ],
+      "byPinyin": {
+        "xi1": "tây",
+        "xi5": "tây"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "要",
+      "readings": [
+        "yếu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "见",
+      "readings": [
+        "kiến"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "视",
+      "readings": [
+        "thị"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "觉",
+      "readings": [
+        "giác"
+      ],
+      "byPinyin": {
+        "jue2": "giác",
+        "jiao4": "giác"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Một số tự điển ghi thêm âm \"giáo\" cho nghĩa \"giấc ngủ\" (睡觉) — \"giác\" phổ biến hơn trong tiếng Việt hiện đại (giấc vốn là biến âm của giác); cần duyệt."
+    },
+    {
+      "hanzi": "认",
+      "readings": [
+        "nhận"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "记",
+      "readings": [
+        "kí"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "识",
+      "readings": [
+        "thức"
+      ],
+      "byPinyin": {
+        "shi2": "thức",
+        "shi4": "thức",
+        "shi5": "thức"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Nghĩa \"biết\" (shí, 认识/知识) đọc \"thức\"; âm \"chí\" (nghĩa \"ghi dấu\", zhì) không xuất hiện trong từ vựng HSK1 — cần duyệt nếu shi4 thực ra ứng với nghĩa khác."
+    },
+    {
+      "hanzi": "诉",
+      "readings": [
+        "tố"
+      ],
+      "byPinyin": {
+        "su4": "tố",
+        "su5": "tố"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "试",
+      "readings": [
+        "thí"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "话",
+      "readings": [
+        "thoại"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "语",
+      "readings": [
+        "ngữ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "说",
+      "readings": [
+        "thuyết"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "请",
+      "readings": [
+        "thỉnh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "读",
+      "readings": [
+        "độc"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "课",
+      "readings": [
+        "khoá"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "谁",
+      "readings": [
+        "thuỳ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "谢",
+      "readings": [
+        "tạ"
+      ],
+      "byPinyin": {
+        "xie4": "tạ",
+        "xie5": "tạ"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "贵",
+      "readings": [
+        "quý"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "走",
+      "readings": [
+        "tẩu"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "起",
+      "readings": [
+        "khởi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "跑",
+      "readings": [
+        "bào"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Cần duyệt — âm ít phổ biến trong tiếng Việt hiện đại."
+    },
+    {
+      "hanzi": "跟",
+      "readings": [
+        "cân"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) ghi \"ngấn\" (không đáng tin) — dùng \"cân\" theo tự điển Hán Việt, cần duyệt."
+    },
+    {
+      "hanzi": "路",
+      "readings": [
+        "lộ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "身",
+      "readings": [
+        "thân"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "车",
+      "readings": [
+        "xa"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "边",
+      "readings": [
+        "biên"
+      ],
+      "byPinyin": {
+        "bian1": "biên",
+        "bian5": "biên"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "过",
+      "readings": [
+        "quá"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "还",
+      "readings": [
+        "hoàn"
+      ],
+      "byPinyin": {
+        "hai2": "hoàn",
+        "huan2": "hoàn"
+      },
+      "basis": [
+        "manual"
+      ],
+      "note": "Tiếng Việt hiện đại chỉ giữ một âm \"hoàn\" cho cả hai nghĩa \"còn/vẫn\" (hái) và \"trả lại\" (huán)."
+    },
+    {
+      "hanzi": "这",
+      "readings": [
+        "giá"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Âm Hán Việt cổ điển, ít dùng độc lập trong tiếng Việt hiện đại — cần duyệt."
+    },
+    {
+      "hanzi": "进",
+      "readings": [
+        "tiến"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "远",
+      "readings": [
+        "viễn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "送",
+      "readings": [
+        "tống"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "道",
+      "readings": [
+        "đạo"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "那",
+      "readings": [
+        "na"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "都",
+      "readings": [
+        "đô"
+      ],
+      "byPinyin": {
+        "dou1": "đô",
+        "du1": "đô"
+      },
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "里",
+      "readings": [
+        "lí"
+      ],
+      "byPinyin": {
+        "li3": "lí",
+        "li5": "lí"
+      },
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (\"lịa\") — dùng \"lí\" (lí do, thiên lí)."
+    },
+    {
+      "hanzi": "重",
+      "readings": [
+        "trọng"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "钱",
+      "readings": [
+        "tiền"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "错",
+      "readings": [
+        "thác"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "门",
+      "readings": [
+        "môn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "问",
+      "readings": [
+        "vấn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "间",
+      "readings": [
+        "gian"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "院",
+      "readings": [
+        "viện"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "难",
+      "readings": [
+        "nan"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "雨",
+      "readings": [
+        "vũ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "零",
+      "readings": [
+        "linh"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "kVietnamese (Unihan) bị nhiễu (\"lênh\") — dùng \"linh\" (linh tinh, số linh)."
+    },
+    {
+      "hanzi": "非",
+      "readings": [
+        "phi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "面",
+      "readings": [
+        "diện"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "页",
+      "readings": [
+        "hiệt"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": "Ít dùng độc lập trong tiếng Việt hiện đại — cần duyệt."
+    },
+    {
+      "hanzi": "风",
+      "readings": [
+        "phong"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "飞",
+      "readings": [
+        "phi"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "饭",
+      "readings": [
+        "phạn"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "饿",
+      "readings": [
+        "ngạ"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "馆",
+      "readings": [
+        "quán"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "马",
+      "readings": [
+        "mã"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "高",
+      "readings": [
+        "cao"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "unihan",
+        "wiktionary"
+      ],
+      "note": null
+    },
+    {
+      "hanzi": "鸡",
+      "readings": [
+        "kê"
+      ],
+      "byPinyin": null,
+      "basis": [
+        "manual"
+      ],
+      "note": null
+    }
+  ]
+}

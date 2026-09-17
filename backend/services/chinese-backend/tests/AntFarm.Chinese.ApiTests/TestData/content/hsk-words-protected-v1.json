@@ -1,0 +1,30 @@
+{
+  "dataset": "hsk-words",
+  "version": "test",
+  "standard": "test",
+  "license": "test",
+  "counts": { "words": 1, "byHsk3Level": {}, "meaningViSource": { "machine": 1 } },
+  "words": [
+    {
+      "officialIndex": null,
+      "simplified": "淼鑫",
+      "traditional": null,
+      "variants": [],
+      "pinyin": "miao3 xin1",
+      "hsk3Level": null,
+      "hsk2Level": null,
+      "hskExam2026Level": null,
+      "pathOrder": null,
+      "frequencyRank": null,
+      "pos": ["n"],
+      "usageNote": null,
+      "meaningsEn": ["test word v1"],
+      "meaningsVi": ["nghĩa ban đầu"],
+      "meaningViStatus": "machine",
+      "meaningViSource": "machine",
+      "hanViet": "diểu hâm",
+      "hanVietStatus": "derived",
+      "sources": ["test"]
+    }
+  ]
+}

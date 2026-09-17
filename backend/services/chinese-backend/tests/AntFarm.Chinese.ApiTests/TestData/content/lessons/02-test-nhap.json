@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "slug": "test-nhap",
+  "title": "Bài đang soạn",
+  "topic": "kiem-thu",
+  "level": "hsk1",
+  "orderIndex": 2,
+  "status": "draft",
+  "summary": "Bài chưa xuất bản — dùng để kiểm thử 404 cho học viên.",
+  "objectives": ["Kiểm thử bài nháp"],
+  "estimatedMinutes": 5,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "你", "pinyin": "ni3" }
+  ],
+  "glossary": [],
+  "blocks": [
+    { "type": "text", "payload": { "paragraphs": ["Bài đang soạn, chưa xuất bản."] } }
+  ],
+  "quiz": []
+}

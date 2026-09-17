@@ -1,0 +1,87 @@
+{
+  "entries": [
+    {
+      "simplified": "爸爸",
+      "pinyin": "ba4 ba5",
+      "meaningsVi": ["bố; ba (cách gọi thân mật)"],
+      "fromEn": ["(coll.) father; dad"]
+    },
+    {
+      "simplified": "车上",
+      "pinyin": "che1 shang4",
+      "meaningsVi": ["trên xe"],
+      "fromEn": ["on the vehicle"]
+    },
+    {
+      "simplified": "好玩儿",
+      "pinyin": "hao3 wan2 r5",
+      "meaningsVi": ["hay; thú vị", "vui"],
+      "fromEn": ["erhua variant of 好玩", "amusing", "fun", "interesting"]
+    },
+    {
+      "simplified": "面条儿",
+      "pinyin": "mian4 tiao2 r5",
+      "meaningsVi": ["mì sợi"],
+      "fromEn": ["erhua variant of 面条", "noodles"]
+    },
+    {
+      "simplified": "男孩儿",
+      "pinyin": "nan2 hai2 r5",
+      "meaningsVi": ["con trai; bé trai"],
+      "fromEn": ["erhua variant of 男孩", "boy"]
+    },
+    {
+      "simplified": "你",
+      "pinyin": "ni3",
+      "meaningsVi": ["bạn; anh; chị (ngôi thứ hai, không trang trọng)"],
+      "fromEn": ["you (informal, as opposed to courteous 您)"]
+    },
+    {
+      "simplified": "您",
+      "pinyin": "nin2",
+      "meaningsVi": ["ngài; bạn (ngôi thứ hai, trang trọng, lịch sự)"],
+      "fromEn": ["you (courteous, as opposed to informal 你)"]
+    },
+    {
+      "simplified": "女孩儿",
+      "pinyin": "nv3 hai2 r5",
+      "meaningsVi": ["con gái; bé gái"],
+      "fromEn": ["erhua variant of 女孩", "girl"]
+    },
+    {
+      "simplified": "山",
+      "pinyin": "shan1",
+      "meaningsVi": ["núi; đồi"],
+      "fromEn": ["mountain; hill"]
+    },
+    {
+      "simplified": "小孩儿",
+      "pinyin": "xiao3 hai2 r5",
+      "meaningsVi": ["trẻ con; đứa bé"],
+      "fromEn": ["erhua variant of 小孩", "child"]
+    },
+    {
+      "simplified": "一块儿",
+      "pinyin": "yi1 kuai4 r5",
+      "meaningsVi": ["cùng nhau; cùng một chỗ"],
+      "fromEn": ["together; in the same place"]
+    },
+    {
+      "simplified": "一下儿",
+      "pinyin": "yi1 xia4 r5",
+      "meaningsVi": ["một lần; một lát", "bỗng nhiên; đột nhiên"],
+      "fromEn": ["erhua variant of 一下", "one time; once", "all of a sudden"]
+    },
+    {
+      "simplified": "一点儿",
+      "pinyin": "yi1 dian3 r5",
+      "meaningsVi": ["một chút; một ít", "(dùng trong câu phủ định) không một chút nào", "(sau tính từ, tạo so sánh hơn) hơn một chút"],
+      "fromEn": [
+        "erhua variant of 一点",
+        "a bit; a little bit",
+        "(used in negative expressions) (not) the least bit",
+        "(after an adjective, used to form the comparative) a bit more"
+      ]
+    }
+  ]
+}

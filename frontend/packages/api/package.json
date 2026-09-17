@@ -1,0 +1,12 @@
+{
+  "name": "@af/api",
+  "version": "0.0.0",
+  "private": true,
+  "exports": { ".": "./src/index.ts" },
+  "devDependencies": {
+    "@af/tsconfig": "*"
+  },
+  "peerDependencies": {
+    "axios": "^1.0.0"
+  }
+}

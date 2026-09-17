@@ -1,0 +1,15 @@
+{
+  "name": "@af/utils",
+  "version": "0.0.0",
+  "private": true,
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": {
+    "@af/api": "*"
+  },
+  "devDependencies": {
+    "@af/tsconfig": "*"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.0"
+  }
+}

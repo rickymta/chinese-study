@@ -37,3 +37,19 @@ Thumbs.db
 
 # ── Claude Code cục bộ ──────────────────────────────────
 .claude/settings.local.json
+
+# ── Khoá ký identity-service (dev) ──────────────────────
+.secrets/
+
+# ── Học liệu — dữ liệu thô chưa xử lý + tool riêng ───────
+content/**/.raw/
+content/node_modules/
+
+# ── Triển khai — bí mật/chứng chỉ không commit ───────────
+deploy/.env
+deploy/dev/.env
+deploy/certs/
+deploy/conf/nginx.conf
+deploy/conf/cloudflare-realip.conf
+deploy/secrets/
+

@@ -1,0 +1,59 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup Label="Gateway">
+    <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup Label="EF Core">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageVersion Include="EFCore.NamingConventions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.7" />
+    <!-- F6.2: cache trong tiến trình danh sách 500 từ HSK1 (DictionaryService) — khoá theo id lượt
+         nạp gần nhất, tự vô hiệu khi content.words đổi (không cần thời hạn hết hạn thủ công). -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.7" />
+  </ItemGroup>
+  <ItemGroup Label="Auth (dùng từ F2)">
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
+    <!-- Version khớp CHÍNH XÁC những gì Microsoft.AspNetCore.Authentication.JwtBearer 10.0.7 kéo theo
+         (kiểm bằng project.assets.json thật) — CPM không tự đồng bộ version transitive nên khai lệch
+         là có hai bản ObjectResult/OpenIdConnectConfiguration khác nhau nạp cùng lúc, lỗi khó hiểu. -->
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup Label="Logging">
+    <!-- Kéo theo Serilog.Sinks.Console + Serilog.Settings.Configuration -->
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup Label="OpenAPI">
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <!-- GIỮ 2.x: Microsoft.AspNetCore.OpenApi 10.0.7 viết theo API 2.x; lên 3.x là vỡ source generator -->
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.5.0" />
+  </ItemGroup>
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+  </ItemGroup>
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <!-- GIỮ 7.x: FluentAssertions 8.x đổi sang giấy phép thương mại -->
+    <PackageVersion Include="FluentAssertions" Version="7.2.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.7" />
+    <!-- F5: FakeTimeProvider cho test cần điều khiển "bây giờ" (R5-11 kiểm giờ phiên luyện thanh,
+         local_date theo múi giờ người dùng lúc 06:30 sáng VN). F7: nâng lên 10.10.0 (mới nhất trên
+         nuget.org 17/09/2026, không đổi API dùng) — dùng thêm ở ApiTests cho các kịch bản đổi ngày
+         qua 00:00 giờ VN của SRS (R7-3). -->
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.10.0" />
+  </ItemGroup>
+</Project>

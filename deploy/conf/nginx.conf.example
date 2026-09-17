@@ -1,0 +1,93 @@
+# ════════════════════════════════════════════════════════════════════════════
+# AntFarm — nginx tầng biên (bám khuôn MedDental deploy/app-core, đọc CLAUDE.md gốc
+# mục "HTTPS Let's Encrypt cho mọi tên miền — bám ĐÚNG khuôn MedDental deploy/app-core")
+#
+# Chép thành conf/nginx.conf rồi thay <...>. Bản đã sửa KHÔNG được git theo dõi.
+#
+# Là CỔNG DUY NHẤT vào máy này. Tường lửa chỉ cần mở 80/443.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── PHÂN GIẢI TÊN LÚC CHẠY, KHÔNG PHẢI LÚC KHỞI ĐỘNG ───────────────────────
+# Mặc định nginx phân giải MỌI tên trong `proxy_pass` ngay lúc khởi động và TỪ
+# CHỐI CHẠY nếu một tên không phân giải được — dùng biến + resolver để nginx hoãn
+# việc phân giải tới lúc có request (backend chết thì trả 502, nginx vẫn phục vụ
+# ACME); 127.0.0.11 là DNS nhúng của Docker. `$request_uri` BẮT BUỘC đi kèm biến,
+# nếu không mất sạch query string.
+resolver 127.0.0.11 valid=10s ipv6=off;
+
+# Khi bản ghi Cloudflare bật proxy (đám mây cam): bỏ comment dòng dưới, nếu không IP thật = IP Cloudflare
+# include /etc/nginx/cloudflare-realip.conf;   # (mount thêm ./conf/cloudflare-realip.conf:/etc/nginx/cloudflare-realip.conf:ro — KHÔNG mount vào conf.d) set_real_ip_from <dải CF> ...; real_ip_header CF-Connecting-IP;
+
+server {
+    listen 80;
+    server_name _;
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }   # ACME — ./certs/acme
+    location / { return 301 https://$host$request_uri; }
+}
+
+# ── Identity — id.antfarms.xyz (người dùng chốt subdomain riêng, 16/09/2026) ─
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name <ID_DOMAIN>;                 # id.antfarms.xyz
+
+    ssl_certificate     /etc/nginx/certs/live/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/live/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    # HSTS thận trọng: KHÔNG includeSubDomains/preload cho tới khi MỌI subdomain đã có HTTPS.
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    client_max_body_size 1m;
+
+    # Mọi đường dẫn → gateway với tiền tố /identity (gateway bỏ tiền tố). CORS do identity-service trả —
+    # nginx KHÔNG thêm Access-Control-* (trùng header ⇒ trình duyệt từ chối).
+    location / {
+        set $upstream gateway:8080;
+        proxy_pass        http://$upstream/identity$request_uri;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;      # GHI ĐÈ (không $proxy_add_x_forwarded_for) — chống giả IP
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host  $host;
+    }
+}
+
+# ── Tiếng Trung — chinese.antfarms.xyz ────────────────────────────────────────
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name <CHINESE_DOMAIN>;            # chinese.antfarms.xyz
+    ssl_certificate     /etc/nginx/certs/live/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/live/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    client_max_body_size 5m;
+
+    # ^~ BẮT BUỘC: không để location regex (nếu thêm sau) cướp request API
+    location ^~ /chinese/ {
+        set $upstream gateway:8080;
+        proxy_pass        http://$upstream$request_uri;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host  $host;
+    }
+    location / {
+        set $upstream chinese-frontend:80;
+        proxy_pass        http://$upstream$request_uri;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;      # GHI ĐÈ — chống giả IP, đồng nhất với khối /chinese/
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# ── MẪU ngôn ngữ mới (english./japanese./vietnamese.) — chép khối chinese, đổi <LANG> ──
+# server { listen 443 ssl; http2 on; server_name <LANG>.antfarms.xyz; ... location ^~ /<LANG>/ {...} location / { set $upstream <LANG>-frontend:80; ... } }
+
+# ── MẪU portal antfarms.xyz — FEATURE SAU (F13), để comment ──
+# server { listen 443 ssl; http2 on; server_name antfarms.xyz; ... location / { set $upstream portal-frontend:80; ... } }

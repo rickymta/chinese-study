@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Tham chiếu gói xunit (cho FactAttribute) khiến SDK tự suy đây là TEST PROJECT và
+         `dotnet test` cố chạy nó bằng VSTest — nhưng đây là THƯ VIỆN tiện ích test dùng
+         chung (không có Microsoft.NET.Test.Sdk/adapter) nên sẽ abort với lỗi thiếu
+         xunit.abstractions. Khai rõ IsTestProject=false để `dotnet test backend.slnx`
+         bỏ qua project này. -->
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" />
+    <!-- TestTokenFactory ký JWT RS256 bằng khoá tạm — cho phép test API của service ngôn ngữ
+         chấp nhận token mà KHÔNG cần identity-service chạy thật (§5.2.2, §9.2). Chỉ 2 gói
+         IdentityModel thuần (không FrameworkReference AspNetCore.App) — việc nối vào
+         JwtBearerOptions (PostConfigure) do CHÍNH ApiFactory của từng service tự làm, vì
+         AntFarm.Testing không phụ thuộc ASP.NET Core. -->
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+  </ItemGroup>
+
+</Project>

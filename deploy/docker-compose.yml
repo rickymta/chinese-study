@@ -1,0 +1,184 @@
+# ════════════════════════════════════════════════════════════════════════════
+# AntFarm — bundle triển khai production (một server, mạng nội bộ af-net)
+#
+# F0: postgres, identity-service, chinese-backend, gateway, nginx, certbot.
+# chinese-frontend thêm ở F1.
+#
+# ⚠️ CHƯA VERIFY BẰNG DOCKER (máy dev không có Docker) — xem deploy/VERIFY-DOCKER.md.
+#
+# Nguyên tắc bám mẫu MedDental deploy/app-core (xem CLAUDE.md gốc mục "HTTPS Let's
+# Encrypt..."): chỉ `nginx` publish cổng; `image:` đặt TRÊN `build:` và giữ cả hai;
+# triển khai luôn `docker compose pull <svc> && docker compose up -d <svc>` vì `up -d`
+# không tự kéo ảnh mới cùng tag; trên server chỉ build từng service một.
+#
+# ⚠️ REGISTRY mặc định `localhost/antfarm` (KHÔNG phải `antfarm` trơn): Docker suy tên
+# không có dấu "." hay ":" ở thành phần đầu là namespace trên Docker Hub — để trống
+# REGISTRY mà mặc định là "antfarm" thì `docker compose pull`/`up -d` (không build trước)
+# sẽ kéo `docker.io/antfarm/...`, một namespace KHÔNG thuộc AntFarm. Tiền tố "localhost/"
+# buộc Docker hiểu đây là ảnh cục bộ (registry host "localhost", không tồn tại thật) nên
+# `pull` sẽ báo lỗi rõ ràng thay vì âm thầm kéo nhầm ảnh người khác. CHƯA có registry riêng
+# thì luôn triển khai bằng `docker compose build <svc> && docker compose up -d <svc>` (build
+# trước, không pull) — chỉ dùng REGISTRY=<host thật>/<namespace> khi có registry riêng.
+# ════════════════════════════════════════════════════════════════════════════
+
+name: antfarm
+
+networks:
+  af-net:
+    ipam:
+      config: [{ subnet: 172.28.0.0/16 }]
+
+volumes:
+  pg-data:
+  identity-keys:
+
+x-dotnet-env: &dotnet-env
+  ASPNETCORE_ENVIRONMENT: Production
+  # Loopback + dải af-net — service .NET chỉ tin X-Forwarded-* đến từ đây (§5.6.1).
+  # KnownIPNetworks (không phải KnownNetworks — obsolete từ .NET 8, xem review F0 17/09/2026).
+  ForwardedHeaders__KnownIPNetworks__0: 127.0.0.1/32
+  ForwardedHeaders__KnownIPNetworks__1: ::1/128
+  ForwardedHeaders__KnownIPNetworks__2: 172.28.0.0/16
+
+# Giới hạn log JSON mỗi container — thiếu giới hạn này, driver json-file mặc định GHI VÔ HẠN,
+# một service log lỗi lặp (vd JWKS không tải được) có thể lấp đầy ổ đĩa trong vài ngày.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    # Postgres dùng /dev/shm cho một số thao tác song song (parallel query, sort lớn); mặc định
+    # Docker chỉ cấp 64m — dễ tràn khi dữ liệu học liệu/SRS lớn dần. 256m là dư cho quy mô MVP.
+    shm_size: 256mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Đọc bởi deploy/postgres/init/01-create-databases.sh (chỉ chạy khi volume trống).
+      AF_IDENTITY_DB_PASSWORD: ${AF_IDENTITY_DB_PASSWORD}
+      AF_CHINESE_DB_PASSWORD: ${AF_CHINESE_DB_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    networks: [af-net]
+    logging: *default-logging
+    # KHÔNG ports: — muốn quản trị tạm thời thì thêm "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  identity-service:
+    # Ảnh dựng sẵn từ registry (chưa có ở AntFarm — để trống REGISTRY thì build tại chỗ, xem ghi chú đầu file).
+    image: ${REGISTRY:-localhost/antfarm}/identity-service:${IDENTITY_SERVICE_TAG:-latest}
+    build:
+      context: ../backend
+      dockerfile: services/identity-service/src/AntFarm.Identity.Api/Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=af_identity;Username=af_identity;Password=${AF_IDENTITY_DB_PASSWORD}
+      Jwt__Issuer: https://id.${APP_DOMAIN}
+      Jwt__KeysPath: /keys
+      Auth__RefreshCookieDomain: .${APP_DOMAIN}
+      Auth__RefreshCookiePath: /api/auth
+      Auth__RefreshCookieSecure: "true"
+      Auth__AllowRegistration: ${AUTH_ALLOW_REGISTRATION:-false}
+      Auth__AllowedOrigins__0: https://chinese.${APP_DOMAIN}
+      # Auth__AllowedOrigins__1: https://${APP_DOMAIN}   # bật khi có portal (F13)
+    volumes: [identity-keys:/keys]
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [af-net]
+    logging: *default-logging
+    # Gợi ý (không ép mặc định — đo RAM thật của server trước khi bật): service .NET nhỏ,
+    # thường đủ với "mem_limit: 256m"; bật khi máy nhiều service cạnh tranh RAM.
+    # mem_limit: 256m
+
+  chinese-backend:
+    image: ${REGISTRY:-localhost/antfarm}/chinese-backend:${CHINESE_BACKEND_TAG:-latest}
+    build:
+      context: ../backend
+      dockerfile: services/chinese-backend/src/AntFarm.Chinese.Api/Dockerfile
+      additional_contexts:
+        content: ../content # F5 (RK24, D32): học liệu content/chinese/data — cần Docker Compose ≥ 2.17
+    restart: unless-stopped
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=af_chinese;Username=af_chinese;Password=${AF_CHINESE_DB_PASSWORD}
+      Auth__Issuer: https://id.${APP_DOMAIN}
+      Auth__Audience: af-chinese
+      Auth__JwksUrl: http://identity-service:8080/.well-known/jwks.json
+      # JwksUrl ở TRÊN là http NỘI BỘ (mạng af-net, không ra Internet) — RequireHttpsMetadata=true
+      # (mặc định) sẽ khiến HttpDocumentRetriever từ chối tải JWKS, chinese-backend không xác
+      # thực được BẤT KỲ token nào (401 toàn bộ). true chỉ đúng khi JwksUrl chính nó là https.
+      Auth__RequireHttpsMetadata: "false"
+      ChineseAdmin__BootstrapEmails__0: ${CHINESE_ADMIN_EMAIL}
+      # F5: khớp đường dẫn COPY --from=content trong Dockerfile (stage runtime) — TUYỆT ĐỐI,
+      # không dùng đường dẫn tương đối "content/chinese" (mặc định appsettings.json, chỉ đúng
+      # trong bin/publish lúc dev local chạy trực tiếp dotnet run, không đúng trong ảnh Docker).
+      Content__RootPath: /content/chinese
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [af-net]
+    logging: *default-logging
+    # Gợi ý (không ép mặc định — đo RAM thật trước khi bật): "mem_limit: 384m" đủ cho MVP.
+    # mem_limit: 384m
+
+  gateway:
+    image: ${REGISTRY:-localhost/antfarm}/gateway:${GATEWAY_TAG:-latest}
+    build:
+      context: ../backend
+      dockerfile: services/gateway/Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *dotnet-env
+      ReverseProxy__Clusters__identity__Destinations__primary__Address: http://identity-service:8080
+      ReverseProxy__Clusters__chinese__Destinations__primary__Address: http://chinese-backend:8080
+    networks: [af-net]
+    logging: *default-logging
+
+  # ── chinese-frontend (F1) — ảnh nginx tĩnh, KHÔNG publish cổng, nginx biên proxy tới ──
+  chinese-frontend:
+    image: ${REGISTRY:-localhost/antfarm}/chinese-frontend:${CHINESE_FRONTEND_TAG:-latest}
+    build:
+      context: ../frontend
+      dockerfile: apps/chinese/Dockerfile
+      args: { VITE_IDENTITY_API_URL: "https://id.${APP_DOMAIN}/api" }
+    restart: unless-stopped
+    networks: [af-net]
+    logging: *default-logging
+
+  nginx: # nginx biên — container DUY NHẤT publish cổng
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      # Mặc định bind 127.0.0.1 để máy chưa cấu hình tường lửa không lộ ra ngoài; server thật đặt PUBLIC_BIND=0.0.0.0
+      - "${PUBLIC_BIND:-127.0.0.1}:80:80"
+      - "${PUBLIC_BIND:-127.0.0.1}:443:443"
+    volumes:
+      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro # nginx đọc CỐ ĐỊNH certs/live/fullchain.pem + privkey.pem
+      - ./certs/acme:/var/www/certbot # webroot HTTP-01
+      # Chỉ bật khi bản ghi Cloudflare đang PROXY (đám mây cam) — xem conf/nginx.conf `include`:
+      # - ./conf/cloudflare-realip.conf:/etc/nginx/cloudflare-realip.conf:ro
+    depends_on:
+      - gateway
+      - chinese-frontend
+    networks: [af-net]
+    logging: *default-logging
+
+  certbot: # chỉ GIA HẠN; cấp lần đầu bằng scripts/get-cert.sh
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - ./certs/letsencrypt:/etc/letsencrypt
+      - ./certs/acme:/var/www/certbot
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done'
+    networks: [af-net]
+    logging: *default-logging

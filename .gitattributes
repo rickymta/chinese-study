@@ -1,0 +1,14 @@
+# Chuẩn hoá line ending: mặc định LF cho mọi văn bản (bám khuôn MedDental).
+* text=auto eol=lf
+
+# Script shell PHẢI là LF — CRLF làm bash trên Linux đọc sai shebang/dòng lệnh.
+*.sh text eol=lf
+
+# Nhị phân — không đụng line ending.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.woff2 binary
+*.woff binary
+*.ttf binary

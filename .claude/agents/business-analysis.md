@@ -63,8 +63,8 @@ Làm **dứt điểm từng feature một**. Mỗi feature:
 
 ## Ràng buộc dự án phải nhắc (khi liên quan)
 
-- Build sạch: `dotnet build backend/backend.slnx -v q`, `dotnet test`, `yarn workspace @cs/<app> tsc -b`.
-- MUI v9 (slotProps, sx-shorthand); không dùng `uuid` (dùng `crypto.randomUUID()`); `@cs/*` là workspace source; `AppDialog` thay `Dialog` trần.
+- Build sạch: `dotnet build backend/backend.slnx -v q`, `dotnet test`, `yarn workspace @af/<app> tsc -b`.
+- MUI v9 (slotProps, sx-shorthand); không dùng `uuid` (dùng `crypto.randomUUID()`); `@af/*` là workspace source; `AppDialog` thay `Dialog` trần.
 - Npgsql `timestamptz` chỉ nhận `DateTime` `Kind=Utc`; tham số ngày từ query string là `Unspecified`.
 - DDD 4 lớp; phân quyền cục bộ trong DB, frontend đọc quyền từ `/api/me`.
 - Học liệu: chỉ nguồn có giấy phép rõ ràng, ghi nguồn + giấy phép vào `content/SOURCES.md`.

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+    <PackageReference Include="FluentValidation.AspNetCore" />
+  </ItemGroup>
+
+  <!-- F5 (§5.2.1, RK24): học liệu pinyin — copy vào bin/publish để dev local đọc qua Content:RootPath
+       (mặc định "content/chinese", ghép với AppContext.BaseDirectory). Docker KHÔNG dùng nhánh này:
+       Dockerfile copy học liệu thẳng vào ảnh ở stage runtime (xem ghi chú đầu Dockerfile) và
+       Content__RootPath trỏ đường dẫn tuyệt đối trong ảnh. Chỉ copy data/, không kéo schemas/scripts/.raw. -->
+  <ItemGroup Label="Học liệu tiếng Trung (F5)">
+    <None Include="..\..\..\..\..\content\chinese\data\**\*.json"
+          LinkBase="content\chinese\data"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AntFarm.Chinese.Application\AntFarm.Chinese.Application.csproj" />
+    <ProjectReference Include="..\AntFarm.Chinese.Infrastructure\AntFarm.Chinese.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Logging\AntFarm.Logging.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Security\AntFarm.Security.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.HealthChecks\AntFarm.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Auth\AntFarm.Auth.csproj" />
+  </ItemGroup>
+
+</Project>

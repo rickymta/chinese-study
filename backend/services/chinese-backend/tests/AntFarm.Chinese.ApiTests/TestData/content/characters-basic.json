@@ -1,0 +1,9 @@
+{
+  "dataset": "characters",
+  "version": "test",
+  "license": "test",
+  "characters": [
+    { "hanzi": "测", "traditionalVariants": ["測"], "pinyinReadings": ["ce4"], "hanViet": ["trắc"], "hanVietByPinyin": { "ce4": "trắc" }, "hanVietStatus": "derived", "strokeCount": 9, "radical": "氵", "radicalNumber": 85, "sources": ["test"] },
+    { "hanzi": "验", "traditionalVariants": ["驗"], "pinyinReadings": ["yan4"], "hanViet": ["nghiệm"], "hanVietByPinyin": { "yan4": "nghiệm" }, "hanVietStatus": "derived", "strokeCount": 10, "radical": "马", "radicalNumber": 187, "sources": ["test"] }
+  ]
+}

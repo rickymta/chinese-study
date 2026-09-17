@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "slug": "thoi-gian",
+  "title": "Ngày giờ",
+  "topic": "thoi-gian",
+  "level": "hsk1",
+  "orderIndex": 5,
+  "status": "published",
+  "summary": "Hỏi giờ, hỏi ngày tháng, hỏi thứ trong tuần — tổng hợp số đếm đã học ở bài trước.",
+  "objectives": [
+    "Nói giờ theo mẫu 点/分",
+    "Nói ngày tháng theo thứ tự năm–tháng–ngày",
+    "Hỏi thứ trong tuần bằng 星期几"
+  ],
+  "estimatedMinutes": 15,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "今天", "pinyin": "jin1 tian1" },
+    { "simplified": "明天", "pinyin": "ming2 tian1" },
+    { "simplified": "昨天", "pinyin": "zuo2 tian1" },
+    { "simplified": "现在", "pinyin": "xian4 zai4" },
+    { "simplified": "点", "pinyin": "dian3" },
+    { "simplified": "分", "pinyin": "fen1" },
+    { "simplified": "年", "pinyin": "nian2" },
+    { "simplified": "月", "pinyin": "yue4" },
+    { "simplified": "号", "pinyin": "hao4" },
+    { "simplified": "星期", "pinyin": "xing1 qi1" },
+    { "simplified": "上午", "pinyin": "shang4 wu3" },
+    { "simplified": "下午", "pinyin": "xia4 wu3" },
+    { "simplified": "晚上", "pinyin": "wan3 shang5" },
+    { "simplified": "时候", "pinyin": "shi2 hou5" }
+  ],
+  "glossary": [
+    { "hanzi": "零", "pinyin": "ling2", "vi": "số không (dùng khi đọc năm)" }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Tiếng Trung viết thời gian từ lớn đến nhỏ: [[年|nian2]] (năm) → [[月|yue4]] (tháng) → [[号|hao4]] (ngày) — ngược với tiếng Việt.",
+          "Hỏi giờ dùng [[现在几点|xian4 zai4 ji3 dian3]]？ Trả lời theo mẫu giờ + phút, ví dụ [[三点十分|san1 dian3 shi2 fen1]] (3 giờ 10 phút).",
+          "Hỏi thứ trong tuần dùng [[星期几|xing1 qi1 ji3]]？"
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Hỏi giờ và ngày tháng",
+        "lines": [
+          { "speaker": "Nam", "hanzi": "现在几点？", "pinyin": "Xian4 zai4 ji3 dian3?", "vi": "Bây giờ mấy giờ?" },
+          { "speaker": "Hoa", "hanzi": "现在八点十分。", "pinyin": "Xian4 zai4 ba1 dian3 shi2 fen1.", "vi": "Bây giờ 8 giờ 10 phút." },
+          { "speaker": "Nam", "hanzi": "今天星期几？", "pinyin": "Jin1 tian1 xing1 qi1 ji3?", "vi": "Hôm nay thứ mấy?" },
+          { "speaker": "Hoa", "hanzi": "今天星期一。", "pinyin": "Jin1 tian1 xing1 qi1 yi1.", "vi": "Hôm nay thứ Hai." },
+          { "speaker": "Nam", "hanzi": "明天是几月几号？", "pinyin": "Ming2 tian1 shi4 ji3 yue4 ji3 hao4?", "vi": "Ngày mai là ngày mấy tháng mấy?" },
+          { "speaker": "Hoa", "hanzi": "明天是九月十号。", "pinyin": "Ming2 tian1 shi4 jiu3 yue4 shi2 hao4.", "vi": "Ngày mai là ngày 10 tháng 9." },
+          { "speaker": "Nam", "hanzi": "我们明天上午九点见，好吗？", "pinyin": "Wo3 men5 ming2 tian1 shang4 wu3 jiu3 dian3 jian4, hao3 ma5?", "vi": "Chúng ta gặp nhau 9 giờ sáng mai nhé, được không?" },
+          { "speaker": "Hoa", "hanzi": "好，谢谢你！", "pinyin": "Hao3, xie4 xie5 ni3!", "vi": "Được, cảm ơn bạn!" },
+          { "speaker": "Nam", "hanzi": "不客气，再见！", "pinyin": "Bu4 ke4 qi5, zai4 jian4!", "vi": "Không có gì, tạm biệt!" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Thứ tự năm–tháng–ngày (ngược tiếng Việt)",
+        "pattern": "[[年|nian2]] + [[月|yue4]] + [[号|hao4]] (lớn → nhỏ)",
+        "explanation": "Tiếng Trung luôn nói đơn vị thời gian lớn trước, nhỏ sau: năm rồi đến tháng rồi đến ngày — ngược thứ tự quen thuộc trong tiếng Việt (ngày/tháng/năm).",
+        "examples": [
+          { "hanzi": "二零二六年", "pinyin": "er4 ling2 er4 liu4 nian2", "vi": "năm 2026", "note": "Đọc năm bằng cách đọc lần lượt từng chữ số" },
+          { "hanzi": "九月十七号", "pinyin": "jiu3 yue4 shi2 qi1 hao4", "vi": "ngày 17 tháng 9" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Hỏi giờ với 点 và 分",
+        "pattern": "[[现在|xian4 zai4]] + [[几|ji3]] + [[点|dian3]]？",
+        "explanation": "Trả lời theo mẫu số giờ + [[点|dian3]] (+ số phút + [[分|fen1]]) — bài này luôn viết đầy đủ số phút cho rõ ràng.",
+        "examples": [
+          { "hanzi": "三点十分", "pinyin": "san1 dian3 shi2 fen1", "vi": "3 giờ 10 phút" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "星期几 — hỏi thứ",
+        "pattern": "[[今天|jin1 tian1]]/[[明天|ming2 tian1]] + [[星期|xing1 qi1]] + [[几|ji3]]？",
+        "explanation": "Trả lời bằng [[星期|xing1 qi1]] + số từ 1 đến 6 cho thứ Hai đến thứ Bảy; Chủ nhật dùng từ riêng (học ở bài sau).",
+        "examples": [
+          { "hanzi": "今天星期一。", "pinyin": "jin1 tian1 xing1 qi1 yi1.", "vi": "Hôm nay thứ Hai." }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Buổi trong ngày & 有时候",
+        "pattern": "Chủ ngữ + [[上午|shang4 wu3]]/[[下午|xia4 wu3]]/[[晚上|wan3 shang5]] + động từ",
+        "explanation": "[[上午|shang4 wu3]] (buổi sáng), [[下午|xia4 wu3]] (buổi chiều), [[晚上|wan3 shang5]] (buổi tối) đứng ngay trước động từ, khác trật tự tiếng Việt (thường đặt buổi ở cuối câu). [[时候|shi2 hou5]] kết hợp với [[有|you3]] thành [[有时候|you3 shi2 hou5]] nghĩa là 'thỉnh thoảng' — khác với 'có thời gian rảnh'.",
+        "examples": [
+          { "hanzi": "下午三点，我们再见。", "pinyin": "Xia4 wu3 san1 dian3, wo3 men5 zai4 jian4.", "vi": "3 giờ chiều, chúng ta gặp lại." },
+          { "hanzi": "我有时候很高兴。", "pinyin": "Wo3 you3 shi2 hou5 hen3 gao1 xing4.", "vi": "Tôi đôi khi rất vui." }
+        ]
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "memory",
+        "text": "Hán Việt giúp nhớ nhanh: [[年|nian2]] = niên (năm), [[月|yue4]] = nguyệt (tháng), [[今|jin1]] = kim (nay), [[明|ming2]] = minh (ở đây nghĩa 'kế tiếp', như trong 'ngày mai')."
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "[[现在|xian4 zai4]] dễ đọc sai thanh: cả hai âm đều là thanh 4, đọc dứt khoát, ngắn gọn, không kéo dài như thanh 2."
+      }
+    }
+  ],
+  "quiz": [
+    { "key": "q1", "type": "listen_choice", "prompt": "Nghe câu hỏi và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "现在几点？",
+      "options": [
+        { "id": "a", "text": "Bây giờ mấy giờ?", "lang": "vi" },
+        { "id": "b", "text": "Hôm nay thứ mấy?", "lang": "vi" },
+        { "id": "c", "text": "Hôm nay là ngày mấy?", "lang": "vi" },
+        { "id": "d", "text": "Bây giờ là tháng mấy?", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[现在几点|xian4 zai4 ji3 dian3]] dùng để hỏi giờ." },
+    { "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "三点十分",
+      "options": [
+        { "id": "a", "text": "3 giờ 10 phút", "lang": "vi" },
+        { "id": "b", "text": "10 giờ 3 phút", "lang": "vi" },
+        { "id": "c", "text": "3 giờ 30 phút", "lang": "vi" },
+        { "id": "d", "text": "1 giờ 30 phút", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[点|dian3]] là giờ, [[分|fen1]] là phút: 三点十分 = 3 giờ 10 phút." },
+    { "key": "q3", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "今天星期一",
+      "options": [
+        { "id": "a", "text": "Hôm nay thứ Hai", "lang": "vi" },
+        { "id": "b", "text": "Ngày mai thứ Hai", "lang": "vi" },
+        { "id": "c", "text": "Hôm qua thứ Hai", "lang": "vi" },
+        { "id": "d", "text": "Hôm nay thứ Ba", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[今天|jin1 tian1]] là hôm nay; 星期一 là thứ Hai." },
+    { "key": "q4", "type": "single_choice", "prompt": "明天是九月十号。", "promptLang": "zh", "promptPinyin": "Ming2 tian1 shi4 jiu3 yue4 shi2 hao4.",
+      "options": [
+        { "id": "a", "text": "Ngày mai là ngày 10 tháng 9.", "lang": "vi" },
+        { "id": "b", "text": "Hôm qua là ngày 10 tháng 9.", "lang": "vi" },
+        { "id": "c", "text": "Ngày mai là ngày 9 tháng 10.", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[明天|ming2 tian1]] là ngày mai; tháng đứng trước ngày: 九月 (tháng 9) 十号 (ngày 10)." },
+    { "key": "q5", "type": "single_choice", "prompt": "Thứ tự đúng khi nói ngày tháng năm trong tiếng Trung là gì?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "Ngày – tháng – năm", "lang": "vi" },
+        { "id": "b", "text": "Tháng – ngày – năm", "lang": "vi" },
+        { "id": "c", "text": "Năm – tháng – ngày", "lang": "vi" },
+        { "id": "d", "text": "Năm – ngày – tháng", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "Tiếng Trung nói đơn vị lớn trước: [[年|nian2]] rồi [[月|yue4]] rồi [[号|hao4]]." },
+    { "key": "q6", "type": "single_choice", "prompt": "Từ nào nghĩa là 'buổi tối'?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "上午", "lang": "zh" },
+        { "id": "b", "text": "下午", "lang": "zh" },
+        { "id": "c", "text": "晚上", "lang": "zh" },
+        { "id": "d", "text": "时候", "lang": "zh" }
+      ],
+      "correctOptionId": "c", "explanation": "[[晚上|wan3 shang5]] nghĩa là buổi tối." },
+    { "key": "q7", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "昨天",
+      "options": [
+        { "id": "a", "text": "Hôm nay", "lang": "vi" },
+        { "id": "b", "text": "Ngày mai", "lang": "vi" },
+        { "id": "c", "text": "Hôm qua", "lang": "vi" },
+        { "id": "d", "text": "Bây giờ", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[昨天|zuo2 tian1]] nghĩa là hôm qua." }
+  ]
+}

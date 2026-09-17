@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "slug": "so-dem",
+  "title": "Số đếm",
+  "topic": "so-dem",
+  "level": "hsk1",
+  "orderIndex": 3,
+  "status": "published",
+  "summary": "Đếm từ 1 đến 99, hỏi tuổi và phân biệt 几/多少, 两/二 — nền tảng cho các bài sau.",
+  "objectives": [
+    "Đếm số 1–10 và ghép thành số 11–99",
+    "Hỏi tuổi bằng 几岁, hỏi số lượng bằng 多少",
+    "Phân biệt 两 và 二 khi đi với lượng từ"
+  ],
+  "estimatedMinutes": 15,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "一", "pinyin": "yi1" },
+    { "simplified": "二", "pinyin": "er4" },
+    { "simplified": "三", "pinyin": "san1" },
+    { "simplified": "四", "pinyin": "si4" },
+    { "simplified": "五", "pinyin": "wu3" },
+    { "simplified": "六", "pinyin": "liu4" },
+    { "simplified": "七", "pinyin": "qi1" },
+    { "simplified": "八", "pinyin": "ba1" },
+    { "simplified": "九", "pinyin": "jiu3" },
+    { "simplified": "十", "pinyin": "shi2" },
+    { "simplified": "几", "pinyin": "ji3" },
+    { "simplified": "多少", "pinyin": "duo1 shao5" },
+    { "simplified": "岁", "pinyin": "sui4" },
+    { "simplified": "个", "pinyin": "ge4" },
+    { "simplified": "两", "pinyin": "liang3" }
+  ],
+  "glossary": [
+    { "hanzi": "加", "pinyin": "jia1", "vi": "cộng, thêm vào" }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Số đếm tiếng Trung từ 1 đến 10 là nền tảng cho tuổi, giá tiền, giờ giấc và rất nhiều chủ đề khác.",
+          "Từ 11 đến 99, chỉ cần ghép [[十|shi2]] với các số đã học: [[十一|shi2 yi1]] (11), [[二十|er4 shi2]] (20), [[二十一|er4 shi2 yi1]] (21).",
+          "Khi hỏi tuổi trẻ em, dùng [[几岁|ji3 sui4]]？ Khi số lượng có thể lớn hơn 10, dùng [[多少|duo1 shao5]] thay vì [[几|ji3]]."
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Hỏi tuổi",
+        "lines": [
+          { "speaker": "Nam", "hanzi": "你几岁？", "pinyin": "Ni3 ji3 sui4?", "vi": "Bạn mấy tuổi?" },
+          { "speaker": "Lan", "hanzi": "我十岁。你呢？", "pinyin": "Wo3 shi2 sui4. Ni3 ne5?", "vi": "Mình mười tuổi. Còn bạn?" },
+          { "speaker": "Nam", "hanzi": "我也十岁。", "pinyin": "Wo3 ye3 shi2 sui4.", "vi": "Mình cũng mười tuổi." },
+          { "speaker": "Lan", "hanzi": "我们是两个学生！", "pinyin": "Wo3 men5 shi4 liang3 ge4 xue2 sheng5!", "vi": "Chúng mình là hai học sinh!" }
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Đếm số",
+        "lines": [
+          { "speaker": "Hoa", "hanzi": "一，二，三，四，五。", "pinyin": "Yi1, er4, san1, si4, wu3.", "vi": "Một, hai, ba, bốn, năm." },
+          { "speaker": "Minh", "hanzi": "六，七，八，九，十！", "pinyin": "Liu4, qi1, ba1, jiu3, shi2!", "vi": "Sáu, bảy, tám, chín, mười!" },
+          { "speaker": "Hoa", "hanzi": "五加五是多少？", "pinyin": "Wu3 jia1 wu3 shi4 duo1 shao5?", "vi": "Năm cộng năm là bao nhiêu?" },
+          { "speaker": "Minh", "hanzi": "五加五是十。", "pinyin": "Wu3 jia1 wu3 shi4 shi2.", "vi": "Năm cộng năm là mười." }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Số 11–99",
+        "pattern": "[[十|shi2]] + số 1–9 (11–19) ; số 2–9 + [[十|shi2]] (+ số 1–9) (20–99)",
+        "explanation": "Từ 11 đến 19: [[十|shi2]] rồi cộng số hàng đơn vị. Từ 20 trở lên: số hàng chục (2–9) đứng trước [[十|shi2]], có thể cộng thêm số hàng đơn vị (1–9) phía sau.",
+        "examples": [
+          { "hanzi": "十一", "pinyin": "shi2 yi1", "vi": "mười một" },
+          { "hanzi": "二十", "pinyin": "er4 shi2", "vi": "hai mươi" },
+          { "hanzi": "三十五", "pinyin": "san1 shi2 wu3", "vi": "ba mươi lăm" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "几 và 多少 — hỏi số lượng",
+        "pattern": "[[几|ji3]] + lượng từ (dưới 10) ; [[多少|duo1 shao5]] (không giới hạn)",
+        "explanation": "Dùng [[几|ji3]] khi đoán số lượng nhỏ hơn 10 (thường đi kèm lượng từ như [[个|ge4]]); dùng [[多少|duo1 shao5]] khi không đoán được số lượng, có thể lớn hơn 10, không cần lượng từ.",
+        "examples": [
+          { "hanzi": "你几岁？", "pinyin": "Ni3 ji3 sui4?", "vi": "Bạn mấy tuổi?", "note": "几岁 dùng khi đoán tuổi trẻ em (dưới 10); với người lớn, người Trung Quốc thường hỏi 你多大 (học ở bài sau)" },
+          { "hanzi": "五加五是多少？", "pinyin": "Wu3 jia1 wu3 shi4 duo1 shao5?", "vi": "Năm cộng năm là bao nhiêu?" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "两 và 二 — biểu thị số 2",
+        "pattern": "[[两|liang3]] + lượng từ ; [[二|er4]] dùng khi đếm/xếp số",
+        "explanation": "[[二|er4]] dùng khi đếm tuần tự (1,2,3...) hoặc trong số ghép (12, 20...). Khi nói số lượng đồ vật/người kèm lượng từ, dùng [[两|liang3]] thay cho [[二|er4]]: [[两个|liang3 ge4]] chứ không nói \"二个\".",
+        "examples": [
+          { "hanzi": "两个学生", "pinyin": "liang3 ge4 xue2 sheng5", "vi": "hai học sinh" },
+          { "hanzi": "十二", "pinyin": "shi2 er4", "vi": "mười hai", "note": "Vẫn dùng 二, không dùng 两, khi ghép trong số" }
+        ]
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "[[一|yi1]] vốn mang thanh 1, nhưng khi đứng trước một từ mang thanh 4 lại đọc lướt thành thanh 2, ví dụ [[一个|yi1 ge4]] đọc thành \"yí gè\" và [[一岁|yi1 sui4]] đọc thành \"yí suì\" — pinyin trong bài vẫn ghi giữ thanh gốc \"yī\"."
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "memory",
+        "text": "Người Việt hay lẫn [[十|shi2]] (mười) và [[四|si4]] (bốn) vì âm gần giống — chú ý [[十|shi2]] có phụ âm 'sh' cong lưỡi, còn [[四|si4]] là 's' phẳng lưỡi."
+      }
+    }
+  ],
+  "quiz": [
+    { "key": "q1", "type": "listen_choice", "prompt": "Nghe và chọn đúng số", "promptLang": "vi",
+      "audioText": "五",
+      "options": [
+        { "id": "a", "text": "3", "lang": "vi" },
+        { "id": "b", "text": "5", "lang": "vi" },
+        { "id": "c", "text": "7", "lang": "vi" },
+        { "id": "d", "text": "9", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[五|wu3]] là số 5." },
+    { "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn đúng số", "promptLang": "vi",
+      "audioText": "十二",
+      "options": [
+        { "id": "a", "text": "12", "lang": "vi" },
+        { "id": "b", "text": "20", "lang": "vi" },
+        { "id": "c", "text": "21", "lang": "vi" },
+        { "id": "d", "text": "2", "lang": "vi" }
+      ],
+      "correctOptionId": "a", "explanation": "[[十二|shi2 er4]] là số 12 (mười ghép với hai)." },
+    { "key": "q3", "type": "listen_choice", "prompt": "Nghe câu hỏi và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你几岁？",
+      "options": [
+        { "id": "a", "text": "Bạn tên gì?", "lang": "vi" },
+        { "id": "b", "text": "Bạn là ai?", "lang": "vi" },
+        { "id": "c", "text": "Bạn mấy tuổi?", "lang": "vi" },
+        { "id": "d", "text": "Bạn khoẻ không?", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[几岁|ji3 sui4]] dùng để hỏi tuổi trẻ em." },
+    { "key": "q4", "type": "single_choice", "prompt": "两个学生", "promptLang": "zh", "promptPinyin": "Liang3 ge4 xue2 sheng5",
+      "options": [
+        { "id": "a", "text": "Một học sinh", "lang": "vi" },
+        { "id": "b", "text": "Hai học sinh", "lang": "vi" },
+        { "id": "c", "text": "Mười học sinh", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[两|liang3]] đi với lượng từ [[个|ge4]] để chỉ số lượng 2." },
+    { "key": "q5", "type": "single_choice", "prompt": "Muốn nói 'hai học sinh', dùng số nào trước 个?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "两", "lang": "zh" },
+        { "id": "b", "text": "二", "lang": "zh" },
+        { "id": "c", "text": "三", "lang": "zh" },
+        { "id": "d", "text": "四", "lang": "zh" }
+      ],
+      "correctOptionId": "a", "explanation": "Trước lượng từ như [[个|ge4]], dùng [[两|liang3]] thay vì [[二|er4]]." },
+    { "key": "q6", "type": "single_choice", "prompt": "21 viết bằng chữ Hán là gì?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "十二", "lang": "zh" },
+        { "id": "b", "text": "二十一", "lang": "zh" },
+        { "id": "c", "text": "二十", "lang": "zh" },
+        { "id": "d", "text": "十一", "lang": "zh" }
+      ],
+      "correctOptionId": "b", "explanation": "[[二十一|er4 shi2 yi1]] = 二十 (20) + 一 (1) = 21." },
+    { "key": "q7", "type": "listen_choice", "prompt": "Nghe và chọn đúng số", "promptLang": "vi",
+      "audioText": "十",
+      "options": [
+        { "id": "a", "text": "1", "lang": "vi" },
+        { "id": "b", "text": "100", "lang": "vi" },
+        { "id": "c", "text": "10", "lang": "vi" },
+        { "id": "d", "text": "7", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[十|shi2]] là số 10." }
+  ]
+}

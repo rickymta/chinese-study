@@ -1,0 +1,83 @@
+# ════════════════════════════════════════════════════════════════════════════
+# Môi trường DEV cục bộ cho AntFarm — dựng PostgreSQL + MinIO bằng Docker thay vì
+# cài trực tiếp lên máy (dùng khi máy dev CÓ Docker, vd MacBook — bám tinh thần
+# mdt-re-construct/deploy/dev/docker-compose.wiki.yml).
+#
+# F0 chưa có service nào dùng MinIO — bucket `af-chinese` được tạo sẵn để dành
+# cho học liệu/file tải lên ở các feature sau (vd F8 luyện viết, F10 quản trị
+# nội dung). Chỉ mở khối cấu hình "Storage" mẫu trong appsettings.Development.json.example
+# của chinese-backend, KHÔNG thêm package hay code nào đọc nó ở F0.
+#
+# Dùng:  cp deploy/dev/.env.example deploy/dev/.env   (điền/giữ mặc định rồi sửa nếu muốn)
+#        docker compose -f deploy/dev/docker-compose.dev.yml --env-file deploy/dev/.env up -d
+# Dừng:  docker compose -f deploy/dev/docker-compose.dev.yml down       (giữ dữ liệu)
+#        docker compose -f deploy/dev/docker-compose.dev.yml down -v    (xoá sạch)
+#
+# ⚠️ Chỉ dùng cho DEV: bind 127.0.0.1, không TLS, mật khẩu mặc định yếu. Không
+#    dùng file này cho production — production dùng deploy/docker-compose.yml.
+# ════════════════════════════════════════════════════════════════════════════
+
+name: antfarm-dev
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      # Đọc bởi ../postgres/init/01-create-databases.sh — DÙNG LẠI script init của bundle
+      # production (deploy/postgres/init/), chỉ khác .env. Script chỉ chạy khi volume trống.
+      AF_IDENTITY_DB_PASSWORD: ${AF_IDENTITY_DB_PASSWORD:-af_identity_dev}
+      AF_CHINESE_DB_PASSWORD: ${AF_CHINESE_DB_PASSWORD:-af_chinese_dev}
+    volumes:
+      # PG 18+: mount tại /var/lib/postgresql (PGDATA = /var/lib/postgresql/18/docker).
+      # Mount vào .../data như PG ≤ 17 ⇒ container thoát ngay khi khởi động.
+      - antfarm-dev-pgdata:/var/lib/postgresql
+      - ../postgres/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - antfarm-dev-miniodata:/data
+    ports:
+      - "127.0.0.1:9000:9000" # S3 API  — Storage:Endpoint = http://localhost:9000
+      - "127.0.0.1:9001:9001" # Console — http://localhost:9001
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Tạo bucket af-chinese rồi thoát (idempotent nhờ --ignore-existing). F0 chưa có
+  # code nào đọc/ghi bucket này — chuẩn bị sẵn cho feature sau.
+  minio-init:
+    image: minio/mc:RELEASE.2024-11-17T19-35-25Z
+    depends_on:
+      minio: { condition: service_healthy }
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        mc alias set antfarm http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin} &&
+        mc mb --ignore-existing antfarm/af-chinese &&
+        mc ls antfarm/
+    restart: "no"
+
+volumes:
+  antfarm-dev-pgdata:
+  antfarm-dev-miniodata:
+
+# ── Kiểm chứng sau khi up (xem thêm deploy/VERIFY-DOCKER.md mục 0) ─────────────
+#   docker compose -f deploy/dev/docker-compose.dev.yml ps                        # postgres + minio "healthy"
+#   docker compose -f deploy/dev/docker-compose.dev.yml logs minio-init           # thấy bucket af-chinese
+#   psql -h localhost -p 5432 -U postgres -l                                      # liệt kê af_identity, af_chinese

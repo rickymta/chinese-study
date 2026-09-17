@@ -1,0 +1,9 @@
+{
+  "dataset": "characters",
+  "version": "test",
+  "license": "test",
+  "characters": [
+    { "hanzi": "淼", "traditionalVariants": [], "pinyinReadings": ["miao3"], "hanViet": ["diểu"], "hanVietByPinyin": { "miao3": "diểu" }, "hanVietStatus": "derived", "strokeCount": 12, "radical": "水", "radicalNumber": 85, "sources": ["test"] },
+    { "hanzi": "鑫", "traditionalVariants": [], "pinyinReadings": ["xin1"], "hanViet": ["hâm"], "hanVietByPinyin": { "xin1": "hâm" }, "hanVietStatus": "derived", "strokeCount": 24, "radical": "金", "radicalNumber": 167, "sources": ["test"] }
+  ]
+}

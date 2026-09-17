@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <!-- ChineseDbApiFactory: PostConfigure<JwtBearerOptions> để chấp nhận token ký bởi TestTokenFactory (§5.2.2). -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+    <!-- F5: FakeTimeProvider thay TimeProvider.System trong DI để test điều khiển "bây giờ"
+         (R5-11 kiểm giờ phiên luyện thanh, local_date lúc 06:30 sáng giờ VN). -->
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AntFarm.Chinese.Api\AntFarm.Chinese.Api.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Testing\AntFarm.Testing.csproj" />
+  </ItemGroup>
+
+  <!-- F6 (§5.2.5): tệp học liệu giả cho ContentImporterTests — sao chép ra thư mục output để đọc bằng đường dẫn tuyệt đối lúc test chạy. -->
+  <ItemGroup>
+    <None Include="TestData\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

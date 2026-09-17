@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "slug": "ban-than",
+  "title": "Giới thiệu bản thân",
+  "topic": "ban-than",
+  "level": "hsk1",
+  "orderIndex": 2,
+  "status": "published",
+  "summary": "Hỏi tên, nói mình là học sinh, hỏi quốc tịch — mẫu câu để làm quen người mới.",
+  "objectives": [
+    "Hỏi và nói tên bằng 叫/名字",
+    "Dùng mẫu câu A 是 B để giới thiệu bản thân",
+    "Hỏi lại bằng 呢, phủ định bằng 不"
+  ],
+  "estimatedMinutes": 15,
+  "sources": ["original"],
+  "words": [
+    { "simplified": "叫", "pinyin": "jiao4" },
+    { "simplified": "什么", "pinyin": "shen2 me5" },
+    { "simplified": "名字", "pinyin": "ming2 zi5" },
+    { "simplified": "是", "pinyin": "shi4" },
+    { "simplified": "不", "pinyin": "bu4" },
+    { "simplified": "人", "pinyin": "ren2" },
+    { "simplified": "中国", "pinyin": "Zhong1 guo2" },
+    { "simplified": "学生", "pinyin": "xue2 sheng5" },
+    { "simplified": "哪", "pinyin": "na3" },
+    { "simplified": "呢", "pinyin": "ne5" },
+    { "simplified": "也", "pinyin": "ye3" },
+    { "simplified": "很", "pinyin": "hen3" },
+    { "simplified": "认识", "pinyin": "ren4 shi5" },
+    { "simplified": "高兴", "pinyin": "gao1 xing4" }
+  ],
+  "glossary": [
+    { "hanzi": "越南", "pinyin": "Yue4 nan2", "vi": "Việt Nam" },
+    { "hanzi": "阮兰", "pinyin": "Ruan3 Lan2", "vi": "Nguyễn Lan (tên riêng, nhân vật học sinh Việt Nam)" },
+    { "hanzi": "王明", "pinyin": "Wang2 Ming2", "vi": "Vương Minh (tên riêng, nhân vật học sinh Trung Quốc)" }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Khi mới quen ai đó, người Trung Quốc thường hỏi tên bằng [[你叫什么名字|ni3 jiao4 shen2 me5 ming2 zi5]]？",
+          "Mẫu câu [[我是学生|wo3 shi4 xue2 sheng5]] (Tôi là học sinh) rất hữu ích để giới thiệu bản thân.",
+          "Nếu muốn hỏi lại câu hỏi tương tự cho người khác, chỉ cần thêm [[呢|ne5]] vào cuối: [[你呢|ni3 ne5]]？"
+        ]
+      }
+    },
+    {
+      "type": "dialogue",
+      "payload": {
+        "title": "Làm quen ở lớp học",
+        "lines": [
+          { "speaker": "Wang Ming", "hanzi": "你好！你叫什么名字？", "pinyin": "Ni3 hao3! Ni3 jiao4 shen2 me5 ming2 zi5?", "vi": "Chào bạn! Bạn tên là gì?" },
+          { "speaker": "Lan", "hanzi": "我叫阮兰。你呢？", "pinyin": "Wo3 jiao4 Ruan3 Lan2. Ni3 ne5?", "vi": "Mình tên là Nguyễn Lan. Còn bạn?" },
+          { "speaker": "Wang Ming", "hanzi": "我叫王明。你是学生吗？", "pinyin": "Wo3 jiao4 Wang2 Ming2. Ni3 shi4 xue2 sheng5 ma5?", "vi": "Mình tên là Vương Minh. Bạn là học sinh à?" },
+          { "speaker": "Lan", "hanzi": "我是学生。你也是学生吗？", "pinyin": "Wo3 shi4 xue2 sheng5. Ni3 ye3 shi4 xue2 sheng5 ma5?", "vi": "Mình là học sinh. Bạn cũng là học sinh à?" },
+          { "speaker": "Wang Ming", "hanzi": "是，我也是学生。你是哪国人？", "pinyin": "Shi4, wo3 ye3 shi4 xue2 sheng5. Ni3 shi4 na3 guo2 ren2?", "vi": "Đúng, mình cũng là học sinh. Bạn là người nước nào?" },
+          { "speaker": "Lan", "hanzi": "我是越南人。你呢？", "pinyin": "Wo3 shi4 Yue4 nan2 ren2. Ni3 ne5?", "vi": "Mình là người Việt Nam. Còn bạn?" },
+          { "speaker": "Wang Ming", "hanzi": "我是中国人。很高兴认识你！", "pinyin": "Wo3 shi4 Zhong1 guo2 ren2. Hen3 gao1 xing4 ren4 shi5 ni3!", "vi": "Mình là người Trung Quốc. Rất vui được quen bạn!" },
+          { "speaker": "Lan", "hanzi": "我也很高兴认识你！", "pinyin": "Wo3 ye3 hen3 gao1 xing4 ren4 shi5 ni3!", "vi": "Mình cũng rất vui được quen bạn!" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "我叫 + tên — giới thiệu tên",
+        "pattern": "[[我叫|wo3 jiao4]] + tên ; [[你叫什么名字|ni3 jiao4 shen2 me5 ming2 zi5]]？",
+        "explanation": "Dùng [[叫|jiao4]] để nói tên mình. Hỏi tên người khác bằng [[什么|shen2 me5]] [[名字|ming2 zi5]] (nghĩa đen: 'tên gì').",
+        "examples": [
+          { "hanzi": "你叫什么名字？", "pinyin": "Ni3 jiao4 shen2 me5 ming2 zi5?", "vi": "Bạn tên là gì?" },
+          { "hanzi": "我叫阮兰。", "pinyin": "Wo3 jiao4 Ruan3 Lan2.", "vi": "Mình tên là Nguyễn Lan." }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Câu trần thuật 'A 是 B'",
+        "pattern": "A + [[是|shi4]] + B",
+        "explanation": "Dùng [[是|shi4]] để nói A là B (nghề nghiệp, quốc tịch...). Phủ định thêm [[不|bu4]] trước [[是|shi4]]: [[不是|bu4 shi4]].",
+        "examples": [
+          { "hanzi": "我是学生。", "pinyin": "Wo3 shi4 xue2 sheng5.", "vi": "Tôi là học sinh." },
+          { "hanzi": "他不是老师。", "pinyin": "Ta1 bu4 shi4 lao3 shi1.", "vi": "Anh ấy không phải là giáo viên." }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Hỏi lại bằng 呢",
+        "pattern": "Danh từ/đại từ + [[呢|ne5]]？",
+        "explanation": "[[呢|ne5]] dùng để hỏi lại câu hỏi vừa được hỏi cho một đối tượng khác, tránh phải lặp lại cả câu.",
+        "examples": [
+          { "hanzi": "我是越南人，你呢？", "pinyin": "Wo3 shi4 Yue4 nan2 ren2, ni3 ne5?", "vi": "Tôi là người Việt Nam, còn bạn?" }
+        ]
+      }
+    },
+    {
+      "type": "grammar",
+      "payload": {
+        "title": "Câu hỏi với 哪",
+        "pattern": "[[哪|na3]] + lượng từ/danh từ",
+        "explanation": "[[哪|na3]] nghĩa là 'nào', dùng để hỏi lựa chọn trong nhiều khả năng, ví dụ hỏi quốc tịch.",
+        "examples": [
+          { "hanzi": "你是哪国人？", "pinyin": "Ni3 shi4 na3 guo2 ren2?", "vi": "Bạn là người nước nào?" }
+        ]
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "[[不|bu4]] đứng trước một âm mang thanh 4 thường được đọc lướt thành thanh 2, ví dụ [[不是|bu4 shi4]] đọc thành \"bú shì\" — đây chỉ là cách đọc, pinyin vẫn ghi giữ thanh gốc \"bù\"."
+      }
+    },
+    {
+      "type": "tip",
+      "payload": {
+        "variant": "pronunciation",
+        "text": "Âm [[是|shi4]] và các âm bắt đầu bằng 'sh' phải cong lưỡi, khác hẳn phụ âm 's' phẳng lưỡi — người Việt hay đọc lẫn, cần luyện riêng."
+      }
+    }
+  ],
+  "quiz": [
+    { "key": "q1", "type": "listen_choice", "prompt": "Nghe câu hỏi và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你叫什么名字？",
+      "options": [
+        { "id": "a", "text": "Bạn bao nhiêu tuổi?", "lang": "vi" },
+        { "id": "b", "text": "Bạn tên là gì?", "lang": "vi" },
+        { "id": "c", "text": "Bạn là ai?", "lang": "vi" },
+        { "id": "d", "text": "Bạn ở đâu?", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[你叫什么名字|ni3 jiao4 shen2 me5 ming2 zi5]] dùng để hỏi tên." },
+    { "key": "q2", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "很高兴认识你",
+      "options": [
+        { "id": "a", "text": "Tạm biệt bạn", "lang": "vi" },
+        { "id": "b", "text": "Cảm ơn bạn nhiều", "lang": "vi" },
+        { "id": "c", "text": "Rất vui được quen bạn", "lang": "vi" },
+        { "id": "d", "text": "Xin lỗi bạn", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[很高兴认识你|hen3 gao1 xing4 ren4 shi5 ni3]] nói khi vừa làm quen ai đó." },
+    { "key": "q3", "type": "listen_choice", "prompt": "Nghe và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "我是越南人",
+      "options": [
+        { "id": "a", "text": "Tôi là người Trung Quốc", "lang": "vi" },
+        { "id": "b", "text": "Tôi là học sinh", "lang": "vi" },
+        { "id": "c", "text": "Tôi là người Việt Nam", "lang": "vi" },
+        { "id": "d", "text": "Tôi là giáo viên", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[越南|Yue4 nan2]] nghĩa là Việt Nam." },
+    { "key": "q4", "type": "single_choice", "prompt": "他不是老师。", "promptLang": "zh", "promptPinyin": "Ta1 bu4 shi4 lao3 shi1.",
+      "options": [
+        { "id": "a", "text": "Anh ấy là giáo viên.", "lang": "vi" },
+        { "id": "b", "text": "Anh ấy không phải là giáo viên.", "lang": "vi" },
+        { "id": "c", "text": "Anh ấy là học sinh.", "lang": "vi" }
+      ],
+      "correctOptionId": "b", "explanation": "[[不|bu4]] đứng trước [[是|shi4]] tạo câu phủ định." },
+    { "key": "q5", "type": "single_choice", "prompt": "Từ nào dùng để hỏi lại, nghĩa là 'còn bạn thì sao?'", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "也", "lang": "zh" },
+        { "id": "b", "text": "呢", "lang": "zh" },
+        { "id": "c", "text": "吗", "lang": "zh" },
+        { "id": "d", "text": "哪", "lang": "zh" }
+      ],
+      "correctOptionId": "b", "explanation": "[[呢|ne5]] dùng để hỏi lại câu hỏi trước đó cho người khác." },
+    { "key": "q6", "type": "single_choice", "prompt": "Câu nào có nghĩa 'Mình cũng là học sinh.'?", "promptLang": "vi",
+      "options": [
+        { "id": "a", "text": "你是学生吗？", "lang": "zh" },
+        { "id": "b", "text": "我也是学生。", "lang": "zh" },
+        { "id": "c", "text": "他不是学生。", "lang": "zh" }
+      ],
+      "correctOptionId": "b", "explanation": "[[也|ye3]] nghĩa là 'cũng', đặt trước [[是|shi4]]." },
+    { "key": "q7", "type": "listen_choice", "prompt": "Nghe câu hỏi và chọn nghĩa đúng", "promptLang": "vi",
+      "audioText": "你是哪国人？",
+      "options": [
+        { "id": "a", "text": "Bạn là học sinh à?", "lang": "vi" },
+        { "id": "b", "text": "Bạn tên là gì?", "lang": "vi" },
+        { "id": "c", "text": "Bạn là người nước nào?", "lang": "vi" },
+        { "id": "d", "text": "Bạn khoẻ không?", "lang": "vi" }
+      ],
+      "correctOptionId": "c", "explanation": "[[哪|na3]] nghĩa là 'nào', hỏi về quốc tịch." }
+  ]
+}

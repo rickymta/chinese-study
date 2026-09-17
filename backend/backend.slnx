@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/shared/">
+    <Project Path="shared/AntFarm.Core/AntFarm.Core.csproj" />
+    <Project Path="shared/AntFarm.Logging/AntFarm.Logging.csproj" />
+    <Project Path="shared/AntFarm.Security/AntFarm.Security.csproj" />
+    <Project Path="shared/AntFarm.HealthChecks/AntFarm.HealthChecks.csproj" />
+    <Project Path="shared/AntFarm.Auth/AntFarm.Auth.csproj" />
+    <Project Path="shared/AntFarm.Testing/AntFarm.Testing.csproj" />
+    <Project Path="tests/AntFarm.Shared.UnitTests/AntFarm.Shared.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/services/gateway/">
+    <Project Path="services/gateway/AntFarm.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/services/identity-service/">
+    <Project Path="services/identity-service/src/AntFarm.Identity.Domain/AntFarm.Identity.Domain.csproj" />
+    <Project Path="services/identity-service/src/AntFarm.Identity.Application/AntFarm.Identity.Application.csproj" />
+    <Project Path="services/identity-service/src/AntFarm.Identity.Infrastructure/AntFarm.Identity.Infrastructure.csproj" />
+    <Project Path="services/identity-service/src/AntFarm.Identity.Api/AntFarm.Identity.Api.csproj" />
+    <Project Path="services/identity-service/tests/AntFarm.Identity.UnitTests/AntFarm.Identity.UnitTests.csproj" />
+    <Project Path="services/identity-service/tests/AntFarm.Identity.ApiTests/AntFarm.Identity.ApiTests.csproj" />
+  </Folder>
+  <Folder Name="/services/chinese-backend/">
+    <Project Path="services/chinese-backend/src/AntFarm.Chinese.Domain/AntFarm.Chinese.Domain.csproj" />
+    <Project Path="services/chinese-backend/src/AntFarm.Chinese.Application/AntFarm.Chinese.Application.csproj" />
+    <Project Path="services/chinese-backend/src/AntFarm.Chinese.Infrastructure/AntFarm.Chinese.Infrastructure.csproj" />
+    <Project Path="services/chinese-backend/src/AntFarm.Chinese.Api/AntFarm.Chinese.Api.csproj" />
+    <Project Path="services/chinese-backend/tests/AntFarm.Chinese.UnitTests/AntFarm.Chinese.UnitTests.csproj" />
+    <Project Path="services/chinese-backend/tests/AntFarm.Chinese.ApiTests/AntFarm.Chinese.ApiTests.csproj" />
+  </Folder>
+</Solution>
