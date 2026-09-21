@@ -5,9 +5,10 @@ Nền tảng học ngoại ngữ trực tuyến cho người Việt, kiến trú
 ngôn ngữ đầu tiên.
 
 ```
-Trình duyệt ─► app (Vite) :3280 ─proxy /identity,/chinese─► gateway :5280
+Trình duyệt ─► app (Vite) :3280 ─proxy /identity,/chinese,/cms─► gateway :5280
                                                                  ├─► identity-service :5281 ─► af_identity
-                                                                 └─► chinese-backend  :5282 ─► af_chinese
+                                                                 ├─► chinese-backend  :5282 ─► af_chinese
+                                                                 └─► cms-backend      :5290 ─► af_cms (W1)
 ```
 
 Production đi qua nginx biên + HTTPS Let's Encrypt trước gateway — xem `deploy/`.
@@ -43,8 +44,8 @@ docker compose -f deploy/dev/docker-compose.dev.yml ps
 
 Compose này dựng:
 - **PostgreSQL 18** (cổng 5432) — script `deploy/postgres/init/01-create-databases.sh` tự tạo
-  role + database `af_identity`, `af_chinese` (mật khẩu trong `deploy/dev/.env`) **chỉ khi
-  volume còn trống**.
+  role + database `af_identity`, `af_chinese`, `af_cms` (mật khẩu trong `deploy/dev/.env`) **chỉ
+  khi volume còn trống**.
 - **MinIO** (API 9000, Console 9001, tài khoản `minioadmin`/`minioadmin` mặc định) + bucket
   `af-chinese` tạo sẵn qua `minio-init`. **F0 chưa có code nào dùng MinIO** — chỉ dựng sẵn hạ
   tầng cho feature sau (vd F8 luyện viết, F10 quản trị nội dung).
@@ -61,6 +62,7 @@ Dừng: `docker compose -f deploy/dev/docker-compose.dev.yml down` (giữ dữ l
 $psql = "C:\Program Files\PostgreSQL\18\bin\psql.exe"
 & $psql -U postgres -c "CREATE DATABASE af_identity ENCODING 'UTF8' TEMPLATE template0;"
 & $psql -U postgres -c "CREATE DATABASE af_chinese  ENCODING 'UTF8' TEMPLATE template0;"
+& $psql -U postgres -c "CREATE DATABASE af_cms       ENCODING 'UTF8' TEMPLATE template0;"  # W1 — cms-backend
 ```
 
 Dùng tài khoản `postgres` cho đơn giản (khác Docker dev — ở đó mỗi service có role
@@ -78,6 +80,9 @@ cp backend/services/identity-service/src/AntFarm.Identity.Api/appsettings.Develo
 
 cp backend/services/chinese-backend/src/AntFarm.Chinese.Api/appsettings.Development.json.example \
    backend/services/chinese-backend/src/AntFarm.Chinese.Api/appsettings.Development.json
+
+cp backend/services/cms-backend/src/AntFarm.Cms.Api/appsettings.Development.json.example \
+   backend/services/cms-backend/src/AntFarm.Cms.Api/appsettings.Development.json
 ```
 
 (PowerShell: dùng `Copy-Item` thay `cp`.)
@@ -90,11 +95,12 @@ dotnet build backend/backend.slnx -v q
 dotnet test backend/backend.slnx
 ```
 
-Chạy 3 tiến trình (3 cửa sổ terminal riêng):
+Chạy 4 tiến trình (4 cửa sổ terminal riêng):
 
 ```bash
 dotnet run --project backend/services/identity-service/src/AntFarm.Identity.Api --launch-profile http
 dotnet run --project backend/services/chinese-backend/src/AntFarm.Chinese.Api --launch-profile http
+dotnet run --project backend/services/cms-backend/src/AntFarm.Cms.Api --launch-profile http
 dotnet run --project backend/services/gateway --launch-profile http
 ```
 
@@ -103,7 +109,9 @@ dotnet run --project backend/services/gateway --launch-profile http
 ```
 http://localhost:5280/identity/api/system/info   → { "service": "identity-service", ... }
 http://localhost:5280/chinese/api/system/info    → { "service": "chinese-backend", ... }
+http://localhost:5280/cms/api/system/info        → { "service": "cms-backend", ... }        (W1)
 http://localhost:5282/scalar/v1                  → tài liệu API chinese-backend
+http://localhost:5290/scalar/v1                  → tài liệu API cms-backend                  (W1)
 http://localhost:5281/health/ready               → 200 khi PostgreSQL kết nối được
 ```
 

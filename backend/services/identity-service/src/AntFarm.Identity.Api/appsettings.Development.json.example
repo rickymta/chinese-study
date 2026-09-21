@@ -15,6 +15,10 @@
     "RefreshCookieDomain": "",
     "RefreshCookiePath": "/identity/api/auth",
     "RefreshCookieSecure": false,
-    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281"]
+    "AllowedOrigins": ["http://localhost:3280", "http://localhost:3281", "http://localhost:3290"]
+  },
+  "Internal": {
+    "Port": 5291,
+    "ServiceKey": "dev-internal-key-change-me-0123456789abcdef"
   }
 }

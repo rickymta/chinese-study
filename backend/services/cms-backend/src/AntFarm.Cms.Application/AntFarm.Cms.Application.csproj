@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <!-- FromSqlInterpolated (SELECT ... FOR UPDATE khoá dòng access.roles, mượn R4-8 chinese-backend)
+         sống ở đây, không phải gói EF Core gốc — cùng lý do AntFarm.Chinese.Application. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AntFarm.Cms.Domain\AntFarm.Cms.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Core\AntFarm.Core.csproj" />
+    <!-- Chỉ cần cho IPermissionResolver (interface thuần, không kiểu ASP.NET Core nào trong chữ
+         ký) — PermissionResolver/UserProvisioningService hiện thực cổng phân quyền của
+         AntFarm.Auth trên DB access.* của chính service (R-W1/R-W2, chép khuôn chinese-backend). -->
+    <ProjectReference Include="..\..\..\..\shared\AntFarm.Auth\AntFarm.Auth.csproj" />
+  </ItemGroup>
+
+</Project>

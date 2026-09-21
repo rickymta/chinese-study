@@ -1,10 +1,8 @@
 import { Box, ListItem, ListItemButton, Typography } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
 import { linkState } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { numberedToMarked } from '@/lib/pinyin'
-import { MeaningStatusChip } from './MeaningStatusChip'
-import type { WordSummary } from '../types'
+import { Hanzi, numberedToMarked, MeaningStatusChip } from '@af/chinese-kit'
+import type { WordSummary } from '@af/chinese-kit'
 
 export interface WordListItemProps {
   word: WordSummary

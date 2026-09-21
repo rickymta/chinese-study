@@ -4,13 +4,16 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
-import { Hanzi } from '@/components/Hanzi'
-import { numberedToMarked } from '@/lib/pinyin'
-import { LessonContent } from '@/features/lessons/components/LessonContent'
-import { LessonDisplayProvider } from '@/features/lessons/components/LessonDisplayContext'
-import { InlineZh } from '@/features/lessons/components/InlineZh'
-import { OptionText, QuestionPrompt } from '@/features/lessons/components/quiz/QuestionParts'
-import { MeaningStatusChip } from '@/features/dictionary/components/MeaningStatusChip'
+import {
+  Hanzi,
+  numberedToMarked,
+  LessonContent,
+  LessonDisplayProvider,
+  InlineZh,
+  OptionText,
+  QuestionPrompt,
+  MeaningStatusChip,
+} from '@af/chinese-kit'
 import { blocksToPreview, parseObjectives, quizToPreview, type BlockDraft, type MetaDraft, type QuizQuestionDraft } from '../lib/lessonDraft'
 import type { AdminLessonWord } from '../types'
 

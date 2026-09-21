@@ -1,8 +1,6 @@
 import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Slider, Stack, Typography } from '@mui/material'
 import { AppDialog } from '@af/ui'
-import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { TTS_RATE_DEFAULT, TTS_RATE_MAX, TTS_RATE_MIN } from '@/components/speech/useTtsRate'
+import { useChineseSpeech, SpeakButton, TTS_RATE_DEFAULT, TTS_RATE_MAX, TTS_RATE_MIN } from '@af/chinese-kit'
 
 const RATE_MARKS = [
   { value: 0.5, label: 'Chậm' },

@@ -3,11 +3,7 @@ import { Alert, Box, Button, Stack, Typography } from '@mui/material'
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 import StopIcon from '@mui/icons-material/Stop'
 import { AppDrawer } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { Pinyin } from '@/components/Pinyin'
-import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { displaySyllableKey } from '@/lib/pinyin'
+import { Hanzi, Pinyin, useChineseSpeech, SpeakButton, displaySyllableKey } from '@af/chinese-kit'
 import { TONE_KEYS, type PinyinFinal, type PinyinInitial, type PinyinSyllable } from '../types'
 
 const TONE_LABEL: Record<string, string> = { '1': 'ˉ', '2': 'ˊ', '3': 'ˇ', '4': 'ˋ' }

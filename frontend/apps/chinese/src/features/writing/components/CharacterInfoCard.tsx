@@ -4,10 +4,7 @@ import { Box, Button, Card, CardContent, Chip, Collapse, Link, List, ListItem, L
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { LangText, linkState } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
-import { MeaningStatusChip } from '@/features/dictionary/components/MeaningStatusChip'
+import { Hanzi, SpeakButton, numberedToMarked, MeaningStatusChip } from '@af/chinese-kit'
 import { maskHanzi } from '../lib/maskHanzi'
 import type { MasteryStatus, WritingCharacterDetail } from '../types'
 

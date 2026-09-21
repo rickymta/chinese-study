@@ -1,5 +1,5 @@
 import { chineseApi } from '@/api/clients'
-import type { CharacterDetail, SearchParams, SearchResponse, WordDetail } from './types'
+import type { CharacterDetail, SearchParams, SearchResponse, WordDetail } from '@af/chinese-kit'
 
 // Lời gọi GET ở đây KHÔNG đặt `skipErrorRedirect`: 403 (mất `study.use`) ⇒ `/403`, 404 (id/chữ không tồn tại) ⇒ `/404`
 // theo quy tắc "Trang lỗi 4xx thống nhất". 503 `CONTENT_UNAVAILABLE` không bị điều hướng ⇒ màn hình tự hiện Alert.

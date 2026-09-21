@@ -27,4 +27,12 @@
     <Project Path="services/chinese-backend/tests/AntFarm.Chinese.UnitTests/AntFarm.Chinese.UnitTests.csproj" />
     <Project Path="services/chinese-backend/tests/AntFarm.Chinese.ApiTests/AntFarm.Chinese.ApiTests.csproj" />
   </Folder>
+  <Folder Name="/services/cms-backend/">
+    <Project Path="services/cms-backend/src/AntFarm.Cms.Domain/AntFarm.Cms.Domain.csproj" />
+    <Project Path="services/cms-backend/src/AntFarm.Cms.Application/AntFarm.Cms.Application.csproj" />
+    <Project Path="services/cms-backend/src/AntFarm.Cms.Infrastructure/AntFarm.Cms.Infrastructure.csproj" />
+    <Project Path="services/cms-backend/src/AntFarm.Cms.Api/AntFarm.Cms.Api.csproj" />
+    <Project Path="services/cms-backend/tests/AntFarm.Cms.UnitTests/AntFarm.Cms.UnitTests.csproj" />
+    <Project Path="services/cms-backend/tests/AntFarm.Cms.ApiTests/AntFarm.Cms.ApiTests.csproj" />
+  </Folder>
 </Solution>

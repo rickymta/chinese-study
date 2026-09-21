@@ -2,7 +2,7 @@ import { Alert, Box, Button, Card, CardContent, Chip, IconButton, MenuItem, Radi
 import AddIcon from '@mui/icons-material/Add'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import { useConfirm } from '@af/ui'
-import type { QuizOptionLang, QuizPromptLang, QuizQuestionType } from '@/features/lessons/types'
+import type { QuizOptionLang, QuizPromptLang, QuizQuestionType } from '@af/chinese-kit'
 import {
   isKnownQuestionPath,
   moveItem,

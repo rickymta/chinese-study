@@ -4,6 +4,7 @@ using System.Threading.RateLimiting;
 using AntFarm.Auth;
 using AntFarm.HealthChecks;
 using AntFarm.Identity.Api.Configuration;
+using AntFarm.Identity.Api.Internal;
 using AntFarm.Identity.Application;
 using AntFarm.Identity.Application.Common.Abstractions;
 using AntFarm.Identity.Application.Common.Options;
@@ -37,6 +38,17 @@ var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>()
     ?? throw new InvalidOperationException("Thiếu cấu hình Auth — xem appsettings.Development.json.example.");
 builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddSingleton(authOptions);
+
+// ── W10 (§5.2.9): API nội bộ /internal/* — cổng riêng (dev 5291, Docker 8081) + X-Service-Key. ──
+var internalOptions = builder.Configuration.GetSection("Internal").Get<InternalOptions>() ?? new InternalOptions();
+builder.Services.AddSingleton(internalOptions);
+builder.Services.AddSingleton<ILocalPortAccessor, ConnectionLocalPortAccessor>();
+if (internalOptions.Port > 0 && !internalOptions.IsEnabled)
+{
+    // Port>0 nhưng khoá quá ngắn — coi như CHƯA cấu hình (API nội bộ tắt, mọi /internal/* 404)
+    // thay vì ném ngoại lệ dừng tiến trình: cấu hình sai không được làm SẬP cả service.
+    Log.Warning("API nội bộ bị tắt: Internal:ServiceKey < 32 ký tự");
+}
 
 // R-A13: khoá ký RS256 persist file PEM. Dựng TRỰC TIẾP (không qua AddInfrastructure) vì cần
 // instance CỤ THỂ ngay bây giờ để truyền vào AddAfJwtBearer (kiểm token của chính mình bằng
@@ -132,6 +144,9 @@ app.UseAfCorrelationId();
 // thấy ngoại lệ bay qua rồi ghi nhầm "responded 500" kèm stack trace.
 app.UseSerilogRequestLogging();
 app.UseAfExceptionHandler(); // AppException → status+code; còn lại 500 "Đã xảy ra lỗi nội bộ." + log Error
+// R-W4 (§5.2.9): NGAY SAU exception handler, TRƯỚC CORS/rate limiter/JWT — route nội bộ không
+// CORS, không rate limit "auth", không JWT (xác thực bằng khoá dịch vụ tĩnh X-Service-Key).
+app.UseMiddleware<InternalAccessMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); // /openapi/v1.json

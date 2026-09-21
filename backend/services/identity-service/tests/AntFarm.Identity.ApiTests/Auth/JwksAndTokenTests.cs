@@ -54,7 +54,7 @@ public class JwksAndTokenTests(IdentityDbApiFactory factory) : IClassFixture<Ide
         var auth = await registerResponse.Content.ReadFromJsonAsync<AuthResponseDto>(JsonDefaults.Options);
 
         var jwt = new JsonWebTokenHandler().ReadJsonWebToken(auth!.AccessToken);
-        jwt.Audiences.Should().Contain(["af-identity", "af-chinese"]);
+        jwt.Audiences.Should().Contain(["af-identity", "af-chinese", "af-cms"]);
         jwt.TryGetClaim("name", out var nameClaim).Should().BeTrue();
         nameClaim.Value.Should().Be("Học viên A");
         jwt.TryGetClaim("zoneinfo", out var tzClaim).Should().BeTrue();

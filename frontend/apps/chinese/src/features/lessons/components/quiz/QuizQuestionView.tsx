@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { Alert, Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-import { Hanzi } from '@/components/Hanzi'
-import { Pinyin } from '@/components/Pinyin'
-import { useChineseSpeech } from '@/components/speech/ChineseSpeech'
-import type { QuizOption, QuizQuestion } from '../../types'
-import { OptionText, QuestionPrompt } from './QuestionParts'
+import { Hanzi, Pinyin, useChineseSpeech, OptionText, QuestionPrompt } from '@af/chinese-kit'
+import type { QuizOption, QuizQuestion } from '@af/chinese-kit'
 
 export interface QuizQuestionViewProps {
   question: QuizQuestion

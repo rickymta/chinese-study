@@ -15,6 +15,7 @@
   "dependencies": {
     "@af/api": "*",
     "@af/auth": "*",
+    "@af/chinese-kit": "*",
     "@af/ui": "*",
     "@af/utils": "*",
     "@emotion/react": "^11.14.0",

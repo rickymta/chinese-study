@@ -3,7 +3,7 @@ import { isApiError } from '@af/api'
 import { SRS_KEYS } from '@/features/srs/hooks'
 import { PROGRESS_KEYS } from '@/features/progress/hooks'
 import { getLesson, getLessons, getQuizAttempts, startLesson, submitQuiz } from './api'
-import type { LessonDetail, LessonProgress, QuizResult, SubmitQuizRequest } from './types'
+import type { LessonDetail, LessonProgress, QuizResult, SubmitQuizRequest } from '@af/chinese-kit'
 
 // Khoá query F9. F10 (quản trị) và F11 (tổng quan) invalidate `LESSON_KEYS.all` sau khi sửa/xuất bản bài.
 export const LESSON_KEYS = {

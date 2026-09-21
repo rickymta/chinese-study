@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { seededRng, shuffle, shuffleOptions } from './shuffle'
-import type { QuizQuestion } from '../types'
+import type { QuizQuestion } from '@af/chinese-kit'
 
 const question = (id: string, n = 4): QuizQuestion => ({
   id,

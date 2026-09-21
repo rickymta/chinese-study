@@ -49,6 +49,7 @@ public class IdentityApiFactory : WebApplicationFactory<Program>
         Environment.SetEnvironmentVariable("Jwt__Issuer", "http://localhost:5280/identity");
         Environment.SetEnvironmentVariable("Jwt__Audiences__0", "af-identity");
         Environment.SetEnvironmentVariable("Jwt__Audiences__1", "af-chinese");
+        Environment.SetEnvironmentVariable("Jwt__Audiences__2", "af-cms"); // W1: cms-backend
         Environment.SetEnvironmentVariable("Jwt__AccessTokenMinutes", "15");
         Environment.SetEnvironmentVariable("Jwt__RefreshTokenDays", "30");
 

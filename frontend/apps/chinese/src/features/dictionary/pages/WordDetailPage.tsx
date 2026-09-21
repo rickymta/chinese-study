@@ -19,19 +19,21 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useAuth } from '@af/auth'
 import { LangText, PageContainer, linkState, useBackTo } from '@af/ui'
 import { PERMISSIONS } from '@/features/auth/permissions'
-import { Hanzi } from '@/components/Hanzi'
-import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeech'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
+import {
+  Hanzi,
+  SpeakButton,
+  numberedToMarked,
+  meaningViSourceLabel,
+  MeaningStatusChip,
+} from '@af/chinese-kit'
+import type { WordDetail } from '@af/chinese-kit'
+import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeechProvider'
 import { useWord } from '../hooks'
 import { posLabels } from '../lib/pos'
-import { meaningViSourceLabel } from '../lib/sources'
 import { readingAt } from '../lib/characterReading'
-import { MeaningStatusChip } from '../components/MeaningStatusChip'
 import { QueryErrorAlert } from '../components/QueryErrorAlert'
 import { SourceAttribution } from '../components/SourceAttribution'
 import { AddToSrsButton } from '@/features/srs/components/AddToSrsButton'
-import type { WordDetail } from '../types'
 
 /** Tiêu đề khối (h2) thống nhất cho trang chi tiết. */
 function SectionTitle({ children }: { children: ReactNode }) {

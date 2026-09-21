@@ -2,7 +2,7 @@
 // kiểm điều kiện xuất bản (R-CA4) trước khi gọi server, đường dẫn lỗi 400 gắn được vào ô. Hàm thuần — test ở
 // `lessonDraft.test.ts`. Server vẫn là nguồn sự thật (validator dùng chung F9/F10); đây chỉ để báo sớm.
 
-import type { GlossaryEntry, LessonBlock, QuizOptionLang, QuizPromptLang, QuizQuestionType, TipVariant } from '@/features/lessons/types'
+import type { GlossaryEntry, LessonBlock, QuizOptionLang, QuizPromptLang, QuizQuestionType, TipVariant } from '@af/chinese-kit'
 import type {
   AdminLesson,
   AdminLessonBlock,

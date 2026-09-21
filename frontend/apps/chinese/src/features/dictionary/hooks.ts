@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { isApiError } from '@af/api'
 import { getCharacter, getWord, searchWords, SEARCH_PAGE_SIZE } from './api'
-import type { SearchParams } from './types'
+import type { SearchParams } from '@af/chinese-kit'
 
 export const DICTIONARY_KEYS = {
   all: ['dictionary'] as const,

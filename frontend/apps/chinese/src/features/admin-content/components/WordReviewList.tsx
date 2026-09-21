@@ -1,7 +1,5 @@
 import { Box, Card, CardActionArea, CardContent, Checkbox, Chip, Skeleton, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { Hanzi } from '@/components/Hanzi'
-import { numberedToMarked } from '@/lib/pinyin'
-import { MeaningStatusChip } from '@/features/dictionary/components/MeaningStatusChip'
+import { Hanzi, numberedToMarked, MeaningStatusChip } from '@af/chinese-kit'
 import type { AdminWord } from '../types'
 
 export interface WordReviewListProps {

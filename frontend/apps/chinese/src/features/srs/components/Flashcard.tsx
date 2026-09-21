@@ -1,9 +1,6 @@
 import { Box, Button, Chip, Divider, Stack, Typography } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { Hanzi } from '@/components/Hanzi'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import { numberedToMarked } from '@/lib/pinyin'
-import { MeaningStatusChip } from '@/features/dictionary/components/MeaningStatusChip'
+import { Hanzi, SpeakButton, numberedToMarked, MeaningStatusChip } from '@af/chinese-kit'
 import type { SrsCardState, SrsQueueCard } from '../types'
 
 const STATE_CHIP: Partial<Record<SrsCardState, { label: string; color: 'primary' | 'warning' | 'default' }>> = {

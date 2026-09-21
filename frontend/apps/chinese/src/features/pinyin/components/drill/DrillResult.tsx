@@ -2,9 +2,7 @@ import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Divider,
 import ReplayIcon from '@mui/icons-material/Replay'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import { parseApiError } from '@af/utils'
-import { Hanzi } from '@/components/Hanzi'
-import { Pinyin } from '@/components/Pinyin'
-import { SpeakButton } from '@/components/speech/SpeakButton'
+import { Hanzi, Pinyin, SpeakButton } from '@af/chinese-kit'
 import { DRILL_TONES, type SubmitToneDrillResponse } from '../../types'
 import { summarizeByTone, type DrillOutcome } from '../../drill/drillTypes'
 

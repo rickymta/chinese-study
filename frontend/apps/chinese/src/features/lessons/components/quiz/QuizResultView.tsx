@@ -7,11 +7,9 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined'
-import { SpeakButton } from '@/components/speech/SpeakButton'
-import type { QuizOption, QuizQuestion, QuizQuestionResult, QuizResult } from '../../types'
+import { SpeakButton, InlineZh, OptionText, QuestionPrompt } from '@af/chinese-kit'
+import type { QuizOption, QuizQuestion, QuizQuestionResult, QuizResult } from '@af/chinese-kit'
 import { minCorrectToPass } from '../../lib/quizScore'
-import { InlineZh } from '../InlineZh'
-import { OptionText, QuestionPrompt } from './QuestionParts'
 
 export interface QuizResultViewProps {
   result: QuizResult
