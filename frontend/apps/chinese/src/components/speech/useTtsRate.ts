@@ -3,17 +3,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { SRS_KEYS, useLearningSettings } from '@/features/srs/hooks'
 import { putLearningSettings } from '@/features/srs/api'
 import type { LearningSettingsResponse } from '@/features/srs/types'
+// W12: giới hạn + hàm kẹp tốc độ dời sang @af/chinese-kit (provider của kit cũng kẹp); hook này chỉ còn phần gọi API.
+import { TTS_RATE_DEFAULT, clampTtsRate } from '@af/chinese-kit'
 
 const STORAGE_KEY = 'af.chinese.ttsRate'
-export const TTS_RATE_DEFAULT = 0.8
-export const TTS_RATE_MIN = 0.5
-export const TTS_RATE_MAX = 1.2
 /** Gom nhiều lần kéo thanh trượt thành một lần ghi máy chủ. */
 const SAVE_DEBOUNCE_MS = 600
-
-/** Kẹp 0,5–1,2 và làm tròn 2 chữ số (luật `PUT /api/me/learning-settings`). */
-export const clampTtsRate = (v: number): number =>
-  Math.round(Math.min(TTS_RATE_MAX, Math.max(TTS_RATE_MIN, Number.isFinite(v) ? v : TTS_RATE_DEFAULT)) * 100) / 100
 
 function readCachedRate(): number {
   try {

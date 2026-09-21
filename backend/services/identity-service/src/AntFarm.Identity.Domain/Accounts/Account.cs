@@ -92,4 +92,37 @@ public sealed class Account
         TimeZone = timeZone;
         UpdatedAt = now;
     }
+
+    /// <summary>W10 (§5.2.9): admin khoá tài khoản qua API nội bộ — idempotent, gọi lại trên tài khoản đã khoá vẫn không lỗi (thao tác quản trị không cần biết trạng thái trước đó).</summary>
+    public void Disable(DateTime now)
+    {
+        IsActive = false;
+        UpdatedAt = now;
+    }
+
+    /// <summary>Mở khoá + xoá luôn khoá đăng nhập sai (LockoutUntil/FailedLoginCount) — tránh tài khoản vừa mở đã dính khoá cũ ngay lập tức.</summary>
+    public void Enable(DateTime now)
+    {
+        IsActive = true;
+        LockoutUntil = null;
+        FailedLoginCount = 0;
+        UpdatedAt = now;
+    }
+
+    public void ClearLockout(DateTime now)
+    {
+        LockoutUntil = null;
+        FailedLoginCount = 0;
+        UpdatedAt = now;
+    }
+
+    /// <summary>Admin đặt lại mật khẩu (mật khẩu tạm sinh máy hoặc admin tự nhập) — khác <see cref="ChangePassword"/> ở chỗ đồng thời gỡ khoá đăng nhập sai để tài khoản dùng được ngay bằng mật khẩu mới.</summary>
+    public void ResetPasswordByAdmin(string newPasswordHash, DateTime now)
+    {
+        PasswordHash = newPasswordHash;
+        PasswordChangedAt = now;
+        LockoutUntil = null;
+        FailedLoginCount = 0;
+        UpdatedAt = now;
+    }
 }

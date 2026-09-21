@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { TextField, type TextFieldProps } from '@mui/material'
-import { numberedToMarked } from '@/lib/pinyin'
+import { numberedToMarked } from '@af/chinese-kit'
 import { countPinyinSyllables, pinyinProblem } from '../lib/zhText'
 
 export interface PinyinFieldProps extends Omit<TextFieldProps, 'value' | 'onChange' | 'error' | 'helperText'> {

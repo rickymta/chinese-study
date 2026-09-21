@@ -1,5 +1,5 @@
 import { Link as MuiLink, Typography } from '@mui/material'
-import { SOURCES } from '../lib/sources'
+import { SOURCES } from '@af/chinese-kit'
 
 /** Thứ tự ghi công cố định theo hợp đồng §5.3.1 — không phụ thuộc `sources[]` của từng từ. */
 const ATTRIBUTION_ORDER = ['hsk30-official', 'cc-cedict', 'cvdict', 'unihan', 'han-viet-curated'] as const

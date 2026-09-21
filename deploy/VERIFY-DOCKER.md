@@ -131,3 +131,45 @@ Mỗi feature sau có đụng Docker thì bổ sung dòng vào checklist này.
 - [ ] (F10 bổ sung, mới kiểm `nginx -t` 17/09/2026) `curl -I https://chinese.antfarms.xyz/hanzi-data/index.json` ⇒ `200`, đúng MỘT dòng `Cache-Control: no-cache` (khối `location =` riêng — danh mục chữ đổi khi thêm chữ, không được cache 7 ngày), vẫn có `nosniff`/`X-Frame-Options`/`Referrer-Policy`; các file nét `/hanzi-data/<mã>.json` vẫn `max-age=604800`.
 - [ ] `curl -I https://chinese.antfarms.xyz/hanzi-data/ARPHICPL.TXT` ⇒ 200 `text/plain`; `/licenses/hanzi-writer.LICENSE.txt` ⇒ 200.
 - [ ] Mở `/luyen-viet/爱` trên trình duyệt, DevTools Network suốt phiên luyện: KHÔNG có request tới `cdn.jsdelivr.net` (R-W1); `/hanzi-data/7231.json` 200 và lần tải trang sau lấy từ cache.
+
+## 8. cms-backend (W1) — CHƯA VERIFY bằng Docker (máy viết W1 không có Docker)
+
+> `backend/services/cms-backend` (DDD 4 lớp, chép khuôn `chinese-backend`) — DB `af_cms` riêng,
+> schema `access`, audience `af-cms`, route gateway `/cms/**`. `dotnet build`/`dotnet test`
+> (`AF_TEST_PG` chưa đặt trên máy này ⇒ 25 ApiTests cần DB tự Skip, 4 test không-DB + 12 UnitTests
+> xanh) — xem chi tiết bàn giao W1. Migration `W1_Access` đã sinh được ở chế độ THIẾT KẾ (không cần
+> Postgres thật kết nối lúc `dotnet ef migrations add` — chỉ cần `ConnectionStrings:Default` có
+> ĐÚNG ĐỊNH DẠNG, không cần đúng mật khẩu).
+
+- [ ] `docker compose build cms-backend` thành công (build context `../backend`, không có
+      `additional_contexts` như chinese-backend — cms-backend không có học liệu).
+- [ ] `docker run --rm --entrypoint sh <ảnh cms-backend> -c 'ls /app | grep -i appsettings.Development'` ⇒ rỗng (không lọt secret vào ảnh).
+- [ ] `docker compose up -d cms-backend` (cần `postgres` + role/DB `af_cms` đã tạo qua
+      `deploy/postgres/init/01-create-databases.sh`, hoặc tạo tay nếu volume cũ — xem lệnh SQL ở
+      hợp đồng W1 §5.1.1) ⇒ `docker exec <container> wget -qO- http://localhost:8080/health/ready`
+      trả `200` kèm check `postgres: Healthy`.
+- [ ] Qua gateway (`http://localhost:5280/cms/api/system/info`) ⇒ 200 `{ "service": "cms-backend", ... }`.
+- [ ] Đăng nhập ở `apps/chinese` (hoặc gọi thẳng `POST /identity/api/auth/login` qua Scalar) lấy
+      access token (audience đã có `af-cms` từ khi identity-service redeploy với `Jwt:Audiences`
+      mới — token phát TRƯỚC đó không có `af-cms`, tối đa 15 phút vẫn 401 ở cms-backend, chấp nhận)
+      ⇒ `GET http://localhost:5280/cms/api/me` với Bearer trả đúng vai trò (rỗng nếu chưa gán, hoặc
+      `admin` nếu email trùng `CMS_BOOTSTRAP_ADMIN_EMAIL`).
+- [ ] Máy đã có volume Postgres cũ (từ trước W1) ⇒ script init KHÔNG chạy lại; tạo tay bằng
+      `psql -U postgres`: `CREATE ROLE af_cms LOGIN PASSWORD '<mật khẩu>'; CREATE DATABASE af_cms
+      OWNER af_cms ENCODING 'UTF8' TEMPLATE template0;` rồi `docker compose up -d cms-backend`.
+- [ ] `docker compose ps` ⇒ `cms-backend` KHÔNG có cột PORTS ra host (chỉ `nginx` được publish).
+
+## 9. admin-frontend (W2) — CHƯA VERIFY bằng Docker
+
+- [ ] `docker compose build admin-frontend` thành công; `yarn install --frozen-lockfile` không báo thiếu module.
+- [ ] `docker run --rm --entrypoint sh <ảnh admin-frontend> -c 'grep -rl "id.antfarms.xyz" /usr/share/nginx/html | head -3'` có kết quả (biến `VITE_IDENTITY_API_URL` nướng đúng).
+- [ ] `curl -I https://admin.antfarms.xyz/` ⇒ 200 và có `X-Robots-Tag: noindex, nofollow`; file `.mjs` trả `application/javascript`; `/abc` ⇒ 200 `index.html` (SPA fallback).
+- [ ] Identity có `Auth__AllowedOrigins__1=https://admin.antfarms.xyz` — đăng nhập tại admin không bị 403 `ORIGIN_NOT_ALLOWED`.
+- [ ] Chứng chỉ SAN có `admin.antfarms.xyz` (`get-cert.sh` truyền ĐỦ `id. chinese. admin.`), bản ghi DNS Cloudflare `admin` đã tạo.
+
+## 10. identity-service API nội bộ (W10) — CHƯA VERIFY bằng Docker
+
+- [ ] (a) `curl -sk -o /dev/null -w "%{http_code}" https://id.antfarms.xyz/internal/ping` ⇒ `404` (không lộ ra Internet).
+- [ ] (b) Từ một container trong `af-net` (gateway; từ W11 là cms-backend): `wget -qO- --header "X-Service-Key: $IDENTITY_INTERNAL_KEY" http://identity-service:8081/internal/ping` ⇒ `{"ok":true}`.
+- [ ] (c) `docker compose port identity-service 8081` ⇒ không có ánh xạ cổng.
+- [ ] (d) `wget -qO- http://identity-service:8081/.well-known/jwks.json` ⇒ 404 (route công khai không phục vụ trên cổng nội bộ).

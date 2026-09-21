@@ -1,5 +1,5 @@
 import { MenuItem, Stack, TextField } from '@mui/material'
-import type { TipVariant } from '@/features/lessons/types'
+import type { TipVariant } from '@af/chinese-kit'
 import type { BlockDraft } from '../../lib/lessonDraft'
 import { firstError, type PathErrors } from '../../lib/validationErrors'
 

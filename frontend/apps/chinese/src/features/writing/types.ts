@@ -2,7 +2,7 @@
 // Serializer backend bật `WhenWritingNull` ⇒ trường có thể `null` bị LƯỢC khỏi JSON: khai `?:`/`| null`.
 // Pinyin luôn dạng SỐ THANH (`ai4`) — hiển thị dạng dấu qua `lib/pinyin.ts`.
 
-import type { MeaningViStatus } from '@/features/dictionary/types'
+import type { MeaningViStatus } from '@af/chinese-kit'
 
 /** Bước ghi DB (R-W2): Tô theo = `guided`, Tự viết = `recall`; bước Xem không ghi. */
 export type WritingMode = 'guided' | 'recall'

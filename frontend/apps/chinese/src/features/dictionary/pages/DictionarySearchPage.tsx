@@ -15,7 +15,7 @@ import {
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { PageContainer, useScrollRestore } from '@af/ui'
-import { Hanzi } from '@/components/Hanzi'
+import { Hanzi } from '@af/chinese-kit'
 import { useDebouncedValue } from '@/lib/useDebouncedValue'
 import { useWordSearch } from '../hooks'
 import { SEARCH_PAGE_SIZE } from '../api'

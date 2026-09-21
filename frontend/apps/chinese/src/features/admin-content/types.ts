@@ -2,8 +2,10 @@
 // Backend làm song song — bám shape hợp đồng; serializer bật `WhenWritingNull` ⇒ trường null có thể bị LƯỢC (`?:`).
 // Pinyin luôn dạng SỐ THANH (`ni3 hao3`); hiển thị dạng dấu qua `lib/pinyin.ts`.
 
-import type { HanVietStatus, MeaningViSource, MeaningViStatus } from '@/features/dictionary/types'
 import type {
+  HanVietStatus,
+  MeaningViSource,
+  MeaningViStatus,
   DialogueBlockPayload,
   GlossaryEntry,
   GrammarBlockPayload,
@@ -13,7 +15,7 @@ import type {
   QuizQuestionType,
   TextBlockPayload,
   TipBlockPayload,
-} from '@/features/lessons/types'
+} from '@af/chinese-kit'
 
 export type LessonStatus = 'draft' | 'published' | 'archived'
 export type LessonSource = 'seed' | 'admin'

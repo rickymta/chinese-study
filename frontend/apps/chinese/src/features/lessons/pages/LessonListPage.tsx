@@ -3,7 +3,7 @@ import { PageContainer } from '@af/ui'
 import { QueryErrorAlert } from '@/features/dictionary/components/QueryErrorAlert'
 import { useLessons } from '../hooks'
 import { LessonCard } from '../components/LessonCard'
-import type { LessonListResponse } from '../types'
+import type { LessonListResponse } from '@af/chinese-kit'
 
 function ListSkeleton() {
   return (

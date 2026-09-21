@@ -1,6 +1,6 @@
 // Tiện ích kiểm chữ Hán ↔ pinyin cho form soạn bài (khớp luật §5.4.3 phía client, server vẫn là nguồn sự thật).
 
-import { normalizeNumbered, stripPunctuation } from '@/lib/pinyin'
+import { normalizeNumbered, stripPunctuation } from '@af/chinese-kit'
 
 /** Khối CJB Unified Ideographs (U+4E00–U+9FFF) + Ext A (U+3400–U+4DBF) + Ext B (U+20000–U+2A6DF, surrogate pair). */
 const HANZI_RE = /[一-鿿㐀-䶿]|[\ud840-\ud869][\udc00-\udfff]/g

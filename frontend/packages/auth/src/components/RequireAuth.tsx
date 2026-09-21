@@ -5,6 +5,7 @@ import { ErrorPage } from '@af/ui'
 import { parseApiError } from '@af/utils'
 import { useAuth } from '../AuthProvider'
 import { buildLoginUrl } from '../returnTo'
+import type { MeInfo } from '../types'
 import { FullScreenLoading } from './FullScreenLoading'
 
 export interface RequireAuthProps {
@@ -12,6 +13,12 @@ export interface RequireAuthProps {
   loginPath?: string
   /** Đích khi đã đăng nhập nhưng KHÔNG có quyền nào ở service này (tài khoản bị gỡ hết vai trò). Mặc định `/403`. */
   forbiddenPath?: string
+  /**
+   * W2 (apps/admin): cho phép đi tiếp dù `permissions` rỗng khi hàm trả `true` — admin gộp `/me` của nhiều service,
+   * có service KHÔNG PHẢN HỒI thì 0 quyền chưa chắc là "chưa được cấp vai trò" (không đẩy `/403` oan khi service
+   * chết; Dashboard tự hiện cảnh báo). Bỏ trống ⇒ hành vi cũ: 0 quyền luôn về `forbiddenPath` (apps/chinese).
+   */
+  allowNoPermissions?: (me: MeInfo) => boolean
   /** Bỏ trống ⇒ render `<Outlet />` (dùng làm layout route). */
   children?: ReactNode
 }
@@ -22,7 +29,7 @@ export interface RequireAuthProps {
  * - `authenticated` mà `loadMe` lỗi ⇒ trang lỗi có "Thử lại"/"Đăng xuất" (không đẩy sang /403 oan khi service ngôn ngữ chưa chạy);
  * - `authenticated` mà 0 quyền ⇒ `/403`.
  */
-export function RequireAuth({ loginPath = '/dang-nhap', forbiddenPath = '/403', children }: RequireAuthProps) {
+export function RequireAuth({ loginPath = '/dang-nhap', forbiddenPath = '/403', allowNoPermissions, children }: RequireAuthProps) {
   const { status, permissions, me, meLoading, meError, lostReason, reloadMe, logout } = useAuth()
   const location = useLocation()
 
@@ -47,7 +54,7 @@ export function RequireAuth({ loginPath = '/dang-nhap', forbiddenPath = '/403', 
     )
   }
 
-  if (permissions.size === 0) return <Navigate to={forbiddenPath} replace />
+  if (permissions.size === 0 && !(me && allowNoPermissions?.(me) === true)) return <Navigate to={forbiddenPath} replace />
 
   return children ?? <Outlet />
 }

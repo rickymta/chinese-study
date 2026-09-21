@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { PageContainer, useBackTo, useConfirm, useTabParam, useToast } from '@af/ui'
 import { parseApiError } from '@af/utils'
-import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeech'
+import { ChineseSpeechProvider } from '@/components/speech/ChineseSpeechProvider'
 import { QueryErrorAlert } from '@/features/dictionary/components/QueryErrorAlert'
 import { useAdminLesson, useDeleteLesson, useLessonAction, useReplaceLessonBlocks, useReplaceLessonQuiz, useReplaceLessonWords, useUpdateLessonMeta, type LessonAction } from '../hooks'
 import {

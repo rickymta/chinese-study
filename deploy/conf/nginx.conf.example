@@ -86,6 +86,50 @@ server {
     }
 }
 
+# ── Admin kiêm CMS chung — admin.antfarms.xyz (W2) ─────────────────────────────
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name <ADMIN_DOMAIN>;              # admin.antfarms.xyz
+    ssl_certificate     /etc/nginx/certs/live/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/live/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Robots-Tag "noindex, nofollow" always;   # trang quản trị không được lên máy tìm kiếm
+    client_max_body_size 6m;                              # ảnh CMS (W4) tối đa 5 MB + đệm
+
+    # Admin gọi API của cms-backend VÀ của từng service ngôn ngữ, cùng origin qua gateway
+    location ^~ /cms/ {
+        set $upstream gateway:8080;
+        proxy_pass        http://$upstream$request_uri;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host  $host;
+    }
+    location ^~ /chinese/ {
+        set $upstream gateway:8080;
+        proxy_pass        http://$upstream$request_uri;
+        proxy_http_version 1.1;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host  $host;
+    }
+    location / {
+        set $upstream admin-frontend:80;
+        proxy_pass        http://$upstream$request_uri;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
 # ── MẪU ngôn ngữ mới (english./japanese./vietnamese.) — chép khối chinese, đổi <LANG> ──
 # server { listen 443 ssl; http2 on; server_name <LANG>.antfarms.xyz; ... location ^~ /<LANG>/ {...} location / { set $upstream <LANG>-frontend:80; ... } }
 

@@ -7,7 +7,7 @@ import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { useAuth } from '@af/auth'
 import { useToast } from '@af/ui'
 import { parseApiError } from '@af/utils'
-import type { WordDetail } from '@/features/dictionary/types'
+import type { WordDetail } from '@af/chinese-kit'
 import { useAddCards, useSetCardSuspension } from '../hooks'
 
 /** `dd/MM` theo múi giờ người học (claim `zoneinfo` của tài khoản); lỗi múi giờ ⇒ múi giờ trình duyệt. */

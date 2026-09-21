@@ -1,4 +1,4 @@
-import { PASS_THRESHOLD_PERCENT, type QuizAnswer, type QuizQuestion } from '../types'
+import { PASS_THRESHOLD_PERCENT, type QuizAnswer, type QuizQuestion } from '@af/chinese-kit'
 
 /** Điểm hiển thị = `floor(correct * 100 / total)` (R-LS3); `total = 0` ⇒ 0. */
 export function scorePercent(correct: number, total: number): number {

@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Paper, Stack, TextField, Tooltip, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
-import type { GlossaryEntry } from '@/features/lessons/types'
+import type { GlossaryEntry } from '@af/chinese-kit'
 import { GLOSSARY_MAX, OBJECTIVES_MAX, removeAt, replaceAt, type MetaDraft } from '../lib/lessonDraft'
 import { slugify } from '../lib/slug'
 import { firstError, type PathErrors } from '../lib/validationErrors'
