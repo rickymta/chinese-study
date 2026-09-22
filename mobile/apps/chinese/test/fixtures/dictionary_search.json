@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "id": "w1",
+      "simplified": "爱",
+      "traditional": "愛",
+      "pinyin": "ai4",
+      "hsk3Level": 1,
+      "hanViet": "ái",
+      "meaningsVi": ["yêu", "thích", "yêu thích"],
+      "meaningViStatus": "machine",
+      "matchKind": "hanzi"
+    },
+    {
+      "id": "w2",
+      "simplified": "爱好",
+      "pinyin": "ai4 hao4",
+      "hsk3Level": 1,
+      "hanViet": "ái hiếu",
+      "meaningsVi": ["sở thích"],
+      "meaningViStatus": "reviewed",
+      "matchKind": "hanzi"
+    },
+    { "id": "", "simplified": "x" },
+    { "id": "w4", "simplified": "" }
+  ],
+  "page": 1,
+  "pageSize": 20,
+  "totalCount": 2
+}

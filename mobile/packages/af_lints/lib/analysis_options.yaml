@@ -1,0 +1,30 @@
+# Luật phân tích dùng chung (hợp đồng mobile §5.3.3): flutter_lints + chế độ strict + luật bổ sung.
+include: package:flutter_lints/flutter.yaml
+# Độ rộng dòng 120 (BA-mặc định §9.1) — đặt ở đây để lan tới mọi package qua include (root không lan xuống).
+formatter:
+  page_width: 120
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    unawaited_futures: warning
+  exclude:
+    - build/**
+    - "**/*.g.dart"
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_print
+    - avoid_relative_lib_imports
+    - cancel_subscriptions
+    - close_sinks
+    - directives_ordering
+    - prefer_const_constructors
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - unawaited_futures
+    - use_build_context_synchronously

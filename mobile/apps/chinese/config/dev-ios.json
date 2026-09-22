@@ -1,0 +1,4 @@
+{
+  "AF_ENV": "dev",
+  "AF_GATEWAY_URL": "http://localhost:5280"
+}

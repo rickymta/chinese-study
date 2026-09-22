@@ -26,6 +26,25 @@ const SOURCES_PATH = path.join(CHINESE_ROOT, 'SOURCES.md');
 const CEDICT_PATH = path.join(CHINESE_ROOT, '.raw', 'cedict_ts.u8');
 const HANZI_DATA_DIR = path.join(REPO_ROOT, 'frontend', 'apps', 'chinese', 'public', 'hanzi-data');
 const HANZI_WRITER_DATA_NODE_MODULES = path.join(CONTENT_ROOT, 'node_modules', 'hanzi-writer-data');
+const MOBILE_APP_ROOT = path.join(REPO_ROOT, 'mobile', 'apps', 'chinese');
+const MOBILE_HANZI_DATA_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'hanzi-data');
+const MOBILE_LICENSES_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'licenses');
+const CHINESE_LICENSES_DIR = path.join(CHINESE_ROOT, 'LICENSES');
+// 5 file giấy phép M4 đã chép nguyên byte từ content/chinese/LICENSES/ sang bản mobile, cùng tên file.
+const MOBILE_MIRRORED_LICENSES = [
+  'CC-BY-SA-4.0.txt',
+  'Unicode-License-v3.txt',
+  'MIT-elkmovie-hsk30.txt',
+  'MIT-complete-hsk-vocabulary.txt',
+  'MIT-py-fsrs.txt',
+];
+const HANZI_WRITER_LICENSE_SRC = path.join(
+  REPO_ROOT,
+  'frontend',
+  'node_modules',
+  'hanzi-writer',
+  'LICENSE'
+);
 
 let failCount = 0;
 let warnCount = 0;
@@ -488,7 +507,7 @@ if (hskWordsOk && hskWords) {
   words.forEach((w, idx) => {
     const loc = `hsk-words.json › words[${idx}] (${w.simplified} ${w.pinyin})`;
 
-    const key = `${w.simplified} ${w.pinyin}`;
+    const key = `${w.simplified}\u0000${w.pinyin}`;
     if (keySet.has(key)) fail(`${loc} — trùng khoá (simplified, pinyin) với mục khác`);
     keySet.add(key);
 
@@ -1114,6 +1133,111 @@ if (!fs.existsSync(HANZI_DATA_DIR)) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// 14. MỞ RỘNG M10.1 — mobile/apps/chinese/assets/hanzi-data/ phải khớp TỪNG BYTE với bản web
+//     (frontend/apps/chinese/public/hanzi-data/). Xem §5.4.1 của
+//     docs/agent-workflow/2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md (Feature M10.1).
+// ---------------------------------------------------------------------------
+let mobileHanziDataFileCount = 0;
+let mobileHanziDataTotalBytes = 0;
+
+if (!fs.existsSync(MOBILE_APP_ROOT)) {
+  // Chưa có app mobile (trước M0) — không phải lỗi của học liệu, bỏ qua hoàn toàn.
+} else if (!fs.existsSync(MOBILE_HANZI_DATA_DIR)) {
+  fail(
+    `Không tìm thấy thư mục ${path.relative(REPO_ROOT, MOBILE_HANZI_DATA_DIR)} (M10.1) — chạy ` +
+      `\`yarn --cwd content build:hanzi-data:chinese\``
+  );
+} else if (!fs.existsSync(HANZI_DATA_DIR)) {
+  // Không thể so khớp nếu bản web còn thiếu — lỗi đã báo ở mục 13.
+  fail('Không so được hanzi-data mobile với web vì bản web chưa tồn tại (M10.1) — xem lỗi ở trên.');
+} else {
+  const webEntries = new Set(fs.readdirSync(HANZI_DATA_DIR));
+  const mobileEntries = new Set(fs.readdirSync(MOBILE_HANZI_DATA_DIR));
+
+  for (const entry of webEntries) {
+    if (!mobileEntries.has(entry)) {
+      fail(
+        `mobile/apps/chinese/assets/hanzi-data/${entry} — thiếu so với bản web (M10.1) — chạy lại ` +
+          `\`yarn --cwd content build:hanzi-data:chinese\``
+      );
+      continue;
+    }
+    const webPath = path.join(HANZI_DATA_DIR, entry);
+    const mobilePath = path.join(MOBILE_HANZI_DATA_DIR, entry);
+    const webHash = createHash('sha256').update(fs.readFileSync(webPath)).digest('hex');
+    const mobileHash = createHash('sha256').update(fs.readFileSync(mobilePath)).digest('hex');
+    if (webHash !== mobileHash) {
+      fail(
+        `mobile/apps/chinese/assets/hanzi-data/${entry} — lệch byte so với bản web (M10.1) — chạy lại ` +
+          `\`yarn --cwd content build:hanzi-data:chinese\``
+      );
+    } else {
+      mobileHanziDataFileCount++;
+      mobileHanziDataTotalBytes += fs.statSync(mobilePath).size;
+    }
+  }
+  for (const entry of mobileEntries) {
+    if (!webEntries.has(entry)) {
+      fail(
+        `mobile/apps/chinese/assets/hanzi-data/${entry} — file thừa, không có ở bản web (M10.1) — chạy ` +
+          `lại \`yarn --cwd content build:hanzi-data:chinese\``
+      );
+    }
+  }
+
+  // LICENSE của hanzi-writer (MIT) phải có trong assets/licenses — bắt buộc cho LicenseRegistry (M10.2).
+  const mobileHanziWriterLicense = path.join(MOBILE_LICENSES_DIR, 'hanzi-writer.LICENSE.txt');
+  if (!fs.existsSync(mobileHanziWriterLicense)) {
+    fail(
+      `Không tìm thấy ${path.relative(REPO_ROOT, mobileHanziWriterLicense)} (M10.1) — chạy ` +
+        `\`yarn --cwd content build:hanzi-data:chinese\``
+    );
+  } else if (fs.existsSync(HANZI_WRITER_LICENSE_SRC)) {
+    const a = createHash('sha256').update(fs.readFileSync(HANZI_WRITER_LICENSE_SRC)).digest('hex');
+    const b = createHash('sha256').update(fs.readFileSync(mobileHanziWriterLicense)).digest('hex');
+    if (a !== b) {
+      fail('mobile/apps/chinese/assets/licenses/hanzi-writer.LICENSE.txt lệch byte so với nguồn MIT');
+    }
+  } else {
+    warn(
+      'Không có frontend/node_modules/hanzi-writer/LICENSE — bỏ qua so byte LICENSE hanzi-writer cho ' +
+        'mobile (chạy `yarn install` trong frontend/ để kiểm đầy đủ)'
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 15. MỞ RỘNG M10.1 — 5 giấy phép ở content/chinese/LICENSES/ đã chép nguyên byte sang
+//     mobile/apps/chinese/assets/licenses/ (cùng tên file, M4). Chỉ kiểm khi thư mục đích đã tồn tại —
+//     trước đó không phải lỗi của học liệu.
+// ---------------------------------------------------------------------------
+if (fs.existsSync(MOBILE_LICENSES_DIR)) {
+  for (const name of MOBILE_MIRRORED_LICENSES) {
+    const srcPath = path.join(CHINESE_LICENSES_DIR, name);
+    const destPath = path.join(MOBILE_LICENSES_DIR, name);
+    if (!fs.existsSync(srcPath)) {
+      fail(`Thiếu nguồn LICENSES/${name} ở content/chinese — không so được với bản mobile (M10.1)`);
+      continue;
+    }
+    if (!fs.existsSync(destPath)) {
+      fail(
+        `Không tìm thấy mobile/apps/chinese/assets/licenses/${name} (M10.1) — chép nguyên byte từ ` +
+          `content/chinese/LICENSES/${name}`
+      );
+      continue;
+    }
+    const srcHash = createHash('sha256').update(fs.readFileSync(srcPath)).digest('hex');
+    const destHash = createHash('sha256').update(fs.readFileSync(destPath)).digest('hex');
+    if (srcHash !== destHash) {
+      fail(
+        `mobile/apps/chinese/assets/licenses/${name} lệch byte so với content/chinese/LICENSES/${name} ` +
+          '(M10.1) — chép lại nguyên byte'
+      );
+    }
+  }
+}
+
 console.log('\n--- Thống kê học liệu bài học (F9) ---');
 console.log('slug            | từ | khối | câu quiz | % nghe');
 for (const s of lessonStats) {
@@ -1142,6 +1266,14 @@ console.log('\n--- Thống kê dữ liệu nét chữ (F8, hanzi-data) ---');
 console.log(`Chữ có dữ liệu nét:     ${hanziDataCharCount}/${characters?.characters?.length ?? 0}`);
 console.log(`Chữ thiếu dữ liệu nét:  ${hanziDataMissingCount}`);
 console.log(`Tổng dung lượng (chưa nén): ${(hanziDataTotalBytes / 1024).toFixed(1)} KB`);
+
+console.log('\n--- Thống kê dữ liệu nét chữ trên mobile (M10.1, khớp bản web) ---');
+if (fs.existsSync(MOBILE_APP_ROOT)) {
+  console.log(`File khớp byte với bản web: ${mobileHanziDataFileCount}`);
+  console.log(`Tổng dung lượng (chưa nén): ${(mobileHanziDataTotalBytes / 1024).toFixed(1)} KB`);
+} else {
+  console.log('(chưa có mobile/apps/chinese — bỏ qua, xem Feature M0)');
+}
 
 console.log(`\n${failCount} lỗi, ${warnCount} cảnh báo.`);
 if (failCount > 0) {

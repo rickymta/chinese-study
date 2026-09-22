@@ -2,10 +2,16 @@
 // content/chinese/scripts/build-hanzi-data.mjs
 //
 // Đóng gói TẬP CON dữ liệu nét chữ `hanzi-writer-data@2.0.1` — chỉ những chữ có trong
-// `content/chinese/data/characters/characters.json` — vào `frontend/apps/chinese/public/hanzi-data/`.
+// `content/chinese/data/characters/characters.json` — vào `frontend/apps/chinese/public/hanzi-data/`
+// (bản web, F8) VÀ `mobile/apps/chinese/assets/hanzi-data/` (bản mobile, M10.1 — cùng nội dung
+// TỪNG BYTE với bản web, bỏ qua kèm WARN nếu chưa có thư mục `mobile/apps/chinese`).
 // Chép NGUYÊN TỪNG BYTE (không minify, không sửa nội dung), chỉ đổi tên file theo mã Unicode hex
 // thường (vd 爱 → 7231.json), kèm `ARPHICPL.TXT` nguyên văn + `NOTICE.md` giải thích thay đổi.
-// Xem R-W1 + §5.4.4 của docs/agent-workflow/2026-09-17-antfarm-f8-f11-chi-tiet.md.
+// Cũng chép LICENSE của thư viện `hanzi-writer@3.7.3` (MIT) vào
+// `mobile/apps/chinese/assets/licenses/hanzi-writer.LICENSE.txt` (thuật toán chấm nét sẽ được port
+// sang Dart ở M10.2 — `stroke_matcher.dart`).
+// Xem R-W1 + §5.4.4 của docs/agent-workflow/2026-09-17-antfarm-f8-f11-chi-tiet.md và §5.4.1 của
+// docs/agent-workflow/2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md (Feature M10.1).
 //
 // Chạy: `yarn --cwd content build:hanzi-data:chinese` (tương đương
 // `node chinese/scripts/build-hanzi-data.mjs` chạy từ thư mục content/).
@@ -26,6 +32,17 @@ const SRC_ARPHICPL = path.join(SRC_PKG_DIR, 'ARPHICPL.TXT');
 
 const DEST_DIR = path.join(REPO_ROOT, 'frontend', 'apps', 'chinese', 'public', 'hanzi-data');
 const DEST_ARPHICPL_LICENSES = path.join(CHINESE_ROOT, 'LICENSES', 'ARPHICPL.TXT');
+
+const MOBILE_APP_ROOT = path.join(REPO_ROOT, 'mobile', 'apps', 'chinese');
+const MOBILE_DEST_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'hanzi-data');
+const MOBILE_LICENSES_DIR = path.join(MOBILE_APP_ROOT, 'assets', 'licenses');
+const HANZI_WRITER_LICENSE_SRC = path.join(
+  REPO_ROOT,
+  'frontend',
+  'node_modules',
+  'hanzi-writer',
+  'LICENSE'
+);
 
 const EXPECTED_VERSION = '2.0.1';
 
@@ -134,6 +151,43 @@ diff).
 `;
 fs.writeFileSync(path.join(DEST_DIR, 'NOTICE.md'), notice, 'utf8');
 
+// --- Bước 7b: chép TOÀN BỘ thư mục đích (web) sang mobile — cùng nội dung TỪNG BYTE (M10.1) ---
+// mirror chính xác nội dung DEST_DIR vừa dựng xong (kể cả index.json/ARPHICPL.TXT/NOTICE.md) để
+// không bao giờ lệch bản web/mobile, và để chạy lại không tạo diff git.
+let mobileCopiedCount = 0;
+let mobileSkipped = false;
+if (!fs.existsSync(MOBILE_APP_ROOT)) {
+  mobileSkipped = true;
+  console.warn(
+    `! WARN Không tìm thấy ${path.relative(REPO_ROOT, MOBILE_APP_ROOT)} — bỏ qua đích mobile ` +
+      `(chạy sau khi có Feature M0).`
+  );
+} else {
+  fs.mkdirSync(MOBILE_DEST_DIR, { recursive: true });
+  // dọn thư mục đích mobile trước khi mirror (giữ nguyên logic dọn của DEST_DIR)
+  for (const entry of fs.readdirSync(MOBILE_DEST_DIR)) {
+    fs.rmSync(path.join(MOBILE_DEST_DIR, entry), { force: true });
+  }
+  for (const entry of fs.readdirSync(DEST_DIR)) {
+    fs.copyFileSync(path.join(DEST_DIR, entry), path.join(MOBILE_DEST_DIR, entry));
+    mobileCopiedCount++;
+  }
+
+  // LICENSE của hanzi-writer (MIT) — thuật toán chấm nét sẽ được port sang Dart ở M10.2.
+  fs.mkdirSync(MOBILE_LICENSES_DIR, { recursive: true });
+  if (!fs.existsSync(HANZI_WRITER_LICENSE_SRC)) {
+    console.warn(
+      `! WARN Không tìm thấy ${path.relative(REPO_ROOT, HANZI_WRITER_LICENSE_SRC)} — chạy ` +
+        `\`yarn install\` trong frontend/ trước, bỏ qua chép LICENSE hanzi-writer cho mobile.`
+    );
+  } else {
+    fs.copyFileSync(
+      HANZI_WRITER_LICENSE_SRC,
+      path.join(MOBILE_LICENSES_DIR, 'hanzi-writer.LICENSE.txt')
+    );
+  }
+}
+
 // --- Bước 8: in báo cáo ---
 let totalBytes = 0;
 for (const entry of fs.readdirSync(DEST_DIR)) {
@@ -144,3 +198,16 @@ if (missing.length > 0) {
   console.log(`! Thiếu dữ liệu nét cho ${missing.length} chữ: ${missing.join(', ')}`);
 }
 console.log(`  Tổng dung lượng thư mục đích (chưa nén): ${(totalBytes / 1024).toFixed(1)} KB`);
+
+if (mobileSkipped) {
+  console.log(`! Bỏ qua đích mobile (${path.relative(REPO_ROOT, MOBILE_DEST_DIR)} không tồn tại).`);
+} else {
+  let mobileTotalBytes = 0;
+  for (const entry of fs.readdirSync(MOBILE_DEST_DIR)) {
+    mobileTotalBytes += fs.statSync(path.join(MOBILE_DEST_DIR, entry)).size;
+  }
+  console.log(
+    `✓ Đã mirror ${mobileCopiedCount} file sang ${path.relative(REPO_ROOT, MOBILE_DEST_DIR)} ` +
+      `(${(mobileTotalBytes / 1024).toFixed(1)} KB)`
+  );
+}

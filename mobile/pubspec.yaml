@@ -1,0 +1,12 @@
+# Workspace gốc của monorepo Flutter (Dart pub workspaces, KHÔNG melos — hợp đồng mobile §5.3.1).
+# Một `flutter pub get` ở đây giải phụ thuộc cho mọi package/app; một `pubspec.lock` duy nhất (commit).
+name: antfarm_mobile
+publish_to: none
+environment:
+  sdk: ^3.13.0
+workspace:
+  - packages/af_lints
+  - packages/af_core
+  - packages/af_auth
+  - packages/af_ui
+  - apps/chinese

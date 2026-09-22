@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "attemptId": "01a0b0e7-a016-7924-b6ea-b47291d18bc7",
+      "submittedAt": "2026-09-17T19:46:04.9443Z",
+      "total": 7,
+      "correct": 7,
+      "scorePercent": 100,
+      "passed": true,
+      "durationMs": 944
+    },
+    {
+      "attemptId": "01a0b0e7-9fb6-7fcb-9977-de22eaade190",
+      "submittedAt": "2026-09-17T19:46:04.840395Z",
+      "total": 7,
+      "correct": 2,
+      "scorePercent": 28,
+      "passed": false,
+      "durationMs": 840
+    }
+  ]
+}

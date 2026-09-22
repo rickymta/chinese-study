@@ -1,0 +1,546 @@
+{
+  "id": "01a0ad0f-1ed8-77c1-a8e1-6892f6601677",
+  "slug": "chao-hoi",
+  "title": "Chào hỏi",
+  "topic": "giao-tiep",
+  "orderIndex": 1,
+  "summary": "Chào, cảm ơn, xin lỗi và tạm biệt bằng tiếng Trung — dùng được ngay hôm nay.",
+  "objectives": [
+    "Chào hỏi và đáp lại lời chào bằng 你好/您好",
+    "Nói cảm ơn, xin lỗi, tạm biệt đúng lúc",
+    "Đặt câu hỏi có/không với 吗"
+  ],
+  "estimatedMinutes": 15,
+  "reviewStatus": "machine",
+  "glossary": [],
+  "blocks": [
+    {
+      "id": "01a0ad13-dc15-7b4f-af2a-dfe8a4db1f4a",
+      "type": "text",
+      "payload": {
+        "paragraphs": [
+          "Câu chào phổ biến nhất trong tiếng Trung là [[你好|ni3 hao3]], dùng được với hầu hết mọi người.",
+          "Với thầy cô hoặc người lớn tuổi, người Trung Quốc thường dùng [[您好|nin2 hao3]] để lịch sự hơn.",
+          "Khi chia tay, chỉ cần nói [[再见|zai4 jian4]] là đủ."
+        ]
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-78a3-b3a4-546ec5c4d1ec",
+      "type": "dialogue",
+      "payload": {
+        "lines": [
+          {
+            "vi": "Chào bạn!",
+            "hanzi": "你好！",
+            "pinyin": "Ni3 hao3!",
+            "speaker": "Lan"
+          },
+          {
+            "vi": "Chào bạn!",
+            "hanzi": "你好！",
+            "pinyin": "Ni3 hao3!",
+            "speaker": "Minh"
+          },
+          {
+            "vi": "Cảm ơn bạn!",
+            "hanzi": "谢谢你！",
+            "pinyin": "Xie4 xie5 ni3!",
+            "speaker": "Lan"
+          },
+          {
+            "vi": "Không có chi.",
+            "hanzi": "不客气。",
+            "pinyin": "Bu4 ke4 qi5.",
+            "speaker": "Minh"
+          }
+        ],
+        "title": "Gặp nhau buổi sáng"
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-7c2c-a96a-2c6f6729a4e7",
+      "type": "dialogue",
+      "payload": {
+        "lines": [
+          {
+            "vi": "Xin lỗi!",
+            "hanzi": "对不起！",
+            "pinyin": "Dui4 bu5 qi3!",
+            "speaker": "Lan"
+          },
+          {
+            "vi": "Không sao đâu.",
+            "hanzi": "没关系。",
+            "pinyin": "Mei2 guan1 xi5.",
+            "speaker": "Minh"
+          },
+          {
+            "vi": "Tạm biệt!",
+            "hanzi": "再见！",
+            "pinyin": "Zai4 jian4!",
+            "speaker": "Lan"
+          },
+          {
+            "vi": "Tạm biệt!",
+            "hanzi": "再见！",
+            "pinyin": "Zai4 jian4!",
+            "speaker": "Minh"
+          }
+        ],
+        "title": "Xin lỗi và tạm biệt"
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-7a8b-be54-40dc02ec5350",
+      "type": "grammar",
+      "payload": {
+        "title": "Câu hỏi có/không với 吗",
+        "pattern": "Câu trần thuật + [[吗|ma5]]？",
+        "examples": [
+          {
+            "vi": "Bạn khoẻ không?",
+            "note": "Lời hỏi thăm quen thuộc, không phải câu chào lần đầu",
+            "hanzi": "你好吗？",
+            "pinyin": "Ni3 hao3 ma5?"
+          },
+          {
+            "vi": "Thưa thầy/cô, thầy/cô khoẻ không?",
+            "hanzi": "老师，您好吗？",
+            "pinyin": "Lao3 shi1, nin2 hao3 ma5?"
+          }
+        ],
+        "explanation": "Thêm [[吗|ma5]] vào cuối một câu trần thuật để biến nó thành câu hỏi có/không — người nghe chỉ cần trả lời có hoặc không."
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-7c6a-9524-c4a3172bc64d",
+      "type": "grammar",
+      "payload": {
+        "title": "您 — cách xưng hô lịch sự",
+        "examples": [
+          {
+            "vi": "Chào thầy/cô ạ!",
+            "note": "Dùng khi gặp người lớn tuổi/thầy cô",
+            "hanzi": "您好！",
+            "pinyin": "Nin2 hao3!"
+          }
+        ],
+        "explanation": "[[您|nin2]] là cách xưng hô lịch sự của [[你|ni3]], dùng với thầy cô, người lớn tuổi hoặc người mới gặp lần đầu cần tôn trọng."
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-7752-9dcc-dbe6d5e90db0",
+      "type": "grammar",
+      "payload": {
+        "title": "们 — số nhiều của đại từ",
+        "pattern": "Đại từ (我/你/他) + [[们|men5]]",
+        "examples": [
+          {
+            "vi": "Chào các bạn!",
+            "hanzi": "你们好！",
+            "pinyin": "Ni3 men5 hao3!"
+          },
+          {
+            "vi": "Chị ấy khoẻ.",
+            "note": "她 dùng để chỉ một người nữ, số ít",
+            "hanzi": "她好。",
+            "pinyin": "Ta1 hao3."
+          }
+        ],
+        "explanation": "Thêm [[们|men5]] sau đại từ nhân xưng để chỉ số nhiều: [[我们|wo3 men5]] (chúng tôi/chúng ta), [[你们|ni3 men5]] (các bạn), [[他们|ta1 men5]] (họ)."
+      }
+    },
+    {
+      "id": "01a0ad13-dc1a-7758-bf46-c50fb93ef36f",
+      "type": "tip",
+      "payload": {
+        "text": "Hai thanh 3 đứng liền nhau: thanh đầu đọc gần giống thanh 2. [[你好|ni3 hao3]] nghe như \"ní hǎo\", nhưng pinyin vẫn viết giữ thanh gốc \"nǐ hǎo\".",
+        "variant": "pronunciation"
+      }
+    },
+    {
+      "id": "01a0ad13-dc1b-76ff-91a5-f32c0e37376f",
+      "type": "tip",
+      "payload": {
+        "text": "[[谢谢|xie4 xie5]] có âm sau đọc nhẹ và ngắn hơn (thanh nhẹ, số 5) — không nhấn như âm đầu.",
+        "variant": "pronunciation"
+      }
+    }
+  ],
+  "words": [
+    {
+      "id": "01a0ac50-faac-7b64-9822-097bd06f04f0",
+      "simplified": "你",
+      "pinyin": "ni3",
+      "hanViet": "nễ",
+      "meaningsVi": [
+        "bạn"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faac-7792-82e2-b8ab2198150d",
+      "simplified": "好",
+      "pinyin": "hao3",
+      "hanViet": "hảo",
+      "meaningsVi": [
+        "tốt",
+        "thích hợp; đúng",
+        "(trước động từ) dễ",
+        "(trước động từ) tốt để",
+        "(trước tính từ để nhấn mạnh) rất",
+        "(bổ ngữ động từ chỉ sự hoàn thành)"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab3-7a71-b88d-810368eca848",
+      "simplified": "您",
+      "pinyin": "nin2",
+      "hanViet": "nâm",
+      "meaningsVi": [
+        "bạn"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faac-76b2-a127-09e11e0f1aab",
+      "simplified": "我",
+      "pinyin": "wo3",
+      "hanViet": "ngã",
+      "meaningsVi": [
+        "tôi; mình; của tôi"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faac-7b7b-9197-8db17b0086a3",
+      "simplified": "他",
+      "pinyin": "ta1",
+      "hanViet": "tha",
+      "meaningsVi": [
+        "anh ấy; ông ấy (dùng cho bất kỳ giới tính nào khi giới tính không được biết hoặc không quan trọng)",
+        "(dùng trước tên ai đó để nhấn mạnh)",
+        "(dùng như một tân ngữ không có nghĩa)"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faad-778d-9265-270db8d025c7",
+      "simplified": "她",
+      "pinyin": "ta1",
+      "hanViet": "tha",
+      "meaningsVi": [
+        "cô ấy"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faac-76ad-ab41-48a04265e60f",
+      "simplified": "我们",
+      "traditional": "我們",
+      "pinyin": "wo3 men5",
+      "hanViet": "ngã môn",
+      "meaningsVi": [
+        "chúng tôi; chúng ta; bản thân chúng ta; của chúng tôi"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab0-7fa2-9911-7ca7241c53c4",
+      "simplified": "老师",
+      "traditional": "老師",
+      "pinyin": "lao3 shi1",
+      "hanViet": "lão sư",
+      "meaningsVi": [
+        "giáo viên"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faaf-743b-8611-ae72a0aea1d2",
+      "simplified": "谢谢",
+      "traditional": "謝謝",
+      "pinyin": "xie4 xie5",
+      "hanViet": "tạ tạ",
+      "meaningsVi": [
+        "cảm ơn",
+        "cảm ơn bạn"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab1-78b4-9386-dd20b73ef2de",
+      "simplified": "不客气",
+      "traditional": "不客氣",
+      "pinyin": "bu4 ke4 qi5",
+      "hanViet": "bất khách khí",
+      "meaningsVi": [
+        "không có chi",
+        "đừng nhắc đến",
+        "không lịch sự",
+        "thô lỗ",
+        "cộc cằn"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab1-77b5-8a85-79a401895f03",
+      "simplified": "对不起",
+      "traditional": "對不起",
+      "pinyin": "dui4 bu5 qi3",
+      "hanViet": "đối bất khởi",
+      "meaningsVi": [
+        "Tôi xin lỗi; xin thứ lỗi; tôi xin tha thứ",
+        "làm (ai đó) thất vọng; không đạt kỳ vọng"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab1-789c-b04a-bb61196ed43f",
+      "simplified": "没关系",
+      "traditional": "沒關係",
+      "pinyin": "mei2 guan1 xi5",
+      "hanViet": "một quan hệ",
+      "meaningsVi": [
+        "không sao đâu"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-fab1-7f58-8f14-de1733c96983",
+      "simplified": "再见",
+      "traditional": "再見",
+      "pinyin": "zai4 jian4",
+      "hanViet": "tái kiến",
+      "meaningsVi": [
+        "tạm biệt",
+        "gặp lại sau"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    },
+    {
+      "id": "01a0ac50-faad-7c7c-8233-c37869df4407",
+      "simplified": "吗",
+      "traditional": "嗎",
+      "pinyin": "ma5",
+      "meaningsVi": [
+        "(trợ từ nghi vấn cho câu hỏi \"có-không\")"
+      ],
+      "meaningViStatus": "machine",
+      "inSrs": false
+    }
+  ],
+  "quiz": [
+    {
+      "id": "01a0ad0f-1f1b-70e7-9570-37e396cf7d8d",
+      "type": "listen_choice",
+      "prompt": "Nghe và chọn nghĩa đúng",
+      "promptLang": "vi",
+      "audioText": "你好",
+      "options": [
+        {
+          "id": "a",
+          "text": "Tạm biệt",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Chào bạn",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Cảm ơn",
+          "lang": "vi"
+        },
+        {
+          "id": "d",
+          "text": "Xin lỗi",
+          "lang": "vi"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-7e86-a204-b2f4c5ea7f38",
+      "type": "listen_choice",
+      "prompt": "Nghe và chọn nghĩa đúng",
+      "promptLang": "vi",
+      "audioText": "谢谢",
+      "options": [
+        {
+          "id": "a",
+          "text": "Xin lỗi",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Không sao đâu",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Cảm ơn",
+          "lang": "vi"
+        },
+        {
+          "id": "d",
+          "text": "Tạm biệt",
+          "lang": "vi"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-7112-8b23-0d8d4e92eaee",
+      "type": "listen_choice",
+      "prompt": "Nghe và chọn nghĩa đúng",
+      "promptLang": "vi",
+      "audioText": "再见",
+      "options": [
+        {
+          "id": "a",
+          "text": "Cảm ơn",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Tạm biệt",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Xin lỗi",
+          "lang": "vi"
+        },
+        {
+          "id": "d",
+          "text": "Không có chi",
+          "lang": "vi"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-71e0-8c62-f656d95056bf",
+      "type": "single_choice",
+      "prompt": "你好吗？",
+      "promptLang": "zh",
+      "promptPinyin": "Ni3 hao3 ma5?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bạn khoẻ không?",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Bạn là ai?",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Bạn tên gì?",
+          "lang": "vi"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-777d-82f8-e3d3c5af44f2",
+      "type": "single_choice",
+      "prompt": "Câu nào dùng khi muốn xin lỗi ai đó?",
+      "promptLang": "vi",
+      "options": [
+        {
+          "id": "a",
+          "text": "谢谢",
+          "lang": "zh"
+        },
+        {
+          "id": "b",
+          "text": "对不起",
+          "lang": "zh"
+        },
+        {
+          "id": "c",
+          "text": "再见",
+          "lang": "zh"
+        },
+        {
+          "id": "d",
+          "text": "不客气",
+          "lang": "zh"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-701c-a7fb-dc8a76503df4",
+      "type": "single_choice",
+      "prompt": "您 dùng để xưng hô với ai?",
+      "promptLang": "vi",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bạn thân cùng tuổi",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Trẻ em",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Thầy cô, người lớn tuổi",
+          "lang": "vi"
+        },
+        {
+          "id": "d",
+          "text": "Động vật",
+          "lang": "vi"
+        }
+      ]
+    },
+    {
+      "id": "01a0ad0f-1f22-77a8-9223-4715b76b8e3c",
+      "type": "listen_choice",
+      "prompt": "Nghe và chọn nghĩa đúng",
+      "promptLang": "vi",
+      "audioText": "没关系",
+      "options": [
+        {
+          "id": "a",
+          "text": "Không sao đâu",
+          "lang": "vi"
+        },
+        {
+          "id": "b",
+          "text": "Xin lỗi",
+          "lang": "vi"
+        },
+        {
+          "id": "c",
+          "text": "Cảm ơn",
+          "lang": "vi"
+        },
+        {
+          "id": "d",
+          "text": "Tạm biệt",
+          "lang": "vi"
+        }
+      ]
+    }
+  ]
+}

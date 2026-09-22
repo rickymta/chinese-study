@@ -7,8 +7,8 @@
 
 - [Quy trình đa Agent](#quy-trình-đa-agent) → chi tiết [`docs/agents/AGENT-WORKFLOW.md`](docs/agents/AGENT-WORKFLOW.md)
 - [Quy tắc bắt buộc](#quy-tắc-bắt-buộc)
-- [Tổng quan kiến trúc](#tổng-quan-kiến-trúc)
-- Hợp đồng thực thi các đợt: `docs/agent-workflow/`
+- [Tổng quan kiến trúc](#tổng-quan-kiến-trúc) · [Mobile (Flutter) — `mobile/`](#mobile--mobile-flutter-347--dart-pub-workspaces--riverpod-3--go_router)
+- Hợp đồng thực thi các đợt: `docs/agent-workflow/` — mobile: `2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md`
 - **Bàn giao mới nhất:** [`docs/HANDOFF-2026-09-17-W1-W2-W12.md`](docs/HANDOFF-2026-09-17-W1-W2-W12.md) — đọc trước khi làm tiếp (bản trước: `docs/HANDOFF-2026-09-17-MVP.md`)
 
 ---
@@ -23,7 +23,7 @@ Người dùng → ORCHESTRATOR (phiên chính, Opus): phân loại
         → REVIEW (Opus) → INTEGRATION (Opus, commit local riêng) → DỪNG chờ người dùng OK
 ```
 
-**Agent frontend chạy model Fable:** khi gọi `frontend-implement` qua công cụ `Agent`, **luôn truyền `model: "fable"`**.
+**Agent frontend chạy model Fable:** khi gọi `frontend-implement` qua công cụ `Agent`, **luôn truyền `model: "fable"`**. **Mọi việc trong `mobile/` (Flutter/Dart) cũng do `frontend-implement` (Fable) làm** — lời giao việc ghi rõ "Flutter trong `mobile/`, bỏ qua quy tắc React/MUI/yarn, theo §5.3 hợp đồng mobile".
 
 **Feature-by-feature:** mỗi feature là đơn vị commit & test độc lập. Xong → kiểm tra → commit local → dừng cho người dùng review → mới sang feature kế. Không gộp nhiều feature vào một commit.
 
@@ -36,6 +36,7 @@ Người dùng → ORCHESTRATOR (phiên chính, Opus): phân loại
 **Kiểm tra build sau khi sửa code** (chưa sạch thì chưa được báo hoàn thành):
 - Backend: `dotnet build backend/backend.slnx -v q` — 0 error; `dotnet test backend/backend.slnx` — xanh.
 - Frontend: `yarn workspace @af/<app> tsc -b` (**bắt buộc `-b`** — root tsconfig có `files: []` nên `--noEmit` không kiểm gì). Đụng dependency → thêm `yarn workspace @af/<app> build`.
+- Mobile: `cd mobile && ./tool/ci.sh` (format 120 → `flutter analyze --fatal-infos` → `tool/check_conventions.dart` → `flutter test` mọi package/app → `flutter build web`). Build Android/iOS **chưa verify** cho tới khi máy dev có SDK (`mobile/VERIFY-DEVICE.md`).
 
 **Commit local sau mỗi feature. Tuyệt đối không push.** Branch phát triển: `develop`; branch chính: `master`.
 
@@ -108,6 +109,8 @@ Nguyên tắc: **mọi prop `*Props` cũ → `slotProps`**; shorthand sx không 
 
 **Cookie refresh đa subdomain:** `af_rt`, HttpOnly, `SameSite=Strict`; production `Domain=.antfarms.xyz` + `Secure` + `Path=/api/auth`; dev **không** đặt `Domain` (localhost từ chối) + `Secure=false` + `Path=/identity/api/auth`. Mọi POST xác thực kiểm `Origin` thuộc `Auth:AllowedOrigins` — thêm subdomain mới mà quên khai là CORS chặn / đăng nhập trả 403. Đổi mật khẩu là **`POST /api/auth/password`** (D21), không phải `/api/account/password` — cookie chỉ gửi trong `Path` `/api/auth`, route ngoài nhánh này không biết phiên hiện tại để giữ lại khi thu hồi phiên khác.
 
+**Phiên client mobile (M1, identity-service):** client mobile (app Flutter) dùng nhóm endpoint riêng `POST /api/auth/mobile/{register,login,refresh,logout,password}` — refresh token trả trong **body JSON** (không cookie), mọi response chứa token có `Cache-Control: no-store`; header `X-AF-Client` **bắt buộc** ở mọi endpoint này nhưng chỉ để nhận diện nền tảng/phiên bản cho log/thống kê, **không phải** kiểm soát an ninh. Endpoint mobile **chặn mọi request có `Origin`** (trình duyệt) trừ khi nằm trong `Auth:MobileDevOrigins` **và** môi trường là Development, đồng thời **tắt CORS hẳn** (`[DisableCors]`) — preflight của trình duyệt thất bại ngay từ bước đó bất kể origin. Mỗi refresh token mang `client_type` (`web`/`mobile`); dùng **sai kênh** (token web gọi endpoint mobile hoặc ngược lại) ⇒ `401` **không thu hồi gì** (chỉ coi là gọi nhầm endpoint). Rate limit riêng `auth-mobile` (mặc định 30/phút/IP, cao hơn web vì CGNAT di động). Migration của đợt mobile dùng tiền tố `M<n>_` (song song `F<n>_` của web).
+
 **HTTPS Let's Encrypt cho mọi tên miền — bám ĐÚNG khuôn MedDental `mdt-re-construct/deploy/app-core`:** một máy = **một chứng chỉ SAN**, nginx mọi khối đọc cố định `certs/live/fullchain.pem` + `privkey.pem`; cấp bằng `deploy/scripts/get-cert.sh <email> <domain...>` (HTTP-01 webroot, **`--key-type rsa`** — ECDSA bị tường lửa SSL-inspection doanh nghiệp chặn) và **luôn truyền ĐỦ tên miền cũ + mới** (thiếu là đè mất chứng chỉ tên cũ); lần đầu dùng `self-signed.sh` để nginx lên được; gia hạn = container `certbot renew` 12 giờ **+ cron `renew-cert.sh`** chép sang `certs/live` + `nginx -t` + reload (thiếu cron là hết hạn im lặng). Cổng 80 chỉ ACME + `301 https`; TLS 1.2/1.3; HSTS `max-age` **không** `includeSubDomains`/`preload` cho tới khi mọi subdomain có HTTPS. `conf/nginx.conf.example` commit, `conf/nginx.conf` gitignore. nginx: `resolver 127.0.0.11 valid=10s ipv6=off` + `set $upstream` + `proxy_pass http://$upstream$request_uri`. **DNS ở Cloudflare:** bật proxy (đám mây cam) thì SSL mode **Full (strict)** (Flexible ⇒ vòng lặp chuyển hướng); proxied thì bật `set_real_ip_from` dải Cloudflare + `real_ip_header CF-Connecting-IP` (không thì IP thật = IP Cloudflare); HTTP-01 lỗi thì tạm để DNS-only lúc cấp. Service .NET sau proxy: `UseForwardedHeaders` với `KnownNetworks` = loopback + dải `af-net`, `ForwardLimit=2` (thiếu ⇒ IP = gateway; quá rộng ⇒ giả IP được). Dev local vẫn HTTP `localhost`, không chứng chỉ.
 
 **Mọi service là Docker container:** Dockerfile multi-stage, cache-friendly (tách layer restore — copy props + `shared/` + riêng `.csproj` rồi `dotnet restore` trước khi copy source; `RUN --mount=type=cache,target=/root/.nuget/packages`; publish `--no-restore /m:2`), **KHÔNG khai `# syntax=docker/dockerfile:1`** (bắt BuildKit gọi Docker Hub trước mỗi lần build), nghe **8080** trong container, `HEALTHCHECK` bằng **`wget`** (ảnh aspnet không có curl). Frontend: node build → `nginx:1.27-alpine`, có khối `location ~* \.mjs$ { default_type application/javascript; }` (không dùng `types {}` ở server level). Giai đoạn đầu **chạy local không Docker** — file Docker vẫn phải cập nhật cùng feature và **ghi rõ "chưa verify"**; checklist verify ở `deploy/VERIFY-DOCKER.md`. Triển khai: `docker compose pull <svc> && docker compose up -d <svc>`; build trên server từng service một.
@@ -133,6 +136,8 @@ Trình duyệt ─► [prod] nginx biên (TLS, host) / [dev] Vite proxy
              ─► gateway YARP ─┬─► identity-service ─► af_identity
                               ├─► chinese-backend  ─► af_chinese   (JWKS nội bộ từ identity-service)
                               └─► cms-backend      ─► af_cms       (W1 — nền tảng admin/website chung, JWKS nội bộ)
+App mobile (Flutter, mobile/apps/chinese) ─► [prod] thẳng id./chinese.antfarms.xyz (không CORS) / [dev] gateway 5280
+                                              (web-dev: proxy web_dev_config.yaml cổng 3291 → gateway, cùng origin)
 ```
 
 **Đợt W1–W15 (từ 17/09/2026):** thêm `cms-backend` (nền tảng quản trị chung) + `apps/admin` +
@@ -163,7 +168,8 @@ gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/ch
 | apps/chinese | http://localhost:3280 (Vite proxy `/identity`, `/chinese` → 5280) | `chinese-frontend:80` |
 | apps/admin (W2) | http://localhost:3290 (Vite proxy `/identity`, `/cms`, `/chinese` → 5280) | `admin-frontend:80` |
 | apps/website (W7 — chưa làm, Next.js `antfarms.xyz`) | http://localhost:3281 (dành sẵn) | `website:3000` |
-| Ngôn ngữ kế tiếp | backend 5283, app 3282, ... | `<ngon-ngu>-backend:8080` |
+| `mobile/apps/chinese` (mobile, web-dev) | http://localhost:3291 (proxy `/identity`, `/chinese` → 5280) | — (không Docker; bản web không triển khai) |
+| Ngôn ngữ kế tiếp | backend 5283, app 3282, mobile web-dev 3292, ... | `<ngon-ngu>-backend:8080` |
 
 ### Frontend — `frontend/` (Turborepo + Yarn Classic Workspaces + React 19 + MUI v9 + TypeScript + Vite)
 
@@ -171,6 +177,15 @@ gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/ch
 - `apps/admin` (`@af/admin`, W2) — admin kiêm CMS chung: `loadMe` gộp `GET /cms/api/me` + `/<ngôn-ngữ>/api/me` (Promise.allSettled), quyền gắn tiền tố service (`cms:users.manage`, `chinese:content.manage`), service không phản hồi chỉ ẩn phần của nó (`RequireAuth allowNoPermissions`), module ngôn ngữ khai ở `src/modules/registry.ts`. Origin `http://localhost:3290` / `https://admin.antfarms.xyz` phải có trong `Auth:AllowedOrigins` của identity.
 - `apps/chinese` (`@af/chinese`) — học viên + quản trị nội dung tiếng Trung (ẩn theo quyền). `src/features/<module>/`; route slug tiếng Việt không dấu. Mỗi app có `Dockerfile` + `nginx.conf` (chỉ phục vụ tĩnh).
 - `scripts/check-ui-conventions.mjs` (`yarn lint:ui`): FAIL `raw-dialog`, `uuid-import`, `autocomplete-slotprops-override`; WARN `tabs-no-url`.
+
+### Mobile — `mobile/` (Flutter 3.47 + Dart pub workspaces + Riverpod 3 + go_router)
+
+- Monorepo **Dart pub workspaces, không melos**: root `mobile/pubspec.yaml` (`name: antfarm_mobile`) liệt kê `packages/af_lints|af_core|af_ui` (M2: `af_auth`) + `apps/chinese`; một `flutter pub get` ở `mobile/`, một `pubspec.lock` (commit). Package `af_*` tương đương `@af/*`: `af_core` (AppConfig từ `--dart-define-from-file`, `createApiClient` dio + `ApiError` thông điệp Việt + JSON guard, `json_read`, `KeyValueStore`, `uuidV4()`, `X-AF-Client`, `afLog`), `af_ui` (theme sáng/tối, `ThemeModeController`, `LangText`/`HanziText`, `AfShellScaffold`, `StickyActionBar`, `showAfDialog/showAfConfirm/showAfBottomSheet`, `showAfToast`, `ErrorView`, `AsyncValueView`, `EmptyState`, `SectionCard`), `af_lints` (analyzer + formatter 120). Package chỉ tạo ở feature đầu tiên cần nó.
+- App `apps/<ngon-ngu>` = package `af_<ngon-ngu>`, bundle/applicationId **`xyz.antfarms.<ngon-ngu>`**, tên launcher "AntFarm Trung"; `lib/features/<module>/{data,application,presentation}`; route slug tiếng Việt như web, **không** route bắt đầu `/chinese` hay `/identity`; tab trong trang đọc `?tab=` lúc mở, không ghi lại URL (app không có thanh địa chỉ).
+- **Cổng kiểm:** `cd mobile && ./tool/ci.sh`. Chạy dev web (cùng origin gateway qua proxy, **không thêm CORS** ở gateway/service): `cd mobile/apps/chinese && flutter run -d chrome --web-port 3290 --dart-define-from-file=config/dev-web.json`. **Bản Flutter web không bao giờ triển khai** — chỉ để dev.
+- **Quy tắc (luật `tool/check_conventions.dart`):** dialog/bottom sheet qua `showAfDialog`/`showAfBottomSheet` (không `showDialog` trần trong `apps/`); chữ Hán qua `HanziText` (`zh-CN` + phông CJK dự phòng); không `package:uuid` (`uuidV4()`); **refresh token chỉ ở `flutter_secure_storage`, access token chỉ bộ nhớ** — không vào `SharedPreferences`/log/URL; URL chỉ trong `lib/**/config/**`; `afLog()` thay `print`; "hôm nay" lấy từ server; mobile-first 360–390 px + chữ 1.3×; **không thư mục `bin/`** trong `mobile/` (gitignore .NET) — script ở `tool/`.
+- Phiên bản package ghim ở `mobile/README.md`; Riverpod 3 / go_router 18 / flutter_secure_storage 11 mới hơn hiểu biết mặc định của agent ⇒ **đọc README/CHANGELOG trong `~/.pub-cache/hosted/pub.dev/<pkg>-<ver>/` trước khi code**. Riverpod không codegen; model viết tay `fromJson` (thiếu khoá = null) + test parse fixture.
+- **Build Android/iOS "chưa verify"** tới khi máy dev có Android SDK/Xcode — checklist `mobile/VERIFY-DEVICE.md`. Cấu hình native tối thiểu: `INTERNET` ở manifest chính, `allowBackup=false`, `<queries>` TTS, cleartext chỉ ở debug (`10.0.2.2`/`localhost`), iOS `NSAllowsLocalNetworking`.
 
 ### Học liệu — `content/`
 
@@ -182,7 +197,7 @@ gateway `/cms/**`; `apps/admin` khung gộp `/me` nhiều service; tách `@af/ch
 
 ### Thêm một ngôn ngữ mới (tóm tắt — checklist đầy đủ ở hợp đồng §5.5)
 
-Hợp đồng riêng → service `backend/services/<ngon-ngu>-backend` + DB `af_<ngon-ngu>` + phân quyền cục bộ + audience `af-<ngon-ngu>` trong identity → route gateway → app `frontend/apps/<ngon-ngu>` → học liệu `content/<ngon-ngu>/` → bản ghi DNS Cloudflare + chạy lại `get-cert.sh` với ĐỦ tên miền cũ + mới + khối server nginx + `Auth:AllowedOrigins` → Dockerfile + mục compose + init DB → cập nhật bảng domain/cổng trong file này. **Dùng lại, không làm mới:** gateway, identity-service, `AntFarm.*`, `@af/*`, lint UI, công cụ học liệu.
+Hợp đồng riêng → service `backend/services/<ngon-ngu>-backend` + DB `af_<ngon-ngu>` + phân quyền cục bộ + audience `af-<ngon-ngu>` trong identity → route gateway → app `frontend/apps/<ngon-ngu>` → (tuỳ chọn) app mobile `mobile/apps/<ngon-ngu>` (`af_<ngon-ngu>`, bundle `xyz.antfarms.<ngon-ngu>`, thêm vào `workspace:` root, dùng lại `af_*`) → học liệu `content/<ngon-ngu>/` → bản ghi DNS Cloudflare + chạy lại `get-cert.sh` với ĐỦ tên miền cũ + mới + khối server nginx + `Auth:AllowedOrigins` → Dockerfile + mục compose + init DB → cập nhật bảng domain/cổng trong file này. **Dùng lại, không làm mới:** gateway, identity-service, `AntFarm.*`, `@af/*`, lint UI, công cụ học liệu.
 
 ### Lệnh thường dùng
 
@@ -207,6 +222,12 @@ yarn lint:ui
 # Học liệu
 yarn --cwd content validate:chinese
 
+# Mobile (Flutter — chạy trong mobile/)
+flutter pub get                                       # một lần cho cả workspace
+./tool/ci.sh                                          # cổng kiểm bắt buộc (format, analyze, luật, test, build web)
+dart run tool/check_conventions.dart
+(cd apps/chinese && flutter run -d chrome --web-port 3291 --dart-define-from-file=config/dev-web.json)
+
 # Docker (máy có Docker — xem deploy/VERIFY-DOCKER.md)
 docker compose -f deploy/docker-compose.yml build <service>
 docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f deploy/docker-compose.yml up -d <service>
@@ -214,3 +235,4 @@ docker compose -f deploy/docker-compose.yml pull <service> && docker compose -f 
 
 > Hợp đồng nền tảng + tiếng Trung MVP (F0–F11 MVP; F12 lên server; F13 portal — **F13 đã bị thay thế bởi đợt W1–W15**): `docs/agent-workflow/2026-09-16-antfarm-nen-tang-tieng-trung-mvp-hop-dong-thuc-thi.md`.
 > Hợp đồng website `antfarms.xyz` + admin kiêm CMS chung (W1–W15, từ 17/09/2026 — **W1, W2, W12, W3a, W3b, W10 xong**): `docs/agent-workflow/2026-09-17-antfarm-website-admin-cms-hop-dong-thuc-thi.md`.
+> Hợp đồng app mobile Flutter (M0 khung → M1 phiên mobile identity → M2–M10 màn học viên, cổng web-dev **3291** — đổi từ 3290 do trùng `apps/admin`): `docs/agent-workflow/2026-09-17-antfarm-mobile-flutter-hop-dong-thuc-thi.md`.

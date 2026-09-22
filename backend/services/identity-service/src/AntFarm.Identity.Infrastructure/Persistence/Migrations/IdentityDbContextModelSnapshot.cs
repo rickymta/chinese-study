@@ -114,6 +114,19 @@ namespace AntFarm.Identity.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("account_id");
 
+                    b.Property<string>("ClientApp")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("client_app");
+
+                    b.Property<string>("ClientType")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasDefaultValue("web")
+                        .HasColumnName("client_type");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -122,6 +135,11 @@ namespace AntFarm.Identity.Infrastructure.Persistence.Migrations
                         .HasMaxLength(45)
                         .HasColumnType("character varying(45)")
                         .HasColumnName("created_ip");
+
+                    b.Property<string>("DeviceName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("device_name");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp with time zone")
@@ -173,7 +191,10 @@ namespace AntFarm.Identity.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_refresh_tokens_token_hash");
 
-                    b.ToTable("refresh_tokens", "identity");
+                    b.ToTable("refresh_tokens", "identity", t =>
+                        {
+                            t.HasCheckConstraint("ck_refresh_tokens_client_type", "client_type IN ('web', 'mobile')");
+                        });
                 });
 
             modelBuilder.Entity("AntFarm.Identity.Domain.Settings.PlatformSetting", b =>

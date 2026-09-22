@@ -1,0 +1,69 @@
+import 'package:af_chinese/shell/app_shell.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../helpers/test_app.dart';
+
+void main() {
+  Future<void> pumpApp(WidgetTester tester) async {
+    await tester.pumpWidget(
+      buildTestApp(chineseAdapter: okSystemInfo('chinese-backend'), identityAdapter: okSystemInfo('identity-service')),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('shell hiện 5 nhãn nav đúng thứ tự; chuyển nhánh đổi trang', (tester) async {
+    await pumpApp(tester);
+    final labels = tester.widgetList<NavigationDestination>(find.byType(NavigationDestination)).map((d) => d.label);
+    expect(labels, ['Trang chủ', 'Ôn tập', 'Bài học', 'Luyện viết', 'Thêm']);
+    expect(kShellDestinations.map((d) => d.label), labels);
+    expect(find.text('Hôm nay, Thứ Năm 17/09'), findsOneWidget); // tiêu đề trang chủ theo localDate server (M5)
+
+    // Chỉ tìm trong thanh nav: trang chủ M5 cũng có thẻ "Bài học".
+    // Bài học là trang thật từ M9 — adapter giả trả thân `system/info` cho `/lessons` ⇒ danh sách rỗng.
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bài học')));
+    await tester.pumpAndSettle();
+    expect(find.text('Chưa có bài học nào được xuất bản.'), findsOneWidget);
+
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Thêm')));
+    await tester.pumpAndSettle();
+    expect(find.text('Pinyin & luyện thanh'), findsOneWidget);
+    expect(find.text('Giấy phép & nguồn'), findsOneWidget);
+
+    // Push trang con trong nhánh "Thêm" ⇒ bottom nav vẫn còn (Tra từ là trang thật từ M8 — adapter giả trả thân
+    // `system/info` 200 cho mọi đường dẫn ⇒ parse thành trang kết quả rỗng, không điều hướng).
+    await tester.tap(find.text('Tra từ'));
+    await tester.pumpAndSettle();
+    expect(find.text('Từ điển'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
+  });
+
+  testWidgets('"Thêm" không còn khối Giao diện/Giọng đọc (M4 chuyển vào Hồ sơ)', (tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text('Thêm'));
+    await tester.pumpAndSettle();
+    expect(find.text('Giao diện'), findsNothing);
+    expect(find.text('Giọng đọc'), findsNothing);
+    expect(find.textContaining('giao diện, giọng đọc'), findsOneWidget);
+  });
+
+  testWidgets('màn 360×740 và chữ 1.3× không overflow ở trang chủ / Thêm', (tester) async {
+    tester.view.physicalSize = const Size(360, 740);
+    tester.view.devicePixelRatio = 1.0;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+      tester.platformDispatcher.clearTextScaleFactorTestValue();
+    });
+
+    await pumpApp(tester);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Chuỗi ngày học'), findsOneWidget);
+
+    await tester.tap(find.text('Thêm'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Hồ sơ'), findsOneWidget);
+  });
+}

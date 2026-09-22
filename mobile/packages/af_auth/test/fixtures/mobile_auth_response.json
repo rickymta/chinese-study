@@ -1,0 +1,13 @@
+{
+  "accessToken": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIwMTkyIn0.sig",
+  "accessTokenExpiresAt": "2026-09-17T08:15:00Z",
+  "refreshToken": "9f2c0000000000000000000000000000000000000000000000000000000000ab",
+  "refreshTokenExpiresAt": "2026-10-17T08:00:00Z",
+  "account": {
+    "id": "0192",
+    "email": "ban@vidu.com",
+    "displayName": "Quân",
+    "timeZone": "Asia/Ho_Chi_Minh",
+    "createdAt": "2026-09-17T08:00:00Z"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "dailyNewCards": 10,
+  "dailyReviewLimit": 200,
+  "desiredRetention": 0.9,
+  "ttsRate": 0.8,
+  "autoPlayAudio": true,
+  "isDefault": true
+}

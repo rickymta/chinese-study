@@ -1,0 +1,220 @@
+{
+ "version": "fixture-m7",
+ "topics": [
+  {
+   "id": "bien-dieu",
+   "title": "Biến điệu (tone sandhi): 3-3, 不, 一",
+   "order": 7,
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Biến điệu là hiện tượng thanh điệu THAY ĐỔI CÁCH ĐỌC khi hai âm tiết đứng cạnh nhau, nhưng CÁCH VIẾT PINYIN VÀ DỮ LIỆU TRONG APP VẪN GIỮ THANH GỐC — app chỉ hiện GỢI Ý cách đọc bên cạnh, không đổi thanh đã lưu. Khi làm bài luyện nghe-chọn thanh, luôn chọn theo THANH GỐC, không phải thanh đã biến điệu."
+    },
+    {
+     "type": "paragraph",
+     "text": "Quy tắc 3-3: khi một âm tiết thanh 3 đứng NGAY TRƯỚC một âm tiết thanh 3 khác, âm tiết đứng trước đọc gần THANH 2 (không đọc thanh 3 đầy đủ). Đây là lý do câu chào kinh điển 你好 (ni3 hao3) nghe như 'ní hǎo' chứ không phải 'nǐ hǎo'."
+    },
+    {
+     "type": "examples",
+     "items": [
+      {
+       "pinyin": "ni3 hao3",
+       "hanzi": "你好",
+       "meaningVi": "chào (bạn khoẻ không)"
+      },
+      {
+       "pinyin": "hen3 hao3",
+       "hanzi": "很好",
+       "meaningVi": "rất tốt"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "Quy tắc 不 (bu4): trước một âm tiết THANH 4, 不 đổi sang đọc gần THANH 2 ('bú'); trước các thanh khác vẫn đọc thanh 4 bình thường."
+    },
+    {
+     "type": "examples",
+     "items": [
+      {
+       "pinyin": "bu4 shi4",
+       "hanzi": "不是",
+       "meaningVi": "không phải"
+      },
+      {
+       "pinyin": "bu4 hao3",
+       "hanzi": "不好",
+       "meaningVi": "không tốt"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "Quy tắc 一 (yi1): đứng MỘT MÌNH hoặc ở CUỐI (vd số thứ tự 第一) vẫn đọc thanh 1. Đứng trước thanh 4 → đọc gần THANH 2 ('yí'). Đứng trước thanh 1/2/3 → đọc gần THANH 4 ('yì')."
+    },
+    {
+     "type": "examples",
+     "items": [
+      {
+       "pinyin": "yi1 ge4",
+       "hanzi": "一个",
+       "meaningVi": "một cái"
+      },
+      {
+       "pinyin": "yi1 tian1",
+       "hanzi": "一天",
+       "meaningVi": "một ngày"
+      },
+      {
+       "pinyin": "di4 yi1",
+       "hanzi": "第一",
+       "meaningVi": "thứ nhất"
+      }
+     ]
+    },
+    {
+     "type": "tip",
+     "text": "App chỉ áp gợi ý biến điệu để bạn NHẬN BIẾT khi nghe người bản ngữ nói — không bắt buộc phải tự tạo biến điệu khi mới học. Cứ đọc đúng thanh gốc trước, tai quen dần sẽ tự nghe ra biến điệu."
+    }
+   ]
+  },
+  {
+   "id": "thanh-mau",
+   "title": "Thanh mẫu theo nhóm (phụ âm đầu)",
+   "order": 3,
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "21 thanh mẫu (phụ âm đầu) chia thành 6 nhóm theo vị trí phát âm, từ ngoài (môi) vào trong (uốn lưỡi). Xếp theo nhóm giúp so sánh các cặp dễ nhầm nằm CÙNG một hàng trong bảng bên tab Bảng."
+    },
+    {
+     "type": "paragraph",
+     "text": "Môi: b p m f — mím môi hoặc chạm môi-răng. Đầu lưỡi: d t n l — đầu lưỡi chạm lợi trên. Cuống lưỡi: g k h — gốc lưỡi chạm ngạc mềm. Mặt lưỡi: j q x — mặt lưỡi áp ngạc cứng, LUÔN đi với i/ü. Đầu lưỡi trước (răng): z c s — đầu lưỡi chạm mặt sau răng cửa. Uốn lưỡi: zh ch sh r — đầu lưỡi cong lên, không chạm ngạc."
+    },
+    {
+     "type": "paragraph",
+     "text": "Trong mỗi nhóm b/d/g/j/z/zh và p/t/k/q/c/ch là hai âm CÙNG vị trí lưỡi, chỉ khác ở BẬT HƠI: âm thứ nhất không bật hơi (gần phụ âm tiếng Việt), âm thứ hai bật hơi mạnh (đặt tay trước miệng sẽ thấy luồng hơi)."
+    },
+    {
+     "type": "compare",
+     "title": "Không bật hơi vs bật hơi — từng nhóm",
+     "pairs": [
+      {
+       "left": {
+        "pinyin": "bai2",
+        "hanzi": "白",
+        "meaningVi": "trắng"
+       },
+       "right": {
+        "pinyin": "pai2",
+        "hanzi": "排",
+        "meaningVi": "xếp hàng, dãy"
+       },
+       "noteVi": "b không bật hơi — p bật hơi mạnh."
+      },
+      {
+       "left": {
+        "pinyin": "da2",
+        "hanzi": "达",
+        "meaningVi": "đạt tới"
+       },
+       "right": {
+        "pinyin": "ta1",
+        "hanzi": "他",
+        "meaningVi": "anh ấy, anh ta"
+       },
+       "noteVi": "d không bật hơi — t bật hơi mạnh."
+      },
+      {
+       "left": {
+        "pinyin": "gai3",
+        "hanzi": "改",
+        "meaningVi": "sửa, đổi"
+       },
+       "right": {
+        "pinyin": "kai1",
+        "hanzi": "开",
+        "meaningVi": "mở"
+       },
+       "noteVi": "g không bật hơi — k bật hơi mạnh."
+      },
+      {
+       "left": {
+        "pinyin": "ji1",
+        "hanzi": "机",
+        "meaningVi": "máy, cơ"
+       },
+       "right": {
+        "pinyin": "qi1",
+        "hanzi": "期",
+        "meaningVi": "kỳ, thời kỳ"
+       },
+       "noteVi": "j không bật hơi — q bật hơi mạnh. j/q KHÔNG phải 'ch tiếng Việt' — xem thêm chủ đề Cặp dễ nhầm."
+      }
+     ]
+    },
+    {
+     "type": "tip",
+     "text": "zh ch sh r đọc bằng đầu lưỡi CONG LÊN, không chạm ngạc — hoàn toàn khác 'tr' hay 'r' tiếng Việt. Nghe kỹ ở bảng âm tiết trước khi tự đọc."
+    }
+   ]
+  },
+  {
+   "id": "bon-thanh",
+   "title": "Bốn thanh điệu và thanh nhẹ",
+   "order": 1,
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Tiếng Trung phổ thông có 4 thanh điệu chính, đánh số 1–4, cộng thêm thanh nhẹ (đánh số 5 trong app). Mỗi âm tiết pinyin đi kèm đúng một thanh — cùng chữ cái nhưng khác thanh là khác nghĩa hoàn toàn. Độ cao chia thành 5 mức từ thấp (1) đến cao (5): thanh 1 giữ ở mức cao và bằng phẳng (5→5); thanh 2 đi từ giữa lên cao (3→5); thanh 3 (khi đọc tách riêng, đọc chậm) đi xuống rồi lên (2→1→4), nhưng trong lời nói bình thường thường chỉ đọc trầm xuống (2→1) mà không lên lại; thanh 4 đi từ cao xuống thấp thật dứt khoát (5→1)."
+    },
+    {
+     "type": "tone_contour",
+     "tones": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "type": "examples",
+     "items": [
+      {
+       "pinyin": "ma1",
+       "hanzi": "妈",
+       "meaningVi": "mẹ"
+      },
+      {
+       "pinyin": "ma2",
+       "hanzi": "麻",
+       "meaningVi": "cây gai, tê"
+      },
+      {
+       "pinyin": "ma3",
+       "hanzi": "马",
+       "meaningVi": "ngựa"
+      },
+      {
+       "pinyin": "ma4",
+       "hanzi": "骂",
+       "meaningVi": "mắng, chửi"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "So sánh GẦN ĐÚNG với thanh tiếng Việt (chỉ để dễ hình dung, không thay thế việc nghe): thanh 1 gần thanh ngang nhưng giữ cao hơn và căng hơn; thanh 2 gần thanh sắc; thanh 3 gần thanh hỏi (khi đọc trầm) hoặc thanh nặng (khi đọc đủ xuống-lên); thanh 4 gần thanh huyền đọc rất nhanh và dứt khoát nhưng thực ra tụt sâu hơn — thanh này không có trong tiếng Việt nên cần luyện nghe nhiều."
+    },
+    {
+     "type": "paragraph",
+     "text": "Thanh nhẹ (viết số 5 trong app, không có dấu khi hiển thị) đọc ngắn, nhẹ, cao độ phụ thuộc thanh của âm tiết đứng trước — ví dụ trong 'ma5' (吗, dùng hỏi câu) hay 'de5' (的)."
+    },
+    {
+     "type": "tip",
+     "text": "Học vững 4 thanh TRƯỚC khi học từ mới — vì mọi âm tiết trong app đều gắn thanh, nghe nhầm thanh cũng là nghe nhầm từ. Hai cặp người Việt hay lẫn nhất: thanh 2 với thanh 3, và đọc thanh 4 giống thanh nặng tiếng Việt (không đủ dứt khoát)."
+    }
+   ]
+  }
+ ]
+}

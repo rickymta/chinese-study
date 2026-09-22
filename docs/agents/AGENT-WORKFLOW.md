@@ -45,7 +45,7 @@ BUSINESS ANALYSIS (Opus) ── docs/agent-workflow/YYYY-MM-DD-<slug>-hop-dong-t
 | Investigation | `.claude/agents/investigation.md` | Haiku | Khảo sát read-only, hỏi sớm |
 | Business Analysis | `.claude/agents/business-analysis.md` | Opus | Hợp đồng thực thi + phân rã feature (cả nghiệp vụ sư phạm) |
 | Backend Implement | `.claude/agents/backend-implement.md` | Sonnet | .NET 10 DDD 4 lớp + build/test sạch |
-| Frontend Implement | `.claude/agents/frontend-implement.md` | **Fable** | React 19 + MUI v9 + `tsc -b` sạch — gọi qua `Agent` luôn truyền `model: "fable"` |
+| Frontend Implement | `.claude/agents/frontend-implement.md` | **Fable** | React 19 + MUI v9 + `tsc -b` sạch — gọi qua `Agent` luôn truyền `model: "fable"`. **Cũng làm toàn bộ `mobile/` (Flutter/Dart)** — lời giao việc ghi rõ "Flutter trong `mobile/`", cổng kiểm `mobile/tool/ci.sh` |
 | Database Implement | `.claude/agents/database-implement.md` | Sonnet | Schema/migration/seed PostgreSQL |
 | **Content Implement** | `.claude/agents/content-implement.md` | Sonnet | **Mở rộng**: học liệu HSK/pinyin/bài học, giấy phép nguồn |
 | Review | `.claude/agents/review.md` | Opus | Review BE/FE/DB/học liệu vs hợp đồng + convention |

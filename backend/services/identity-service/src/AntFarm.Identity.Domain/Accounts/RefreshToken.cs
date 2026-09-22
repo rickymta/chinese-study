@@ -20,13 +20,29 @@ public sealed class RefreshToken
     public string? UserAgent { get; private set; }
     public string? CreatedIp { get; private set; }
 
+    /// <summary>M1 (RM-A3): kênh phát hành — mặc định <c>Web</c> (dòng cũ trước M1 qua migration <c>DEFAULT 'web'</c>).</summary>
+    public RefreshClientType ClientType { get; private set; } = RefreshClientType.Web;
+
+    /// <summary>M1 (RM-A5): chuỗi <c>X-AF-Client</c> đã kiểm định dạng — CHỈ để log/thống kê, không phải khoá bảo mật. <c>null</c> cho kênh web.</summary>
+    public string? ClientApp { get; private set; }
+
+    /// <summary>M1 (RM-A6): tên thiết bị tuỳ chọn do client gửi lúc đăng ký/đăng nhập mobile.</summary>
+    public string? DeviceName { get; private set; }
+
     private RefreshToken()
     {
     }
 
-    /// <summary>Phát token mới. <paramref name="familyId"/> = <c>Guid.CreateVersion7()</c> mới khi đăng nhập/đăng ký; giữ nguyên family cũ khi xoay vòng.</summary>
+    /// <summary>
+    /// Phát token mới. <paramref name="familyId"/> = <c>Guid.CreateVersion7()</c> mới khi đăng
+    /// nhập/đăng ký; giữ nguyên family cũ khi xoay vòng. <paramref name="clientType"/>/
+    /// <paramref name="clientApp"/>/<paramref name="deviceName"/>: đăng ký/đăng nhập lấy từ
+    /// <c>ClientContext</c> của request hiện tại; xoay vòng PHẢI truyền lại 3 trường của token
+    /// CHA (kế thừa kênh, RM-A3) — không tự suy từ request đang xoay.
+    /// </summary>
     public static RefreshToken CreateNew(
         Guid accountId, Guid familyId, string tokenHash, DateTime now, int refreshTokenDays,
+        RefreshClientType clientType, string? clientApp, string? deviceName,
         string? userAgent, string? createdIp)
     {
         return new RefreshToken
@@ -38,7 +54,10 @@ public sealed class RefreshToken
             CreatedAt = now,
             ExpiresAt = now.AddDays(refreshTokenDays),
             UserAgent = userAgent,
-            CreatedIp = createdIp
+            CreatedIp = createdIp,
+            ClientType = clientType,
+            ClientApp = clientApp,
+            DeviceName = deviceName
         };
     }
 

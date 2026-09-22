@@ -1,0 +1,20 @@
+{
+  "id": "w1",
+  "simplified": "爱",
+  "traditional": "愛",
+  "variants": [],
+  "pinyin": "ai4",
+  "hsk3Level": 1,
+  "hsk2Level": 1,
+  "pos": ["v", "n"],
+  "meaningsEn": ["to love", "to be fond of", "to like"],
+  "meaningsVi": ["yêu", "thích"],
+  "meaningViStatus": "machine",
+  "meaningViSource": "cvdict",
+  "hanViet": "ái",
+  "hanVietStatus": "derived",
+  "sources": ["hsk30-official", "cc-cedict", "cvdict"],
+  "characters": [
+    { "hanzi": "爱", "pinyinReadings": ["ai4"], "hanViet": ["ái"], "strokeCount": 10 }
+  ]
+}

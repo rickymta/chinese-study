@@ -1,0 +1,4 @@
+# Áp cho file ngoài package (tool/). Mỗi package/app tự include af_lints; page_width 120 khai trong af_lints.
+include: package:af_lints/analysis_options.yaml
+formatter:
+  page_width: 120

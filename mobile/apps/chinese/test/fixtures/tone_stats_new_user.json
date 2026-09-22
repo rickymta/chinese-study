@@ -1,0 +1,28 @@
+{
+ "totalAnswered": 0,
+ "sessionsCount": 0,
+ "lastSessionAt": null,
+ "windowSize": 200,
+ "accuracy": null,
+ "byTone": {
+  "1": {
+   "total": 0,
+   "correct": 0
+  },
+  "2": {
+   "total": 0,
+   "correct": 0
+  },
+  "3": {
+   "total": 0,
+   "correct": 0
+  },
+  "4": {
+   "total": 0,
+   "correct": 0
+  }
+ },
+ "confusions": [],
+ "recommendedFocus": [],
+ "g0Reached": false
+}

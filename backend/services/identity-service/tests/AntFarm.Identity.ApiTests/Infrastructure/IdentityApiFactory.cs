@@ -67,6 +67,11 @@ public class IdentityApiFactory : WebApplicationFactory<Program>
         // TestServer nên phải nới rộng để CHÍNH BỘ TEST không tự đụng rate limit của nhau; kiểm
         // 429 (nếu cần) nên dùng factory nạp giá trị nhỏ RIÊNG.
         Environment.SetEnvironmentVariable("Auth__RateLimitPermitPerMinute", "100000");
+
+        // M1: cùng lý do trên nhưng cho policy "auth-mobile" (mặc định chỉ 30/phút) — nhiều test
+        // mobile gọi liên tiếp (register/login/refresh) trong CÙNG một collection tuần tự sẽ chạm
+        // 429 nếu không nới rộng; kiểm 429 riêng dùng IdentityDbApiFactoryLowMobileRateLimit.
+        Environment.SetEnvironmentVariable("Auth__MobileRateLimitPermitPerMinute", "100000");
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
