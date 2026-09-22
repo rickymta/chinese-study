@@ -64,7 +64,9 @@ echo "        Trống ở Production ⇒ identity-service DỪNG HẲN lúc kh�
 if [ -f conf/nginx.conf ]; then
     echo
     echo "── Placeholder trong nginx.conf ───────────────────────────"
-    con=$(grep -oE '<[A-Z_0-9]+>' conf/nginx.conf | sort -u | tr '\n' ' ')
+    # Bỏ qua dòng đã comment (vd khối mẫu "<LANG>" dành cho ngôn ngữ thêm sau) — placeholder
+    # thật nằm ở dòng server_name đang hoạt động, không phải trong ghi chú.
+    con=$(grep -v '^[[:space:]]*#' conf/nginx.conf | grep -oE '<[A-Z_0-9]+>' | sort -u | tr '\n' ' ')
     if [ -n "$con" ]; then
         echo "${RED}SAI${RESET}   còn placeholder chưa thay: $con"
         echo "        Để nguyên thì nginx vẫn chạy nhưng định tuyến sai tên miền."
